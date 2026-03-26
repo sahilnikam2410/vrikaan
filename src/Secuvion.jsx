@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
-import CinematicLoader from "./components/CinematicLoader";
 import CyberGlobe from "./components/CyberGlobe";
 import ThreatMapLive from "./components/ThreatMapLive";
 
@@ -1126,11 +1125,9 @@ export default function SecuvionV2() {
   const { user } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [introComplete, setIntroComplete] = useState(false);
   const [pageReady, setPageReady] = useState(false);
 
-  useEffect(() => { window.scrollTo(0, 0); }, []);
-  useEffect(() => { if (introComplete) { const t = setTimeout(() => setPageReady(true), 150); return () => clearTimeout(t); } }, [introComplete]);
+  useEffect(() => { window.scrollTo(0, 0); const t = setTimeout(() => setPageReady(true), 150); return () => clearTimeout(t); }, []);
   useEffect(() => { const h = () => setScrolled(window.scrollY > 60); window.addEventListener("scroll", h); return () => window.removeEventListener("scroll", h); }, []);
 
   const scrollTo = (id) => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); setMenuOpen(false); };
@@ -1144,7 +1141,6 @@ export default function SecuvionV2() {
 
   return (
     <div style={{ background: T.bg, color: T.white, minHeight: "100vh", fontFamily: "var(--font-body)", overflowX: "hidden" }}>
-      {!introComplete && <CinematicLoader onComplete={() => setIntroComplete(true)} />}
 
       <style>{`
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
