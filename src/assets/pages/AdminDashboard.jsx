@@ -13,6 +13,7 @@ import {
   HiOutlineMail, HiOutlineKey, HiOutlineSave, HiOutlinePhotograph
 } from "react-icons/hi";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, AreaChart, Area, PieChart, Pie, Cell, LineChart, Line, Legend } from "recharts";
+import SEO from "../../components/SEO";
 
 const T = {
   bg: "#030712", sidebar: "#0a0f1e", surface: "#111827", card: "rgba(17,24,39,0.8)",
@@ -158,9 +159,25 @@ export default function AdminDashboard() {
     retentionDays: "90", darkMode: true, maintenance: false,
   });
   const [liveCount, setLiveCount] = useState(2841233);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [liveFeedIdx, setLiveFeedIdx] = useState(0);
+
+  const liveFeed = [
+    { ip: "45.33.21.88", type: "Brute Force", country: "RU" },
+    { ip: "103.45.67.89", type: "Port Scan", country: "CN" },
+    { ip: "78.12.34.56", type: "SQL Injection", country: "BR" },
+    { ip: "91.22.44.11", type: "XSS Attack", country: "UA" },
+    { ip: "156.78.90.12", type: "DDoS", country: "IN" },
+    { ip: "88.33.11.22", type: "Phishing", country: "NG" },
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => setLiveCount(c => c + Math.floor(Math.random() * 5)), 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => setLiveFeedIdx(i => (i + 1) % liveFeed.length), 3000);
     return () => clearInterval(interval);
   }, []);
 
@@ -618,7 +635,13 @@ export default function AdminDashboard() {
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <aside style={{
+      <SEO title="Admin Dashboard" description="Secuvion admin control panel." path="/admin" />
+      {sidebarOpen && (
+        <div onClick={() => setSidebarOpen(false)} style={{
+          position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 99, display: "none",
+        }} className="admin-overlay" />
+      )}
+      <aside className={`admin-sidebar${sidebarOpen ? " open" : ""}`} style={{
         width: 240, background: T.sidebar, borderRight: `1px solid ${T.border}`,
         display: "flex", flexDirection: "column", position: "sticky", top: 0, height: "100vh", flexShrink: 0,
       }}>
@@ -631,9 +654,22 @@ export default function AdminDashboard() {
             <HiOutlineStatusOnline size={14} /> All Systems Operational
           </div>
         </div>
+        <div style={{ padding: "0 12px 12px" }}>
+          <div style={{ padding: "10px 12px", background: "rgba(239,68,68,0.06)", borderRadius: 8, border: "1px solid rgba(239,68,68,0.15)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: T.red, display: "inline-block", boxShadow: `0 0 6px ${T.red}`, animation: "pulse 1.2s infinite" }} />
+              <span style={{ fontSize: 10, fontWeight: 700, color: T.red, textTransform: "uppercase", letterSpacing: 1 }}>Live Threats</span>
+            </div>
+            <div style={{ fontSize: 12, color: T.white, fontWeight: 600, marginBottom: 2 }}>{liveFeed[liveFeedIdx].ip}</div>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: 11, color: T.orange }}>{liveFeed[liveFeedIdx].type}</span>
+              <span style={{ fontSize: 10, color: T.muted, background: "rgba(148,163,184,0.1)", padding: "1px 5px", borderRadius: 4 }}>{liveFeed[liveFeedIdx].country}</span>
+            </div>
+          </div>
+        </div>
         <nav style={{ flex: 1, padding: "0 8px", display: "flex", flexDirection: "column", gap: 2 }}>
           {navItems.map(item => (
-            <button key={item.label} onClick={() => setActiveNav(item.label)} style={{
+            <button key={item.label} onClick={() => { setActiveNav(item.label); setSidebarOpen(false); }} style={{
               display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", width: "100%",
               background: activeNav === item.label ? "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20,227,197,0.08))" : "transparent",
               border: activeNav === item.label ? "1px solid rgba(99,102,241,0.2)" : "1px solid transparent",
@@ -678,6 +714,9 @@ export default function AdminDashboard() {
             <p style={{ fontSize: 12, color: T.muted }}>Admin Control Panel</p>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <button className="admin-burger" onClick={() => setSidebarOpen(!sidebarOpen)} style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: 4 }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f1f5f9" strokeWidth="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+            </button>
             <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 14px", background: T.surface, borderRadius: 8, border: `1px solid ${T.border}` }}>
               <HiOutlineSearch size={14} color={T.muted} />
               <input placeholder="Search..." style={{ background: "none", border: "none", color: T.white, fontSize: 12, outline: "none", width: 160, fontFamily: "'Plus Jakarta Sans'" }} />
@@ -698,6 +737,24 @@ export default function AdminDashboard() {
           <span style={{ fontSize: 12, color: T.muted }}>v1.0.0 | Admin Panel</span>
         </footer>
       </main>
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.5; transform: scale(1.4); }
+        }
+        @media (max-width: 900px) {
+          .admin-sidebar {
+            position: fixed !important;
+            left: -260px;
+            z-index: 100;
+            transition: left 0.3s ease;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+          }
+          .admin-sidebar.open { left: 0 !important; }
+          .admin-burger { display: flex !important; }
+          .admin-overlay { display: block !important; }
+        }
+      `}</style>
     </div>
   );
 }

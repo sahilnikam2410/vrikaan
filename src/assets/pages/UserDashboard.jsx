@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
+import SEO from "../../components/SEO";
 import {
   HiOutlineViewGrid, HiOutlineShieldCheck, HiOutlineBell, HiOutlineCog,
   HiOutlineLogout, HiOutlineGlobe, HiOutlineLightningBolt,
@@ -66,6 +67,7 @@ export default function UserDashboard() {
   const { user, logout, updatePlan } = useAuth();
   const navigate = useNavigate();
   const [activeNav, setActiveNav] = useState("Overview");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [scanResults, setScanResults] = useState(null);
   const [devices, setDevices] = useState([
@@ -87,6 +89,9 @@ export default function UserDashboard() {
     twoFactor: false, weeklyReport: true, autoScan: true, darkMode: true,
   });
   const [blockedThreats, setBlockedThreats] = useState(1247);
+  const [breachEmail, setBreachEmail] = useState(user?.email || "");
+  const [breachChecking, setBreachChecking] = useState(false);
+  const [breachResult, setBreachResult] = useState(null);
 
   useEffect(() => {
     const interval = setInterval(() => setBlockedThreats(c => c + Math.floor(Math.random() * 3)), 5000);
@@ -112,6 +117,25 @@ export default function UserDashboard() {
   const markRead = (id) => setAlerts(a => a.map(x => x.id === id ? { ...x, read: true } : x));
   const removeDevice = (id) => setDevices(d => d.filter(x => x.id !== id));
 
+  const handleBreachCheck = () => {
+    setBreachChecking(true);
+    setBreachResult(null);
+    setTimeout(() => {
+      setBreachChecking(false);
+      if (breachEmail.toLowerCase().includes("admin")) {
+        setBreachResult({
+          found: true,
+          breaches: [
+            { name: "LinkedIn", year: 2021, records: "700M", severity: "high" },
+            { name: "Adobe", year: 2019, records: "7.5M", severity: "medium" },
+          ],
+        });
+      } else {
+        setBreachResult({ found: false });
+      }
+    }, 1500);
+  };
+
   const renderContent = () => {
     switch (activeNav) {
       case "Overview": return renderOverview();
@@ -125,16 +149,47 @@ export default function UserDashboard() {
     }
   };
 
-  const renderOverview = () => (
+  const renderOverview = () => {
+    const protectedCount = devices.filter(d => d.status === "protected").length;
+    const scoreFromDevices = Math.min(protectedCount * 20, 80);
+    const scoreFromAlerts = alerts.filter(a => !a.read).length === 0 ? 10 : 0;
+    const scoreFromPlan = (plan === "pro" || plan === "enterprise") ? 10 : 0;
+    const secScore = scoreFromDevices + scoreFromAlerts + scoreFromPlan;
+    const scoreColor = secScore > 70 ? T.green : secScore > 40 ? T.orange : T.red;
+    const circumference = 2 * Math.PI * 45;
+    const strokeOffset = circumference - (secScore / 100) * circumference;
+
+    const timeline = [
+      { time: "2 min ago", event: "Quick scan completed", type: "success" },
+      { time: "15 min ago", event: "Suspicious login blocked from 45.33.21.88", type: "warning" },
+      { time: "1 hr ago", event: "Windows PC scan found 2 threats", type: "danger" },
+      { time: "3 hrs ago", event: "iPhone 15 connected securely", type: "info" },
+      { time: "1 day ago", event: "Password change recommended", type: "info" },
+    ];
+    const tlColor = { success: T.green, warning: T.orange, danger: T.red, info: T.cyan };
+
+    return (
     <>
-      <div style={{ display: "flex", gap: 16, marginBottom: 24, flexWrap: "wrap" }}>
+      <div style={{ display: "flex", gap: 16, marginBottom: 24, flexWrap: "wrap", alignItems: "stretch" }}>
+        <div style={{ ...sty.card, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px 28px", minWidth: 160 }}>
+          <svg width="110" height="110" viewBox="0 0 110 110">
+            <circle cx="55" cy="55" r="45" fill="none" stroke="rgba(148,163,184,0.1)" strokeWidth="8" />
+            <circle cx="55" cy="55" r="45" fill="none" stroke={scoreColor} strokeWidth="8"
+              strokeDasharray={circumference} strokeDashoffset={strokeOffset}
+              strokeLinecap="round" style={{ transform: "rotate(-90deg)", transformOrigin: "55px 55px", transition: "stroke-dashoffset 1s ease" }} />
+            <text x="55" y="51" textAnchor="middle" fontSize="20" fontWeight="800" fill={scoreColor} fontFamily="'Space Grotesk'">{secScore}</text>
+            <text x="55" y="66" textAnchor="middle" fontSize="10" fill="#94a3b8">/ 100</text>
+          </svg>
+          <div style={{ fontSize: 12, color: T.muted, marginTop: 6, textAlign: "center" }}>Security Score</div>
+          <div style={{ fontSize: 11, color: scoreColor, fontWeight: 600, marginTop: 2 }}>{secScore > 70 ? "Good" : secScore > 40 ? "Fair" : "At Risk"}</div>
+        </div>
         {[
-          { icon: HiOutlineShieldCheck, label: "Security Score", value: "87/100", color: T.green, trend: 5 },
+          { icon: HiOutlineShieldCheck, label: "Security Score", value: `${secScore}/100`, color: scoreColor, trend: 5 },
           { icon: HiOutlineLockClosed, label: "Threats Blocked", value: blockedThreats.toLocaleString(), color: T.cyan, trend: 12 },
           { icon: HiOutlineWifi, label: "Network Status", value: "Secure", color: T.green },
           { icon: HiOutlineMail, label: "Emails Scanned", value: "3,421", color: T.accent, trend: 8 },
         ].map(s => (
-          <div key={s.label} style={{ ...sty.card, flex: 1, minWidth: 180, padding: 20 }}>
+          <div key={s.label} style={{ ...sty.card, flex: 1, minWidth: 160, padding: 20 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start" }}>
               <div style={{ width: 36, height: 36, borderRadius: 8, background: `${s.color}12`, display: "flex", alignItems: "center", justifyContent: "center" }}><s.icon size={18} color={s.color} /></div>
               {s.trend && <span style={{ fontSize: 11, color: T.green, display: "flex", alignItems: "center", gap: 2 }}><HiOutlineTrendingUp size={12} />{s.trend}%</span>}
@@ -243,8 +298,19 @@ export default function UserDashboard() {
           </div>
         </div>
       </div>
+      <div style={{ ...sty.card, marginTop: 24 }}>
+        <h3 style={{ fontSize: 16, fontWeight: 600, color: T.white, marginBottom: 16 }}>Activity Timeline</h3>
+        {timeline.map((item, i) => (
+          <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "10px 0", borderBottom: i < timeline.length - 1 ? `1px solid ${T.border}` : "none" }}>
+            <div style={{ width: 10, height: 10, borderRadius: "50%", background: tlColor[item.type], flexShrink: 0, marginTop: 4 }} />
+            <div style={{ flex: 1, fontSize: 13, color: T.white }}>{item.event}</div>
+            <div style={{ fontSize: 11, color: T.muted, whiteSpace: "nowrap" }}>{item.time}</div>
+          </div>
+        ))}
+      </div>
     </>
   );
+  };  // end renderOverview
 
   const renderProtection = () => (
     <>
@@ -283,6 +349,57 @@ export default function UserDashboard() {
             ))}
           </tbody>
         </table>
+      </div>
+      <div style={{ ...sty.card, marginTop: 24 }}>
+        <h3 style={{ fontSize: 16, fontWeight: 600, color: T.white, marginBottom: 6 }}>Breach Check</h3>
+        <p style={{ fontSize: 13, color: T.muted, marginBottom: 16 }}>Check if your email address has appeared in known data breaches.</p>
+        <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+          <input
+            type="email"
+            value={breachEmail}
+            onChange={e => { setBreachEmail(e.target.value); setBreachResult(null); }}
+            placeholder="Enter email to check"
+            style={{ ...sty.input, maxWidth: 320 }}
+          />
+          <button
+            onClick={handleBreachCheck}
+            disabled={breachChecking || !breachEmail}
+            style={sty.btn(breachChecking ? "rgba(99,102,241,0.3)" : T.accent)}
+          >
+            {breachChecking ? <HiOutlineRefresh size={14} style={{ animation: "spin 1s linear infinite" }} /> : <HiOutlineDatabase size={14} />}
+            {breachChecking ? "Checking..." : "Check Breaches"}
+          </button>
+        </div>
+        {breachResult && !breachResult.found && (
+          <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 16px", background: "rgba(34,197,94,0.07)", border: "1px solid rgba(34,197,94,0.2)", borderRadius: 10 }}>
+            <HiOutlineShieldCheck size={22} color={T.green} />
+            <div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: T.green }}>No breaches found</div>
+              <div style={{ fontSize: 12, color: T.muted }}>Your email was not found in any known data breach.</div>
+            </div>
+          </div>
+        )}
+        {breachResult && breachResult.found && (
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+              <HiOutlineExclamation size={18} color={T.orange} />
+              <span style={{ fontSize: 14, fontWeight: 600, color: T.orange }}>{breachResult.breaches.length} breach{breachResult.breaches.length > 1 ? "es" : ""} found</span>
+            </div>
+            {breachResult.breaches.map((b, i) => (
+              <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", background: "rgba(239,68,68,0.05)", border: "1px solid rgba(239,68,68,0.15)", borderRadius: 8, marginBottom: 8 }}>
+                <div>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: T.white }}>{b.name}</span>
+                  <span style={{ fontSize: 12, color: T.muted, marginLeft: 10 }}>~{b.records} records leaked</span>
+                </div>
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <Badge color={b.severity === "high" ? T.red : T.orange}>{b.severity}</Badge>
+                  <span style={{ fontSize: 12, color: T.muted }}>{b.year}</span>
+                </div>
+              </div>
+            ))}
+            <p style={{ fontSize: 12, color: T.muted, marginTop: 8 }}>We recommend changing your password immediately and enabling two-factor authentication.</p>
+          </div>
+        )}
       </div>
     </>
   );
@@ -508,7 +625,8 @@ export default function UserDashboard() {
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <aside style={{ width: 240, background: T.sidebar, borderRight: `1px solid ${T.border}`, display: "flex", flexDirection: "column", position: "sticky", top: 0, height: "100vh" }}>
+      <SEO title="Dashboard" description="Your personal Secuvion security dashboard." path="/user-dashboard" />
+      <aside className={"user-sidebar" + (sidebarOpen ? " open" : "")} style={{ width: 240, background: T.sidebar, borderRight: `1px solid ${T.border}`, display: "flex", flexDirection: "column", position: "sticky", top: 0, height: "100vh" }}>
         <div style={{ padding: "24px 20px", display: "flex", alignItems: "center", gap: 12 }}>
           <div style={{ width: 36, height: 36, borderRadius: 10, background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, fontWeight: 800, color: "#fff" }}>S</div>
           <span style={{ fontSize: 18, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'" }}>SECUVION</span>
@@ -522,7 +640,7 @@ export default function UserDashboard() {
         </div>
         <nav style={{ flex: 1, padding: "0 8px", display: "flex", flexDirection: "column", gap: 2 }}>
           {navItems.map(item => (
-            <button key={item.label} onClick={() => setActiveNav(item.label)} style={{
+            <button key={item.label} onClick={() => { setActiveNav(item.label); setSidebarOpen(false); }} style={{
               display: "flex", alignItems: "center", gap: 12, padding: "10px 16px", width: "100%",
               background: activeNav === item.label ? "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20,227,197,0.08))" : "transparent",
               border: activeNav === item.label ? "1px solid rgba(99,102,241,0.2)" : "1px solid transparent",
@@ -545,15 +663,39 @@ export default function UserDashboard() {
       </aside>
 
       <main style={{ flex: 1, overflow: "auto" }}>
+        <style>{`
+          @media (max-width: 900px) {
+            .user-sidebar {
+              position: fixed !important;
+              left: -260px !important;
+              top: 0 !important;
+              z-index: 200 !important;
+              height: 100vh !important;
+              transition: left 0.28s cubic-bezier(0.4,0,0.2,1) !important;
+              box-shadow: 4px 0 32px rgba(0,0,0,0.5) !important;
+            }
+            .user-sidebar.open {
+              left: 0 !important;
+            }
+            .user-burger {
+              display: flex !important;
+            }
+          }
+        `}</style>
         <header style={{
           display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 32px",
           borderBottom: `1px solid ${T.border}`, background: "rgba(3,7,18,0.85)", backdropFilter: "blur(12px)", position: "sticky", top: 0, zIndex: 10,
         }}>
-          <div>
-            <h1 style={{ fontSize: 20, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'" }}>
-              {activeNav === "Overview" ? `Welcome back, ${user?.name?.split(" ")[0] || "User"}` : activeNav}
-            </h1>
-            <p style={{ fontSize: 12, color: T.muted }}>{activeNav === "Overview" ? "Here's your security overview" : `Manage your ${activeNav.toLowerCase()}`}</p>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <button className="user-burger" onClick={() => setSidebarOpen(!sidebarOpen)} style={{ display: "none", background: "none", border: "none", cursor: "pointer", padding: 4 }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f1f5f9" strokeWidth="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+            </button>
+            <div>
+              <h1 style={{ fontSize: 20, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'" }}>
+                {activeNav === "Overview" ? `Welcome back, ${user?.name?.split(" ")[0] || "User"}` : activeNav}
+              </h1>
+              <p style={{ fontSize: 12, color: T.muted }}>{activeNav === "Overview" ? "Here's your security overview" : `Manage your ${activeNav.toLowerCase()}`}</p>
+            </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             {activeNav === "Overview" && <button onClick={handleScan} disabled={scanning} style={sty.btn(scanning ? "rgba(99,102,241,0.3)" : T.accent)}>
