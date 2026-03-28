@@ -106,7 +106,7 @@ export default function Login() {
     setTimeout(() => {
       const result = login(email, password);
       if (result.success) {
-        navigate("/welcome");
+        navigate("/learn");
       } else {
         setError(result.error);
         setLoading(false);

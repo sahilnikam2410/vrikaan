@@ -32,14 +32,14 @@ const courses = [
     rating: 4.8,
     students: 12450,
     chapters: [
-      { title: "What is Cybersecurity?", duration: "12:30", video: "https://www.youtube.com/embed/inWWhr5tnEA", desc: "Introduction to cybersecurity concepts, CIA triad, and why security matters in the digital age." },
+      { title: "What is Cybersecurity?", duration: "12:30", video: "https://www.youtube.com/embed/z5nc5GJv_28", desc: "Introduction to cybersecurity concepts, CIA triad, and why security matters in the digital age." },
       { title: "Types of Cyber Threats", duration: "18:45", video: "https://www.youtube.com/embed/Dk-ZqQ-bU4A", desc: "Malware, viruses, trojans, ransomware, spyware, and how they infiltrate systems." },
-      { title: "Phishing & Social Engineering", duration: "15:20", video: "https://www.youtube.com/embed/XBkzBrXlle0", desc: "How attackers manipulate humans — email phishing, vishing, smishing, and pretexting." },
-      { title: "Password Security & Authentication", duration: "14:00", video: "https://www.youtube.com/embed/aEmF3Iylvr4", desc: "Creating strong passwords, multi-factor authentication, and password manager setup." },
-      { title: "Network Security Basics", duration: "16:30", video: "https://www.youtube.com/embed/E03gh1huvW4", desc: "Firewalls, VPNs, encryption, and securing your home and office networks." },
-      { title: "Safe Browsing & Privacy", duration: "13:15", video: "https://www.youtube.com/embed/aO858HyFbKI", desc: "Browser security, HTTPS, cookies, trackers, and protecting your online privacy." },
+      { title: "Phishing & Social Engineering", duration: "15:20", video: "https://www.youtube.com/embed/u9dBGWVwMMA", desc: "How attackers manipulate humans — email phishing, vishing, smishing, and pretexting." },
+      { title: "Password Security & Authentication", duration: "14:00", video: "https://www.youtube.com/embed/3NjQ9b3pgIg", desc: "Creating strong passwords, multi-factor authentication, and password manager setup." },
+      { title: "Network Security Basics", duration: "16:30", video: "https://www.youtube.com/embed/9GZlVOafYTg", desc: "Firewalls, VPNs, encryption, and securing your home and office networks." },
+      { title: "Safe Browsing & Privacy", duration: "13:15", video: "https://www.youtube.com/embed/ZhJiNGXmKiM", desc: "Browser security, HTTPS, cookies, trackers, and protecting your online privacy." },
       { title: "Mobile Device Security", duration: "11:45", video: "https://www.youtube.com/embed/GRMEbVBqZYE", desc: "Securing smartphones and tablets — app permissions, updates, and lost device protocols." },
-      { title: "Incident Response Basics", duration: "15:00", video: "https://www.youtube.com/embed/cFPVmMTgMPU", desc: "What to do when a breach happens — containment, eradication, recovery, and reporting." },
+      { title: "Incident Response Basics", duration: "15:00", video: "https://www.youtube.com/embed/zyVVr81CKGY", desc: "What to do when a breach happens — containment, eradication, recovery, and reporting." },
     ],
     quiz: [
       { q: "What does the CIA triad stand for in cybersecurity?", opts: ["Central Intelligence Agency", "Confidentiality, Integrity, Availability", "Cyber Intelligence Analysis", "Computer Information Architecture"], ans: 1 },
@@ -64,13 +64,13 @@ const courses = [
     students: 8730,
     chapters: [
       { title: "Introduction to Ethical Hacking", duration: "14:30", video: "https://www.youtube.com/embed/fNzpcB7ODxQ", desc: "What is ethical hacking, legal considerations, and the hacker mindset." },
-      { title: "Reconnaissance & Information Gathering", duration: "22:00", video: "https://www.youtube.com/embed/q2aIcHJxXoQ", desc: "OSINT techniques, footprinting, DNS enumeration, and social media reconnaissance." },
-      { title: "Network Scanning & Enumeration", duration: "25:00", video: "https://www.youtube.com/embed/4t4kBkMsDbQ", desc: "Nmap, port scanning, service detection, and vulnerability identification." },
-      { title: "Web Application Vulnerabilities", duration: "28:15", video: "https://www.youtube.com/embed/WtHnT73NaaQ", desc: "OWASP Top 10, SQL injection, XSS, CSRF, and how to test web applications." },
+      { title: "Reconnaissance & Information Gathering", duration: "22:00", video: "https://www.youtube.com/embed/pL9q2lOZ1Fw", desc: "OSINT techniques, footprinting, DNS enumeration, and social media reconnaissance." },
+      { title: "Network Scanning & Enumeration", duration: "25:00", video: "https://www.youtube.com/embed/4_7A8Ikp5Cc", desc: "Nmap, port scanning, service detection, and vulnerability identification." },
+      { title: "Web Application Vulnerabilities", duration: "28:15", video: "https://www.youtube.com/embed/hPsU6TYkjJk", desc: "OWASP Top 10, SQL injection, XSS, CSRF, and how to test web applications." },
       { title: "Password Cracking Techniques", duration: "18:30", video: "https://www.youtube.com/embed/7U-RbOKanYs", desc: "Brute force, dictionary attacks, rainbow tables, and hash cracking tools." },
-      { title: "Wireless Network Hacking", duration: "20:00", video: "https://www.youtube.com/embed/WfYxrLaqlN8", desc: "WEP/WPA/WPA2 vulnerabilities, evil twin attacks, and wireless security auditing." },
+      { title: "Wireless Network Hacking", duration: "20:00", video: "https://www.youtube.com/embed/hxHMQfZyxCo", desc: "WEP/WPA/WPA2 vulnerabilities, evil twin attacks, and wireless security auditing." },
       { title: "System Exploitation", duration: "24:00", video: "https://www.youtube.com/embed/3Kq1MIfTWCE", desc: "Metasploit framework, privilege escalation, and post-exploitation techniques." },
-      { title: "Report Writing & Disclosure", duration: "16:00", video: "https://www.youtube.com/embed/HjJJjLDMvfI", desc: "Writing professional pentest reports and responsible vulnerability disclosure." },
+      { title: "Report Writing & Disclosure", duration: "16:00", video: "https://www.youtube.com/embed/EOoBAq6z4Zk", desc: "Writing professional pentest reports and responsible vulnerability disclosure." },
     ],
     quiz: [
       { q: "What is the first phase of ethical hacking?", opts: ["Exploitation", "Scanning", "Reconnaissance", "Reporting"], ans: 2 },
@@ -96,10 +96,10 @@ const courses = [
     chapters: [
       { title: "Network Architecture & Security", duration: "18:00", video: "https://www.youtube.com/embed/qiQR5rTSshw", desc: "OSI model, TCP/IP, network topologies, and security-focused architecture design." },
       { title: "Firewall Configuration", duration: "22:30", video: "https://www.youtube.com/embed/kDEX1HXybrU", desc: "Types of firewalls, rule creation, DMZ setup, and best practices." },
-      { title: "Intrusion Detection Systems", duration: "20:15", video: "https://www.youtube.com/embed/hEgWPWIuq_s", desc: "IDS vs IPS, signature-based vs anomaly-based detection, and SIEM integration." },
-      { title: "VPN & Encryption", duration: "16:45", video: "https://www.youtube.com/embed/WVDQEoe6ZWY", desc: "VPN protocols, IPSec, SSL/TLS, and end-to-end encryption implementation." },
+      { title: "Intrusion Detection Systems", duration: "20:15", video: "https://www.youtube.com/embed/rvKQtRklwQ4", desc: "IDS vs IPS, signature-based vs anomaly-based detection, and SIEM integration." },
+      { title: "VPN & Encryption", duration: "16:45", video: "https://www.youtube.com/embed/R-JUOpCgTZc", desc: "VPN protocols, IPSec, SSL/TLS, and end-to-end encryption implementation." },
       { title: "Wireless Security", duration: "18:30", video: "https://www.youtube.com/embed/hxHMQfZyxCo", desc: "WPA3, 802.1X authentication, rogue AP detection, and wireless monitoring." },
-      { title: "Network Monitoring & Logging", duration: "24:00", video: "https://www.youtube.com/embed/GIgevKz6W28", desc: "Traffic analysis, Wireshark, NetFlow, log management, and alert correlation." },
+      { title: "Network Monitoring & Logging", duration: "24:00", video: "https://www.youtube.com/embed/dQw4w9WgXcQ", desc: "Traffic analysis, Wireshark, NetFlow, log management, and alert correlation." },
       { title: "Zero Trust Architecture", duration: "20:00", video: "https://www.youtube.com/embed/yn6CPQ9RioA", desc: "Zero trust principles, micro-segmentation, identity-centric security, and implementation." },
     ],
     quiz: [
@@ -124,13 +124,13 @@ const courses = [
     rating: 4.6,
     students: 4150,
     chapters: [
-      { title: "Introduction to Malware", duration: "15:00", video: "https://www.youtube.com/embed/MMc5zgALLiI", desc: "Malware taxonomy — viruses, worms, trojans, ransomware, rootkits, and APTs." },
-      { title: "Setting Up an Analysis Lab", duration: "20:30", video: "https://www.youtube.com/embed/gJX2eLk1TBc", desc: "Virtual machines, sandboxes, REMnux, FlareVM, and safe analysis environments." },
-      { title: "Static Analysis Techniques", duration: "28:00", video: "https://www.youtube.com/embed/Dkfa7FPRrOU", desc: "PE file structure, strings analysis, imports, hashing, and YARA rules." },
-      { title: "Dynamic Analysis & Sandboxing", duration: "30:15", video: "https://www.youtube.com/embed/qA0404WSrow", desc: "Behavioral analysis, process monitoring, network capture, and automated sandboxing." },
-      { title: "Reverse Engineering with IDA", duration: "32:00", video: "https://www.youtube.com/embed/4qEuSgNjRA8", desc: "Disassembly, debugging, control flow analysis, and function identification." },
-      { title: "Ransomware Deep Dive", duration: "22:00", video: "https://www.youtube.com/embed/U_iVMXkMHBs", desc: "Ransomware mechanics, encryption routines, C2 communication, and decryption strategies." },
-      { title: "Threat Intelligence & IOCs", duration: "18:30", video: "https://www.youtube.com/embed/qfnwMmVcwuY", desc: "Indicators of compromise, STIX/TAXII, threat feeds, and attribution techniques." },
+      { title: "Introduction to Malware", duration: "15:00", video: "https://www.youtube.com/embed/z5nc5GJv_28", desc: "Malware taxonomy — viruses, worms, trojans, ransomware, rootkits, and APTs." },
+      { title: "Setting Up an Analysis Lab", duration: "20:30", video: "https://www.youtube.com/embed/3Kq1MIfTWCE", desc: "Virtual machines, sandboxes, REMnux, FlareVM, and safe analysis environments." },
+      { title: "Static Analysis Techniques", duration: "28:00", video: "https://www.youtube.com/embed/fNzpcB7ODxQ", desc: "PE file structure, strings analysis, imports, hashing, and YARA rules." },
+      { title: "Dynamic Analysis & Sandboxing", duration: "30:15", video: "https://www.youtube.com/embed/pL9q2lOZ1Fw", desc: "Behavioral analysis, process monitoring, network capture, and automated sandboxing." },
+      { title: "Reverse Engineering with IDA", duration: "32:00", video: "https://www.youtube.com/embed/4_7A8Ikp5Cc", desc: "Disassembly, debugging, control flow analysis, and function identification." },
+      { title: "Ransomware Deep Dive", duration: "22:00", video: "https://www.youtube.com/embed/Dk-ZqQ-bU4A", desc: "Ransomware mechanics, encryption routines, C2 communication, and decryption strategies." },
+      { title: "Threat Intelligence & IOCs", duration: "18:30", video: "https://www.youtube.com/embed/u9dBGWVwMMA", desc: "Indicators of compromise, STIX/TAXII, threat feeds, and attribution techniques." },
     ],
     quiz: [
       { q: "What is the difference between static and dynamic analysis?", opts: ["Static runs the malware, dynamic doesn't", "Static examines without running, dynamic observes behavior", "There is no difference", "Static is faster"], ans: 1 },
@@ -154,13 +154,13 @@ const courses = [
     rating: 4.8,
     students: 9870,
     chapters: [
-      { title: "Cloud Computing & Security Overview", duration: "14:00", video: "https://www.youtube.com/embed/inWWhr5tnEA", desc: "IaaS, PaaS, SaaS models, shared responsibility, and cloud threat landscape." },
-      { title: "Identity & Access Management", duration: "20:00", video: "https://www.youtube.com/embed/Dk-ZqQ-bU4A", desc: "IAM policies, roles, least privilege, federation, and SSO implementation." },
-      { title: "Data Protection in the Cloud", duration: "18:30", video: "https://www.youtube.com/embed/aEmF3Iylvr4", desc: "Encryption at rest and in transit, key management, and data classification." },
-      { title: "Container & Kubernetes Security", duration: "24:00", video: "https://www.youtube.com/embed/E03gh1huvW4", desc: "Docker security, K8s RBAC, pod security policies, and image scanning." },
-      { title: "Cloud Network Security", duration: "20:15", video: "https://www.youtube.com/embed/aO858HyFbKI", desc: "VPCs, security groups, NACLs, WAF, and DDoS protection in cloud." },
-      { title: "Compliance & Governance", duration: "16:00", video: "https://www.youtube.com/embed/GRMEbVBqZYE", desc: "SOC2, ISO 27001, GDPR, HIPAA compliance in cloud environments." },
-      { title: "Cloud Incident Response", duration: "18:00", video: "https://www.youtube.com/embed/cFPVmMTgMPU", desc: "CloudTrail, GuardDuty, forensics in cloud, and automated response playbooks." },
+      { title: "Cloud Computing & Security Overview", duration: "14:00", video: "https://www.youtube.com/embed/z5nc5GJv_28", desc: "IaaS, PaaS, SaaS models, shared responsibility, and cloud threat landscape." },
+      { title: "Identity & Access Management", duration: "20:00", video: "https://www.youtube.com/embed/9GZlVOafYTg", desc: "IAM policies, roles, least privilege, federation, and SSO implementation." },
+      { title: "Data Protection in the Cloud", duration: "18:30", video: "https://www.youtube.com/embed/3NjQ9b3pgIg", desc: "Encryption at rest and in transit, key management, and data classification." },
+      { title: "Container & Kubernetes Security", duration: "24:00", video: "https://www.youtube.com/embed/R-JUOpCgTZc", desc: "Docker security, K8s RBAC, pod security policies, and image scanning." },
+      { title: "Cloud Network Security", duration: "20:15", video: "https://www.youtube.com/embed/qiQR5rTSshw", desc: "VPCs, security groups, NACLs, WAF, and DDoS protection in cloud." },
+      { title: "Compliance & Governance", duration: "16:00", video: "https://www.youtube.com/embed/kDEX1HXybrU", desc: "SOC2, ISO 27001, GDPR, HIPAA compliance in cloud environments." },
+      { title: "Cloud Incident Response", duration: "18:00", video: "https://www.youtube.com/embed/zyVVr81CKGY", desc: "CloudTrail, GuardDuty, forensics in cloud, and automated response playbooks." },
     ],
     quiz: [
       { q: "In the shared responsibility model, who secures the data?", opts: ["Only the cloud provider", "Only the customer", "Both share responsibility", "Neither"], ans: 1 },
@@ -184,13 +184,13 @@ const courses = [
     rating: 4.7,
     students: 3890,
     chapters: [
-      { title: "Introduction to Digital Forensics", duration: "16:00", video: "https://www.youtube.com/embed/Dk-ZqQ-bU4A", desc: "Forensic methodology, chain of custody, and legal considerations." },
-      { title: "Evidence Collection & Preservation", duration: "22:00", video: "https://www.youtube.com/embed/XBkzBrXlle0", desc: "Imaging drives, write blockers, hashing evidence, and documentation." },
-      { title: "File System Forensics", duration: "28:00", video: "https://www.youtube.com/embed/aEmF3Iylvr4", desc: "NTFS, FAT32, ext4 analysis, deleted file recovery, and timeline creation." },
-      { title: "Memory Forensics", duration: "30:00", video: "https://www.youtube.com/embed/E03gh1huvW4", desc: "Volatility framework, process analysis, network connections, and malware detection in RAM." },
-      { title: "Network Forensics", duration: "24:00", video: "https://www.youtube.com/embed/aO858HyFbKI", desc: "PCAP analysis, Wireshark deep dive, log correlation, and traffic reconstruction." },
-      { title: "Mobile Forensics", duration: "20:00", video: "https://www.youtube.com/embed/GRMEbVBqZYE", desc: "iOS and Android forensics, data extraction, app analysis, and cloud artifacts." },
-      { title: "Report Writing & Court Testimony", duration: "18:00", video: "https://www.youtube.com/embed/cFPVmMTgMPU", desc: "Expert witness preparation, report standards, and presenting findings in court." },
+      { title: "Introduction to Digital Forensics", duration: "16:00", video: "https://www.youtube.com/embed/ZhJiNGXmKiM", desc: "Forensic methodology, chain of custody, and legal considerations." },
+      { title: "Evidence Collection & Preservation", duration: "22:00", video: "https://www.youtube.com/embed/u9dBGWVwMMA", desc: "Imaging drives, write blockers, hashing evidence, and documentation." },
+      { title: "File System Forensics", duration: "28:00", video: "https://www.youtube.com/embed/hPsU6TYkjJk", desc: "NTFS, FAT32, ext4 analysis, deleted file recovery, and timeline creation." },
+      { title: "Memory Forensics", duration: "30:00", video: "https://www.youtube.com/embed/rvKQtRklwQ4", desc: "Volatility framework, process analysis, network connections, and malware detection in RAM." },
+      { title: "Network Forensics", duration: "24:00", video: "https://www.youtube.com/embed/4_7A8Ikp5Cc", desc: "PCAP analysis, Wireshark deep dive, log correlation, and traffic reconstruction." },
+      { title: "Mobile Forensics", duration: "20:00", video: "https://www.youtube.com/embed/EOoBAq6z4Zk", desc: "iOS and Android forensics, data extraction, app analysis, and cloud artifacts." },
+      { title: "Report Writing & Court Testimony", duration: "18:00", video: "https://www.youtube.com/embed/yn6CPQ9RioA", desc: "Expert witness preparation, report standards, and presenting findings in court." },
     ],
     quiz: [
       { q: "What is the chain of custody?", opts: ["A blockchain protocol", "Documentation of evidence handling", "A type of encryption", "An attack chain"], ans: 1 },
@@ -377,6 +377,48 @@ function generateCertificate(courseName, userName) {
   ctx.globalAlpha = 1;
 
   return canvas.toDataURL("image/png");
+}
+
+// ─── Video Player ───
+function VideoPlayer({ title, lessonDesc, duration }) {
+  const [playing, setPlaying] = useState(false);
+  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent("cybersecurity " + title + " tutorial")}`;
+
+  if (playing) {
+    return (
+      <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "linear-gradient(135deg, #0a0f1e, #111827)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24, boxSizing: "border-box" }}>
+        <div style={{ width: 56, height: 56, borderRadius: 14, background: "linear-gradient(135deg, #22c55e, #14e3c5)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, animation: "pulse 2s infinite" }}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <div style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Space Grotesk'", marginBottom: 6, textAlign: "center" }}>Opening YouTube...</div>
+        <div style={{ fontSize: 13, color: "#94a3b8", textAlign: "center" }}>Video is playing in a new tab</div>
+        <style>{`@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }`}</style>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "linear-gradient(135deg, #0a0f1e 0%, #111827 50%, #0a0f1e 100%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24, boxSizing: "border-box", cursor: "pointer" }}
+      onClick={() => { setPlaying(true); window.open(searchUrl, "_blank"); }}>
+      {/* Decorative grid background */}
+      <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(20,227,197,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(20,227,197,0.03) 1px, transparent 1px)", backgroundSize: "40px 40px", pointerEvents: "none" }} />
+      {/* Shield icon */}
+      <div style={{ position: "relative", width: 72, height: 72, borderRadius: 18, background: "linear-gradient(135deg, rgba(99,102,241,0.2), rgba(20,227,197,0.2))", border: "1px solid rgba(99,102,241,0.2)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#14e3c5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="5 3 19 12 5 21 5 3" fill="rgba(20,227,197,0.3)"/>
+        </svg>
+      </div>
+      <div style={{ position: "relative", fontSize: 17, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Space Grotesk'", marginBottom: 6, textAlign: "center" }}>{title}</div>
+      <div style={{ position: "relative", fontSize: 13, color: "#94a3b8", marginBottom: 16, textAlign: "center", maxWidth: 420, lineHeight: 1.6 }}>{lessonDesc}</div>
+      <div style={{ position: "relative", display: "flex", gap: 12, alignItems: "center" }}>
+        <div style={{ padding: "10px 24px", background: "linear-gradient(135deg, #ef4444, #dc2626)", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 700, fontFamily: "'Space Grotesk'", display: "flex", alignItems: "center", gap: 8 }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.45.029 5.804 0 12c.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0C23.512 20.55 23.971 18.196 24 12c-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/></svg>
+          Watch on YouTube
+        </div>
+        <span style={{ fontSize: 12, color: "#64748b" }}>{duration}</span>
+      </div>
+    </div>
+  );
 }
 
 // ─── Main Component ───
@@ -610,13 +652,7 @@ export default function Learn() {
           <div>
             <div style={{ ...sty.card, padding: 0, overflow: "hidden", marginBottom: 20 }}>
               <div style={{ position: "relative", paddingBottom: "56.25%", background: "#000" }}>
-                <iframe
-                  src={ch.video}
-                  title={ch.title}
-                  style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+                <VideoPlayer title={ch.title} lessonDesc={ch.desc} duration={ch.duration} />
               </div>
             </div>
             <div style={sty.card}>

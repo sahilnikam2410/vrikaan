@@ -101,7 +101,7 @@ export default function Signup() {
     setTimeout(() => {
       const result = signup(form);
       if (result.success) {
-        navigate("/welcome");
+        navigate("/learn");
       } else {
         setError(result.error);
         setLoading(false);
