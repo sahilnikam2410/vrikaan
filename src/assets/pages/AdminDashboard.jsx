@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { useToast } from "../../context/ToastContext";
 import { useNavigate } from "react-router-dom";
 import {
   HiOutlineViewGrid, HiOutlineUsers, HiOutlineShieldCheck, HiOutlineBell,
@@ -142,6 +143,7 @@ const Badge = ({ children, color }) => (
 // ─── MAIN COMPONENT ───
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
+  const { toast } = useToast();
   const navigate = useNavigate();
   const [activeNav, setActiveNav] = useState("Dashboard");
   const [logs] = useState(generateLogs);
@@ -184,9 +186,14 @@ export default function AdminDashboard() {
   const handleLogout = () => { logout(); navigate("/"); };
   const alertColor = (t) => t === "critical" ? T.red : t === "warning" ? T.orange : T.cyan;
   const statusColor = (s) => s === "active" ? T.green : s === "pending" ? T.gold : s === "suspended" ? T.red : T.muted;
-  const resolveAlert = (id) => setAlerts(a => a.map(x => x.id === id ? { ...x, status: "resolved" } : x));
-  const deleteUser = (id) => setUsers(u => u.filter(x => x.id !== id));
-  const toggleUserStatus = (id) => setUsers(u => u.map(x => x.id === id ? { ...x, status: x.status === "active" ? "suspended" : "active" } : x));
+  const resolveAlert = (id) => { setAlerts(a => a.map(x => x.id === id ? { ...x, status: "resolved" } : x)); toast("Threat acknowledged and resolved", "success"); };
+  const deleteUser = (id) => { setUsers(u => u.filter(x => x.id !== id)); toast("User deleted successfully", "warning"); };
+  const toggleUserStatus = (id) => {
+    const target = users.find(x => x.id === id);
+    const newStatus = target?.status === "active" ? "suspended" : "active";
+    setUsers(u => u.map(x => x.id === id ? { ...x, status: newStatus } : x));
+    toast(`User ${newStatus === "suspended" ? "suspended" : "activated"} successfully`, newStatus === "suspended" ? "warning" : "success");
+  };
 
   const filteredUsers = users.filter(u => {
     if (userFilter !== "all" && u.status !== userFilter) return false;

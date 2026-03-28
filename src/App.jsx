@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import { useEffect } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "./context/AuthContext";
+import { ToastProvider } from "./context/ToastContext";
 import { ProtectedRoute, DashboardRedirect } from "./components/ProtectedRoute";
 
 function ScrollToTop() {
@@ -36,6 +37,7 @@ import NotFound from "./assets/pages/NotFound.jsx";
 function App() {
   return (
     <HelmetProvider>
+    <ToastProvider>
     <AuthProvider>
       <Router>
         <ScrollToTop />
@@ -88,6 +90,7 @@ function App() {
         </Routes>
       </Router>
     </AuthProvider>
+    </ToastProvider>
     </HelmetProvider>
   );
 }

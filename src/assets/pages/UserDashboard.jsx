@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
+import { useToast } from "../../context/ToastContext";
 import { useNavigate, Link } from "react-router-dom";
 import SEO from "../../components/SEO";
 import {
@@ -50,11 +51,18 @@ const deviceData = [
   { name: "Tablet", value: 15, color: T.orange }, { name: "IoT", value: 10, color: T.pink },
 ];
 
+const ToolsIcon = ({ size = 20, color = "#94a3b8" }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+  </svg>
+);
+
 const navItems = [
   { icon: HiOutlineViewGrid, label: "Overview" },
   { icon: HiOutlineShieldCheck, label: "Protection" },
   { icon: HiOutlineGlobe, label: "Network" },
   { icon: HiOutlineChartBar, label: "Analytics" },
+  { icon: ToolsIcon, label: "Tools" },
   { icon: HiOutlineBell, label: "Alerts", badge: 2 },
   { icon: HiOutlineCreditCard, label: "Billing" },
   { icon: HiOutlineCog, label: "Settings" },
@@ -65,6 +73,7 @@ const planColors = { free: T.muted, pro: T.cyan, enterprise: T.accent };
 
 export default function UserDashboard() {
   const { user, logout, updatePlan } = useAuth();
+  const { toast } = useToast();
   const navigate = useNavigate();
   const [activeNav, setActiveNav] = useState("Overview");
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -92,6 +101,11 @@ export default function UserDashboard() {
   const [breachEmail, setBreachEmail] = useState(user?.email || "");
   const [breachChecking, setBreachChecking] = useState(false);
   const [breachResult, setBreachResult] = useState(null);
+  const [pwInput, setPwInput] = useState("");
+  const [showPw, setShowPw] = useState(false);
+  const [urlInput, setUrlInput] = useState("");
+  const [urlChecking, setUrlChecking] = useState(false);
+  const [urlResult, setUrlResult] = useState(null);
 
   useEffect(() => {
     const interval = setInterval(() => setBlockedThreats(c => c + Math.floor(Math.random() * 3)), 5000);
@@ -106,16 +120,22 @@ export default function UserDashboard() {
     setScanResults(null);
     setTimeout(() => {
       setScanning(false);
+      const threats = Math.floor(Math.random() * 3);
       setScanResults({
-        filesScanned: 12847, threatsFound: Math.floor(Math.random() * 3),
+        filesScanned: 12847, threatsFound: threats,
         duration: "1m 23s", cleanFiles: 12845 + Math.floor(Math.random() * 2),
       });
+      if (threats === 0) {
+        toast("System scan completed — no threats found", "success");
+      } else {
+        toast(`Scan complete — ${threats} threat${threats > 1 ? "s" : ""} detected`, "warning");
+      }
     }, 3000);
   };
 
-  const dismissAlert = (id) => setAlerts(a => a.filter(x => x.id !== id));
+  const dismissAlert = (id) => { setAlerts(a => a.filter(x => x.id !== id)); toast("Alert dismissed", "info"); };
   const markRead = (id) => setAlerts(a => a.map(x => x.id === id ? { ...x, read: true } : x));
-  const removeDevice = (id) => setDevices(d => d.filter(x => x.id !== id));
+  const removeDevice = (id) => { setDevices(d => d.filter(x => x.id !== id)); toast("Device removed", "warning"); };
 
   const handleBreachCheck = () => {
     setBreachChecking(true);
@@ -130,8 +150,10 @@ export default function UserDashboard() {
             { name: "Adobe", year: 2019, records: "7.5M", severity: "medium" },
           ],
         });
+        toast("Breach detected — 2 breaches found for this email", "error");
       } else {
         setBreachResult({ found: false });
+        toast("No breaches found for this email", "success");
       }
     }, 1500);
   };
@@ -142,6 +164,7 @@ export default function UserDashboard() {
       case "Protection": return renderProtection();
       case "Network": return renderNetwork();
       case "Analytics": return renderAnalytics();
+      case "Tools": return renderTools();
       case "Alerts": return renderAlerts();
       case "Billing": return renderBilling();
       case "Settings": return renderSettings();
@@ -499,6 +522,174 @@ export default function UserDashboard() {
     </>
   );
 
+  const renderTools = () => {
+    const pwStrength = (pw) => {
+      if (!pw) return { label: "Enter a password", color: T.muted, score: 0 };
+      let s = 0;
+      if (pw.length >= 8) s++;
+      if (pw.length >= 12) s++;
+      if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) s++;
+      if (/\d/.test(pw)) s++;
+      if (/[^A-Za-z0-9]/.test(pw)) s++;
+      const levels = [
+        { label: "Very Weak", color: T.red },
+        { label: "Weak", color: T.orange },
+        { label: "Fair", color: T.gold },
+        { label: "Strong", color: T.cyan },
+        { label: "Very Strong", color: T.green },
+      ];
+      return { ...levels[Math.min(s, 4)], score: Math.min(s, 4) };
+    };
+    const pw = pwStrength(pwInput);
+
+    const handleUrlCheck = () => {
+      setUrlChecking(true);
+      setUrlResult(null);
+      setTimeout(() => {
+        setUrlChecking(false);
+        const suspicious = /free|win|prize|login.*verify|bit\.ly|tinyurl/i.test(urlInput);
+        const hasSsl = urlInput.startsWith("https://");
+        if (suspicious) {
+          setUrlResult({ safe: false, reason: "URL contains suspicious keywords commonly used in phishing attacks." });
+          toast("Warning: This URL appears suspicious", "warning");
+        } else if (!hasSsl && urlInput.startsWith("http://")) {
+          setUrlResult({ safe: false, reason: "URL uses unencrypted HTTP. Data could be intercepted." });
+          toast("Warning: Insecure HTTP connection", "warning");
+        } else if (urlInput.length > 5) {
+          setUrlResult({ safe: true, reason: "No suspicious patterns detected. URL appears safe." });
+          toast("URL appears safe", "success");
+        }
+      }, 1200);
+    };
+
+    return (
+      <>
+        <h2 style={{ fontSize: 20, fontWeight: 700, color: T.white, marginBottom: 20 }}>Security Tools</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+          {/* Password Strength Checker */}
+          <div style={sty.card}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+              <HiOutlineKey size={20} color={T.cyan} />
+              <h3 style={{ fontSize: 16, fontWeight: 600, color: T.white }}>Password Strength Checker</h3>
+            </div>
+            <div style={{ position: "relative", marginBottom: 16 }}>
+              <input
+                type={showPw ? "text" : "password"}
+                value={pwInput}
+                onChange={e => setPwInput(e.target.value)}
+                placeholder="Enter a password to test"
+                style={sty.input}
+              />
+              <button onClick={() => setShowPw(!showPw)} style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer" }}>
+                {showPw ? <HiOutlineEyeOff size={16} color={T.muted} /> : <HiOutlineEye size={16} color={T.muted} />}
+              </button>
+            </div>
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ display: "flex", gap: 4, marginBottom: 8 }}>
+                {[0, 1, 2, 3, 4].map(i => (
+                  <div key={i} style={{ flex: 1, height: 4, borderRadius: 2, background: i <= pw.score && pwInput ? pw.color : "rgba(148,163,184,0.15)", transition: "background 0.3s" }} />
+                ))}
+              </div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: pw.color }}>{pw.label}</div>
+            </div>
+            {pwInput && (
+              <div style={{ fontSize: 12, color: T.muted }}>
+                <div style={{ marginBottom: 4 }}>Tips:</div>
+                <ul style={{ paddingLeft: 16, margin: 0, display: "flex", flexDirection: "column", gap: 3 }}>
+                  <li style={{ color: pwInput.length >= 12 ? T.green : T.muted }}>At least 12 characters</li>
+                  <li style={{ color: /[A-Z]/.test(pwInput) && /[a-z]/.test(pwInput) ? T.green : T.muted }}>Upper & lowercase letters</li>
+                  <li style={{ color: /\d/.test(pwInput) ? T.green : T.muted }}>Numbers</li>
+                  <li style={{ color: /[^A-Za-z0-9]/.test(pwInput) ? T.green : T.muted }}>Special characters (!@#$%)</li>
+                </ul>
+              </div>
+            )}
+          </div>
+
+          {/* URL / Phishing Checker */}
+          <div style={sty.card}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+              <HiOutlineGlobe size={20} color={T.accent} />
+              <h3 style={{ fontSize: 16, fontWeight: 600, color: T.white }}>Phishing URL Detector</h3>
+            </div>
+            <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
+              <input
+                type="text"
+                value={urlInput}
+                onChange={e => { setUrlInput(e.target.value); setUrlResult(null); }}
+                placeholder="https://example.com/suspicious-link"
+                style={sty.input}
+              />
+              <button onClick={handleUrlCheck} disabled={urlChecking || !urlInput} style={sty.btn(urlChecking ? "rgba(99,102,241,0.3)" : T.accent)}>
+                {urlChecking ? <HiOutlineRefresh size={14} style={{ animation: "spin 1s linear infinite" }} /> : <HiOutlineShieldCheck size={14} />}
+                {urlChecking ? "Checking..." : "Check"}
+              </button>
+            </div>
+            {urlResult && (
+              <div style={{ padding: "14px 16px", borderRadius: 10, background: urlResult.safe ? "rgba(34,197,94,0.07)" : "rgba(239,68,68,0.07)", border: `1px solid ${urlResult.safe ? "rgba(34,197,94,0.2)" : "rgba(239,68,68,0.2)"}` }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                  {urlResult.safe ? <HiOutlineShieldCheck size={18} color={T.green} /> : <HiOutlineExclamation size={18} color={T.red} />}
+                  <span style={{ fontSize: 14, fontWeight: 600, color: urlResult.safe ? T.green : T.red }}>{urlResult.safe ? "URL Appears Safe" : "Suspicious URL Detected"}</span>
+                </div>
+                <div style={{ fontSize: 13, color: T.muted }}>{urlResult.reason}</div>
+              </div>
+            )}
+          </div>
+
+          {/* Hash Generator */}
+          <div style={sty.card}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+              <HiOutlineLockClosed size={20} color={T.green} />
+              <h3 style={{ fontSize: 16, fontWeight: 600, color: T.white }}>Security Reports</h3>
+            </div>
+            <p style={{ fontSize: 13, color: T.muted, marginBottom: 16 }}>Download detailed security reports for your account.</p>
+            {[
+              { name: "Full Security Audit", desc: "Comprehensive analysis of all your devices and data", icon: HiOutlineDocumentReport },
+              { name: "Threat History", desc: "6-month threat detection and response log", icon: HiOutlineClipboardCheck },
+              { name: "Network Analysis", desc: "DNS queries, blocked domains, and traffic analysis", icon: HiOutlineGlobe },
+            ].map(r => (
+              <div key={r.name} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderBottom: `1px solid ${T.border}` }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <r.icon size={16} color={T.green} />
+                  <div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: T.white }}>{r.name}</div>
+                    <div style={{ fontSize: 11, color: T.muted }}>{r.desc}</div>
+                  </div>
+                </div>
+                <button onClick={() => toast(`${r.name} report downloaded`, "success")} style={sty.btn("rgba(34,197,94,0.1)", T.green)}>
+                  <HiOutlineDownload size={14} /> PDF
+                </button>
+              </div>
+            ))}
+          </div>
+
+          {/* Quick Actions */}
+          <div style={sty.card}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+              <HiOutlineLightningBolt size={20} color={T.orange} />
+              <h3 style={{ fontSize: 16, fontWeight: 600, color: T.white }}>Quick Actions</h3>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+              {[
+                { label: "Full Scan", desc: "Scan all devices", icon: HiOutlineRefresh, color: T.accent, action: () => { handleScan(); setActiveNav("Protection"); } },
+                { label: "Check Breaches", desc: "Email breach check", icon: HiOutlineDatabase, color: T.red, action: () => setActiveNav("Protection") },
+                { label: "VPN Status", desc: plan !== "free" ? "Connected" : "Upgrade needed", icon: HiOutlineShieldCheck, color: T.green, action: () => toast(plan !== "free" ? "VPN is active and connected" : "Upgrade to Pro for VPN access", plan !== "free" ? "success" : "info") },
+                { label: "Export Data", desc: "Download your data", icon: HiOutlineDownload, color: T.cyan, action: () => toast("Data export started — you'll receive an email shortly", "info") },
+                { label: "Kill Sessions", desc: "Log out all devices", icon: HiOutlineBan, color: T.orange, action: () => toast("All other sessions terminated", "success") },
+                { label: "2FA Setup", desc: profileSettings.twoFactor ? "Enabled" : "Not enabled", icon: HiOutlineKey, color: T.pink, action: () => { setProfileSettings(p => ({ ...p, twoFactor: !p.twoFactor })); toast(profileSettings.twoFactor ? "2FA disabled" : "2FA enabled successfully", profileSettings.twoFactor ? "warning" : "success"); } },
+              ].map(a => (
+                <button key={a.label} onClick={a.action} style={{ padding: 14, background: `${a.color}08`, border: `1px solid ${a.color}20`, borderRadius: 10, cursor: "pointer", textAlign: "left", display: "flex", flexDirection: "column", gap: 4 }}>
+                  <a.icon size={18} color={a.color} />
+                  <div style={{ fontSize: 13, fontWeight: 600, color: T.white }}>{a.label}</div>
+                  <div style={{ fontSize: 11, color: T.muted }}>{a.desc}</div>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
+
   const renderAlerts = () => (
     <>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
@@ -578,6 +769,23 @@ export default function UserDashboard() {
   const renderSettings = () => (
     <>
       <h2 style={{ fontSize: 20, fontWeight: 700, color: T.white, marginBottom: 20 }}>Account Settings</h2>
+
+      {/* Profile Card with Avatar */}
+      <div style={{ ...sty.card, marginBottom: 24, display: "flex", alignItems: "center", gap: 24, background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(20,227,197,0.04))", border: "1px solid rgba(99,102,241,0.15)" }}>
+        <div style={{ width: 72, height: 72, borderRadius: "50%", background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28, fontWeight: 800, color: "#fff", flexShrink: 0 }}>
+          {user?.name?.charAt(0) || "U"}
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 20, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'" }}>{user?.name}</div>
+          <div style={{ fontSize: 13, color: T.muted, marginTop: 2 }}>{user?.email}</div>
+          <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
+            <Badge color={planColors[plan]}>{planLabels[plan]} Plan</Badge>
+            <Badge color={T.green}>Verified</Badge>
+            <Badge color={T.cyan}>Member since 2026</Badge>
+          </div>
+        </div>
+      </div>
+
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
         <div style={sty.card}>
           <h3 style={{ fontSize: 16, fontWeight: 600, color: T.white, marginBottom: 16 }}>Profile</h3>
@@ -594,7 +802,7 @@ export default function UserDashboard() {
             <label style={{ display: "block", fontSize: 12, color: T.muted, marginBottom: 6 }}>Change Password</label>
             <input type="password" placeholder="Enter new password" style={sty.input} />
           </div>
-          <button style={sty.btn(T.accent)}><HiOutlineSave size={14} /> Save Profile</button>
+          <button onClick={() => toast("Profile updated successfully", "success")} style={sty.btn(T.accent)}><HiOutlineSave size={14} /> Save Profile</button>
         </div>
         <div style={sty.card}>
           <h3 style={{ fontSize: 16, fontWeight: 600, color: T.white, marginBottom: 16 }}>Preferences</h3>
@@ -610,7 +818,7 @@ export default function UserDashboard() {
                 <div style={{ fontSize: 14, color: T.white, fontWeight: 500 }}>{t.label}</div>
                 <div style={{ fontSize: 12, color: T.muted }}>{t.desc}</div>
               </div>
-              <div onClick={() => setProfileSettings({ ...profileSettings, [t.key]: !profileSettings[t.key] })} style={{
+              <div onClick={() => { setProfileSettings({ ...profileSettings, [t.key]: !profileSettings[t.key] }); toast(`${t.label} ${profileSettings[t.key] ? "disabled" : "enabled"}`, "info"); }} style={{
                 width: 44, height: 24, borderRadius: 12, cursor: "pointer", position: "relative", transition: "background 0.3s",
                 background: profileSettings[t.key] ? T.accent : "rgba(148,163,184,0.2)",
               }}>
@@ -618,6 +826,52 @@ export default function UserDashboard() {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Security & Data section */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginTop: 24 }}>
+        <div style={sty.card}>
+          <h3 style={{ fontSize: 16, fontWeight: 600, color: T.white, marginBottom: 16 }}>Security</h3>
+          {[
+            { label: "Two-Factor Authentication", value: profileSettings.twoFactor ? "Enabled" : "Disabled", color: profileSettings.twoFactor ? T.green : T.orange },
+            { label: "Last Login", value: "Today, " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }), color: T.cyan },
+            { label: "Login Location", value: "India", color: T.muted },
+            { label: "Active Sessions", value: "2 devices", color: T.muted },
+            { label: "Password Last Changed", value: "45 days ago", color: T.orange },
+          ].map((s, i) => (
+            <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: `1px solid ${T.border}` }}>
+              <span style={{ fontSize: 13, color: T.white }}>{s.label}</span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: s.color }}>{s.value}</span>
+            </div>
+          ))}
+        </div>
+        <div style={sty.card}>
+          <h3 style={{ fontSize: 16, fontWeight: 600, color: T.white, marginBottom: 16 }}>Data & Privacy</h3>
+          <p style={{ fontSize: 13, color: T.muted, marginBottom: 16 }}>Manage your data and export options.</p>
+          {[
+            { label: "Export Account Data", desc: "Download all your data as JSON", icon: HiOutlineDownload, action: () => toast("Data export started — check your email", "info") },
+            { label: "Download Activity Log", desc: "Full activity history CSV", icon: HiOutlineDocumentReport, action: () => toast("Activity log downloaded", "success") },
+            { label: "Clear Scan History", desc: "Remove all past scan records", icon: HiOutlineTrash, action: () => toast("Scan history cleared", "warning") },
+          ].map(a => (
+            <div key={a.label} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderBottom: `1px solid ${T.border}` }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <a.icon size={16} color={T.cyan} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 500, color: T.white }}>{a.label}</div>
+                  <div style={{ fontSize: 11, color: T.muted }}>{a.desc}</div>
+                </div>
+              </div>
+              <button onClick={a.action} style={sty.btn("rgba(99,102,241,0.1)", T.accent)}>
+                <a.icon size={14} />
+              </button>
+            </div>
+          ))}
+          <div style={{ marginTop: 20, padding: "14px 16px", background: "rgba(239,68,68,0.05)", border: "1px solid rgba(239,68,68,0.15)", borderRadius: 10 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: T.red, marginBottom: 4 }}>Danger Zone</div>
+            <div style={{ fontSize: 12, color: T.muted, marginBottom: 10 }}>Permanently delete your account and all associated data.</div>
+            <button onClick={() => toast("Account deletion requires email confirmation", "error")} style={sty.btn("rgba(239,68,68,0.15)", T.red)}><HiOutlineTrash size={14} /> Delete Account</button>
+          </div>
         </div>
       </div>
     </>

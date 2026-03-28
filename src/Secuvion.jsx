@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import CyberGlobe from "./components/CyberGlobe";
@@ -125,27 +125,64 @@ const ParticleField = () => {
     const c = canvasRef.current; if (!c) return;
     const ctx = c.getContext("2d");
     let raf;
-    const particles = Array.from({ length: 20 }, () => ({
-      x: Math.random(), y: Math.random(),
-      vx: (Math.random() - 0.5) * 0.00015,
-      vy: (Math.random() - 0.5) * 0.00015,
-      pulse: Math.random() * Math.PI * 2,
-      size: 0.4 + Math.random() * 0.8,
-    }));
-    const resize = () => { c.width = window.innerWidth; c.height = window.innerHeight; };
+    const chars = "01アイウエオカキクケコ10サシスセソタチツテト0xABCDEF∞§∆Ωλ{}[]<>/\\|";
+    const fontSize = 14;
+    const colors = ["#14e3c5", "#6366f1"];
+    let columns, drops;
+    const initColumns = () => {
+      columns = Math.floor(c.width / fontSize);
+      if (columns < 30) columns = 30;
+      if (columns > 40) columns = 40;
+      const spacing = c.width / columns;
+      drops = Array.from({ length: columns }, () => ({
+        y: Math.random() * c.height,
+        speed: 0.5 + Math.random() * 2.5,
+        spacing,
+        chars: Array.from({ length: Math.ceil(c.height / fontSize) + 5 }, () => ({
+          char: chars[Math.floor(Math.random() * chars.length)],
+          color: colors[Math.floor(Math.random() * colors.length)],
+          flickerRate: 0.002 + Math.random() * 0.01,
+        })),
+      }));
+    };
+    const resize = () => { c.width = window.innerWidth; c.height = window.innerHeight; initColumns(); };
     resize(); window.addEventListener("resize", resize);
+    let time = 0;
     const draw = () => {
+      time++;
       const w = c.width, h = c.height;
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, w, h);
       ctx.clearRect(0, 0, w, h);
-      particles.forEach(p => {
-        p.pulse += 0.008;
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > 1) p.vx *= -1;
-        if (p.y < 0 || p.y > 1) p.vy *= -1;
-        const px = p.x * w, py = p.y * h;
-        const op = 0.06 + Math.sin(p.pulse) * 0.04;
-        ctx.beginPath(); ctx.arc(px, py, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(148,163,184,${op})`; ctx.fill();
+      ctx.font = `${fontSize}px monospace`;
+      ctx.textAlign = "center";
+      const colSpacing = w / columns;
+      drops.forEach((drop, colIdx) => {
+        drop.y += drop.speed;
+        if (drop.y > h + fontSize * 10) {
+          drop.y = -fontSize * (5 + Math.random() * 15);
+          drop.speed = 0.5 + Math.random() * 2.5;
+        }
+        const x = colIdx * colSpacing + colSpacing / 2;
+        const trailLength = 20;
+        for (let i = 0; i < trailLength; i++) {
+          const charY = drop.y - i * fontSize;
+          if (charY < -fontSize || charY > h + fontSize) continue;
+          const charData = drop.chars[Math.abs(Math.floor(charY / fontSize)) % drop.chars.length];
+          if (Math.random() < charData.flickerRate) {
+            charData.char = chars[Math.floor(Math.random() * chars.length)];
+          }
+          const fadeFactor = 1 - (i / trailLength);
+          const opacity = Math.min(0.15, fadeFactor * 0.15);
+          if (opacity <= 0.005) continue;
+          ctx.save();
+          ctx.shadowColor = charData.color;
+          ctx.shadowBlur = i === 0 ? 8 : 3;
+          ctx.globalAlpha = opacity;
+          ctx.fillStyle = i === 0 ? "#ffffff" : charData.color;
+          ctx.fillText(charData.char, x, charY);
+          ctx.restore();
+        }
       });
       raf = requestAnimationFrame(draw);
     };
@@ -1064,29 +1101,124 @@ const testimonials = [
   { name: "Carlos Rivera", role: "E-commerce Owner", text: "Since deploying Secuvion, our checkout page hasn't had a single credential-stuffing incident. Our customers feel safer and our conversion rate actually improved.", score: "Zero breaches in 8mo" },
 ];
 
-const Testimonials = () => (
-  <Section>
-    <SectionHeader badge="Trusted by Users" title={<>What Our Users <GradientText>Say</GradientText></>} subtitle="Real feedback from real users across industries and experience levels." />
-    <Reveal>
-      <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }} className="testimonials-grid">
-        {testimonials.map((t, i) => (
-          <div key={i} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: "28px 24px", position: "relative", transition: "all 0.3s" }} className="testimonial-card">
-            <div style={{ position: "absolute", top: 0, left: 24, right: 24, height: 1, background: `linear-gradient(90deg, transparent, ${i % 2 === 0 ? T.accentMed : T.cyanMed}, transparent)` }} />
-            <div style={{ fontSize: 28, color: T.accent, opacity: 0.15, fontFamily: "Georgia, serif", lineHeight: 1, marginBottom: 8 }}>"</div>
-            <p style={{ fontFamily: "var(--font-body)", color: T.muted, fontSize: 14, lineHeight: 1.75, margin: "0 0 20px" }}>{t.text}</p>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: `1px solid ${T.border}`, paddingTop: 16 }}>
-              <div>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: 14, fontWeight: 600, color: T.white }}>{t.name}</div>
-                <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: T.mutedDark }}>{t.role}</div>
-              </div>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: T.cyan, background: T.cyanDim, padding: "4px 10px", borderRadius: 100, border: `1px solid ${T.cyanMed}` }}>{t.score}</span>
+const Testimonials = () => {
+  const perPage = typeof window !== "undefined" && window.innerWidth <= 768 ? 1 : 3;
+  const totalSets = Math.ceil(testimonials.length / perPage);
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const timerRef = useRef(null);
+
+  const goTo = useCallback((idx) => {
+    setActive(((idx % totalSets) + totalSets) % totalSets);
+  }, [totalSets]);
+
+  const next = useCallback(() => goTo(active + 1), [active, goTo]);
+  const prev = useCallback(() => goTo(active - 1), [active, goTo]);
+
+  useEffect(() => {
+    if (paused) return;
+    timerRef.current = setInterval(() => {
+      setActive((prev) => (prev + 1) % totalSets);
+    }, 4000);
+    return () => clearInterval(timerRef.current);
+  }, [paused, totalSets]);
+
+  const arrowBtn = (direction, onClick) => (
+    <button
+      onClick={onClick}
+      aria-label={direction === "left" ? "Previous testimonials" : "Next testimonials"}
+      style={{
+        position: "absolute", top: "50%", [direction === "left" ? "left" : "right"]: -20,
+        transform: "translateY(-50%)", zIndex: 2,
+        width: 40, height: 40, borderRadius: "50%",
+        background: "rgba(17,24,39,0.8)", border: `1px solid ${T.border}`,
+        color: T.muted, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+        transition: "all 0.3s", backdropFilter: "blur(8px)",
+      }}
+      className="testimonial-arrow"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        {direction === "left" ? <polyline points="15 18 9 12 15 6" /> : <polyline points="9 6 15 12 9 18" />}
+      </svg>
+    </button>
+  );
+
+  return (
+    <Section>
+      <SectionHeader badge="Trusted by Users" title={<>What Our Users <GradientText>Say</GradientText></>} subtitle="Real feedback from real users across industries and experience levels." />
+      <Reveal>
+        <div
+          style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}
+          className="testimonials-carousel"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
+          {arrowBtn("left", prev)}
+          {arrowBtn("right", next)}
+
+          <div style={{ overflow: "hidden", borderRadius: 16 }}>
+            <div
+              className="testimonials-track"
+              style={{
+                display: "flex",
+                transition: "transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+                transform: `translateX(-${active * 100}%)`,
+              }}
+            >
+              {Array.from({ length: totalSets }).map((_, setIdx) => (
+                <div
+                  key={setIdx}
+                  className="testimonials-grid"
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: `repeat(${perPage}, 1fr)`,
+                    gap: 20,
+                    minWidth: "100%",
+                    flexShrink: 0,
+                  }}
+                >
+                  {testimonials.slice(setIdx * perPage, setIdx * perPage + perPage).map((t, i) => {
+                    const globalIdx = setIdx * perPage + i;
+                    return (
+                      <div key={globalIdx} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: "28px 24px", position: "relative", transition: "all 0.3s" }} className="testimonial-card">
+                        <div style={{ position: "absolute", top: 0, left: 24, right: 24, height: 1, background: `linear-gradient(90deg, transparent, ${globalIdx % 2 === 0 ? T.accentMed : T.cyanMed}, transparent)` }} />
+                        <div style={{ fontSize: 28, color: T.accent, opacity: 0.15, fontFamily: "Georgia, serif", lineHeight: 1, marginBottom: 8 }}>"</div>
+                        <p style={{ fontFamily: "var(--font-body)", color: T.muted, fontSize: 14, lineHeight: 1.75, margin: "0 0 20px" }}>{t.text}</p>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: `1px solid ${T.border}`, paddingTop: 16 }}>
+                          <div>
+                            <div style={{ fontFamily: "var(--font-display)", fontSize: 14, fontWeight: 600, color: T.white }}>{t.name}</div>
+                            <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: T.mutedDark }}>{t.role}</div>
+                          </div>
+                          <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: T.cyan, background: T.cyanDim, padding: "4px 10px", borderRadius: 100, border: `1px solid ${T.cyanMed}` }}>{t.score}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
           </div>
-        ))}
-      </div>
-    </Reveal>
-  </Section>
-);
+
+          {/* Dot indicators */}
+          <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 24 }}>
+            {Array.from({ length: totalSets }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => goTo(i)}
+                aria-label={`Go to testimonial set ${i + 1}`}
+                style={{
+                  width: active === i ? 24 : 8, height: 8, borderRadius: 100, border: "none",
+                  background: active === i ? T.accent : T.border,
+                  cursor: "pointer", transition: "all 0.3s", padding: 0,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      </Reveal>
+    </Section>
+  );
+};
 
 /* ── CTA BANNER ── */
 const CTABanner = () => (
@@ -1223,6 +1355,7 @@ html { scroll-behavior: smooth; }
 
 input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
 .testimonial-card:hover { border-color: rgba(99,102,241,0.2) !important; transform: translateY(-4px); }
+.testimonial-arrow:hover { background: rgba(99,102,241,0.2) !important; border-color: rgba(99,102,241,0.3) !important; color: #f1f5f9 !important; }
 
 .section-divider {
   height: 1px; width: 50%; margin: 0 auto;
@@ -1252,7 +1385,8 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
   .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
   .education-grid { grid-template-columns: 1fr 1fr !important; }
   .footer-grid { grid-template-columns: 1fr 1fr !important; }
-  .testimonials-grid { grid-template-columns: 1fr 1fr !important; }
+  .testimonials-grid { grid-template-columns: 1fr !important; }
+  .testimonial-arrow { left: -10px !important; right: -10px !important; }
 }
 
 @media (max-width: 600px) {
@@ -1269,6 +1403,7 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
   .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 20px !important; }
   .education-grid { grid-template-columns: 1fr !important; }
   .testimonials-grid { grid-template-columns: 1fr !important; }
+  .testimonials-carousel .testimonial-arrow { width: 32px !important; height: 32px !important; }
   .pricing-grid { max-width: 100% !important; grid-template-columns: 1fr !important; }
   .footer-grid { grid-template-columns: 1fr !important; }
   .tools-grid { grid-template-columns: 1fr !important; }
