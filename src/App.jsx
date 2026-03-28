@@ -33,6 +33,7 @@ import Contact from "./assets/pages/Contact.jsx";
 import About from "./assets/pages/About.jsx";
 import FeaturesPage from "./assets/pages/FeaturesPage.jsx";
 import NotFound from "./assets/pages/NotFound.jsx";
+import Welcome from "./assets/pages/Welcome.jsx";
 
 function App() {
   return (
@@ -61,6 +62,13 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/features" element={<FeaturesPage />} />
+
+          {/* Welcome page after signup/login */}
+          <Route path="/welcome" element={
+            <ProtectedRoute>
+              <Welcome />
+            </ProtectedRoute>
+          } />
 
           {/* Dashboard redirect */}
           <Route path="/dashboard" element={<DashboardRedirect />} />
