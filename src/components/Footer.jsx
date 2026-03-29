@@ -46,15 +46,32 @@ const Footer = () => (
           </div>
         </div>
 
-        {/* Platform */}
+        {/* Security Tools */}
         <div>
-          <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Platform</h4>
+          <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Security Tools</h4>
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-            <FooterLink to="/features">Features</FooterLink>
+            <FooterLink to="/threat-map">Threat Map</FooterLink>
             <FooterLink to="/fraud-analyzer">Fraud Analyzer</FooterLink>
+            <FooterLink to="/vulnerability-scanner">Vulnerability Scanner</FooterLink>
+            <FooterLink to="/dark-web-monitor">Dark Web Monitor</FooterLink>
+            <FooterLink to="/password-vault">Password Vault</FooterLink>
+            <FooterLink to="/email-analyzer">Email Analyzer</FooterLink>
+            <FooterLink to="/ip-lookup">IP Lookup</FooterLink>
+            <FooterLink to="/qr-scanner">QR Scanner</FooterLink>
+          </ul>
+        </div>
+
+        {/* Resources */}
+        <div>
+          <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Resources</h4>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            <FooterLink to="/learn">Learn Academy</FooterLink>
+            <FooterLink to="/cyber-news">Cyber News</FooterLink>
+            <FooterLink to="/blog">Blog</FooterLink>
+            <FooterLink to="/security-checklist">Security Checklist</FooterLink>
             <FooterLink to="/security-score">Security Score</FooterLink>
-            <FooterLink to="/pricing">Pricing</FooterLink>
-            <FooterLink to="/dashboard">Dashboard</FooterLink>
+            <FooterLink to="/scam-database">Scam Database</FooterLink>
+            <FooterLink to="/emergency-help">Emergency Help</FooterLink>
           </ul>
         </div>
 
@@ -64,19 +81,9 @@ const Footer = () => (
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             <FooterLink to="/about">About</FooterLink>
             <FooterLink to="/founder">Founder</FooterLink>
-            <FooterLink to="/threat-map">Threat Map</FooterLink>
+            <FooterLink to="/pricing">Pricing</FooterLink>
             <FooterLink to="/contact">Contact</FooterLink>
-          </ul>
-        </div>
-
-        {/* Resources */}
-        <div>
-          <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Resources</h4>
-          <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-            <FooterLink to="/learn">Learn</FooterLink>
-            <FooterLink to="/scam-database">Scam Database</FooterLink>
-            <FooterLink to="/emergency-help">Emergency Help</FooterLink>
-            <FooterLink to="/protection">Protection</FooterLink>
+            <FooterLink to="/features">Features</FooterLink>
           </ul>
         </div>
 
@@ -88,6 +95,7 @@ const Footer = () => (
             <FooterLink to="/terms">Terms of Service</FooterLink>
             <FooterLink to="/login">Login</FooterLink>
             <FooterLink to="/signup">Sign Up</FooterLink>
+            <FooterLink to="/dashboard">Dashboard</FooterLink>
           </ul>
         </div>
       </div>
