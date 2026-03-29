@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 // ─── Credit System (login-aware) ───
@@ -187,6 +188,7 @@ const T = { bg: "#030712", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", 
 
 export default function AIChatbot() {
   const { user } = useAuth() || {};
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [view, setView] = useState("chat"); // chat | setup | credits
   const [messages, setMessages] = useState([]);
@@ -252,12 +254,16 @@ export default function AIChatbot() {
     // Check credits
     if (!useCredit()) {
       const loggedIn = isUserLoggedIn();
-      const noCreditsMsg = loggedIn
-        ? "You've used all your **50 daily credits**! Upgrade your plan for more, or wait until tomorrow for credits to reset."
-        : "You've used all your **25 guest credits**! **Log in or sign up** to get **50 daily credits**, or upgrade your plan for even more.";
-      setMessages(p => [...p, { role: "user", text: msg, time: new Date() }, {
-        role: "bot", text: noCreditsMsg, time: new Date(), isError: true,
-      }]);
+      if (!loggedIn) {
+        // Guest ran out — show login prompt
+        setMessages(p => [...p, { role: "user", text: msg, time: new Date() }, {
+          role: "bot", text: "You've used all your **25 guest credits** for today! 🔒\n\n**Log in or sign up** to get **50 daily credits** — that's 2x more!", time: new Date(), isError: true, showLogin: true,
+        }]);
+      } else {
+        setMessages(p => [...p, { role: "user", text: msg, time: new Date() }, {
+          role: "bot", text: "You've used all your **50 daily credits**! Upgrade your plan for more, or wait until tomorrow for credits to reset.", time: new Date(), isError: true,
+        }]);
+      }
       refreshCredits();
       return;
     }
@@ -562,6 +568,21 @@ export default function AIChatbot() {
                   border: `1px solid ${m.role === "user" ? "rgba(99,102,241,0.2)" : m.isError ? "rgba(239,68,68,0.2)" : T.border}`,
                 }}>
                   <div style={{ fontSize: 13, color: m.isError ? T.red : T.white, lineHeight: 1.65 }} dangerouslySetInnerHTML={{ __html: formatText(m.text) }} />
+                  {/* Login/Signup buttons when guest credits exhausted */}
+                  {m.showLogin && (
+                    <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+                      <button onClick={() => { navigate("/login"); setOpen(false); }} style={{
+                        flex: 1, padding: "8px 0", borderRadius: 8, border: "none", cursor: "pointer",
+                        background: "linear-gradient(135deg, #6366f1, #14e3c5)", color: "#fff",
+                        fontSize: 12, fontWeight: 700,
+                      }}>Log In</button>
+                      <button onClick={() => { navigate("/signup"); setOpen(false); }} style={{
+                        flex: 1, padding: "8px 0", borderRadius: 8, cursor: "pointer",
+                        border: `1px solid rgba(99,102,241,0.3)`, background: "rgba(99,102,241,0.1)",
+                        color: T.accent, fontSize: 12, fontWeight: 700,
+                      }}>Sign Up</button>
+                    </div>
+                  )}
                   <div style={{ fontSize: 10, color: "rgba(148,163,184,0.4)", marginTop: 4, fontFamily: "'JetBrains Mono', monospace" }}>
                     {m.time ? new Date(m.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""}
                   </div>
