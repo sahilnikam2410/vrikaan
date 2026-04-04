@@ -6,10 +6,10 @@ import { useAuth } from "../context/AuthContext";
 const PLANS = {
   guest:      { name: "Guest",      credits: 25,       daily: true,  price: null,       color: "#64748b" },
   free:       { name: "Free",       credits: 50,       daily: true,  price: "Free",     color: "#94a3b8" },
-  starter:    { name: "Standard",   credits: 200,      daily: false, price: "$49/mo",   color: "#22c55e" },
-  pro:        { name: "Advanced",   credits: 1000,     daily: false, price: "$99/mo",   color: "#f97316" },
-  enterprise: { name: "Enterprise", credits: Infinity,  daily: false, price: "$199/mo",  color: "#6366f1" },
-  unlimited:  { name: "Enterprise", credits: Infinity,  daily: false, price: "$199/mo",  color: "#14e3c5" },
+  starter:    { name: "Standard",   credits: 200,      daily: false, price: "₹49/mo",   color: "#22c55e" },
+  pro:        { name: "Advanced",   credits: 1000,     daily: false, price: "₹99/mo",   color: "#f97316" },
+  enterprise: { name: "Enterprise", credits: Infinity,  daily: false, price: "₹199/mo",  color: "#6366f1" },
+  unlimited:  { name: "Enterprise", credits: Infinity,  daily: false, price: "₹199/mo",  color: "#14e3c5" },
 };
 
 // userObj is optional — pass from useAuth() for accurate detection

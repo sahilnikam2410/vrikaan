@@ -1251,10 +1251,10 @@ const AssistantSection = () => {
 /* ── PRICING ── */
 const PricingSection = () => {
   const plans = [
-    { name: "RECON", tier: "Free", price: "$0", sub: "forever", features: ["Basic fraud detection", "Security advisories", "Email breach check", "Community reports", "Education access"], accent: T.mutedDark },
-    { name: "SENTINEL", tier: "Standard", price: "$49", sub: "/mo", features: ["Everything in Free", "AI real-time monitoring", "Device protection (5)", "Phishing alerts", "Priority response", "Safety score tracking"], accent: T.cyan, featured: true },
-    { name: "FORTRESS", tier: "Advanced", price: "$99", sub: "/mo", features: ["Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"], accent: T.ember },
-    { name: "CITADEL", tier: "Enterprise", price: "$199", sub: "/mo", features: ["Everything in Advanced", "Unlimited devices & users", "Custom API integrations", "24/7 dedicated SOC team", "Compliance reporting (SOC2, HIPAA)", "SLA-backed response guarantee", "White-label options"], accent: T.purple },
+    { name: "RECON", tier: "Free", price: "₹0", sub: "forever", features: ["Basic fraud detection", "Security advisories", "Email breach check", "Community reports", "Education access"], accent: T.mutedDark },
+    { name: "SENTINEL", tier: "Standard", price: "₹49", sub: "/mo", features: ["Everything in Free", "AI real-time monitoring", "Device protection (5)", "Phishing alerts", "Priority response", "Safety score tracking"], accent: T.cyan, featured: true },
+    { name: "FORTRESS", tier: "Advanced", price: "₹99", sub: "/mo", features: ["Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"], accent: T.ember },
+    { name: "CITADEL", tier: "Enterprise", price: "₹199", sub: "/mo", features: ["Everything in Advanced", "Unlimited devices & users", "Custom API integrations", "24/7 dedicated SOC team", "Compliance reporting (SOC2, HIPAA)", "SLA-backed response guarantee", "White-label options"], accent: T.purple },
   ];
 
   return (
@@ -1285,8 +1285,8 @@ const PricingSection = () => {
                   </div>
                 ))}
               </div>
-              <Btn primary={p.featured} to={p.price === "$0" ? "/signup" : `/checkout?plan=${p.tier.toLowerCase()}`} style={{ width: "100%", justifyContent: "center" }}>
-                {p.price === "$0" ? "Get Started Free" : "Start Protection"}
+              <Btn primary={p.featured} to={p.price === "₹0" ? "/signup" : `/checkout?plan=${p.tier.toLowerCase()}`} style={{ width: "100%", justifyContent: "center" }}>
+                {p.price === "₹0" ? "Get Started Free" : "Start Protection"}
               </Btn>
             </div>
           </Reveal>

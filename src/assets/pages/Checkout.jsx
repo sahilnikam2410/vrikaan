@@ -12,11 +12,11 @@ const T = {
 };
 
 const plans = {
-  starter: { name: "Standard", price: 4099, priceUSD: 49, annual: 40990, features: ["200 AI credits/day", "Real-time threat detection", "5 devices", "Email protection", "Phishing alerts", "Priority response"] },
-  standard: { name: "Standard", price: 4099, priceUSD: 49, annual: 40990, features: ["200 AI credits/day", "Real-time threat detection", "5 devices", "Email protection", "Phishing alerts", "Priority response"] },
-  pro: { name: "Advanced", price: 8299, priceUSD: 99, annual: 82990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"] },
-  advanced: { name: "Advanced", price: 8299, priceUSD: 99, annual: 82990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"] },
-  enterprise: { name: "Enterprise", price: 16599, priceUSD: 199, annual: 165990, features: ["Unlimited AI credits", "Everything in Advanced", "Unlimited devices & users", "Custom API integrations", "24/7 dedicated SOC team", "Compliance reporting", "SLA-backed guarantee", "White-label options"] },
+  starter: { name: "Standard", price: 49, priceUSD: 49, annual: 490, features: ["200 AI credits/day", "Real-time threat detection", "5 devices", "Email protection", "Phishing alerts", "Priority response"] },
+  standard: { name: "Standard", price: 49, priceUSD: 49, annual: 490, features: ["200 AI credits/day", "Real-time threat detection", "5 devices", "Email protection", "Phishing alerts", "Priority response"] },
+  pro: { name: "Advanced", price: 99, priceUSD: 99, annual: 990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"] },
+  advanced: { name: "Advanced", price: 99, priceUSD: 99, annual: 990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"] },
+  enterprise: { name: "Enterprise", price: 199, priceUSD: 199, annual: 1990, features: ["Unlimited AI credits", "Everything in Advanced", "Unlimited devices & users", "Custom API integrations", "24/7 dedicated SOC team", "Compliance reporting", "SLA-backed guarantee", "White-label options"] },
 };
 
 const IconCreditCard = ({ size = 18, color = "currentColor", style = {} }) => (
@@ -597,7 +597,7 @@ export default function Checkout() {
                         {cryptoCoin === "usdt" && `${usdtEquiv} USDT`}
                       </div>
                       <div style={{ fontSize: 11, color: T.muted, marginTop: 4 }}>
-                        {"\u2248"} {"\u20B9"}{price.toLocaleString("en-IN")} / ${priceUSD}
+                        {"\u2248"} {"\u20B9"}{price.toLocaleString("en-IN")}
                       </div>
                     </div>
                   </div>
@@ -716,11 +716,11 @@ export default function Checkout() {
                     display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "opacity 0.2s",
                   }}>
                     <IconLock size={18} color="#fff" />
-                    {processing ? "Processing Payment..." : `Pay $${priceUSD}`}
+                    {processing ? "Processing Payment..." : `Pay ₹${priceUSD}`}
                   </button>
                 </form>
                 <p style={{ fontSize: 11, color: T.muted, textAlign: "center", marginTop: 10 }}>
-                  Charged in USD. Equivalent to {"\u20B9"}{price.toLocaleString("en-IN")}
+                  Charged in INR. ₹{price.toLocaleString("en-IN")}
                 </p>
               </div>
             )}
@@ -830,7 +830,7 @@ export default function Checkout() {
                   <span style={{ fontSize: 14, fontWeight: 400, color: T.muted }}>/{billing === "annual" ? "yr" : "mo"}</span>
                 </div>
                 <div style={{ fontSize: 12, color: T.muted, marginTop: 4 }}>
-                  ${priceUSD} USD equivalent
+                  ₹{priceUSD}/mo
                 </div>
                 {savings > 0 && (
                   <div style={{

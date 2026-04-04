@@ -311,7 +311,7 @@ export default function Pricing() {
                       color: plan.highlight ? T.cyan : T.white,
                       lineHeight: 1,
                     }}>
-                      {price === 0 ? "Free" : `$${price}`}
+                      {price === 0 ? "Free" : `₹${price}`}
                     </span>
                     {period && (
                       <span style={{
@@ -324,10 +324,10 @@ export default function Pricing() {
                   </div>
                   {annual && plan.monthlyPrice > 0 && (
                     <div style={{ marginTop: 6, fontSize: 12, color: T.mutedDark }}>
-                      <span style={{ textDecoration: "line-through" }}>${plan.monthlyPrice * 12}/yr</span>
+                      <span style={{ textDecoration: "line-through" }}>₹{plan.monthlyPrice * 12}/yr</span>
                       {" "}
                       <span style={{ color: T.cyan, fontWeight: 600 }}>
-                        Save ${plan.monthlyPrice * 2}
+                        Save ₹{plan.monthlyPrice * 2}
                       </span>
                     </div>
                   )}
