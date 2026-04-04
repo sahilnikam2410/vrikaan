@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
@@ -6,6 +8,8 @@ import SEO from "../../components/SEO";
 const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", accentSoft: "#818cf8", cyan: "#14e3c5", ember: "#f97316", red: "#ef4444", gold: "#eab308", purple: "#a78bfa", blue: "#38bdf8", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
 export default function FeaturesPage() {
+  const { user } = useAuth();
+  const [activeFeature, setActiveFeature] = useState(0);
   const features = [
     { icon: "\uD83E\uDD16", title: "AI Fraud Detection", desc: "Real-time scanning of URLs, messages, emails, and phone calls using multi-layered neural networks. Our AI analyzes behavioral patterns, domain reputation, and content signatures to detect threats with 99.7% accuracy.", color: T.cyan, stats: "99.7% accuracy" },
     { icon: "\uD83D\uDEE1\uFE0F", title: "Identity Shield", desc: "Continuous monitoring of your personal data across the web, dark web marketplaces, paste sites, and breach databases. Get instant alerts when your credentials, financial info, or personal data appears in a new leak.", color: T.blue, stats: "24/7 monitoring" },
@@ -44,24 +48,78 @@ export default function FeaturesPage() {
           </p>
         </div>
 
-        {/* Features Grid */}
-        <div className="resp-grid-2" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 24, marginBottom: 80 }}>
-          {features.map((f, i) => (
-            <div key={i} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: "36px 32px", transition: "all 0.3s ease" }}>
-              <div style={{ display: "flex", alignItems: "start", justifyContent: "space-between", marginBottom: 16 }}>
-                <div style={{ fontSize: 32 }}>{f.icon}</div>
-                <span style={{ padding: "4px 12px", borderRadius: 100, background: `${f.color}0a`, border: `1px solid ${f.color}15`, fontSize: 11, fontWeight: 600, color: f.color }}>{f.stats}</span>
+        {/* Interactive Feature Showcase */}
+        <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: 32, marginBottom: 80, alignItems: "start" }} className="feature-showcase">
+          {/* Feature selector */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {features.map((f, i) => (
+              <button key={i} onClick={() => setActiveFeature(i)} style={{
+                background: activeFeature === i ? `${f.color}0a` : "transparent",
+                border: `1px solid ${activeFeature === i ? `${f.color}20` : T.border}`,
+                borderRadius: 12, padding: "16px 18px", cursor: "pointer",
+                textAlign: "left", transition: "all 0.3s ease", display: "flex", alignItems: "center", gap: 12,
+                borderLeft: activeFeature === i ? `3px solid ${f.color}` : `3px solid transparent`,
+              }}>
+                <span style={{ fontSize: 22 }}>{f.icon}</span>
+                <div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 600, color: activeFeature === i ? T.white : T.muted }}>{f.title}</div>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: features[i].color, marginTop: 2 }}>{f.stats}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          {/* Feature detail panel */}
+          <div key={activeFeature} style={{
+            background: T.card, border: `1px solid ${features[activeFeature].color}15`,
+            borderRadius: 20, padding: "40px 36px", backdropFilter: "blur(8px)",
+            animation: "featureSlide 0.4s ease", position: "relative", overflow: "hidden",
+          }}>
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent, ${features[activeFeature].color}, transparent)` }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
+              <div style={{
+                width: 56, height: 56, borderRadius: 16,
+                background: `${features[activeFeature].color}10`, border: `1px solid ${features[activeFeature].color}20`,
+                display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28,
+              }}>{features[activeFeature].icon}</div>
+              <div>
+                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, margin: 0, color: T.white }}>{features[activeFeature].title}</h3>
+                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: features[activeFeature].color }}>{features[activeFeature].stats}</span>
               </div>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, margin: "0 0 10px" }}>{f.title}</h3>
-              <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.8, margin: 0 }}>{f.desc}</p>
             </div>
-          ))}
+            <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.85, margin: "0 0 28px" }}>{features[activeFeature].desc}</p>
+
+            {/* Mini demo visualization */}
+            <div style={{ background: "rgba(3,7,18,0.5)", border: `1px solid ${T.border}`, borderRadius: 14, padding: 20, marginBottom: 20 }}>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.mutedDark, marginBottom: 12 }}>LIVE PREVIEW</div>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                {["Scanning", "Analyzing", "Protected"].map((step, i) => (
+                  <div key={i} style={{
+                    flex: 1, minWidth: 100, padding: "14px 12px", borderRadius: 10, textAlign: "center",
+                    background: i === 2 ? "rgba(34,197,94,0.06)" : `${features[activeFeature].color}06`,
+                    border: `1px solid ${i === 2 ? "rgba(34,197,94,0.12)" : `${features[activeFeature].color}12`}`,
+                  }}>
+                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700, color: i === 2 ? "#22c55e" : features[activeFeature].color }}>{i + 1}</div>
+                    <div style={{ fontSize: 11, color: T.muted, marginTop: 4 }}>{step}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <Link to={user ? "/fraud-analyzer" : "/signup"} style={{
+              display: "inline-flex", alignItems: "center", gap: 8,
+              padding: "12px 24px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+              borderRadius: 10, color: "#fff", textDecoration: "none", fontSize: 13, fontWeight: 600,
+            }}>
+              {user ? "Try This Feature" : "Sign Up to Access"} &rarr;
+            </Link>
+          </div>
         </div>
 
         {/* Free Tools */}
         <div style={{ marginBottom: 80 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 700, textAlign: "center", margin: "0 0 16px", letterSpacing: "-0.02em" }}>Free Security Tools</h2>
-          <p style={{ textAlign: "center", color: T.muted, fontSize: 15, marginBottom: 48, maxWidth: 450, marginLeft: "auto", marginRight: "auto" }}>Use these tools right now — no account required.</p>
+          <p style={{ textAlign: "center", color: T.muted, fontSize: 15, marginBottom: 48, maxWidth: 450, marginLeft: "auto", marginRight: "auto" }}>{user ? "Access all security tools from your dashboard." : "Sign up free to unlock all security tools."}</p>
           <div className="resp-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
             {tools.map((t, i) => (
               <Link key={i} to={t.link} style={{ textDecoration: "none", color: "inherit" }}>
@@ -89,8 +147,9 @@ export default function FeaturesPage() {
       </div>
       <Footer />
       <style>{`
+  @keyframes featureSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   @media (max-width: 768px) {
-    .resp-grid-2, .resp-grid-3 { grid-template-columns: 1fr !important; }
+    .resp-grid-2, .resp-grid-3, .feature-showcase { grid-template-columns: 1fr !important; }
   }
 `}</style>
     </div>
