@@ -163,7 +163,7 @@ export default function Checkout() {
   // Admin config state
   const [adminConfig, setAdminConfig] = useState({
     razorpayKey: localStorage.getItem("secuvion_razorpay_key") || "",
-    upiId: localStorage.getItem("secuvion_upi_id") || "secuvion@upi",
+    upiId: localStorage.getItem("secuvion_upi_id") || "secuvion@ptyes",
     btcAddress: localStorage.getItem("secuvion_btc_address") || "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
     ethAddress: localStorage.getItem("secuvion_eth_address") || "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
   });
@@ -172,7 +172,7 @@ export default function Checkout() {
   const priceUSD = billing === "annual" ? (plan.priceUSD * 10).toFixed(2) : plan.priceUSD;
   const savings = billing === "annual" ? (plan.price * 12 - plan.annual) : 0;
 
-  const merchantUpiId = localStorage.getItem("secuvion_upi_id") || "secuvion@upi";
+  const merchantUpiId = localStorage.getItem("secuvion_upi_id") || "secuvion@ptyes";
   const btcAddress = localStorage.getItem("secuvion_btc_address") || "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
   const ethAddress = localStorage.getItem("secuvion_eth_address") || "0x71C7656EC7ab88b098defB751B7401B5f6d8976F";
 
