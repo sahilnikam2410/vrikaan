@@ -80,73 +80,88 @@ const Navbar = () => {
           SECUVION
         </Link>
 
-        {/* Desktop links */}
+        {/* Desktop links — only show Tools, Learn, News, Blog when logged in */}
         <div className="nav-desktop-links" style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          {/* Tools dropdown */}
-          <div ref={dropRef} style={{ position: "relative" }}>
-            <button
-              onClick={() => setToolsOpen(!toolsOpen)}
-              style={{
-                color: isToolActive ? T.accent : T.muted, background: toolsOpen ? "rgba(99,102,241,0.08)" : "transparent",
-                border: "none", cursor: "pointer", fontSize: 14, fontWeight: 500,
-                padding: "8px 14px", borderRadius: 8, display: "flex", alignItems: "center", gap: 5,
-                transition: "all 0.2s", fontFamily: "inherit",
-              }}
-            >
-              Tools
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ transition: "transform 0.2s", transform: toolsOpen ? "rotate(180deg)" : "none" }}>
-                <path d="M2 4L5 7L8 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+          {user && (
+            <>
+              {/* Tools dropdown */}
+              <div ref={dropRef} style={{ position: "relative" }}>
+                <button
+                  onClick={() => setToolsOpen(!toolsOpen)}
+                  style={{
+                    color: isToolActive ? T.accent : T.muted, background: toolsOpen ? "rgba(99,102,241,0.08)" : "transparent",
+                    border: "none", cursor: "pointer", fontSize: 14, fontWeight: 500,
+                    padding: "8px 14px", borderRadius: 8, display: "flex", alignItems: "center", gap: 5,
+                    transition: "all 0.2s", fontFamily: "inherit",
+                  }}
+                >
+                  Tools
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ transition: "transform 0.2s", transform: toolsOpen ? "rotate(180deg)" : "none" }}>
+                    <path d="M2 4L5 7L8 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
 
-            {/* Dropdown */}
-            {toolsOpen && (
-              <div style={{
-                position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)",
-                background: "rgba(10,15,30,0.98)", backdropFilter: "blur(20px)",
-                border: `1px solid rgba(99,102,241,0.15)`, borderRadius: 14,
-                padding: 16, minWidth: 520, boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
-                display: "flex", gap: 20, animation: "dropIn 0.2s ease",
-              }}>
-                {toolsMenu.map((group, gi) => (
-                  <div key={gi} style={{ flex: 1 }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: T.accent, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, padding: "0 8px" }}>
-                      {group.label}
-                    </div>
-                    {group.items.map(item => (
-                      <Link key={item.to} to={item.to} style={{
-                        display: "flex", alignItems: "center", gap: 10, padding: "8px 10px",
-                        borderRadius: 8, textDecoration: "none", transition: "background 0.15s",
-                        background: isActive(item.to) ? "rgba(99,102,241,0.1)" : "transparent",
-                      }}
-                        onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.08)"}
-                        onMouseLeave={e => e.currentTarget.style.background = isActive(item.to) ? "rgba(99,102,241,0.1)" : "transparent"}
-                      >
-                        <span style={{ fontSize: 18, lineHeight: 1 }}>{item.label.split(" ")[0]}</span>
-                        <div>
-                          <div style={{ fontSize: 13, fontWeight: 600, color: isActive(item.to) ? T.accent : T.white }}>{item.label.split(" ").slice(1).join(" ")}</div>
-                          <div style={{ fontSize: 11, color: T.muted }}>{item.desc}</div>
+                {/* Dropdown */}
+                {toolsOpen && (
+                  <div style={{
+                    position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)",
+                    background: "rgba(10,15,30,0.98)", backdropFilter: "blur(20px)",
+                    border: `1px solid rgba(99,102,241,0.15)`, borderRadius: 14,
+                    padding: 16, minWidth: 520, boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+                    display: "flex", gap: 20, animation: "dropIn 0.2s ease",
+                  }}>
+                    {toolsMenu.map((group, gi) => (
+                      <div key={gi} style={{ flex: 1 }}>
+                        <div style={{ fontSize: 11, fontWeight: 700, color: T.accent, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, padding: "0 8px" }}>
+                          {group.label}
                         </div>
-                      </Link>
+                        {group.items.map(item => (
+                          <Link key={item.to} to={item.to} style={{
+                            display: "flex", alignItems: "center", gap: 10, padding: "8px 10px",
+                            borderRadius: 8, textDecoration: "none", transition: "background 0.15s",
+                            background: isActive(item.to) ? "rgba(99,102,241,0.1)" : "transparent",
+                          }}
+                            onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.08)"}
+                            onMouseLeave={e => e.currentTarget.style.background = isActive(item.to) ? "rgba(99,102,241,0.1)" : "transparent"}
+                          >
+                            <span style={{ fontSize: 18, lineHeight: 1 }}>{item.label.split(" ")[0]}</span>
+                            <div>
+                              <div style={{ fontSize: 13, fontWeight: 600, color: isActive(item.to) ? T.accent : T.white }}>{item.label.split(" ").slice(1).join(" ")}</div>
+                              <div style={{ fontSize: 11, color: T.muted }}>{item.desc}</div>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
                     ))}
                   </div>
-                ))}
+                )}
               </div>
-            )}
-          </div>
 
-          {/* Regular links */}
-          {mainLinks.map(l => (
-            <Link key={l.to} to={l.to} style={{
-              color: isActive(l.to) ? T.accent : T.muted,
-              textDecoration: "none", fontSize: 14, fontWeight: 500,
-              padding: "8px 14px", borderRadius: 8, transition: "all 0.2s",
-              background: isActive(l.to) ? "rgba(99,102,241,0.08)" : "transparent",
-            }}
-              onMouseEnter={e => { if (!isActive(l.to)) e.currentTarget.style.color = T.white; }}
-              onMouseLeave={e => { if (!isActive(l.to)) e.currentTarget.style.color = T.muted; }}
-            >{l.label}</Link>
-          ))}
+              {/* Regular links (Learn, News, Blog) */}
+              {mainLinks.filter(l => l.to !== "/pricing").map(l => (
+                <Link key={l.to} to={l.to} style={{
+                  color: isActive(l.to) ? T.accent : T.muted,
+                  textDecoration: "none", fontSize: 14, fontWeight: 500,
+                  padding: "8px 14px", borderRadius: 8, transition: "all 0.2s",
+                  background: isActive(l.to) ? "rgba(99,102,241,0.08)" : "transparent",
+                }}
+                  onMouseEnter={e => { if (!isActive(l.to)) e.currentTarget.style.color = T.white; }}
+                  onMouseLeave={e => { if (!isActive(l.to)) e.currentTarget.style.color = T.muted; }}
+                >{l.label}</Link>
+              ))}
+            </>
+          )}
+
+          {/* Pricing — always visible */}
+          <Link to="/pricing" style={{
+            color: isActive("/pricing") ? T.accent : T.muted,
+            textDecoration: "none", fontSize: 14, fontWeight: 500,
+            padding: "8px 14px", borderRadius: 8, transition: "all 0.2s",
+            background: isActive("/pricing") ? "rgba(99,102,241,0.08)" : "transparent",
+          }}
+            onMouseEnter={e => { if (!isActive("/pricing")) e.currentTarget.style.color = T.white; }}
+            onMouseLeave={e => { if (!isActive("/pricing")) e.currentTarget.style.color = T.muted; }}
+          >Pricing</Link>
         </div>
 
         {/* Desktop auth buttons */}
@@ -192,38 +207,51 @@ const Navbar = () => {
           paddingTop: 80, overflowY: "auto",
           animation: "navFadeIn 0.25s ease",
         }}>
-          {/* Tools accordion */}
-          <button onClick={() => setMobileToolsOpen(!mobileToolsOpen)} style={{
-            background: "none", border: "none", cursor: "pointer",
-            color: isToolActive ? T.accent : T.white, fontSize: 20, fontWeight: 600,
-            fontFamily: "'Space Grotesk', sans-serif", padding: "12px 24px",
-            display: "flex", alignItems: "center", gap: 8,
-          }}>
-            Tools
-            <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style={{ transition: "transform 0.2s", transform: mobileToolsOpen ? "rotate(180deg)" : "none" }}>
-              <path d="M2 4L5 7L8 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
+          {/* Tools accordion — only when logged in */}
+          {user && (
+            <>
+              <button onClick={() => setMobileToolsOpen(!mobileToolsOpen)} style={{
+                background: "none", border: "none", cursor: "pointer",
+                color: isToolActive ? T.accent : T.white, fontSize: 20, fontWeight: 600,
+                fontFamily: "'Space Grotesk', sans-serif", padding: "12px 24px",
+                display: "flex", alignItems: "center", gap: 8,
+              }}>
+                Tools
+                <svg width="12" height="12" viewBox="0 0 10 10" fill="none" style={{ transition: "transform 0.2s", transform: mobileToolsOpen ? "rotate(180deg)" : "none" }}>
+                  <path d="M2 4L5 7L8 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
 
-          {mobileToolsOpen && (
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, padding: "4px 0 12px", animation: "navFadeIn 0.2s ease" }}>
-              {toolsMenu.flatMap(g => g.items).map(item => (
-                <Link key={item.to} to={item.to} style={{
-                  color: isActive(item.to) ? T.accent : T.muted, textDecoration: "none",
-                  fontSize: 15, fontWeight: 500, padding: "8px 24px",
-                }}>{item.label}</Link>
+              {mobileToolsOpen && (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, padding: "4px 0 12px", animation: "navFadeIn 0.2s ease" }}>
+                  {toolsMenu.flatMap(g => g.items).map(item => (
+                    <Link key={item.to} to={item.to} style={{
+                      color: isActive(item.to) ? T.accent : T.muted, textDecoration: "none",
+                      fontSize: 15, fontWeight: 500, padding: "8px 24px",
+                    }}>{item.label}</Link>
+                  ))}
+                </div>
+              )}
+
+              {/* Learn, News, Blog — only when logged in */}
+              {mainLinks.filter(l => l.to !== "/pricing").map(l => (
+                <Link key={l.to} to={l.to} style={{
+                  color: isActive(l.to) ? T.accent : T.white,
+                  textDecoration: "none", fontSize: 20, fontWeight: 600,
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  padding: "12px 24px", transition: "color 0.2s",
+                }}>{l.label}</Link>
               ))}
-            </div>
+            </>
           )}
 
-          {mainLinks.map(l => (
-            <Link key={l.to} to={l.to} style={{
-              color: isActive(l.to) ? T.accent : T.white,
-              textDecoration: "none", fontSize: 20, fontWeight: 600,
-              fontFamily: "'Space Grotesk', sans-serif",
-              padding: "12px 24px", transition: "color 0.2s",
-            }}>{l.label}</Link>
-          ))}
+          {/* Pricing — always visible */}
+          <Link to="/pricing" style={{
+            color: isActive("/pricing") ? T.accent : T.white,
+            textDecoration: "none", fontSize: 20, fontWeight: 600,
+            fontFamily: "'Space Grotesk', sans-serif",
+            padding: "12px 24px", transition: "color 0.2s",
+          }}>Pricing</Link>
 
           <Link to="/about" style={{ color: T.muted, textDecoration: "none", fontSize: 16, fontWeight: 500, padding: "8px 24px" }}>About</Link>
           <Link to="/contact" style={{ color: T.muted, textDecoration: "none", fontSize: 16, fontWeight: 500, padding: "8px 24px" }}>Contact</Link>
