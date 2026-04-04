@@ -34,8 +34,10 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const dropRef = useRef(null);
+  const notifRef = useRef(null);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -43,11 +45,14 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  useEffect(() => { setOpen(false); setToolsOpen(false); setMobileToolsOpen(false); }, [location.pathname]);
+  useEffect(() => { setOpen(false); setToolsOpen(false); setMobileToolsOpen(false); setNotifOpen(false); }, [location.pathname]);
 
   // Close dropdown on outside click
   useEffect(() => {
-    const fn = (e) => { if (dropRef.current && !dropRef.current.contains(e.target)) setToolsOpen(false); };
+    const fn = (e) => {
+      if (dropRef.current && !dropRef.current.contains(e.target)) setToolsOpen(false);
+      if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false);
+    };
     document.addEventListener("mousedown", fn);
     return () => document.removeEventListener("mousedown", fn);
   }, []);
@@ -167,11 +172,70 @@ const Navbar = () => {
         {/* Desktop auth buttons */}
         <div className="nav-desktop-auth" style={{ display: "flex", alignItems: "center", gap: 10 }}>
           {user ? (
-            <Link to="/dashboard" style={{
-              padding: "8px 20px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
-              borderRadius: 8, color: "#fff", textDecoration: "none", fontSize: 13,
-              fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif",
-            }}>Dashboard</Link>
+            <>
+              {/* Notification bell */}
+              <div ref={notifRef} style={{ position: "relative", cursor: "pointer", padding: 6 }}
+                onClick={() => setNotifOpen(!notifOpen)}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={T.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+                <span style={{ position: "absolute", top: 4, right: 4, width: 7, height: 7, borderRadius: "50%", background: "#ef4444", border: "2px solid #030712" }} />
+
+                {/* Notification dropdown */}
+                {notifOpen && (
+                  <div style={{
+                    position: "absolute", top: "calc(100% + 12px)", right: -40,
+                    width: 300, background: "rgba(10,15,30,0.98)", backdropFilter: "blur(20px)",
+                    border: `1px solid rgba(99,102,241,0.15)`, borderRadius: 14,
+                    boxShadow: "0 20px 60px rgba(0,0,0,0.5)", overflow: "hidden",
+                    animation: "dropIn 0.2s ease",
+                  }}>
+                    <div style={{ padding: "14px 16px", borderBottom: `1px solid ${T.border}`, fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, fontWeight: 700, color: T.white }}>
+                      Notifications
+                    </div>
+                    {[
+                      { msg: "New phishing threat detected in your region", time: "2m ago", color: "#ef4444", icon: "!" },
+                      { msg: "Security score updated: 92/100", time: "1h ago", color: "#22c55e", icon: "&#10003;" },
+                      { msg: "Dark web scan complete — no leaks found", time: "3h ago", color: T.cyan, icon: "&#9670;" },
+                    ].map((n, i) => (
+                      <div key={i} style={{ padding: "12px 16px", borderBottom: `1px solid ${T.border}`, display: "flex", gap: 10, alignItems: "flex-start", cursor: "pointer", transition: "background 0.2s" }}
+                        onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.05)"}
+                        onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                      >
+                        <span style={{ width: 28, height: 28, borderRadius: 8, background: `${n.color}12`, border: `1px solid ${n.color}25`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: n.color, flexShrink: 0, fontWeight: 700 }} dangerouslySetInnerHTML={{ __html: n.icon }} />
+                        <div>
+                          <div style={{ fontSize: 12, color: T.white, lineHeight: 1.5 }}>{n.msg}</div>
+                          <div style={{ fontSize: 10, color: T.muted, marginTop: 2 }}>{n.time}</div>
+                        </div>
+                      </div>
+                    ))}
+                    <Link to="/dashboard" style={{ display: "block", padding: "10px 16px", textAlign: "center", fontSize: 12, fontWeight: 600, color: T.accent, textDecoration: "none" }}>
+                      View all notifications
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* User avatar */}
+              <Link to="/dashboard" style={{
+                width: 32, height: 32, borderRadius: 10,
+                background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 13, fontWeight: 700, color: "#fff", textDecoration: "none",
+                border: "2px solid rgba(99,102,241,0.3)",
+                fontFamily: "'Space Grotesk', sans-serif",
+              }}>
+                {(user.displayName || user.email || "U")[0].toUpperCase()}
+              </Link>
+
+              <Link to="/dashboard" style={{
+                padding: "8px 20px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+                borderRadius: 8, color: "#fff", textDecoration: "none", fontSize: 13,
+                fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif",
+              }}>Dashboard</Link>
+            </>
           ) : (
             <>
               <Link to="/login" style={{
@@ -278,12 +342,66 @@ const Navbar = () => {
         </div>
       )}
 
+      {/* Mobile Bottom Navigation — only for logged-in users */}
+      {user && (
+        <div className="mobile-bottom-nav" style={{
+          position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 998,
+          background: "rgba(3,7,18,0.95)", backdropFilter: "blur(20px)",
+          borderTop: `1px solid ${T.border}`,
+          display: "none", justifyContent: "space-around", alignItems: "center",
+          padding: "6px 0 env(safe-area-inset-bottom, 6px)", height: 60,
+        }}>
+          {[
+            { to: "/", label: "Home", icon: (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+            )},
+            { to: "/dashboard", label: "Dashboard", icon: (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
+              </svg>
+            )},
+            { to: "/fraud-analyzer", label: "Scan", icon: (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+            )},
+            { to: "/learn", label: "Learn", icon: (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+              </svg>
+            )},
+            { to: "/user-dashboard", label: "Profile", icon: (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+              </svg>
+            )},
+          ].map((item, i) => {
+            const active = location.pathname === item.to || (item.to === "/dashboard" && location.pathname.includes("dashboard"));
+            return (
+              <Link key={i} to={item.to} style={{
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
+                textDecoration: "none", color: active ? T.accent : T.muted, fontSize: 10, fontWeight: 600,
+                fontFamily: "'Plus Jakarta Sans', sans-serif", padding: "4px 12px",
+                transition: "color 0.2s", position: "relative",
+              }}>
+                {active && <span style={{ position: "absolute", top: -6, width: 20, height: 3, borderRadius: 2, background: "linear-gradient(90deg, #6366f1, #14e3c5)" }} />}
+                <span style={{ color: active ? T.accent : T.muted, transition: "color 0.2s" }}>{item.icon}</span>
+                {item.label}
+              </Link>
+            );
+          })}
+        </div>
+      )}
+
       <style>{`
         @keyframes navFadeIn { from { opacity: 0 } to { opacity: 1 } }
         @keyframes dropIn { from { opacity: 0; transform: translateX(-50%) translateY(-8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
         @media (max-width: 900px) {
           .nav-desktop-links, .nav-desktop-auth { display: none !important; }
           .nav-mobile-burger { display: flex !important; }
+          .mobile-bottom-nav { display: flex !important; }
         }
       `}</style>
     </>
