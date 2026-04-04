@@ -12,9 +12,11 @@ const T = {
 };
 
 const plans = {
-  starter: { name: "Starter", price: 499, priceUSD: 4.99, annual: 4990, features: ["50 AI credits/day", "Basic threat detection", "Email breach check", "2 devices", "Email support"] },
-  pro: { name: "Professional", price: 999, priceUSD: 9.99, annual: 9990, features: ["1000 AI credits/day", "Real-time threat detection", "VPN Protection", "5 Devices", "Dark web monitoring", "24/7 Support", "Weekly reports"] },
-  enterprise: { name: "Enterprise", price: 1999, priceUSD: 19.99, annual: 19990, features: ["Unlimited AI credits", "Everything in Pro", "Unlimited devices", "API access", "Dedicated manager", "Custom integrations", "Priority support"] },
+  starter: { name: "Standard", price: 4099, priceUSD: 49, annual: 40990, features: ["200 AI credits/day", "Real-time threat detection", "5 devices", "Email protection", "Phishing alerts", "Priority response"] },
+  standard: { name: "Standard", price: 4099, priceUSD: 49, annual: 40990, features: ["200 AI credits/day", "Real-time threat detection", "5 devices", "Email protection", "Phishing alerts", "Priority response"] },
+  pro: { name: "Advanced", price: 8299, priceUSD: 99, annual: 82990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"] },
+  advanced: { name: "Advanced", price: 8299, priceUSD: 99, annual: 82990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"] },
+  enterprise: { name: "Enterprise", price: 16599, priceUSD: 199, annual: 165990, features: ["Unlimited AI credits", "Everything in Advanced", "Unlimited devices & users", "Custom API integrations", "24/7 dedicated SOC team", "Compliance reporting", "SLA-backed guarantee", "White-label options"] },
 };
 
 const IconCreditCard = ({ size = 18, color = "currentColor", style = {} }) => (

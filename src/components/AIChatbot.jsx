@@ -4,11 +4,12 @@ import { useAuth } from "../context/AuthContext";
 
 // ─── Credit System (login-aware) ───
 const PLANS = {
-  guest:     { name: "Guest",     credits: 25,       daily: true,  price: null,       color: "#64748b" },
-  free:      { name: "Free",      credits: 50,       daily: true,  price: "Free",     color: "#94a3b8" },
-  starter:   { name: "Starter",   credits: 200,      daily: false, price: "$4.99/mo", color: "#22c55e" },
-  pro:       { name: "Pro",       credits: 1000,     daily: false, price: "$9.99/mo", color: "#6366f1" },
-  unlimited: { name: "Unlimited", credits: Infinity,  daily: false, price: "$19.99/mo", color: "#14e3c5" },
+  guest:      { name: "Guest",      credits: 25,       daily: true,  price: null,       color: "#64748b" },
+  free:       { name: "Free",       credits: 50,       daily: true,  price: "Free",     color: "#94a3b8" },
+  starter:    { name: "Standard",   credits: 200,      daily: false, price: "$49/mo",   color: "#22c55e" },
+  pro:        { name: "Advanced",   credits: 1000,     daily: false, price: "$99/mo",   color: "#f97316" },
+  enterprise: { name: "Enterprise", credits: Infinity,  daily: false, price: "$199/mo",  color: "#6366f1" },
+  unlimited:  { name: "Enterprise", credits: Infinity,  daily: false, price: "$199/mo",  color: "#14e3c5" },
 };
 
 // userObj is optional — pass from useAuth() for accurate detection
@@ -591,7 +592,7 @@ export default function AIChatbot() {
           <div style={{ fontSize: 13, fontWeight: 700, color: T.white, marginBottom: 12 }}>
             {isUserLoggedIn() ? "Upgrade Plan" : "Subscription Plans"}
           </div>
-          {Object.entries(PLANS).filter(([k]) => k !== "guest" && k !== "free").map(([key, plan]) => {
+          {Object.entries(PLANS).filter(([k]) => k !== "guest" && k !== "free" && k !== "unlimited").map(([key, plan]) => {
             const isCurrent = creditData.plan === key;
             return (
               <div key={key} onClick={() => handleUpgrade(key)} style={{

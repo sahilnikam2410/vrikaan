@@ -262,6 +262,16 @@ function injectKeyframes() {
   el.textContent = `
     @keyframes loginSpin { to { transform: rotate(360deg); } }
     @keyframes loginFadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes loginFloat1 { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-18px) rotate(8deg); } }
+    @keyframes loginFloat2 { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-14px) rotate(-6deg); } }
+    @keyframes loginFloat3 { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-22px) rotate(10deg); } }
+    @keyframes loginFloat4 { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-16px) rotate(-8deg); } }
+    @keyframes loginBorderGlow {
+      0% { border-color: rgba(20,227,197,0.3); box-shadow: 0 0 20px rgba(20,227,197,0.08), 0 0 40px rgba(20,227,197,0.04); }
+      33% { border-color: rgba(99,102,241,0.35); box-shadow: 0 0 20px rgba(99,102,241,0.08), 0 0 40px rgba(99,102,241,0.04); }
+      66% { border-color: rgba(14,165,233,0.3); box-shadow: 0 0 20px rgba(14,165,233,0.08), 0 0 40px rgba(14,165,233,0.04); }
+      100% { border-color: rgba(20,227,197,0.3); box-shadow: 0 0 20px rgba(20,227,197,0.08), 0 0 40px rgba(20,227,197,0.04); }
+    }
   `;
   document.head.appendChild(el);
 }
@@ -507,11 +517,48 @@ export default function Login() {
         <div style={S.glow3} />
       </div>
 
+      {/* Floating security icons */}
+      {[
+        { icon: "\u{1F6E1}\uFE0F", top: "12%", left: "8%", size: 28, anim: "loginFloat1 6s ease-in-out infinite", delay: "0s" },
+        { icon: "\u{1F512}", top: "22%", right: "10%", size: 24, anim: "loginFloat2 7s ease-in-out infinite", delay: "1s" },
+        { icon: "\u{1F511}", bottom: "18%", left: "12%", size: 22, anim: "loginFloat3 8s ease-in-out infinite", delay: "2s" },
+        { icon: "\u{1F50F}", bottom: "28%", right: "8%", size: 26, anim: "loginFloat4 6.5s ease-in-out infinite", delay: "0.5s" },
+      ].map((item, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            top: item.top, left: item.left, right: item.right, bottom: item.bottom,
+            fontSize: item.size, opacity: 0.12, pointerEvents: "none", zIndex: 1,
+            animation: item.anim, animationDelay: item.delay,
+          }}
+        >
+          {item.icon}
+        </div>
+      ))}
+
       {/* Invisible reCAPTCHA */}
       <div ref={recaptchaRef} id="recaptcha-container" />
 
       {/* ── Card ── */}
-      <div style={{ ...S.card, animation: "loginFadeIn 0.4s ease-out" }}>
+      <div style={{ ...S.card, animation: "loginFadeIn 0.4s ease-out, loginBorderGlow 6s ease-in-out infinite" }}>
+
+        {/* Social proof badge */}
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+          marginBottom: 18,
+        }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            padding: "6px 14px", borderRadius: 20,
+            background: "rgba(20,227,197,0.08)", border: "1px solid rgba(20,227,197,0.2)",
+            fontSize: 12, fontWeight: 600, color: "#14e3c5",
+            fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.3,
+          }}>
+            <span style={{ fontSize: 14 }}>{"\u2713"}</span>
+            Trusted by 1.2M+ users worldwide
+          </span>
+        </div>
 
         {/* Header */}
         <div style={{ textAlign: "center" }}>

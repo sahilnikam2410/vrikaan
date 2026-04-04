@@ -192,6 +192,56 @@ const ParticleField = () => {
   return <canvas ref={canvasRef} style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }} />;
 };
 
+/* ── ANIMATED COUNTER ── */
+const useCounter = (end, duration = 2000, start = 0) => {
+  const [val, setVal] = useState(start);
+  const [ref, vis] = useReveal(0.3);
+  const started = useRef(false);
+  useEffect(() => {
+    if (!vis || started.current) return;
+    started.current = true;
+    const startTime = performance.now();
+    const tick = (now) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // easeOutExpo
+      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      setVal(Math.floor(start + (end - start) * eased));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [vis]);
+  return [ref, val];
+};
+
+/* ── TYPEWRITER ── */
+const useTypewriter = (phrases, speed = 60, pause = 2200) => {
+  const [text, setText] = useState("");
+  const [idx, setIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+  useEffect(() => {
+    const phrase = phrases[idx];
+    if (!deleting && charIdx <= phrase.length) {
+      const t = setTimeout(() => { setText(phrase.slice(0, charIdx)); setCharIdx(c => c + 1); }, speed);
+      return () => clearTimeout(t);
+    }
+    if (!deleting && charIdx > phrase.length) {
+      const t = setTimeout(() => setDeleting(true), pause);
+      return () => clearTimeout(t);
+    }
+    if (deleting && charIdx > 0) {
+      const t = setTimeout(() => { setText(phrase.slice(0, charIdx - 1)); setCharIdx(c => c - 1); }, speed / 2);
+      return () => clearTimeout(t);
+    }
+    if (deleting && charIdx === 0) {
+      setDeleting(false);
+      setIdx((idx + 1) % phrases.length);
+    }
+  }, [charIdx, deleting, idx]);
+  return text;
+};
+
 /* ── SCROLL REVEAL ── */
 const useReveal = (thresh = 0.1) => {
   const ref = useRef(null);
@@ -303,8 +353,25 @@ const SectionHeader = ({ badge, title, subtitle, align = "center" }) => (
 /* ══════════════════════════════════════════════════
    HERO SECTION — Professional split layout
    ══════════════════════════════════════════════════ */
+const HeroCounter = ({ end, label, color, suffix = "" }) => {
+  const [ref, val] = useCounter(end, 2200);
+  return (
+    <div ref={ref}>
+      <div style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 700, color, letterSpacing: "-0.02em" }}>{val.toLocaleString()}{suffix}</div>
+      <div style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark, marginTop: 4 }}>{label}</div>
+    </div>
+  );
+};
+
 const Hero = () => {
   const [threats, setThreats] = useState(2841029);
+  const typed = useTypewriter([
+    "Fraud Detection",
+    "Phishing Protection",
+    "Dark Web Monitoring",
+    "Identity Shield",
+    "Threat Intelligence",
+  ], 70, 2000);
 
   useEffect(() => {
     const t = setInterval(() => setThreats(c => c + Math.floor(Math.random() * 30) + 5), 800);
@@ -316,6 +383,8 @@ const Hero = () => {
       {/* Background glow */}
       <div style={{ position: "absolute", top: "10%", left: "5%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.07), transparent 65%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "5%", right: "5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(20,227,197,0.04), transparent 65%)", pointerEvents: "none" }} />
+      {/* Animated mesh gradient */}
+      <div style={{ position: "absolute", top: "30%", left: "50%", width: 900, height: 900, transform: "translate(-50%, -50%)", borderRadius: "50%", background: "conic-gradient(from 0deg, rgba(99,102,241,0.04), rgba(20,227,197,0.03), rgba(139,92,246,0.04), rgba(99,102,241,0.04))", animation: "spin 30s linear infinite", pointerEvents: "none", filter: "blur(80px)" }} />
 
       <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center", position: "relative", zIndex: 2 }} className="hero-grid">
         {/* Left — Content */}
@@ -333,6 +402,15 @@ const Hero = () => {
             </h1>
           </Reveal>
 
+          {/* Typewriter subtitle */}
+          <Reveal delay={0.15}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 15, color: T.cyan, marginBottom: 20, display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ color: T.mutedDark }}>~/secuvion $</span>
+              <span>{typed}</span>
+              <span style={{ width: 2, height: 18, background: T.cyan, animation: "pulse-dot 1s step-end infinite" }} />
+            </div>
+          </Reveal>
+
           <Reveal delay={0.2}>
             <p style={{ fontFamily: "var(--font-body)", fontSize: "clamp(16px, 1.5vw, 18px)", color: T.muted, maxWidth: 480, lineHeight: 1.8, marginBottom: 40 }}>
               AI-powered protection against fraud, phishing, and identity theft. Enterprise-grade security made accessible for everyone — students, families, and businesses.
@@ -348,16 +426,9 @@ const Hero = () => {
 
           <Reveal delay={0.4}>
             <div className="hero-stats" style={{ display: "flex", gap: 48, flexWrap: "wrap" }}>
-              {[
-                { val: threats.toLocaleString(), label: "Threats Blocked", color: T.accent },
-                { val: "1.2M+", label: "Users Protected", color: T.cyan },
-                { val: "84", label: "Countries", color: T.ember },
-              ].map((s, i) => (
-                <div key={i}>
-                  <div style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 700, color: s.color, letterSpacing: "-0.02em" }}>{s.val}</div>
-                  <div style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark, marginTop: 4 }}>{s.label}</div>
-                </div>
-              ))}
+              <HeroCounter end={2841029} label="Threats Blocked" color={T.accent} />
+              <HeroCounter end={1200000} label="Users Protected" color={T.cyan} suffix="+" />
+              <HeroCounter end={84} label="Countries" color={T.ember} />
             </div>
           </Reveal>
         </div>
@@ -380,6 +451,198 @@ const Hero = () => {
         </Reveal>
       </div>
     </section>
+  );
+};
+
+/* ── SPLASH SCREEN ── */
+const SplashScreen = ({ onDone }) => {
+  const [phase, setPhase] = useState(0); // 0=logo, 1=text, 2=fade
+  useEffect(() => {
+    const t1 = setTimeout(() => setPhase(1), 600);
+    const t2 = setTimeout(() => setPhase(2), 1800);
+    const t3 = setTimeout(() => onDone(), 2400);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, []);
+
+  return (
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 9999,
+      background: T.bg,
+      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+      opacity: phase === 2 ? 0 : 1,
+      transition: "opacity 0.6s ease",
+      pointerEvents: phase === 2 ? "none" : "auto",
+    }}>
+      <div style={{
+        transform: phase >= 1 ? "scale(1)" : "scale(0.5)",
+        opacity: phase >= 1 ? 1 : 0.3,
+        transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+        filter: phase >= 1 ? "none" : "blur(8px)",
+      }}>
+        <BrandIcon size={80} />
+      </div>
+      <div style={{
+        fontFamily: "var(--font-display)", fontSize: 28, letterSpacing: 8, color: T.white, fontWeight: 700,
+        marginTop: 24,
+        opacity: phase >= 1 ? 1 : 0,
+        transform: phase >= 1 ? "translateY(0)" : "translateY(20px)",
+        transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
+      }}>SECUVION</div>
+      <div style={{
+        fontFamily: "var(--font-mono)", fontSize: 11, color: T.cyan, letterSpacing: 3,
+        marginTop: 8,
+        opacity: phase >= 1 ? 1 : 0,
+        transform: phase >= 1 ? "translateY(0)" : "translateY(10px)",
+        transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s",
+      }}>CYBER DEFENSE PLATFORM</div>
+      {/* Loading bar */}
+      <div style={{ width: 200, height: 2, background: "rgba(148,163,184,0.08)", borderRadius: 2, marginTop: 32, overflow: "hidden" }}>
+        <div style={{
+          height: "100%", borderRadius: 2,
+          background: "linear-gradient(90deg, #6366f1, #14e3c5)",
+          width: phase >= 1 ? "100%" : "0%",
+          transition: "width 1.2s cubic-bezier(0.22, 1, 0.36, 1)",
+        }} />
+      </div>
+    </div>
+  );
+};
+
+/* ── SCROLL PROGRESS BAR ── */
+const ScrollProgress = () => {
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    const h = () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(total > 0 ? (window.scrollY / total) * 100 : 0);
+    };
+    window.addEventListener("scroll", h, { passive: true });
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+  return (
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 200, height: 3, background: "transparent", pointerEvents: "none" }}>
+      <div style={{
+        height: "100%", borderRadius: "0 2px 2px 0",
+        width: `${progress}%`,
+        background: "linear-gradient(90deg, #6366f1, #8b5cf6, #14e3c5)",
+        boxShadow: progress > 0 ? "0 0 10px rgba(99,102,241,0.5), 0 0 30px rgba(20,227,197,0.2)" : "none",
+        transition: "width 0.1s linear",
+      }} />
+    </div>
+  );
+};
+
+/* ── LIVE THREAT TICKER ── */
+const ThreatTicker = () => {
+  const threats = [
+    { type: "BLOCKED", msg: "SQL Injection from 185.x.x.x", loc: "Frankfurt, DE", color: "#22c55e" },
+    { type: "DETECTED", msg: "Phishing campaign targeting .edu domains", loc: "Global", color: T.gold },
+    { type: "BLOCKED", msg: "Credential stuffing attack", loc: "Mumbai, IN", color: "#22c55e" },
+    { type: "ALERT", msg: "New ransomware variant identified", loc: "Threat Intel", color: T.red },
+    { type: "BLOCKED", msg: "DDoS attempt on API endpoints", loc: "Tokyo, JP", color: "#22c55e" },
+    { type: "DETECTED", msg: "Suspicious OAuth token harvesting", loc: "London, UK", color: T.gold },
+    { type: "BLOCKED", msg: "XSS payload in form submission", loc: "Sao Paulo, BR", color: "#22c55e" },
+    { type: "ALERT", msg: "Dark web data dump — 2.3M records", loc: "Monitoring", color: T.red },
+  ];
+
+  return (
+    <div style={{
+      overflow: "hidden", padding: "10px 0",
+      background: "rgba(3,7,18,0.6)", borderBottom: `1px solid ${T.border}`,
+      position: "relative",
+    }}>
+      {/* Fade edges */}
+      <div style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: 80, background: "linear-gradient(90deg, rgba(3,7,18,1), transparent)", zIndex: 2, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: 0, bottom: 0, right: 0, width: 80, background: "linear-gradient(90deg, transparent, rgba(3,7,18,1))", zIndex: 2, pointerEvents: "none" }} />
+      <div className="threat-ticker-track" style={{
+        display: "flex", gap: 48, whiteSpace: "nowrap",
+        animation: "ticker-scroll 40s linear infinite",
+      }}>
+        {[...threats, ...threats].map((t, i) => (
+          <div key={i} style={{ display: "inline-flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+            <span style={{ width: 5, height: 5, borderRadius: "50%", background: t.color, flexShrink: 0 }} />
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, fontWeight: 700, color: t.color, letterSpacing: 1 }}>{t.type}</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: T.muted }}>{t.msg}</span>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: T.mutedDark }}>{t.loc}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ── TRUST / COMPLIANCE BADGES ── */
+const TrustBadges = () => (
+  <div style={{ padding: "48px clamp(24px, 5vw, 80px)", borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}` }}>
+    <Reveal>
+      <div style={{ maxWidth: 1280, margin: "0 auto", textAlign: "center" }}>
+        <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: T.mutedDark, marginBottom: 28, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase" }}>Security Certifications & Compliance</p>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "clamp(24px, 4vw, 56px)", flexWrap: "wrap" }}>
+          {[
+            { icon: "&#9670;", label: "SOC 2", sub: "Type II", color: T.cyan },
+            { icon: "&#9632;", label: "ISO 27001", sub: "Certified", color: T.accent },
+            { icon: "&#9679;", label: "GDPR", sub: "Compliant", color: "#22c55e" },
+            { icon: "&#9733;", label: "HIPAA", sub: "Ready", color: T.gold },
+            { icon: "&#9830;", label: "PCI DSS", sub: "Level 1", color: T.purple },
+            { icon: "&#9827;", label: "AES-256", sub: "Encryption", color: T.blue },
+          ].map((b, i) => (
+            <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+              <div style={{
+                width: 56, height: 56, borderRadius: 14,
+                background: `${b.color}08`, border: `1px solid ${b.color}18`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 20, color: b.color,
+                transition: "all 0.3s ease",
+              }} dangerouslySetInnerHTML={{ __html: b.icon }} />
+              <div style={{ fontFamily: "var(--font-display)", fontSize: 12, fontWeight: 700, color: T.white, letterSpacing: 0.5 }}>{b.label}</div>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 9, color: T.mutedDark, letterSpacing: 1 }}>{b.sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </Reveal>
+  </div>
+);
+
+/* ── BLOG PREVIEW ── */
+const BlogPreview = () => {
+  const posts = [
+    { title: "The Rise of AI-Powered Phishing: What You Need to Know in 2026", tag: "THREAT INTEL", color: T.red, date: "Mar 28, 2026", readTime: "5 min", desc: "How attackers are using large language models to craft undetectable phishing emails, and the defense strategies that actually work." },
+    { title: "Zero-Trust Architecture: A Practical Guide for Small Teams", tag: "GUIDE", color: T.cyan, date: "Mar 22, 2026", readTime: "8 min", desc: "Implementing zero-trust doesn't require enterprise budgets. Here's how startups and small businesses can adopt it step by step." },
+    { title: "Dark Web Monitoring: Why Waiting for a Breach Notification Is Too Late", tag: "DEEP DIVE", color: T.purple, date: "Mar 15, 2026", readTime: "6 min", desc: "By the time you receive a breach notification, your data may have been circulating for months. Proactive monitoring changes the equation." },
+  ];
+
+  return (
+    <Section id="blog">
+      <Reveal><SectionHeader badge="Blog" title={<>Latest from the <GradientText>Security Lab</GradientText></>} subtitle="Expert insights, threat analysis, and actionable security guidance." /></Reveal>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }} className="blog-grid">
+        {posts.map((p, i) => (
+          <Reveal key={i} delay={i * 0.1}>
+            <Card style={{ height: "100%", padding: 0, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+              {/* Gradient header bar */}
+              <div style={{ height: 4, background: `linear-gradient(90deg, ${p.color}, ${p.color}40)` }} />
+              <div style={{ padding: "28px 28px 24px", flex: 1, display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                  <Badge color={p.color}>{p.tag}</Badge>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: T.mutedDark }}>{p.readTime}</span>
+                </div>
+                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 600, color: T.white, margin: "0 0 12px", lineHeight: 1.4, letterSpacing: "-0.01em" }}>{p.title}</h3>
+                <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.7, margin: "0 0 20px", flex: 1 }}>{p.desc}</p>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: 16, borderTop: `1px solid ${T.border}` }}>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: T.mutedDark }}>{p.date}</span>
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: T.accent, fontWeight: 600, cursor: "pointer" }}>Read more &rarr;</span>
+                </div>
+              </div>
+            </Card>
+          </Reveal>
+        ))}
+      </div>
+      <Reveal delay={0.3}>
+        <div style={{ textAlign: "center", marginTop: 40 }}>
+          <Btn to="/blog">View All Articles</Btn>
+        </div>
+      </Reveal>
+    </Section>
   );
 };
 
@@ -989,14 +1252,15 @@ const AssistantSection = () => {
 const PricingSection = () => {
   const plans = [
     { name: "RECON", tier: "Free", price: "$0", sub: "forever", features: ["Basic fraud detection", "Security advisories", "Email breach check", "Community reports", "Education access"], accent: T.mutedDark },
-    { name: "SENTINEL", tier: "Professional", price: "$29", sub: "/mo", features: ["Everything in Free", "AI real-time monitoring", "Device protection (5)", "Phishing alerts", "Priority response", "Safety score tracking"], accent: T.cyan, featured: true },
-    { name: "FORTRESS", tier: "Enterprise", price: "$79", sub: "/mo", features: ["Everything in Professional", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"], accent: T.ember },
+    { name: "SENTINEL", tier: "Standard", price: "$49", sub: "/mo", features: ["Everything in Free", "AI real-time monitoring", "Device protection (5)", "Phishing alerts", "Priority response", "Safety score tracking"], accent: T.cyan, featured: true },
+    { name: "FORTRESS", tier: "Advanced", price: "$99", sub: "/mo", features: ["Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"], accent: T.ember },
+    { name: "CITADEL", tier: "Enterprise", price: "$199", sub: "/mo", features: ["Everything in Advanced", "Unlimited devices & users", "Custom API integrations", "24/7 dedicated SOC team", "Compliance reporting (SOC2, HIPAA)", "SLA-backed response guarantee", "White-label options"], accent: T.purple },
   ];
 
   return (
     <Section id="pricing">
       <Reveal><SectionHeader badge="Pricing" title={<>Simple, Transparent <GradientText>Pricing</GradientText></>} subtitle="World-class protection at prices built for real people. No hidden fees." /></Reveal>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, maxWidth: 1100, margin: "0 auto", alignItems: "stretch" }} className="pricing-grid">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20, maxWidth: 1280, margin: "0 auto", alignItems: "stretch" }} className="pricing-grid">
         {plans.map((p, i) => (
           <Reveal key={i} delay={i * 0.12}>
             <div className="pricing-card" style={{
@@ -1059,6 +1323,127 @@ const Education = () => {
           </Reveal>
         ))}
       </div>
+    </Section>
+  );
+};
+
+/* ── FAQ ── */
+const FAQ = () => {
+  const [open, setOpen] = useState(null);
+  const faqs = [
+    { q: "Is Secuvion really free to use?", a: "Yes! Our Free tier includes basic fraud detection, email breach scanning, security advisories, and access to our education platform. No credit card required. Paid plans unlock advanced features like real-time AI monitoring, dark web surveillance, and priority incident response." },
+    { q: "How does the AI fraud detection work?", a: "Our AI engine cross-references over 12 billion threat signatures in real-time. When you scan a URL, email, or phone number, it analyzes patterns including domain age, SSL certificates, content similarity to known scams, and behavioral signals — achieving 99.7% detection accuracy." },
+    { q: "Can I use Secuvion on multiple devices?", a: "Absolutely. Free users get protection on 1 device. Sentinel (Pro) covers up to 5 devices, and Fortress (Enterprise) offers unlimited device protection with shared family/team dashboards." },
+    { q: "What happens if I detect a breach?", a: "Secuvion provides step-by-step incident recovery protocols. Our Emergency Response section guides you through account lockdown, credential rotation, financial alert setup, and authority reporting. Pro and Enterprise users get direct access to our security analyst team." },
+    { q: "How is my data protected?", a: "We use AES-256 encryption for all stored data, TLS 1.3 for data in transit, and follow a zero-knowledge architecture — we never see your passwords or personal data. Our infrastructure is SOC 2 Type II compliant." },
+    { q: "Do I need technical knowledge to use Secuvion?", a: "Not at all. Secuvion is designed for everyone — students, families, seniors, and small businesses. Our interface is intuitive with clear, jargon-free guidance. The AI assistant can explain any security concept in plain language." },
+  ];
+
+  return (
+    <Section id="faq">
+      <Reveal><SectionHeader badge="FAQ" title={<>Frequently Asked <GradientText>Questions</GradientText></>} subtitle="Everything you need to know about Secuvion and cybersecurity." /></Reveal>
+      <div style={{ maxWidth: 800, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
+        {faqs.map((f, i) => (
+          <Reveal key={i} delay={i * 0.06}>
+            <div
+              onClick={() => setOpen(open === i ? null : i)}
+              style={{
+                background: open === i ? "rgba(99,102,241,0.04)" : T.card,
+                border: `1px solid ${open === i ? "rgba(99,102,241,0.15)" : T.border}`,
+                borderRadius: 14, padding: "22px 28px", cursor: "pointer",
+                backdropFilter: "blur(8px)", transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16 }}>
+                <h3 style={{ fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 600, color: T.white, margin: 0 }}>{f.q}</h3>
+                <div style={{
+                  width: 32, height: 32, borderRadius: 8, flexShrink: 0,
+                  background: open === i ? "rgba(99,102,241,0.1)" : "rgba(148,163,184,0.04)",
+                  border: `1px solid ${open === i ? "rgba(99,102,241,0.2)" : T.border}`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  transition: "all 0.4s ease",
+                }}>
+                  <span style={{ color: open === i ? T.accent : T.muted, fontSize: 18, fontWeight: 300, transition: "transform 0.4s ease", transform: open === i ? "rotate(45deg)" : "none", display: "block" }}>+</span>
+                </div>
+              </div>
+              <div style={{
+                maxHeight: open === i ? 300 : 0, overflow: "hidden",
+                transition: "max-height 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease, margin 0.4s ease",
+                opacity: open === i ? 1 : 0, marginTop: open === i ? 16 : 0,
+              }}>
+                <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.8, margin: 0, paddingTop: 16, borderTop: `1px solid ${T.border}` }}>{f.a}</p>
+              </div>
+            </div>
+          </Reveal>
+        ))}
+      </div>
+    </Section>
+  );
+};
+
+/* ── NEWSLETTER ── */
+const Newsletter = () => {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = () => {
+    if (!email.includes("@")) return;
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 4000);
+    setEmail("");
+  };
+
+  return (
+    <Section>
+      <Reveal>
+        <div style={{
+          maxWidth: 700, margin: "0 auto", textAlign: "center",
+          padding: "56px 48px", borderRadius: 24,
+          background: "linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(20,227,197,0.04) 50%, rgba(139,92,246,0.06) 100%)",
+          border: `1px solid rgba(99,102,241,0.1)`,
+          position: "relative", overflow: "hidden",
+        }}>
+          {/* Animated corner accents */}
+          <div style={{ position: "absolute", top: 0, left: 0, width: 80, height: 80, borderTop: `2px solid rgba(99,102,241,0.2)`, borderLeft: `2px solid rgba(99,102,241,0.2)`, borderRadius: "24px 0 0 0", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: 0, right: 0, width: 80, height: 80, borderBottom: `2px solid rgba(20,227,197,0.2)`, borderRight: `2px solid rgba(20,227,197,0.2)`, borderRadius: "0 0 24px 0", pointerEvents: "none" }} />
+
+          <Badge color={T.cyan}>Stay Protected</Badge>
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 700, color: T.white, margin: "16px 0 12px", letterSpacing: "-0.03em" }}>
+            Security Intelligence <GradientText>Updates</GradientText>
+          </h2>
+          <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.7, marginBottom: 32, maxWidth: 480, marginLeft: "auto", marginRight: "auto" }}>
+            Weekly threat briefings, security tips, and platform updates. No spam — just actionable intelligence.
+          </p>
+
+          {submitted ? (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "16px 24px", borderRadius: 12, background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)", animation: "fadeIn 0.4s ease" }}>
+              <span style={{ color: "#22c55e", fontSize: 18 }}>&#10003;</span>
+              <span style={{ fontFamily: "var(--font-body)", fontSize: 15, color: "#22c55e", fontWeight: 600 }}>You're in! Check your inbox for confirmation.</span>
+            </div>
+          ) : (
+            <div style={{ display: "flex", gap: 12, maxWidth: 460, margin: "0 auto" }} className="newsletter-form">
+              <input
+                value={email} onChange={e => setEmail(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && handleSubmit()}
+                placeholder="Enter your email..."
+                style={{
+                  flex: 1, padding: "14px 20px", borderRadius: 12,
+                  background: "rgba(3,7,18,0.6)", border: `1px solid ${T.border}`,
+                  color: T.white, fontFamily: "var(--font-body)", fontSize: 14, outline: "none",
+                  transition: "border-color 0.3s",
+                }}
+                onFocus={e => e.target.style.borderColor = "rgba(99,102,241,0.3)"}
+                onBlur={e => e.target.style.borderColor = T.border}
+              />
+              <Btn primary onClick={handleSubmit}>Subscribe</Btn>
+            </div>
+          )}
+
+          <p style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: T.mutedDark, marginTop: 16 }}>
+            12,400+ subscribers &bull; Unsubscribe anytime
+          </p>
+        </div>
+      </Reveal>
     </Section>
   );
 };
@@ -1224,17 +1609,45 @@ const Testimonials = () => {
 const CTABanner = () => (
   <div style={{ padding: "0 clamp(24px, 5vw, 80px)", marginBottom: 80 }}>
     <Reveal>
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "clamp(48px, 6vw, 80px) clamp(24px, 5vw, 64px)", borderRadius: 24, background: "linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(20,227,197,0.04) 100%)", border: `1px solid rgba(99,102,241,0.12)`, textAlign: "center", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: "-50%", right: "-20%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.06), transparent 70%)", pointerEvents: "none" }} />
-        <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 3.5vw, 44px)", fontWeight: 700, color: T.white, margin: "0 0 16px", letterSpacing: "-0.03em", position: "relative" }}>
-          Ready to Secure Your <GradientText>Digital Life</GradientText>?
-        </h2>
-        <p style={{ fontFamily: "var(--font-body)", color: T.muted, fontSize: 16, lineHeight: 1.7, maxWidth: 500, margin: "0 auto 36px", position: "relative" }}>
-          Join over 1.2 million users who trust Secuvion to protect their digital presence. Start free, upgrade anytime.
-        </p>
-        <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", position: "relative" }}>
-          <Btn primary to="/signup" icon="&#9889;">Start Free Protection</Btn>
-          <Btn to="/pricing">View Plans</Btn>
+      <div className="cta-glow-wrapper" style={{ maxWidth: 1280, margin: "0 auto", borderRadius: 24, position: "relative", padding: 1 }}>
+        {/* Animated glow border */}
+        <div className="cta-glow-border" style={{ position: "absolute", inset: 0, borderRadius: 24, background: "conic-gradient(from var(--cta-angle, 0deg), #6366f1, #14e3c5, #8b5cf6, #22c55e, #6366f1)", opacity: 0.4, filter: "blur(1px)", animation: "cta-rotate 4s linear infinite" }} />
+        <div style={{
+          position: "relative", borderRadius: 23,
+          padding: "clamp(48px, 6vw, 80px) clamp(24px, 5vw, 64px)",
+          background: "linear-gradient(135deg, rgba(10,15,30,0.95) 0%, rgba(3,7,18,0.98) 100%)",
+          textAlign: "center", overflow: "hidden",
+        }}>
+          <div style={{ position: "absolute", top: "-50%", right: "-20%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.08), transparent 70%)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: "-30%", left: "-10%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(20,227,197,0.06), transparent 70%)", pointerEvents: "none" }} />
+
+          <div style={{ marginBottom: 20, position: "relative" }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: T.cyan, background: "rgba(20,227,197,0.08)", padding: "6px 16px", borderRadius: 100, border: "1px solid rgba(20,227,197,0.15)" }}>
+              &#9889; 2,841,000+ threats blocked today
+            </span>
+          </div>
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 3.5vw, 44px)", fontWeight: 700, color: T.white, margin: "0 0 16px", letterSpacing: "-0.03em", position: "relative" }}>
+            Ready to Secure Your <GradientText>Digital Life</GradientText>?
+          </h2>
+          <p style={{ fontFamily: "var(--font-body)", color: T.muted, fontSize: 16, lineHeight: 1.7, maxWidth: 500, margin: "0 auto 36px", position: "relative" }}>
+            Join over 1.2 million users who trust Secuvion to protect their digital presence. Start free, upgrade anytime.
+          </p>
+          <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", position: "relative" }}>
+            <Btn primary to="/signup" icon="&#9889;">Start Free Protection</Btn>
+            <Btn to="/pricing">View Plans</Btn>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", gap: 32, marginTop: 36, position: "relative" }}>
+            {[
+              { icon: "&#9889;", text: "Free forever tier" },
+              { icon: "&#9670;", text: "No credit card required" },
+              { icon: "&#10003;", text: "Setup in 30 seconds" },
+            ].map((item, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ color: T.cyan, fontSize: 12 }} dangerouslySetInnerHTML={{ __html: item.icon }} />
+                <span style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark }}>{item.text}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </Reveal>
@@ -1294,8 +1707,11 @@ export default function SecuvionV2() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [pageReady, setPageReady] = useState(false);
+  const [splashDone, setSplashDone] = useState(() => sessionStorage.getItem("secuvion_splash") === "done");
 
-  useEffect(() => { window.scrollTo(0, 0); const t = setTimeout(() => setPageReady(true), 150); return () => clearTimeout(t); }, []);
+  const handleSplashDone = useCallback(() => { setSplashDone(true); sessionStorage.setItem("secuvion_splash", "done"); }, []);
+
+  useEffect(() => { window.scrollTo(0, 0); const t = setTimeout(() => setPageReady(true), splashDone ? 150 : 2500); return () => clearTimeout(t); }, []);
   useEffect(() => { const h = () => setScrolled(window.scrollY > 60); window.addEventListener("scroll", h); return () => window.removeEventListener("scroll", h); }, []);
 
   const scrollTo = (id) => { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); setMenuOpen(false); };
@@ -1339,6 +1755,11 @@ html { scroll-behavior: smooth; }
 @keyframes brand-orbit-ring2 { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
 @keyframes status-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); } 50% { box-shadow: 0 0 0 4px rgba(34,197,94,0); } }
 @keyframes card-enter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@property --cta-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes cta-rotate { to { --cta-angle: 360deg; } }
+.cta-glow-border { background: conic-gradient(from var(--cta-angle, 0deg), #6366f1, #14e3c5, #8b5cf6, #22c55e, #6366f1) !important; }
+@keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+@keyframes splash-pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
 
 .nav-link-animated { position: relative; }
 .nav-link-animated::after {
@@ -1384,6 +1805,7 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
   .pricing-grid { grid-template-columns: 1fr !important; }
   .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
   .education-grid { grid-template-columns: 1fr 1fr !important; }
+  .blog-grid { grid-template-columns: 1fr !important; }
   .footer-grid { grid-template-columns: 1fr 1fr !important; }
   .testimonials-grid { grid-template-columns: 1fr !important; }
   .testimonial-arrow { left: -10px !important; right: -10px !important; }
@@ -1395,6 +1817,8 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
   .hero-stats { flex-direction: column !important; gap: 16px !important; }
   .hero-buttons { flex-direction: column !important; align-items: stretch !important; }
   .hero-buttons button { width: 100% !important; justify-content: center !important; }
+  .newsletter-form { flex-direction: column !important; }
+  .newsletter-form button { width: 100% !important; justify-content: center !important; }
   .analyzer-grid { gap: 32px !important; }
   .assistant-grid { gap: 32px !important; }
   .features-grid { grid-template-columns: 1fr !important; }
@@ -1421,6 +1845,10 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
 }
       `}</style>
 
+      {/* Splash Screen — only on first visit per session */}
+      {!splashDone && <SplashScreen onDone={handleSplashDone} />}
+
+      <ScrollProgress />
       <ParticleField />
 
       {/* NAVBAR */}
@@ -1486,6 +1914,7 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
       {/* PAGE CONTENT */}
       <div style={{ position: "relative", zIndex: 2, opacity: pageReady ? 1 : 0, transform: pageReady ? "translateY(0)" : "translateY(30px)", transition: "opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)" }}>
         <Hero />
+        <ThreatTicker />
         <TrustedBy />
         <Features />
         <div className="section-divider" />
@@ -1495,6 +1924,7 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
         <div className="section-divider" />
         <ThreatMapSection />
         <BigNumbers />
+        <TrustBadges />
         <SecurityTools />
         <div className="section-divider" />
         <Emergency />
@@ -1505,11 +1935,16 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
         <div className="section-divider" />
         <Education />
         <div className="section-divider" />
+        <BlogPreview />
+        <div className="section-divider" />
+        <FAQ />
+        <div className="section-divider" />
         <PricingSection />
         <div className="section-divider" />
         <FounderSection />
         <div className="section-divider" />
         <Testimonials />
+        <Newsletter />
         <CTABanner />
         <Footer />
         <BackToTop />

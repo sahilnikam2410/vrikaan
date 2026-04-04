@@ -138,6 +138,41 @@ export default function Signup() {
 
   const strength = getStrength(form.password);
 
+  // Inject keyframe animations once
+  useEffect(() => {
+    const id = "signup-animations";
+    if (!document.getElementById(id)) {
+      const sheet = document.createElement("style");
+      sheet.id = id;
+      sheet.textContent = `
+        @keyframes floatIcon {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-18px) rotate(8deg); }
+        }
+        @keyframes borderRotate {
+          0% { --angle: 0deg; }
+          100% { --angle: 360deg; }
+        }
+        @keyframes gradientSpin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `;
+      document.head.appendChild(sheet);
+    }
+    return () => {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    };
+  }, []);
+
+  const floatingIcons = [
+    { icon: "\u{1F6E1}\uFE0F", top: "12%", left: "6%", size: 28, delay: "0s", duration: "5s" },
+    { icon: "\u{1F512}", top: "70%", right: "7%", size: 24, delay: "1.2s", duration: "6s" },
+    { icon: "\u{1F511}", bottom: "18%", left: "12%", size: 22, delay: "2.4s", duration: "4.5s" },
+    { icon: "\u{1F510}", top: "25%", right: "14%", size: 20, delay: "0.8s", duration: "5.5s" },
+  ];
+
   const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
   const focusStyle = (e) => (e.target.style.borderColor = "#14e3c5");
   const blurStyle = (e) => (e.target.style.borderColor = "rgba(148,163,184,0.2)");
@@ -229,7 +264,48 @@ export default function Signup() {
       <div style={styles.glow1} />
       <div style={styles.glow2} />
 
-      <div style={styles.card}>
+      {/* Floating security icons */}
+      {floatingIcons.map((fi, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            top: fi.top, left: fi.left, right: fi.right, bottom: fi.bottom,
+            fontSize: fi.size, opacity: 0.12, zIndex: 1, pointerEvents: "none",
+            animation: `floatIcon ${fi.duration} ease-in-out ${fi.delay} infinite`,
+          }}
+        >
+          {fi.icon}
+        </div>
+      ))}
+
+      {/* Animated gradient border wrapper */}
+      <div style={{
+        position: "relative", width: "100%", maxWidth: 484, padding: 2,
+        borderRadius: 18, zIndex: 2, overflow: "hidden",
+      }}>
+        {/* Spinning gradient border */}
+        <div style={{
+          position: "absolute", inset: -40, zIndex: 0,
+          background: "conic-gradient(from 0deg, #14e3c5, #6366f1, #0ea5e9, #14e3c5)",
+          animation: "gradientSpin 4s linear infinite",
+          opacity: 0.5,
+        }} />
+
+      <div style={{ ...styles.card, borderRadius: 16, position: "relative", zIndex: 1 }}>
+        {/* Social proof badge */}
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+          marginBottom: 16, padding: "8px 16px", borderRadius: 20,
+          background: "rgba(20,227,197,0.06)", border: "1px solid rgba(20,227,197,0.15)",
+          width: "fit-content", margin: "0 auto 16px",
+        }}>
+          <span style={{ fontSize: 16 }}>{"\u{1F6E1}\uFE0F"}</span>
+          <span style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500 }}>
+            Join <span style={{ color: "#14e3c5", fontWeight: 700 }}>1.2M+</span> users protecting their digital life
+          </span>
+        </div>
+
         <div style={styles.logo}>
           <div style={styles.logoIcon}>S</div>
           <div style={styles.title}>Create Account</div>
@@ -482,6 +558,7 @@ export default function Signup() {
           <Link to="/login" style={styles.link}>Login</Link>
         </div>
       </div>
+      </div>{/* end gradient border wrapper */}
     </div>
   );
 }

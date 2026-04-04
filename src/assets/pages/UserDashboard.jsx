@@ -397,6 +397,42 @@ export default function UserDashboard() {
           </div>
         ))}
       </div>
+      {/* Onboarding Checklist */}
+      <AniCard delay={0.2}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, margin: 0, fontFamily: "'Space Grotesk'" }}>Setup Checklist</h3>
+          <span style={{ fontSize: 12, color: T.cyan, fontFamily: "'JetBrains Mono', monospace" }}>{[user?.emailVerified, userPlan !== "free", devices.length > 0, user?.phone, user?.name].filter(Boolean).length}/5 complete</span>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {[
+            { label: "Verify your email", done: !!user?.emailVerified, icon: "✉" },
+            { label: "Upgrade your plan", done: userPlan !== "free", icon: "⬆" },
+            { label: "Register a device", done: devices.length > 0, icon: "💻" },
+            { label: "Add phone number", done: !!user?.phone, icon: "📱" },
+            { label: "Complete your profile", done: !!user?.name, icon: "👤" },
+          ].map((item, i) => (
+            <div key={i} style={{
+              display: "flex", alignItems: "center", gap: 12, padding: "10px 14px",
+              borderRadius: 10, background: item.done ? "rgba(34,197,94,0.06)" : "rgba(148,163,184,0.04)",
+              border: `1px solid ${item.done ? "rgba(34,197,94,0.15)" : T.border}`,
+              animation: `fadeInUp 0.3s ease ${0.2 + i * 0.06}s both`,
+            }}>
+              <span style={{ fontSize: 14 }}>{item.icon}</span>
+              <span style={{ flex: 1, fontSize: 13, color: item.done ? T.green : T.muted, textDecoration: item.done ? "line-through" : "none" }}>{item.label}</span>
+              <span style={{ fontSize: 14, color: item.done ? T.green : "rgba(148,163,184,0.3)" }}>{item.done ? "✓" : "○"}</span>
+            </div>
+          ))}
+        </div>
+        {/* Progress bar */}
+        <div style={{ marginTop: 12, height: 4, borderRadius: 2, background: "rgba(148,163,184,0.08)", overflow: "hidden" }}>
+          <div style={{
+            height: "100%", borderRadius: 2,
+            width: `${([user?.emailVerified, userPlan !== "free", devices.length > 0, user?.phone, user?.name].filter(Boolean).length / 5) * 100}%`,
+            background: "linear-gradient(90deg, #6366f1, #14e3c5)",
+            transition: "width 0.8s ease",
+          }} />
+        </div>
+      </AniCard>
       <AniCard delay={0.3}>
         <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Space Grotesk'" }}>Current Device</h3>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
@@ -428,6 +464,57 @@ export default function UserDashboard() {
               <span style={{ fontSize: 11, color: T.muted }}>{a.timestamp?.toDate ? a.timestamp.toDate().toLocaleDateString() : ""}</span>
             </div>
           ))}
+      </AniCard>
+
+      {/* Security Tip of the Day */}
+      <AniCard delay={0.6}>
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
+          <div style={{
+            width: 42, height: 42, borderRadius: 12, flexShrink: 0,
+            background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20,227,197,0.1))",
+            border: `1px solid rgba(99,102,241,0.2)`,
+            display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20,
+          }}>💡</div>
+          <div>
+            <h3 style={{ fontSize: 13, fontWeight: 600, color: T.cyan, margin: "0 0 6px", fontFamily: "'Space Grotesk'", letterSpacing: 0.5 }}>Security Tip of the Day</h3>
+            <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.7, margin: 0 }}>
+              {[
+                "Enable two-factor authentication on all your accounts. It blocks 99.9% of automated attacks even if your password is compromised.",
+                "Use unique passwords for every account. A password manager makes this easy — try SECUVION's Password Vault.",
+                "Check URLs carefully before clicking. Phishing sites often use subtle misspellings like 'g00gle.com' instead of 'google.com'.",
+                "Keep your devices and software updated. Security patches fix vulnerabilities that attackers actively exploit.",
+                "Be cautious of unsolicited messages asking for personal info. Legitimate companies never ask for passwords via email.",
+                "Review your app permissions regularly. Revoke access for apps you no longer use.",
+                "Use a VPN on public WiFi. Open networks can expose your data to anyone on the same network.",
+              ][new Date().getDay()]}
+            </p>
+          </div>
+        </div>
+      </AniCard>
+
+      {/* Quick Links */}
+      <AniCard delay={0.7}>
+        <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Space Grotesk'" }}>Explore Tools</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 8 }}>
+          {[
+            { label: "Threat Map", icon: "🌐", path: "/threat-map" },
+            { label: "Fraud Analyzer", icon: "🔍", path: "/fraud-analyzer" },
+            { label: "Dark Web", icon: "🕵️", path: "/dark-web-monitor" },
+            { label: "Password Vault", icon: "🔐", path: "/password-vault" },
+            { label: "Learn", icon: "📚", path: "/learn" },
+            { label: "Security Score", icon: "📊", path: "/security-score" },
+          ].map((t, i) => (
+            <a key={i} href={t.path} style={{
+              display: "flex", alignItems: "center", gap: 8, padding: "10px 12px",
+              borderRadius: 10, background: "rgba(99,102,241,0.04)", border: `1px solid ${T.border}`,
+              color: T.muted, fontSize: 12, textDecoration: "none", fontWeight: 500,
+              transition: "all 0.3s", animation: `fadeInUp 0.3s ease ${0.7 + i * 0.05}s both`,
+            }} className="dash-tool-link">
+              <span style={{ fontSize: 14 }}>{t.icon}</span>
+              {t.label}
+            </a>
+          ))}
+        </div>
       </AniCard>
     </AniTab>
   );
