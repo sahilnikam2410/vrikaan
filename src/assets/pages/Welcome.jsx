@@ -296,17 +296,32 @@ export default function Welcome() {
   const navigate = useNavigate();
   const [certImage, setCertImage] = useState(null);
   const [showConfetti, setShowConfetti] = useState(true);
-  const [step, setStep] = useState(0); // 0=welcome, 1=certificate
+  const [step, setStep] = useState(0); // 0=welcome, 1=preferences, 2=security-check, 3=certificate
+  const [interests, setInterests] = useState([]);
+  const [checkProgress, setCheckProgress] = useState(0);
 
   const memberId = `SEC-${(user?.id || Date.now()).toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
   useEffect(() => {
     if (!user) { navigate("/login"); return; }
-    // Animate steps
-    const t1 = setTimeout(() => setStep(1), 2000);
     const t2 = setTimeout(() => setShowConfetti(false), 5000);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
+    return () => { clearTimeout(t2); };
   }, [user, navigate]);
+
+  const toggleInterest = (id) => {
+    setInterests(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+  };
+
+  const runSecurityCheck = () => {
+    setStep(2);
+    setCheckProgress(0);
+    let p = 0;
+    const timer = setInterval(() => {
+      p += Math.random() * 15 + 5;
+      if (p >= 100) { p = 100; clearInterval(timer); setTimeout(() => setStep(3), 800); }
+      setCheckProgress(Math.min(100, Math.round(p)));
+    }, 300);
+  };
 
   const handleGenerateCert = async () => {
     const img = await generateMemberCertificate(user?.name || "Member", user?.email || "", memberId);
@@ -352,6 +367,9 @@ export default function Welcome() {
           0%, 100% { box-shadow: 0 0 20px rgba(20,227,197,0.2); }
           50% { box-shadow: 0 0 40px rgba(20,227,197,0.4), 0 0 60px rgba(99,102,241,0.2); }
         }
+        @media (max-width: 500px) {
+          .welcome-interests-grid { grid-template-columns: 1fr !important; }
+        }
         .confetti-particle {
           position: absolute;
           width: 8px;
@@ -387,80 +405,191 @@ export default function Welcome() {
           S
         </div>
 
-        {/* Welcome text */}
-        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 800, color: T.white, marginBottom: 12, animation: "fadeInUp 0.8s ease 0.2s both" }}>
-          Welcome to <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>SECUVION</span>, {user.name?.split(" ")[0]}!
-        </h1>
+        {/* Step indicators */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginBottom: 32, animation: "fadeInUp 0.8s ease 0.1s both" }}>
+          {["Welcome", "Interests", "Security Check", "Certificate"].map((label, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{
+                width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                fontSize: 12, fontWeight: 700, fontFamily: "'Space Grotesk'",
+                background: step >= i ? "linear-gradient(135deg, #6366f1, #14e3c5)" : "rgba(148,163,184,0.08)",
+                color: step >= i ? "#fff" : T.muted, border: `1px solid ${step >= i ? "transparent" : "rgba(148,163,184,0.12)"}`,
+                transition: "all 0.4s",
+              }}>{i + 1}</div>
+              {i < 3 && <div style={{ width: 24, height: 2, borderRadius: 1, background: step > i ? T.accent : "rgba(148,163,184,0.1)", transition: "background 0.4s" }} />}
+            </div>
+          ))}
+        </div>
 
-        <p style={{ fontSize: 17, color: T.muted, lineHeight: 1.7, marginBottom: 32, animation: "fadeInUp 0.8s ease 0.4s both" }}>
-          Your cybersecurity journey begins now. You're now part of a community<br />dedicated to making the digital world safer.
-        </p>
-
-        {/* Stats */}
-        {step >= 1 && (
-          <div style={{ display: "flex", justifyContent: "center", gap: 32, marginBottom: 40, flexWrap: "wrap", animation: "fadeInUp 0.6s ease" }}>
-            {[
-              { label: "Security Score", value: "87/100", color: T.green },
-              { label: "Threats Blocked", value: "1,247", color: T.cyan },
-              { label: "Courses Available", value: "6", color: T.accent },
-              { label: "Your Plan", value: user.plan?.charAt(0).toUpperCase() + user.plan?.slice(1) || "Free", color: "#eab308" },
-            ].map(s => (
-              <div key={s.label} style={{ textAlign: "center" }}>
-                <div style={{ fontSize: 24, fontWeight: 800, color: s.color, fontFamily: "'Space Grotesk'" }}>{s.value}</div>
-                <div style={{ fontSize: 12, color: T.muted }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Certificate section */}
-        {step >= 1 && !certImage && (
-          <div style={{ animation: "fadeInUp 0.6s ease", background: "rgba(17,24,39,0.8)", border: `1px solid ${T.border}`, borderRadius: 16, padding: 32, backdropFilter: "blur(10px)", marginBottom: 24 }}>
-            <div style={{ fontSize: 40, marginBottom: 12 }}>🎓</div>
-            <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'", marginBottom: 8 }}>Your Membership Certificate</h2>
-            <p style={{ fontSize: 14, color: T.muted, marginBottom: 20 }}>Download your official SECUVION membership certificate with your name and unique member ID.</p>
-            <button onClick={handleGenerateCert} style={{
-              padding: "14px 36px", background: "linear-gradient(135deg, #14e3c5, #6366f1)", border: "none", borderRadius: 10,
-              color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Space Grotesk'",
-              transition: "all 0.3s", animation: "pulse 2s infinite",
+        {/* Step 0: Welcome */}
+        {step === 0 && (
+          <div style={{ animation: "fadeInUp 0.6s ease" }}>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 800, color: T.white, marginBottom: 12 }}>
+              Welcome to <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>SECUVION</span>, {user.name?.split(" ")[0] || "there"}!
+            </h1>
+            <p style={{ fontSize: 17, color: T.muted, lineHeight: 1.7, marginBottom: 32 }}>
+              Your cybersecurity journey begins now. Let's set up your protection in 3 quick steps.
+            </p>
+            <button onClick={() => setStep(1)} style={{
+              padding: "16px 44px", background: "linear-gradient(135deg, #6366f1, #14e3c5)", border: "none", borderRadius: 12,
+              color: "#fff", fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "'Space Grotesk'",
+              boxShadow: "0 8px 30px rgba(99,102,241,0.3)", transition: "all 0.3s",
             }}>
-              Generate My Certificate
+              Let's Get Started &rarr;
             </button>
           </div>
         )}
 
-        {/* Certificate preview */}
-        {certImage && (
+        {/* Step 1: Interests */}
+        {step === 1 && (
           <div style={{ animation: "fadeInUp 0.6s ease" }}>
-            <div style={{ background: "rgba(17,24,39,0.8)", border: `1px solid ${T.border}`, borderRadius: 16, padding: 8, display: "inline-block", marginBottom: 20, backdropFilter: "blur(10px)" }}>
-              <img src={certImage} alt="Membership Certificate" style={{ width: "100%", maxWidth: 700, borderRadius: 10 }} />
+            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 800, color: T.white, marginBottom: 8 }}>What matters most to you?</h2>
+            <p style={{ fontSize: 15, color: T.muted, marginBottom: 28 }}>Select your security priorities so we can tailor your experience.</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, maxWidth: 500, margin: "0 auto 28px" }} className="welcome-interests-grid">
+              {[
+                { id: "phishing", icon: "\uD83C\uDFA3", label: "Phishing Protection", color: "#ef4444" },
+                { id: "darkweb", icon: "\uD83D\uDD76\uFE0F", label: "Dark Web Monitoring", color: "#8b5cf6" },
+                { id: "passwords", icon: "\uD83D\uDD10", label: "Password Security", color: "#14e3c5" },
+                { id: "identity", icon: "\uD83D\uDEE1\uFE0F", label: "Identity Protection", color: "#3b82f6" },
+                { id: "devices", icon: "\uD83D\uDCBB", label: "Device Security", color: "#f97316" },
+                { id: "education", icon: "\uD83D\uDCDA", label: "Security Education", color: "#22c55e" },
+              ].map(item => {
+                const selected = interests.includes(item.id);
+                return (
+                  <button key={item.id} onClick={() => toggleInterest(item.id)} style={{
+                    padding: "16px 14px", borderRadius: 12, cursor: "pointer", textAlign: "left",
+                    display: "flex", alignItems: "center", gap: 12, transition: "all 0.25s",
+                    background: selected ? `${item.color}10` : "rgba(17,24,39,0.6)",
+                    border: `1.5px solid ${selected ? `${item.color}40` : "rgba(148,163,184,0.08)"}`,
+                    fontFamily: "inherit",
+                  }}>
+                    <span style={{ fontSize: 22 }}>{item.icon}</span>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: selected ? T.white : T.muted }}>{item.label}</span>
+                    {selected && <span style={{ marginLeft: "auto", color: item.color, fontWeight: 700, fontSize: 16 }}>&#10003;</span>}
+                  </button>
+                );
+              })}
             </div>
-            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-              <button onClick={handleDownload} style={{
-                padding: "14px 32px", background: "linear-gradient(135deg, #22c55e, #14e3c5)", border: "none", borderRadius: 10,
-                color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Space Grotesk'",
-                display: "flex", alignItems: "center", gap: 8,
-              }}>
-                ⬇ Download Certificate
-              </button>
-              <button onClick={() => navigate("/dashboard")} style={{
-                padding: "14px 32px", background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 10,
-                color: T.accent, fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Space Grotesk'",
-              }}>
-                Go to Dashboard →
+            <button onClick={runSecurityCheck} style={{
+              padding: "14px 40px", background: interests.length > 0 ? "linear-gradient(135deg, #6366f1, #14e3c5)" : "rgba(148,163,184,0.1)",
+              border: "none", borderRadius: 12, color: interests.length > 0 ? "#fff" : T.muted,
+              fontSize: 15, fontWeight: 700, cursor: interests.length > 0 ? "pointer" : "default",
+              fontFamily: "'Space Grotesk'", transition: "all 0.3s",
+              opacity: interests.length > 0 ? 1 : 0.5,
+            }}>
+              Run Security Check &rarr;
+            </button>
+            <div>
+              <button onClick={() => setStep(3)} style={{ background: "none", border: "none", color: T.muted, fontSize: 13, cursor: "pointer", fontFamily: "'Plus Jakarta Sans'", marginTop: 16 }}>
+                Skip to certificate &rarr;
               </button>
             </div>
           </div>
         )}
 
-        {/* Skip to dashboard */}
-        {!certImage && step >= 1 && (
-          <button onClick={() => navigate("/dashboard")} style={{
-            background: "none", border: "none", color: T.muted, fontSize: 14, cursor: "pointer",
-            fontFamily: "'Plus Jakarta Sans'", marginTop: 12,
-          }}>
-            Skip and go to Dashboard →
-          </button>
+        {/* Step 2: Security Check */}
+        {step === 2 && (
+          <div style={{ animation: "fadeInUp 0.6s ease" }}>
+            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 800, color: T.white, marginBottom: 8 }}>Running Security Check</h2>
+            <p style={{ fontSize: 15, color: T.muted, marginBottom: 32 }}>Analyzing your digital security posture...</p>
+            <div style={{ maxWidth: 400, margin: "0 auto 28px" }}>
+              <div style={{ background: "rgba(148,163,184,0.08)", borderRadius: 10, height: 8, overflow: "hidden", marginBottom: 12 }}>
+                <div style={{ height: "100%", borderRadius: 10, background: "linear-gradient(90deg, #6366f1, #14e3c5)", width: `${checkProgress}%`, transition: "width 0.3s ease" }} />
+              </div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, color: T.accent }}>{checkProgress}%</div>
+            </div>
+            <div style={{ background: "rgba(17,24,39,0.8)", border: "1px solid rgba(148,163,184,0.08)", borderRadius: 14, padding: 20, maxWidth: 400, margin: "0 auto", textAlign: "left" }}>
+              {[
+                { label: "Email breach check", done: checkProgress > 20 },
+                { label: "Password strength audit", done: checkProgress > 40 },
+                { label: "Dark web scan", done: checkProgress > 60 },
+                { label: "Device fingerprint", done: checkProgress > 80 },
+                { label: "Risk assessment", done: checkProgress >= 100 },
+              ].map((item, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: i < 4 ? "1px solid rgba(148,163,184,0.06)" : "none" }}>
+                  <span style={{ width: 20, height: 20, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 700,
+                    background: item.done ? "rgba(34,197,94,0.15)" : "rgba(148,163,184,0.08)",
+                    color: item.done ? "#22c55e" : T.muted, border: `1px solid ${item.done ? "rgba(34,197,94,0.25)" : "rgba(148,163,184,0.12)"}`,
+                    transition: "all 0.3s",
+                  }}>{item.done ? "\u2713" : ""}</span>
+                  <span style={{ fontSize: 13, color: item.done ? T.white : T.muted, transition: "color 0.3s" }}>{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Step 3: Certificate */}
+        {step === 3 && (
+          <div style={{ animation: "fadeInUp 0.6s ease" }}>
+            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 800, color: T.white, marginBottom: 8 }}>You're All Set!</h2>
+            <p style={{ fontSize: 15, color: T.muted, marginBottom: 20 }}>Your security profile is ready. Generate your membership certificate below.</p>
+
+            {/* Stats */}
+            <div style={{ display: "flex", justifyContent: "center", gap: 32, marginBottom: 32, flexWrap: "wrap" }}>
+              {[
+                { label: "Security Score", value: "87/100", color: T.green },
+                { label: "Threats Blocked", value: "1,247", color: T.cyan },
+                { label: "Courses Available", value: "6", color: T.accent },
+                { label: "Your Plan", value: user.plan?.charAt(0).toUpperCase() + user.plan?.slice(1) || "Free", color: "#eab308" },
+              ].map(s => (
+                <div key={s.label} style={{ textAlign: "center" }}>
+                  <div style={{ fontSize: 24, fontWeight: 800, color: s.color, fontFamily: "'Space Grotesk'" }}>{s.value}</div>
+                  <div style={{ fontSize: 12, color: T.muted }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Certificate section */}
+            {!certImage && (
+              <div style={{ background: "rgba(17,24,39,0.8)", border: `1px solid ${T.border}`, borderRadius: 16, padding: 32, backdropFilter: "blur(10px)", marginBottom: 24 }}>
+                <div style={{ fontSize: 40, marginBottom: 12 }}>{"\uD83C\uDF93"}</div>
+                <h3 style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'", marginBottom: 8 }}>Your Membership Certificate</h3>
+                <p style={{ fontSize: 14, color: T.muted, marginBottom: 20 }}>Download your official SECUVION membership certificate with your name and unique member ID.</p>
+                <button onClick={handleGenerateCert} style={{
+                  padding: "14px 36px", background: "linear-gradient(135deg, #14e3c5, #6366f1)", border: "none", borderRadius: 10,
+                  color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Space Grotesk'",
+                  transition: "all 0.3s", animation: "pulse 2s infinite",
+                }}>
+                  Generate My Certificate
+                </button>
+              </div>
+            )}
+
+            {/* Certificate preview */}
+            {certImage && (
+              <div>
+                <div style={{ background: "rgba(17,24,39,0.8)", border: `1px solid ${T.border}`, borderRadius: 16, padding: 8, display: "inline-block", marginBottom: 20, backdropFilter: "blur(10px)" }}>
+                  <img src={certImage} alt="Membership Certificate" style={{ width: "100%", maxWidth: 700, borderRadius: 10 }} />
+                </div>
+                <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+                  <button onClick={handleDownload} style={{
+                    padding: "14px 32px", background: "linear-gradient(135deg, #22c55e, #14e3c5)", border: "none", borderRadius: 10,
+                    color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Space Grotesk'",
+                    display: "flex", alignItems: "center", gap: 8,
+                  }}>
+                    &#11015; Download Certificate
+                  </button>
+                  <button onClick={() => navigate("/dashboard")} style={{
+                    padding: "14px 32px", background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 10,
+                    color: T.accent, fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Space Grotesk'",
+                  }}>
+                    Go to Dashboard &rarr;
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Skip to dashboard */}
+            {!certImage && (
+              <button onClick={() => navigate("/dashboard")} style={{
+                background: "none", border: "none", color: T.muted, fontSize: 14, cursor: "pointer",
+                fontFamily: "'Plus Jakarta Sans'", marginTop: 12,
+              }}>
+                Skip and go to Dashboard &rarr;
+              </button>
+            )}
+          </div>
         )}
       </div>
     </div>

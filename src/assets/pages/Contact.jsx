@@ -107,6 +107,11 @@ export default function Contact() {
           <p style={{ color: T.muted, fontSize: 17, lineHeight: 1.75, maxWidth: 560, margin: "0 auto" }}>
             Have a question, need support, or want to explore a partnership? We are here to help. Reach out and our team will get back to you promptly.
           </p>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: 20, padding: "8px 18px", borderRadius: 100, background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.15)" }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: T.green, boxShadow: `0 0 8px ${T.green}60`, animation: "pulse-dot 2s ease infinite" }} />
+            <span style={{ fontSize: 13, fontWeight: 600, color: T.green }}>We're Online</span>
+            <span style={{ fontSize: 12, color: T.muted }}>· Avg. response: 2 hours</span>
+          </div>
         </div>
       </section>
 
@@ -319,13 +324,39 @@ export default function Contact() {
         </div>
       </section>
 
+      {/* ── Global Presence ── */}
+      <section style={{ maxWidth: 860, margin: "0 auto", padding: "0 24px 80px" }}>
+        <div style={{ textAlign: "center", marginBottom: 40 }}>
+          <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accentSoft, marginBottom: 16, letterSpacing: 0.5, textTransform: "uppercase" }}>Global Reach</span>
+          <h2 style={{ ...heading("clamp(24px, 3vw, 32px)"), marginBottom: 10 }}>Serving Users Worldwide</h2>
+          <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.7 }}>Headquartered in Pune, India — protecting users across 84 countries.</p>
+        </div>
+        <div className="contact-presence-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+          {[
+            { region: "Asia Pacific", users: "28K+", flag: "\uD83C\uDF0F", status: "Primary Hub" },
+            { region: "Europe", users: "12K+", flag: "\uD83C\uDF0D", status: "Expanding" },
+            { region: "Americas", users: "8K+", flag: "\uD83C\uDF0E", status: "Growing" },
+          ].map((r, i) => (
+            <div key={i} style={{ ...cardStyle, textAlign: "center", padding: "28px 20px" }}>
+              <div style={{ fontSize: 32, marginBottom: 10 }}>{r.flag}</div>
+              <h4 style={{ ...heading(16), marginBottom: 4 }}>{r.region}</h4>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 800, color: T.cyan, margin: "8px 0 4px" }}>{r.users}</div>
+              <div style={{ fontSize: 12, color: T.muted }}>Active Users</div>
+              <span style={{ display: "inline-block", marginTop: 10, padding: "3px 10px", borderRadius: 6, background: `${T.accent}0a`, border: `1px solid ${T.accent}18`, fontSize: 10, fontWeight: 600, color: T.accent }}>{r.status}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <Footer />
 
       <style>{`
         @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse-dot { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.3); } }
         @media (max-width: 768px) {
           .contact-grid { grid-template-columns: 1fr !important; }
           .vuln-grid { grid-template-columns: 1fr !important; }
+          .contact-presence-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>

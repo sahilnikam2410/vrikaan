@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -73,6 +74,78 @@ const MILESTONES = [
   { year: "2027", title: "Global Expansion", desc: "Planned rollout across Southeast Asia, Europe, and Africa with localized threat intelligence and multilingual support for 20+ languages.", color: "#f97316" },
 ];
 
+function AnimatedStat({ val, label, color }) {
+  const ref = useRef(null);
+  const [display, setDisplay] = useState("0");
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVisible(true); obs.disconnect(); }
+    }, { threshold: 0.3 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return;
+    const num = parseFloat(val.replace(/[^0-9.]/g, ""));
+    const suffix = val.replace(/[0-9.]/g, "");
+    if (isNaN(num)) { setDisplay(val); return; }
+    const duration = 1800;
+    const steps = 60;
+    const increment = num / steps;
+    let current = 0;
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      current = Math.min(num, increment * step);
+      if (Number.isInteger(num)) {
+        setDisplay(Math.round(current).toLocaleString() + suffix);
+      } else {
+        setDisplay(current.toFixed(1) + suffix);
+      }
+      if (step >= steps) clearInterval(timer);
+    }, duration / steps);
+    return () => clearInterval(timer);
+  }, [visible, val]);
+
+  return (
+    <div ref={ref} style={{ ...cardBase, textAlign: "center", padding: "36px 16px" }}>
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 38, fontWeight: 800, color, letterSpacing: "-0.03em", transition: "all 0.3s" }}>
+        {display}
+      </div>
+      <div style={{ fontSize: 13, color: T.mutedDark, marginTop: 8, fontWeight: 500 }}>{label}</div>
+    </div>
+  );
+}
+
+function useReveal() {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setVisible(true); obs.disconnect(); }
+    }, { threshold: 0.1 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, visible];
+}
+
+function RevealSection({ children, style = {} }) {
+  const [ref, visible] = useReveal();
+  return (
+    <div ref={ref} style={{ ...style, opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(30px)", transition: "opacity 0.7s ease, transform 0.7s ease" }}>
+      {children}
+    </div>
+  );
+}
+
 export default function About() {
   return (
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -107,39 +180,41 @@ export default function About() {
         </div>
 
         {/* ── Mission & Vision ── */}
-        <div className="about-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, ...sectionGap }}>
-          <div style={{ ...cardBase, position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: -40, right: -40, width: 120, height: 120, borderRadius: "50%", background: `radial-gradient(circle, ${T.accent}10, transparent)` }} />
-            <div style={{ width: 52, height: 52, borderRadius: 14, background: `${T.accent}12`, border: `1px solid ${T.accent}25`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, marginBottom: 20 }}>
-              &#x1F3AF;
+        <RevealSection style={sectionGap}>
+          <div className="about-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+            <div style={{ ...cardBase, position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: -40, right: -40, width: 120, height: 120, borderRadius: "50%", background: `radial-gradient(circle, ${T.accent}10, transparent)` }} />
+              <div style={{ width: 52, height: 52, borderRadius: 14, background: `${T.accent}12`, border: `1px solid ${T.accent}25`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, marginBottom: 20 }}>
+                &#x1F3AF;
+              </div>
+              <h3 style={{ ...heading(22), marginBottom: 14 }}>Our Mission</h3>
+              <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.85, margin: 0 }}>
+                To democratize cybersecurity by making enterprise-grade protection accessible and
+                affordable for every individual on the planet. We believe that online safety is a
+                fundamental human right, not a luxury reserved for corporations with massive IT
+                budgets. Every student, freelancer, and family deserves intelligent defense against
+                the threats that lurk in the digital world.
+              </p>
             </div>
-            <h3 style={{ ...heading(22), marginBottom: 14 }}>Our Mission</h3>
-            <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.85, margin: 0 }}>
-              To democratize cybersecurity by making enterprise-grade protection accessible and
-              affordable for every individual on the planet. We believe that online safety is a
-              fundamental human right, not a luxury reserved for corporations with massive IT
-              budgets. Every student, freelancer, and family deserves intelligent defense against
-              the threats that lurk in the digital world.
-            </p>
-          </div>
-          <div style={{ ...cardBase, position: "relative", overflow: "hidden" }}>
-            <div style={{ position: "absolute", top: -40, right: -40, width: 120, height: 120, borderRadius: "50%", background: `radial-gradient(circle, ${T.cyan}10, transparent)` }} />
-            <div style={{ width: 52, height: 52, borderRadius: 14, background: `${T.cyan}12`, border: `1px solid ${T.cyan}25`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, marginBottom: 20 }}>
-              &#x1F52D;
+            <div style={{ ...cardBase, position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: -40, right: -40, width: 120, height: 120, borderRadius: "50%", background: `radial-gradient(circle, ${T.cyan}10, transparent)` }} />
+              <div style={{ width: 52, height: 52, borderRadius: 14, background: `${T.cyan}12`, border: `1px solid ${T.cyan}25`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, marginBottom: 20 }}>
+                &#x1F52D;
+              </div>
+              <h3 style={{ ...heading(22), marginBottom: 14 }}>Our Vision</h3>
+              <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.85, margin: 0 }}>
+                A world where every person can navigate the digital landscape without fear of fraud,
+                identity theft, or exploitation. We envision AI-powered security acting as a universal
+                shield, protecting billions of connected lives across every continent. In this future,
+                cybersecurity is invisible, intelligent, and always on, woven seamlessly into the
+                fabric of everyday digital life.
+              </p>
             </div>
-            <h3 style={{ ...heading(22), marginBottom: 14 }}>Our Vision</h3>
-            <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.85, margin: 0 }}>
-              A world where every person can navigate the digital landscape without fear of fraud,
-              identity theft, or exploitation. We envision AI-powered security acting as a universal
-              shield, protecting billions of connected lives across every continent. In this future,
-              cybersecurity is invisible, intelligent, and always on, woven seamlessly into the
-              fabric of everyday digital life.
-            </p>
           </div>
-        </div>
+        </RevealSection>
 
         {/* ── Why SECUVION ── */}
-        <div style={{ ...sectionGap, textAlign: "center" }}>
+        <RevealSection style={{ ...sectionGap, textAlign: "center" }}>
           <span style={badge("#f97316")}>Why Us</span>
           <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)"), marginBottom: 20 }}>
             Why Choose <span style={gradientText}>SECUVION</span>?
@@ -183,22 +258,17 @@ export default function About() {
               </div>
             ))}
           </div>
-        </div>
+        </RevealSection>
 
-        {/* ── Stats Bar ── */}
+        {/* ── Stats Bar (animated counters) ── */}
         <div className="about-grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20, ...sectionGap }}>
           {STATS.map((s, i) => (
-            <div key={i} style={{ ...cardBase, textAlign: "center", padding: "36px 16px" }}>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 38, fontWeight: 800, color: s.color, letterSpacing: "-0.03em" }}>
-                {s.val}
-              </div>
-              <div style={{ fontSize: 13, color: T.mutedDark, marginTop: 8, fontWeight: 500 }}>{s.label}</div>
-            </div>
+            <AnimatedStat key={i} val={s.val} label={s.label} color={s.color} />
           ))}
         </div>
 
         {/* ── Our Story ── */}
-        <div style={sectionGap}>
+        <RevealSection style={sectionGap}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <span style={badge(T.cyan)}>Our Story</span>
             <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)"), marginBottom: 16 }}>
@@ -230,10 +300,10 @@ export default function About() {
               a mission to protect millions.
             </p>
           </div>
-        </div>
+        </RevealSection>
 
         {/* ── Core Values ── */}
-        <div style={sectionGap}>
+        <RevealSection style={sectionGap}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <span style={badge(T.green)}>What We Believe</span>
             <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)") }}>Core Values</h2>
@@ -250,10 +320,10 @@ export default function About() {
               </div>
             ))}
           </div>
-        </div>
+        </RevealSection>
 
         {/* ── Technology Stack ── */}
-        <div style={sectionGap}>
+        <RevealSection style={sectionGap}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <span style={badge(T.accent)}>Under the Hood</span>
             <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)") }}>Technology Stack</h2>
@@ -271,10 +341,10 @@ export default function About() {
               </div>
             ))}
           </div>
-        </div>
+        </RevealSection>
 
         {/* ── What We Protect Against ── */}
-        <div style={sectionGap}>
+        <RevealSection style={sectionGap}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <span style={badge(T.red)}>Threat Landscape</span>
             <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)") }}>What We Protect Against</h2>
@@ -319,10 +389,10 @@ export default function About() {
               </div>
             ))}
           </div>
-        </div>
+        </RevealSection>
 
         {/* ── Founder / Team ── */}
-        <div style={sectionGap}>
+        <RevealSection style={sectionGap}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <span style={badge(T.cyan)}>Leadership</span>
             <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)") }}>Meet the Founder</h2>
@@ -385,10 +455,46 @@ export default function About() {
               </div>
             </div>
           </div>
-        </div>
+        </RevealSection>
+
+        {/* ── Join Our Team ── */}
+        <RevealSection style={sectionGap}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <span style={badge(T.accentSoft)}>Careers</span>
+            <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)"), marginBottom: 16 }}>
+              Join Our <span style={gradientText}>Team</span>
+            </h2>
+            <p style={{ color: T.muted, fontSize: 15, maxWidth: 520, margin: "0 auto", lineHeight: 1.85 }}>
+              We're always looking for passionate people who want to make the internet safer for everyone.
+            </p>
+          </div>
+          <div className="about-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            {[
+              { role: "AI/ML Engineer", type: "Full-time \u00B7 Remote", desc: "Build and optimize neural network models for real-time threat detection and behavioral analysis.", color: T.accent },
+              { role: "Frontend Developer", type: "Full-time \u00B7 Remote", desc: "Craft beautiful, performant React interfaces for our cybersecurity dashboard and tools.", color: T.cyan },
+              { role: "Security Researcher", type: "Part-time \u00B7 Remote", desc: "Analyze emerging threats, reverse-engineer malware, and contribute to our threat intelligence database.", color: T.red },
+              { role: "Community Manager", type: "Full-time \u00B7 Remote", desc: "Grow and nurture our community of security-conscious users through content, events, and support.", color: T.green },
+            ].map((job, i) => (
+              <div key={i} style={{ ...cardBase, padding: "28px 28px", display: "flex", flexDirection: "column", gap: 12, transition: "all 0.3s", cursor: "pointer" }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = `${job.color}30`; e.currentTarget.style.transform = "translateY(-4px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = T.border; e.currentTarget.style.transform = "translateY(0)"; }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                  <h4 style={{ ...heading(17), margin: 0 }}>{job.role}</h4>
+                  <span style={{ padding: "4px 10px", borderRadius: 6, background: `${job.color}10`, border: `1px solid ${job.color}20`, fontSize: 10, fontWeight: 600, color: job.color, whiteSpace: "nowrap" }}>Open</span>
+                </div>
+                <span style={{ fontSize: 12, color: T.mutedDark, fontWeight: 500 }}>{job.type}</span>
+                <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.8, margin: 0 }}>{job.desc}</p>
+                <Link to="/contact" style={{ fontSize: 13, color: T.accent, fontWeight: 600, textDecoration: "none", marginTop: 4 }}>
+                  Apply Now &rarr;
+                </Link>
+              </div>
+            ))}
+          </div>
+        </RevealSection>
 
         {/* ── Timeline / Milestones ── */}
-        <div style={sectionGap}>
+        <RevealSection style={sectionGap}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <span style={badge("#f97316")}>Milestones</span>
             <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)") }}>Our Journey</h2>
@@ -413,7 +519,7 @@ export default function About() {
               ))}
             </div>
           </div>
-        </div>
+        </RevealSection>
 
         {/* ── Join Our Mission CTA ── */}
         <div style={{
