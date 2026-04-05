@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 
@@ -30,18 +30,61 @@ const mainLinks = [
   { to: "/pricing", label: "Pricing" },
 ];
 
+const SEARCH_ITEMS = [
+  { label: "Threat Map", to: "/threat-map", cat: "Tools", icon: "\uD83C\uDF0D" },
+  { label: "Fraud Analyzer", to: "/fraud-analyzer", cat: "Tools", icon: "\uD83D\uDD0D" },
+  { label: "Security Score", to: "/security-score", cat: "Tools", icon: "\uD83D\uDCCA" },
+  { label: "Vulnerability Scanner", to: "/vulnerability-scanner", cat: "Tools", icon: "\uD83D\uDEE1\uFE0F" },
+  { label: "Dark Web Monitor", to: "/dark-web-monitor", cat: "Tools", icon: "\uD83D\uDD75\uFE0F" },
+  { label: "Password Vault", to: "/password-vault", cat: "Tools", icon: "\uD83D\uDD10" },
+  { label: "Email Analyzer", to: "/email-analyzer", cat: "Tools", icon: "\uD83D\uDCE7" },
+  { label: "IP Lookup", to: "/ip-lookup", cat: "Tools", icon: "\uD83C\uDF10" },
+  { label: "QR Scanner", to: "/qr-scanner", cat: "Tools", icon: "\uD83D\uDCF1" },
+  { label: "Security Checklist", to: "/security-checklist", cat: "Tools", icon: "\u2705" },
+  { label: "Learn", to: "/learn", cat: "Pages", icon: "\uD83D\uDCDA" },
+  { label: "Blog", to: "/blog", cat: "Pages", icon: "\u270D\uFE0F" },
+  { label: "Cyber News", to: "/cyber-news", cat: "Pages", icon: "\uD83D\uDCF0" },
+  { label: "Pricing", to: "/pricing", cat: "Pages", icon: "\uD83D\uDCB3" },
+  { label: "About", to: "/about", cat: "Pages", icon: "\u2139\uFE0F" },
+  { label: "Contact", to: "/contact", cat: "Pages", icon: "\uD83D\uDCEC" },
+  { label: "Features", to: "/features", cat: "Pages", icon: "\u2728" },
+  { label: "Dashboard", to: "/dashboard", cat: "Account", icon: "\uD83D\uDCCA" },
+  { label: "Profile", to: "/user-dashboard", cat: "Account", icon: "\uD83D\uDC64" },
+];
+
 const Navbar = () => {
   const { user } = useAuth();
   const { mode, toggleTheme } = useTheme();
   const T = mode === "dark" ? TD : TL;
   const location = useLocation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [notifications, setNotifications] = useState([
+    { id: 1, msg: "New phishing threat detected in your region", time: "2m ago", color: "#ef4444", icon: "!", read: false },
+    { id: 2, msg: "Security score updated: 92/100", time: "1h ago", color: "#22c55e", icon: "\u2713", read: false },
+    { id: 3, msg: "Dark web scan complete \u2014 no leaks found", time: "3h ago", color: "#14e3c5", icon: "\u25C6", read: false },
+    { id: 4, msg: "Password vault: 2 weak passwords detected", time: "5h ago", color: "#f97316", icon: "!", read: true },
+    { id: 5, msg: "Welcome to SECUVION! Start your security journey", time: "1d ago", color: "#6366f1", icon: "\u2605", read: true },
+  ]);
+  const unreadCount = notifications.filter(n => !n.read).length;
+  const markAllRead = () => setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  const dismissNotif = (id) => setNotifications(prev => prev.filter(n => n.id !== id));
   const dropRef = useRef(null);
   const notifRef = useRef(null);
+  const searchRef = useRef(null);
+  const searchInputRef = useRef(null);
+
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const q = searchQuery.toLowerCase();
+    return SEARCH_ITEMS.filter(i => i.label.toLowerCase().includes(q) || i.cat.toLowerCase().includes(q)).slice(0, 8);
+  }, [searchQuery]);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
@@ -49,16 +92,31 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  useEffect(() => { setOpen(false); setToolsOpen(false); setMobileToolsOpen(false); setNotifOpen(false); }, [location.pathname]);
+  useEffect(() => { setOpen(false); setToolsOpen(false); setMobileToolsOpen(false); setNotifOpen(false); setSearchOpen(false); setSearchQuery(""); }, [location.pathname]);
 
   // Close dropdown on outside click
   useEffect(() => {
     const fn = (e) => {
       if (dropRef.current && !dropRef.current.contains(e.target)) setToolsOpen(false);
       if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false);
+      if (searchRef.current && !searchRef.current.contains(e.target)) { setSearchOpen(false); setSearchQuery(""); }
     };
     document.addEventListener("mousedown", fn);
     return () => document.removeEventListener("mousedown", fn);
+  }, []);
+
+  // Ctrl+K shortcut to open search
+  useEffect(() => {
+    const fn = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen(prev => !prev);
+        setTimeout(() => searchInputRef.current?.focus(), 50);
+      }
+      if (e.key === "Escape") { setSearchOpen(false); setSearchQuery(""); }
+    };
+    document.addEventListener("keydown", fn);
+    return () => document.removeEventListener("keydown", fn);
   }, []);
 
   const isActive = (path) => location.pathname === path;
@@ -175,6 +233,78 @@ const Navbar = () => {
 
         {/* Desktop auth buttons */}
         <div className="nav-desktop-auth" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {/* Search */}
+          <div ref={searchRef} style={{ position: "relative" }}>
+            <button onClick={() => { setSearchOpen(!searchOpen); setTimeout(() => searchInputRef.current?.focus(), 50); }}
+              style={{
+                background: "rgba(148,163,184,0.06)", border: `1px solid ${T.border}`, borderRadius: 8,
+                height: 34, display: "flex", alignItems: "center", gap: 8, cursor: "pointer",
+                transition: "all 0.3s", color: T.muted, padding: "0 12px", fontFamily: "inherit", fontSize: 13,
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = T.accent + "40"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = T.border; }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <span className="nav-search-label" style={{ color: T.muted }}>Search</span>
+              <kbd style={{ fontSize: 10, padding: "2px 5px", borderRadius: 4, background: "rgba(148,163,184,0.08)", border: `1px solid ${T.border}`, color: T.muted, fontFamily: "'JetBrains Mono', monospace" }}>Ctrl K</kbd>
+            </button>
+
+            {searchOpen && (
+              <div style={{
+                position: "absolute", top: "calc(100% + 10px)", right: 0, width: 360,
+                background: mode === "dark" ? "rgba(10,15,30,0.98)" : "rgba(241,245,249,0.98)", backdropFilter: "blur(20px)",
+                border: `1px solid rgba(99,102,241,0.15)`, borderRadius: 14,
+                boxShadow: "0 20px 60px rgba(0,0,0,0.4)", overflow: "hidden",
+                animation: "dropIn 0.2s ease",
+              }}>
+                <div style={{ padding: "12px 14px", borderBottom: `1px solid ${T.border}`, display: "flex", alignItems: "center", gap: 10 }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={T.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                  </svg>
+                  <input ref={searchInputRef} value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
+                    onKeyDown={e => { if (e.key === "Enter" && searchResults.length > 0) { navigate(searchResults[0].to); setSearchOpen(false); setSearchQuery(""); } }}
+                    placeholder="Search tools, pages..."
+                    style={{ flex: 1, background: "none", border: "none", outline: "none", color: T.white, fontSize: 14, fontFamily: "inherit" }}
+                  />
+                  {searchQuery && <button onClick={() => setSearchQuery("")} style={{ background: "none", border: "none", color: T.muted, cursor: "pointer", fontSize: 16, padding: 0, lineHeight: 1 }}>&times;</button>}
+                </div>
+                <div style={{ maxHeight: 320, overflowY: "auto" }}>
+                  {searchQuery && searchResults.length === 0 && (
+                    <div style={{ padding: "24px 16px", textAlign: "center", color: T.muted, fontSize: 13 }}>No results found</div>
+                  )}
+                  {searchResults.map((item, i) => (
+                    <Link key={item.to} to={item.to} onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
+                      style={{
+                        display: "flex", alignItems: "center", gap: 12, padding: "10px 16px",
+                        textDecoration: "none", transition: "background 0.15s",
+                        borderBottom: i < searchResults.length - 1 ? `1px solid ${T.border}` : "none",
+                        background: "transparent",
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.06)"}
+                      onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                    >
+                      <span style={{ fontSize: 18, width: 28, textAlign: "center" }}>{item.icon}</span>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: T.white }}>{item.label}</div>
+                        <div style={{ fontSize: 11, color: T.muted }}>{item.cat}</div>
+                      </div>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={T.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ opacity: 0.5 }}>
+                        <polyline points="9 18 15 12 9 6"/>
+                      </svg>
+                    </Link>
+                  ))}
+                  {!searchQuery && (
+                    <div style={{ padding: "16px", color: T.muted, fontSize: 12, textAlign: "center" }}>
+                      Type to search across tools, pages, and features
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Theme toggle */}
           <button onClick={toggleTheme} title={mode === "dark" ? "Switch to light mode" : "Switch to dark mode"} style={{
             background: "rgba(148,163,184,0.06)", border: `1px solid ${T.border}`, borderRadius: 8,
@@ -205,37 +335,55 @@ const Navbar = () => {
                   <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
                   <path d="M13.73 21a2 2 0 0 1-3.46 0" />
                 </svg>
-                <span style={{ position: "absolute", top: 4, right: 4, width: 7, height: 7, borderRadius: "50%", background: "#ef4444", border: `2px solid ${T.bg}` }} />
+                {unreadCount > 0 && (
+                  <span style={{ position: "absolute", top: 2, right: 2, minWidth: 16, height: 16, borderRadius: 8, background: "#ef4444", border: `2px solid ${T.bg}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 700, color: "#fff", padding: "0 3px", fontFamily: "'Space Grotesk'" }}>
+                    {unreadCount}
+                  </span>
+                )}
 
                 {/* Notification dropdown */}
                 {notifOpen && (
                   <div style={{
                     position: "absolute", top: "calc(100% + 12px)", right: -40,
-                    width: 300, background: mode === "dark" ? "rgba(10,15,30,0.98)" : "rgba(241,245,249,0.98)", backdropFilter: "blur(20px)",
+                    width: 340, background: mode === "dark" ? "rgba(10,15,30,0.98)" : "rgba(241,245,249,0.98)", backdropFilter: "blur(20px)",
                     border: `1px solid rgba(99,102,241,0.15)`, borderRadius: 14,
-                    boxShadow: "0 20px 60px rgba(0,0,0,0.5)", overflow: "hidden",
+                    boxShadow: "0 20px 60px rgba(0,0,0,0.4)", overflow: "hidden",
                     animation: "dropIn 0.2s ease",
                   }}>
-                    <div style={{ padding: "14px 16px", borderBottom: `1px solid ${T.border}`, fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, fontWeight: 700, color: T.white }}>
-                      Notifications
+                    <div style={{ padding: "14px 16px", borderBottom: `1px solid ${T.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, fontWeight: 700, color: T.white }}>
+                        Notifications {unreadCount > 0 && <span style={{ fontSize: 11, color: T.accent, fontWeight: 600, marginLeft: 6 }}>{unreadCount} new</span>}
+                      </span>
+                      {unreadCount > 0 && (
+                        <button onClick={(e) => { e.stopPropagation(); markAllRead(); }} style={{ background: "none", border: "none", fontSize: 11, color: T.accent, cursor: "pointer", fontWeight: 600, fontFamily: "inherit", padding: "2px 6px" }}>
+                          Mark all read
+                        </button>
+                      )}
                     </div>
-                    {[
-                      { msg: "New phishing threat detected in your region", time: "2m ago", color: "#ef4444", icon: "!" },
-                      { msg: "Security score updated: 92/100", time: "1h ago", color: "#22c55e", icon: "&#10003;" },
-                      { msg: "Dark web scan complete — no leaks found", time: "3h ago", color: T.cyan, icon: "&#9670;" },
-                    ].map((n, i) => (
-                      <div key={i} style={{ padding: "12px 16px", borderBottom: `1px solid ${T.border}`, display: "flex", gap: 10, alignItems: "flex-start", cursor: "pointer", transition: "background 0.2s" }}
-                        onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.05)"}
-                        onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-                      >
-                        <span style={{ width: 28, height: 28, borderRadius: 8, background: `${n.color}12`, border: `1px solid ${n.color}25`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: n.color, flexShrink: 0, fontWeight: 700 }} dangerouslySetInnerHTML={{ __html: n.icon }} />
-                        <div>
-                          <div style={{ fontSize: 12, color: T.white, lineHeight: 1.5 }}>{n.msg}</div>
-                          <div style={{ fontSize: 10, color: T.muted, marginTop: 2 }}>{n.time}</div>
+                    <div style={{ maxHeight: 320, overflowY: "auto" }}>
+                      {notifications.length === 0 && (
+                        <div style={{ padding: "32px 16px", textAlign: "center", color: T.muted, fontSize: 13 }}>No notifications</div>
+                      )}
+                      {notifications.map((n) => (
+                        <div key={n.id} style={{ padding: "12px 16px", borderBottom: `1px solid ${T.border}`, display: "flex", gap: 10, alignItems: "flex-start", cursor: "pointer", transition: "background 0.2s", background: n.read ? "transparent" : (mode === "dark" ? "rgba(99,102,241,0.03)" : "rgba(99,102,241,0.04)") }}
+                          onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.06)"}
+                          onMouseLeave={e => e.currentTarget.style.background = n.read ? "transparent" : (mode === "dark" ? "rgba(99,102,241,0.03)" : "rgba(99,102,241,0.04)")}
+                          onClick={(e) => { e.stopPropagation(); setNotifications(prev => prev.map(x => x.id === n.id ? { ...x, read: true } : x)); }}
+                        >
+                          <span style={{ width: 28, height: 28, borderRadius: 8, background: `${n.color}12`, border: `1px solid ${n.color}25`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, color: n.color, flexShrink: 0, fontWeight: 700 }}>{n.icon}</span>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontSize: 12, color: n.read ? T.muted : T.white, lineHeight: 1.5, fontWeight: n.read ? 400 : 500 }}>{n.msg}</div>
+                            <div style={{ fontSize: 10, color: T.muted, marginTop: 2 }}>{n.time}</div>
+                          </div>
+                          {!n.read && <span style={{ width: 6, height: 6, borderRadius: "50%", background: T.accent, flexShrink: 0, marginTop: 6 }} />}
+                          <button onClick={(e) => { e.stopPropagation(); dismissNotif(n.id); }} style={{ background: "none", border: "none", color: T.muted, cursor: "pointer", fontSize: 14, padding: "0 2px", lineHeight: 1, opacity: 0.5 }}
+                            onMouseEnter={e => e.currentTarget.style.opacity = "1"}
+                            onMouseLeave={e => e.currentTarget.style.opacity = "0.5"}
+                          >&times;</button>
                         </div>
-                      </div>
-                    ))}
-                    <Link to="/dashboard" style={{ display: "block", padding: "10px 16px", textAlign: "center", fontSize: 12, fontWeight: 600, color: T.accent, textDecoration: "none" }}>
+                      ))}
+                    </div>
+                    <Link to="/dashboard" style={{ display: "block", padding: "10px 16px", textAlign: "center", fontSize: 12, fontWeight: 600, color: T.accent, textDecoration: "none", borderTop: `1px solid ${T.border}` }}>
                       View all notifications
                     </Link>
                   </div>
@@ -422,6 +570,9 @@ const Navbar = () => {
       <style>{`
         @keyframes navFadeIn { from { opacity: 0 } to { opacity: 1 } }
         @keyframes dropIn { from { opacity: 0; transform: translateX(-50%) translateY(-8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        @media (max-width: 1100px) {
+          .nav-search-label { display: none !important; }
+        }
         @media (max-width: 900px) {
           .nav-desktop-links, .nav-desktop-auth { display: none !important; }
           .nav-mobile-burger { display: flex !important; }

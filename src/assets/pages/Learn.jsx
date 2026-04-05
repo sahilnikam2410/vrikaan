@@ -985,7 +985,7 @@ export default function Learn() {
         {certImage && (
           <div style={{ textAlign: "center" }}>
             <div style={{ ...sty.card, display: "inline-block", padding: 8, marginBottom: 20 }}>
-              <img ref={certRef} src={certImage} alt="Certificate" style={{ width: "100%", maxWidth: 800, borderRadius: 8 }} />
+              <img ref={certRef} src={certImage} alt="Certificate" loading="lazy" style={{ width: "100%", maxWidth: 800, borderRadius: 8 }} />
             </div>
             <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
               <button onClick={downloadCert} style={{ ...sty.btn(T.green, "#fff"), padding: "14px 32px" }}>

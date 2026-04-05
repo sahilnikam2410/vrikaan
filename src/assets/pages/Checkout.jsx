@@ -485,7 +485,7 @@ export default function Checkout() {
                     <div style={{
                       background: "#fff", borderRadius: 12, padding: 12, display: "inline-block", marginBottom: 12,
                     }}>
-                      <img src={upiQrUrl} alt="UPI QR Code" width={176} height={176} style={{ display: "block", borderRadius: 4 }} />
+                      <img src={upiQrUrl} alt="UPI QR Code" width={176} height={176} loading="lazy" style={{ display: "block", borderRadius: 4 }} />
                     </div>
                     <p style={{ fontSize: 12, color: T.muted }}>Scan with any UPI app</p>
                   </div>
@@ -605,7 +605,7 @@ export default function Checkout() {
                   <div style={{ textAlign: "center" }}>
                     <div style={{ background: "#fff", borderRadius: 12, padding: 10, display: "inline-block" }}>
                       <img src={cryptoCoin === "btc" ? btcQrUrl : ethQrUrl} alt="Wallet QR"
-                        width={160} height={160} style={{ display: "block", borderRadius: 4 }} />
+                        width={160} height={160} loading="lazy" style={{ display: "block", borderRadius: 4 }} />
                     </div>
                     <p style={{ fontSize: 11, color: T.muted, marginTop: 8 }}>Scan to get address</p>
                   </div>

@@ -560,7 +560,7 @@ export default function Welcome() {
             {certImage && (
               <div>
                 <div style={{ background: "rgba(17,24,39,0.8)", border: `1px solid ${T.border}`, borderRadius: 16, padding: 8, display: "inline-block", marginBottom: 20, backdropFilter: "blur(10px)" }}>
-                  <img src={certImage} alt="Membership Certificate" style={{ width: "100%", maxWidth: 700, borderRadius: 10 }} />
+                  <img src={certImage} alt="Membership Certificate" loading="lazy" style={{ width: "100%", maxWidth: 700, borderRadius: 10 }} />
                 </div>
                 <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
                   <button onClick={handleDownload} style={{
