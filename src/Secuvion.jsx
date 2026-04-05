@@ -745,7 +745,7 @@ const ProductDemo = () => {
             </div>
 
             {/* Content area */}
-            <div style={{ padding: "48px 40px", minHeight: 340, position: "relative" }}>
+            <div style={{ padding: "48px clamp(16px, 4vw, 40px)", minHeight: 340, position: "relative" }}>
               <div style={{ textAlign: "center", marginBottom: 36 }}>
                 <h3 style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 700, color: T.white, margin: "0 0 8px" }}>
                   {tabs[activeTab].label}
@@ -879,7 +879,7 @@ const DeviceMockup = () => (
         {/* Laptop */}
         <div style={{ position: "relative", zIndex: 2 }}>
           <div style={{
-            width: "clamp(500px, 50vw, 640px)", background: "rgba(17,24,39,0.8)",
+            width: "clamp(280px, 70vw, 640px)", background: "rgba(17,24,39,0.8)",
             border: `1px solid ${T.border}`, borderRadius: "16px 16px 0 0",
             overflow: "hidden", backdropFilter: "blur(8px)",
           }}>
@@ -1474,18 +1474,18 @@ const SecurityTools = () => {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 24 }} className="tools-grid">
         {/* Breach Check */}
         <Reveal delay={0.1}>
-          <Card style={{ height: "100%", padding: 36 }} hover={false}>
+          <Card style={{ height: "100%", padding: "clamp(20px, 4vw, 36px)" }} hover={false}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
-              <div style={{ width: 40, height: 40, borderRadius: 10, background: `${T.red}0a`, border: `1px solid ${T.red}15`, display: "flex", alignItems: "center", justifyContent: "center", color: T.red, fontSize: 18 }}>&#9888;</div>
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: `${T.red}0a`, border: `1px solid ${T.red}15`, display: "flex", alignItems: "center", justifyContent: "center", color: T.red, fontSize: 18, flexShrink: 0 }}>&#9888;</div>
               <div>
                 <h3 style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 600, color: T.white, margin: 0 }}>Email Breach Scanner</h3>
                 <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark, margin: 0 }}>Check if your email has been compromised</p>
               </div>
             </div>
-            <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+            <div style={{ display: "flex", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
               <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Enter your email address..."
                 onKeyDown={e => e.key === "Enter" && checkBreach()}
-                style={{ flex: 1, padding: "14px 18px", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(148,163,184,0.1)", borderRadius: 10, color: T.white, fontFamily: "var(--font-body)", fontSize: 14, outline: "none" }}
+                style={{ flex: 1, minWidth: 0, padding: "14px 18px", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(148,163,184,0.1)", borderRadius: 10, color: T.white, fontFamily: "var(--font-body)", fontSize: 14, outline: "none", boxSizing: "border-box" }}
                 onFocus={e => e.target.style.borderColor = "rgba(99,102,241,0.3)"} onBlur={e => e.target.style.borderColor = "rgba(148,163,184,0.1)"} />
               <Btn primary onClick={checkBreach}>{breachLoading ? "..." : "Scan"}</Btn>
             </div>
@@ -1501,9 +1501,9 @@ const SecurityTools = () => {
 
         {/* Safety Score */}
         <Reveal delay={0.2}>
-          <Card style={{ height: "100%", padding: 36 }} hover={false}>
+          <Card style={{ height: "100%", padding: "clamp(20px, 4vw, 36px)" }} hover={false}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
-              <div style={{ width: 40, height: 40, borderRadius: 10, background: `${T.cyan}0a`, border: `1px solid ${T.cyan}15`, display: "flex", alignItems: "center", justifyContent: "center", color: T.cyan, fontSize: 18 }}>&#9670;</div>
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: `${T.cyan}0a`, border: `1px solid ${T.cyan}15`, display: "flex", alignItems: "center", justifyContent: "center", color: T.cyan, fontSize: 18, flexShrink: 0 }}>&#9670;</div>
               <div>
                 <h3 style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 600, color: T.white, margin: 0 }}>Cyber Safety Score</h3>
                 <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark, margin: 0 }}>Quick security posture assessment</p>
@@ -1667,11 +1667,11 @@ const AssistantSection = () => {
 
         <Reveal delay={0.2} direction="right">
           <Card style={{ padding: 0, overflow: "hidden" }} hover={false}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 22px", borderBottom: `1px solid ${T.border}`, background: "rgba(0,0,0,0.2)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px clamp(14px, 3vw, 22px)", borderBottom: `1px solid ${T.border}`, background: "rgba(0,0,0,0.2)" }}>
               <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e" }} />
               <span style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.muted, fontWeight: 600 }}>Secuvion AI</span>
             </div>
-            <div style={{ padding: "20px 24px" }}>
+            <div style={{ padding: "20px clamp(12px, 3vw, 24px)" }}>
               <div style={{ height: 300, overflowY: "auto", marginBottom: 16 }}>
                 {msgs.map((m, i) => (
                   <div key={i} style={{ display: "flex", gap: 12, marginBottom: 16, flexDirection: m.role === "user" ? "row-reverse" : "row", animation: "fadeIn 0.4s ease" }}>
@@ -1688,7 +1688,7 @@ const AssistantSection = () => {
               <div style={{ display: "flex", gap: 10 }}>
                 <input value={input} onChange={e => setInput(e.target.value)} placeholder="Ask about cybersecurity..."
                   onKeyDown={e => e.key === "Enter" && send()}
-                  style={{ flex: 1, padding: "12px 16px", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(148,163,184,0.1)", borderRadius: 10, color: T.white, fontFamily: "var(--font-body)", fontSize: 14, outline: "none" }}
+                  style={{ flex: 1, minWidth: 0, padding: "12px 16px", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(148,163,184,0.1)", borderRadius: 10, color: T.white, fontFamily: "var(--font-body)", fontSize: 14, outline: "none", boxSizing: "border-box" }}
                   onFocus={e => e.target.style.borderColor = "rgba(99,102,241,0.3)"} onBlur={e => e.target.style.borderColor = "rgba(148,163,184,0.1)"} />
                 <Btn primary onClick={send}>Send</Btn>
               </div>
@@ -2270,7 +2270,8 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
   .device-mockup-wrapper .phone-mockup { margin-left: 0 !important; margin-bottom: 0 !important; }
   .footer-grid { grid-template-columns: 1fr 1fr !important; }
   .testimonials-grid { grid-template-columns: 1fr !important; }
-  .testimonial-arrow { left: -10px !important; right: -10px !important; }
+  .testimonial-arrow { left: 4px !important; right: 4px !important; }
+  .testimonials-carousel { overflow: hidden !important; }
 }
 
 @media (max-width: 600px) {
