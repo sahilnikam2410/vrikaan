@@ -43,9 +43,10 @@ const PageSkeleton = () => (
 /* ── Page Transition Wrapper ── */
 const PageTransition = ({ children }) => {
   const location = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [location.pathname]);
   return (
-    <div key={location.pathname} style={{ animation: "pageFadeIn 0.4s cubic-bezier(0.22, 1, 0.36, 1)" }}>
-      <style>{`@keyframes pageFadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }`}</style>
+    <div key={location.pathname} style={{ animation: "pageFadeIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both" }}>
+      <style>{`@keyframes pageFadeIn { from { opacity: 0; transform: translateY(16px) scale(0.998); filter: blur(2px); } to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } }`}</style>
       {children}
     </div>
   );
