@@ -72,8 +72,8 @@ export default function Contact() {
       try {
         const { default: emailjs } = await import("@emailjs/browser");
         await emailjs.send(serviceId, "template_contact", {
-          from_name: form.name,
-          from_email: form.email,
+          name: form.name,
+          email: form.email,
           subject: form.subject,
           message: form.message,
         }, publicKey);
