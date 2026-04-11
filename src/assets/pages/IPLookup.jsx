@@ -242,7 +242,7 @@ export default function IPLookup() {
     setLoading(true);
 
     try {
-      const endpoint = trimmed ? `http://ip-api.com/json/${encodeURIComponent(trimmed)}?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query,reverse,proxy,hosting` : `http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query,reverse,proxy,hosting`;
+      const endpoint = trimmed ? `/api/ip?q=${encodeURIComponent(trimmed)}` : `/api/ip`;
 
       const res = await fetch(endpoint);
       const data = await res.json();
