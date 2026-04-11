@@ -1626,10 +1626,25 @@ const AssistantSection = () => {
   const [input, setInput] = useState("");
   const endRef = useRef(null);
 
-  const send = () => {
-    if (!input.trim()) return;
-    const q = input.trim(); setMsgs(p => [...p, { role: "user", text: q }]); setInput("");
-    setTimeout(() => {
+  const [loading, setLoading] = useState(false);
+
+  const send = async () => {
+    if (!input.trim() || loading) return;
+    const q = input.trim();
+    setMsgs(p => [...p, { role: "user", text: q }]);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: q, history: msgs }),
+      });
+      const data = await res.json();
+      setMsgs(p => [...p, { role: "ai", text: data.reply || data.error || "Something went wrong." }]);
+    } catch {
+      // Fallback to local responses if API unavailable
       const lc = q.toLowerCase();
       let r = "Good practice: never share personal info with unverified sources, use unique passwords, and enable two-factor authentication on all accounts.";
       if (lc.includes("scam") || lc.includes("fake")) r = "To verify a potential scam: check for urgency tactics, spelling errors, and suspicious URLs. Use our Threat Analyzer to scan any link instantly.";
@@ -1637,7 +1652,9 @@ const AssistantSection = () => {
       else if (lc.includes("phish")) r = "Phishing red flags: misspelled domains, generic greetings, urgent requests for credentials. Never click links in unexpected emails.";
       else if (lc.includes("password")) r = "Use 12+ character passwords mixing letters, numbers, and symbols. Consider a password manager like 1Password or Bitwarden.";
       setMsgs(p => [...p, { role: "ai", text: r }]);
-    }, 1000);
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs]);
 
@@ -1683,14 +1700,22 @@ const AssistantSection = () => {
                     </div>
                   </div>
                 ))}
+                {loading && (
+                  <div style={{ display: "flex", gap: 12, marginBottom: 16, animation: "fadeIn 0.4s ease" }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, background: "rgba(99,102,241,0.1)", fontSize: 11, fontFamily: "var(--font-body)", color: T.accent, fontWeight: 600 }}>AI</div>
+                    <div style={{ padding: "14px 18px", background: "rgba(255,255,255,0.015)", border: `1px solid ${T.border}`, borderRadius: "14px 14px 14px 4px", fontSize: 14, color: T.mutedDark }}>
+                      <span className="typing-dots">Thinking</span>
+                    </div>
+                  </div>
+                )}
                 <div ref={endRef} />
               </div>
               <div style={{ display: "flex", gap: 10 }}>
                 <input value={input} onChange={e => setInput(e.target.value)} placeholder="Ask about cybersecurity..."
-                  onKeyDown={e => e.key === "Enter" && send()}
-                  style={{ flex: 1, minWidth: 0, padding: "12px 16px", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(148,163,184,0.1)", borderRadius: 10, color: T.white, fontFamily: "var(--font-body)", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+                  onKeyDown={e => e.key === "Enter" && send()} disabled={loading}
+                  style={{ flex: 1, minWidth: 0, padding: "12px 16px", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(148,163,184,0.1)", borderRadius: 10, color: T.white, fontFamily: "var(--font-body)", fontSize: 14, outline: "none", boxSizing: "border-box", opacity: loading ? 0.5 : 1 }}
                   onFocus={e => e.target.style.borderColor = "rgba(99,102,241,0.3)"} onBlur={e => e.target.style.borderColor = "rgba(148,163,184,0.1)"} />
-                <Btn primary onClick={send}>Send</Btn>
+                <Btn primary onClick={send} style={{ opacity: loading ? 0.5 : 1 }}>{loading ? "..." : "Send"}</Btn>
               </div>
             </div>
           </Card>
@@ -2203,6 +2228,8 @@ html { scroll-behavior: smooth; }
 @keyframes spin { to { transform: rotate(360deg) } }
 @keyframes pulse-dot { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes dotPulse { 0%, 80%, 100% { opacity: 0; } 40% { opacity: 1; } }
+.typing-dots::after { content: '...'; animation: dotPulse 1.4s infinite; }
 @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 @keyframes brand-orbit-ring { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
