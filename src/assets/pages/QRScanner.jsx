@@ -315,8 +315,12 @@ export default function QRScanner() {
   const [results, setResults] = useState(null);
   const [history, setHistory] = useState([]);
   const [qrGenerated, setQrGenerated] = useState(false);
+  const [cameraActive, setCameraActive] = useState(false);
+  const [cameraError, setCameraError] = useState("");
   const logRef = useRef(null);
   const intervalRef = useRef(null);
+  const cameraRef = useRef(null);
+  const html5QrRef = useRef(null);
 
   useEffect(() => {
     try {
@@ -324,6 +328,67 @@ export default function QRScanner() {
       setHistory(saved);
     } catch { /* ignore */ }
   }, []);
+
+  // Cleanup camera on unmount
+  useEffect(() => {
+    return () => {
+      if (html5QrRef.current) {
+        html5QrRef.current.stop().catch(() => {});
+        html5QrRef.current.clear();
+        html5QrRef.current = null;
+      }
+    };
+  }, []);
+
+  const startCamera = async () => {
+    setCameraError("");
+    try {
+      const { Html5Qrcode } = await import("html5-qrcode");
+      const scannerId = "qr-camera-reader";
+
+      // Stop existing instance
+      if (html5QrRef.current) {
+        await html5QrRef.current.stop().catch(() => {});
+        html5QrRef.current.clear();
+      }
+
+      const scanner = new Html5Qrcode(scannerId);
+      html5QrRef.current = scanner;
+      setCameraActive(true);
+
+      await scanner.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        (decodedText) => {
+          // QR code detected — stop camera and analyze
+          scanner.stop().then(() => {
+            scanner.clear();
+            html5QrRef.current = null;
+            setCameraActive(false);
+            setScanUrl(decodedText);
+            setMode("scanner");
+            // Auto-start scan after mode switch
+            setTimeout(() => {
+              document.getElementById("qr-scan-btn")?.click();
+            }, 500);
+          }).catch(() => {});
+        },
+        () => {} // ignore scan failures (no QR in frame)
+      );
+    } catch (err) {
+      setCameraActive(false);
+      setCameraError(err?.message?.includes("Permission") ? "Camera access denied. Please allow camera permissions." : "Camera not available. Try pasting the URL manually.");
+    }
+  };
+
+  const stopCamera = async () => {
+    if (html5QrRef.current) {
+      await html5QrRef.current.stop().catch(() => {});
+      html5QrRef.current.clear();
+      html5QrRef.current = null;
+    }
+    setCameraActive(false);
+  };
 
   useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
@@ -447,14 +512,57 @@ export default function QRScanner() {
           </p>
 
           {/* Mode Tabs */}
-          <div style={{ display: "flex", gap: 10, justifyContent: "center", marginBottom: 32 }}>
-            <TabButton active={mode === "scanner"} onClick={() => setMode("scanner")}>
+          <div style={{ display: "flex", gap: 10, justifyContent: "center", marginBottom: 32, flexWrap: "wrap" }}>
+            <TabButton active={mode === "camera"} onClick={() => { setMode("camera"); if (!cameraActive) startCamera(); }}>
+              {"\uD83D\uDCF7"} Camera Scan
+            </TabButton>
+            <TabButton active={mode === "scanner"} onClick={() => { setMode("scanner"); stopCamera(); }}>
               {"\uD83D\uDD0D"} URL Scanner
             </TabButton>
-            <TabButton active={mode === "generator"} onClick={() => setMode("generator")}>
+            <TabButton active={mode === "generator"} onClick={() => { setMode("generator"); stopCamera(); }}>
               {"\u2B1B"} QR Generator
             </TabButton>
           </div>
+
+          {/* Camera Mode */}
+          {mode === "camera" && (
+            <div style={{ maxWidth: 400, margin: "0 auto 24px" }}>
+              <div
+                id="qr-camera-reader"
+                ref={cameraRef}
+                style={{
+                  width: "100%", borderRadius: 16, overflow: "hidden",
+                  border: `2px solid ${cameraActive ? T.cyan : T.border}`,
+                  background: T.card, minHeight: 300,
+                }}
+              />
+              {cameraError && (
+                <div style={{ marginTop: 12, padding: "12px 16px", background: "rgba(239,68,68,0.1)", border: `1px solid rgba(239,68,68,0.2)`, borderRadius: 10 }}>
+                  <p style={{ color: T.red, fontSize: 13, margin: 0 }}>{cameraError}</p>
+                </div>
+              )}
+              {cameraActive && (
+                <div style={{ marginTop: 12, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: T.green, animation: "pulse 1s infinite" }} />
+                  <span style={{ color: T.cyan, fontSize: 13, fontWeight: 600 }}>Point camera at a QR code...</span>
+                </div>
+              )}
+              <div style={{ display: "flex", gap: 10, justifyContent: "center", marginTop: 16 }}>
+                {!cameraActive ? (
+                  <button onClick={startCamera} style={{ padding: "12px 28px", background: T.cyan, border: "none", borderRadius: 10, color: "#030712", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: fonts.heading }}>
+                    Start Camera
+                  </button>
+                ) : (
+                  <button onClick={stopCamera} style={{ padding: "12px 28px", background: T.red, border: "none", borderRadius: 10, color: "#fff", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: fonts.heading }}>
+                    Stop Camera
+                  </button>
+                )}
+              </div>
+              <p style={{ color: T.mutedDark, fontSize: 12, marginTop: 12, fontFamily: fonts.mono }}>
+                Camera scans QR codes in real-time. Detected URLs are automatically analyzed for threats.
+              </p>
+            </div>
+          )}
 
           {/* Scanner Mode */}
           {mode === "scanner" && (
@@ -473,6 +581,7 @@ export default function QRScanner() {
                   }}
                 />
                 <button
+                  id="qr-scan-btn"
                   onClick={startScan}
                   disabled={scanning || !scanUrl.trim()}
                   style={{

@@ -14,28 +14,83 @@ export default function FraudAnalyzer() {
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState([]);
 
-  const scan = () => {
+  const scan = async () => {
     if (!input.trim()) return;
     setLoading(true); setResult(null);
-    setTimeout(() => {
-      const r = Math.random();
-      const level = r > 0.55 ? "CRITICAL" : r > 0.25 ? "WARNING" : "CLEAR";
-      const data = {
-        CLEAR: { color: "#22c55e", score: 94, msg: "No threats detected. Source appears legitimate and safe.", icon: "\u2713", details: ["SSL certificate valid", "Domain registered 5+ years", "No blacklist matches", "Content analysis clean"] },
-        WARNING: { color: T.gold, score: 42, msg: "Suspicious patterns detected. Exercise caution before proceeding.", icon: "\u26A0", details: ["Domain registered recently", "Unusual redirect patterns", "Similar to known phishing domains", "Missing contact information"] },
-        CRITICAL: { color: T.red, score: 8, msg: "High-risk threat identified. Do not interact with this source.", icon: "\u2717", details: ["Matches known malicious signatures", "Active phishing campaign detected", "SSL certificate mismatch", "Reported by 847 users"] },
-      };
-      const res = { level, ...data[level], input: input, mode, time: new Date().toLocaleTimeString() };
-      setResult(res);
-      setHistory(prev => [res, ...prev.slice(0, 9)]);
-      saveToolResult(
-        "Fraud Analyzer",
-        `${mode.toUpperCase()}: ${input}`,
-        `${level} (Score: ${res.score}/100) - ${res.msg}`,
-        level === "CLEAR" ? "success" : level === "WARNING" ? "warning" : "error"
-      );
-      setLoading(false);
-    }, 2500);
+
+    try {
+      // For URLs, use real threat scanning API
+      if (mode === "url") {
+        let urlToScan = input.trim();
+        if (!/^https?:\/\//i.test(urlToScan)) urlToScan = `https://${urlToScan}`;
+
+        const res = await fetch("/api/scan-url", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: urlToScan, type: mode }),
+        });
+        const data = await res.json();
+
+        if (data.error) throw new Error(data.error);
+
+        const score = data.score;
+        const level = score >= 80 ? "CLEAR" : score >= 40 ? "WARNING" : "CRITICAL";
+        const details = data.threats.length > 0
+          ? data.threats.map((t) => `[${t.source}] ${t.detail}`)
+          : ["No threats found in URLhaus database", "No suspicious URL patterns detected", `Checked against ${data.sources.length} threat source(s)`, data.sources.join(", ")];
+        const msgs = {
+          CLEAR: "No threats detected. Source appears legitimate and safe.",
+          WARNING: "Suspicious patterns detected. Exercise caution before proceeding.",
+          CRITICAL: "High-risk threat identified. Do not interact with this source.",
+        };
+        const colors = { CLEAR: "#22c55e", WARNING: T.gold, CRITICAL: T.red };
+        const icons = { CLEAR: "\u2713", WARNING: "\u26A0", CRITICAL: "\u2717" };
+
+        const result = { level, color: colors[level], score, msg: msgs[level], icon: icons[level], details, input, mode, time: new Date().toLocaleTimeString() };
+        setResult(result);
+        setHistory((prev) => [result, ...prev.slice(0, 9)]);
+        saveToolResult("Fraud Analyzer", `${mode.toUpperCase()}: ${input}`, `${level} (Score: ${score}/100) - ${msgs[level]}`, level === "CLEAR" ? "success" : level === "WARNING" ? "warning" : "error");
+      } else {
+        // For email/phone/message: use local heuristic analysis
+        const trimmed = input.trim().toLowerCase();
+        let score = 100;
+        const details = [];
+
+        if (mode === "email") {
+          if (!trimmed.includes("@")) { score -= 40; details.push("Invalid email format"); }
+          if (/\.(ru|cn|tk|ml|ga|cf|gq)$/.test(trimmed)) { score -= 30; details.push("High-risk country TLD detected"); }
+          if (/[0-9]{5,}/.test(trimmed)) { score -= 15; details.push("Excessive numbers in address"); }
+          if (/paypal|amazon|apple|google|microsoft|bank/i.test(trimmed) && !/\.(com|org)$/.test(trimmed.split("@")[1])) { score -= 25; details.push("Brand name with unusual domain — possible impersonation"); }
+          if (details.length === 0) details.push("No suspicious patterns detected", "Domain appears legitimate");
+        } else if (mode === "phone") {
+          if (trimmed.replace(/\D/g, "").length < 10) { score -= 30; details.push("Phone number too short"); }
+          if (/^(900|976|809)/.test(trimmed.replace(/\D/g, ""))) { score -= 40; details.push("Premium rate number prefix detected"); }
+          if (details.length === 0) details.push("Number format appears valid", "No premium-rate prefix detected");
+        } else {
+          // Message analysis
+          const phishingWords = ["urgent", "verify", "suspend", "click here", "act now", "limited time", "winner", "prize", "password", "account locked", "confirm your", "update your"];
+          const found = phishingWords.filter((w) => trimmed.includes(w));
+          if (found.length > 0) { score -= found.length * 12; details.push(`Phishing keywords found: ${found.join(", ")}`); }
+          if (/https?:\/\/[^\s]+/.test(trimmed)) { score -= 10; details.push("Contains URL link — verify before clicking"); }
+          if (details.length === 0) details.push("No common phishing patterns found", "Message appears clean");
+        }
+
+        score = Math.max(0, Math.min(100, score));
+        const level = score >= 80 ? "CLEAR" : score >= 40 ? "WARNING" : "CRITICAL";
+        const colors = { CLEAR: "#22c55e", WARNING: T.gold, CRITICAL: T.red };
+        const icons = { CLEAR: "\u2713", WARNING: "\u26A0", CRITICAL: "\u2717" };
+        const msgs = { CLEAR: "No threats detected. Source appears legitimate and safe.", WARNING: "Suspicious patterns detected. Exercise caution.", CRITICAL: "High-risk threat identified. Do not interact." };
+
+        const result = { level, color: colors[level], score, msg: msgs[level], icon: icons[level], details, input, mode, time: new Date().toLocaleTimeString() };
+        setResult(result);
+        setHistory((prev) => [result, ...prev.slice(0, 9)]);
+        saveToolResult("Fraud Analyzer", `${mode.toUpperCase()}: ${input}`, `${level} (Score: ${score}/100) - ${msgs[level]}`, level === "CLEAR" ? "success" : level === "WARNING" ? "warning" : "error");
+      }
+    } catch {
+      setResult({ level: "WARNING", color: T.gold, score: 50, msg: "Could not reach threat database. Using local analysis.", icon: "\u26A0", details: ["Threat scanning service temporarily unavailable", "Local pattern analysis applied"], input, mode, time: new Date().toLocaleTimeString() });
+    }
+
+    setLoading(false);
   };
 
   const modes = [

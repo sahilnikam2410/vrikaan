@@ -139,18 +139,45 @@ export default function DarkWebMonitor() {
     return () => clearInterval(iv);
   }, []);
 
-  function handleScan() {
+  async function handleScan() {
     if (!email || !email.includes("@")) return;
     setScanning(true);
     setResults(null);
-    const delay = 2000 + Math.random() * 1000;
-    setTimeout(() => {
+
+    try {
+      const res = await fetch(`/api/breach?email=${encodeURIComponent(email)}`);
+      const data = await res.json();
+
+      if (data.error) throw new Error(data.error);
+
+      let breaches;
+      if (data.breached && data.breaches.length > 0) {
+        // Map real API response to our UI format
+        const sevColors = ["#0a66c2", "#1877f2", "#ff0000", "#0061ff", "#00c4cc", "#e91e63", "#1da1f2", "#b32d1e", "#cf0a2c", "#f97316"];
+        breaches = data.breaches.map((b, i) => ({
+          name: b.name,
+          year: b.date ? new Date(b.date).getFullYear() || "Unknown" : "Unknown",
+          records: b.records ? (b.records > 1000000 ? `${(b.records / 1000000).toFixed(1)}M` : b.records > 1000 ? `${(b.records / 1000).toFixed(0)}K` : `${b.records}`) : "Unknown",
+          severity: b.records > 100000000 ? "Critical" : b.records > 10000000 ? "High" : b.records > 1000000 ? "Medium" : "Low",
+          color: sevColors[i % sevColors.length],
+          types: b.dataTypes.length > 0 ? b.dataTypes.slice(0, 5) : ["Email"],
+          icon: b.name.charAt(0).toUpperCase(),
+        }));
+      } else {
+        breaches = [];
+      }
+
+      const score = breaches.length === 0 ? 95 : getScore(breaches);
+      setResults({ breaches, score, email, source: data.source || "XposedOrNot" });
+    } catch {
+      // Fallback to local simulation if API fails
       const breaches = getBreachesForEmail(email);
       const score = getScore(breaches);
-      setResults({ breaches, score, email });
-      setScanning(false);
-      setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
-    }, delay);
+      setResults({ breaches, score, email, source: "local" });
+    }
+
+    setScanning(false);
+    setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
   }
 
   const wrap = { maxWidth: 1100, margin: "0 auto", padding: "0 20px" };
