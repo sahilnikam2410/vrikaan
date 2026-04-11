@@ -6,6 +6,8 @@ import { ToastProvider } from "./context/ToastContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { ProtectedRoute, DashboardRedirect } from "./components/ProtectedRoute";
 import AIChatbot from "./components/AIChatbot.jsx";
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
+import CookieConsent from "./components/CookieConsent.jsx";
 
 /* ── Skeleton Loader ── */
 const T = { bg: "#030712", card: "rgba(17,24,39,0.6)", border: "rgba(148,163,184,0.08)", accent: "#6366f1", cyan: "#14e3c5" };
@@ -161,17 +163,20 @@ function AppRoutes() {
 
 function App() {
   return (
+    <ErrorBoundary>
     <HelmetProvider>
     <ThemeProvider>
     <ToastProvider>
     <AuthProvider>
       <Router>
         <AppRoutes />
+        <CookieConsent />
       </Router>
     </AuthProvider>
     </ToastProvider>
     </ThemeProvider>
     </HelmetProvider>
+    </ErrorBoundary>
   );
 }
 

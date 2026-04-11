@@ -31,6 +31,8 @@
     <link rel="canonical" href="https://secuvion.vercel.app/" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://api.groq.com" />
+    <link rel="dns-prefetch" href="https://secuvion.vercel.app" />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <title>SECUVION — AI-Powered Cyber Defense Platform</title>
 
@@ -64,7 +66,38 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Branded splash screen while JS loads -->
+      <div id="splash" style="position:fixed;inset:0;z-index:99999;background:#030712;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:system-ui,sans-serif;">
+        <style>
+          @keyframes sp-pulse{0%,100%{opacity:0.4;transform:scale(0.95)}50%{opacity:1;transform:scale(1)}}
+          @keyframes sp-bar{0%{width:0}100%{width:100%}}
+          #splash svg{animation:sp-pulse 1.8s ease-in-out infinite}
+        </style>
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <polyline points="9 12 11 14 15 10"/>
+        </svg>
+        <div style="margin-top:20px;font-size:18px;font-weight:700;color:#f1f5f9;letter-spacing:2px">SECUVION</div>
+        <div style="margin-top:16px;width:120px;height:2px;background:rgba(148,163,184,0.1);border-radius:2px;overflow:hidden">
+          <div style="height:100%;background:linear-gradient(90deg,#6366f1,#14e3c5);animation:sp-bar 2s ease-in-out infinite;border-radius:2px"></div>
+        </div>
+        <div style="margin-top:12px;font-size:11px;color:#64748b;letter-spacing:0.5px">Initializing secure environment...</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Remove splash once React renders
+      const observer = new MutationObserver(() => {
+        const splash = document.getElementById('splash');
+        if (splash && document.getElementById('root').children.length > 1) {
+          splash.style.transition = 'opacity 0.4s';
+          splash.style.opacity = '0';
+          setTimeout(() => splash.remove(), 400);
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.getElementById('root'), { childList: true });
+    </script>
   </body>
 </html>
