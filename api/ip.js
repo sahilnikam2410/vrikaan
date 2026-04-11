@@ -7,8 +7,11 @@ export default async function handler(req, res) {
   const fields =
     "status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query,reverse,proxy,hosting";
 
-  const endpoint = q
-    ? `http://ip-api.com/json/${encodeURIComponent(q)}?fields=${fields}`
+  // When no query param, use the visitor's real IP (forwarded by Vercel)
+  const clientIP = q || req.headers["x-forwarded-for"]?.split(",")[0]?.trim() || req.headers["x-real-ip"] || "";
+
+  const endpoint = clientIP
+    ? `http://ip-api.com/json/${encodeURIComponent(clientIP)}?fields=${fields}`
     : `http://ip-api.com/json/?fields=${fields}`;
 
   try {
