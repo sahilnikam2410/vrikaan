@@ -80,13 +80,15 @@ export default function Contact() {
         }, publicKey);
         setSending(false);
         setSent(true);
-      } catch {
+      } catch (err) {
+        console.error("EmailJS error:", err);
         setSending(false);
-        setSent(true); // Show success anyway for demo
+        alert("Failed to send email: " + (err?.text || err?.message || "Unknown error"));
       }
     } else {
-      // Demo fallback when EmailJS not configured
-      setTimeout(() => { setSending(false); setSent(true); }, 1500);
+      console.warn("EmailJS not configured. VITE_EMAILJS_SERVICE_ID:", serviceId, "VITE_EMAILJS_PUBLIC_KEY:", publicKey ? "set" : "missing");
+      setSending(false);
+      alert("Email service not configured. Please add VITE_EMAILJS_SERVICE_ID and VITE_EMAILJS_PUBLIC_KEY to Vercel environment variables.");
     }
   };
 
