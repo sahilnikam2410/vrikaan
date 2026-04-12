@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
+import { doc, updateDoc, collection, addDoc, getDocs, query, where, serverTimestamp, Timestamp } from "firebase/firestore";
+import { db } from "../../firebase/config";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
@@ -195,30 +197,69 @@ export default function Checkout() {
     setTimeout(() => navigate("/dashboard"), 3000);
   }, [planKey, updatePlan, navigate]);
 
-  // Handle Cashfree success redirect — verify server-side
+  // Handle Cashfree success redirect — verify server-side, then update Firestore
   useEffect(() => {
     const isSuccess = params.get("success") === "true";
     const orderId = params.get("order_id");
     if (isSuccess && orderId && user?.uid && !verifying && !success) {
       setVerifying(true);
-      fetch("/api/verify-payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId, uid: user.uid }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            handlePaymentSuccess(data.plan);
-          } else {
+      (async () => {
+        try {
+          // 1. Verify payment with Cashfree via our server
+          const res = await fetch("/api/verify-payment", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ orderId }),
+          });
+          const data = await res.json();
+          if (!data.verified) {
             setErrors({ verify: data.error || "Payment verification failed" });
             setVerifying(false);
+            return;
           }
-        })
-        .catch(() => {
+
+          // 2. Check if this payment was already processed
+          const paymentsRef = collection(db, "users", user.uid, "payments");
+          const dupCheck = query(paymentsRef, where("transactionId", "==", orderId));
+          const dupSnap = await getDocs(dupCheck);
+          if (!dupSnap.empty) {
+            // Already processed — just go to success
+            handlePaymentSuccess(data.plan);
+            return;
+          }
+
+          // 3. Update user subscription in Firestore
+          const userRef = doc(db, "users", user.uid);
+          await updateDoc(userRef, {
+            plan: data.plan,
+            subscriptionActive: true,
+            subscriptionBilling: data.billing,
+            subscriptionStartedAt: serverTimestamp(),
+            subscriptionExpiresAt: Timestamp.fromDate(new Date(data.expiresAt)),
+            subscriptionOrderId: orderId,
+            updatedAt: serverTimestamp(),
+          });
+
+          // 4. Save payment record
+          await addDoc(paymentsRef, {
+            amount: data.amount || 0,
+            plan: data.plan,
+            billing: data.billing,
+            method: "cashfree",
+            transactionId: orderId,
+            cfOrderId: data.cfOrderId || "",
+            status: "completed",
+            createdAt: serverTimestamp(),
+          });
+
+          // 5. Activate
+          handlePaymentSuccess(data.plan);
+        } catch (err) {
+          console.error("Payment verification error:", err);
           setErrors({ verify: "Could not verify payment. Please contact support." });
           setVerifying(false);
-        });
+        }
+      })();
     }
   }, [params, user, verifying, success, handlePaymentSuccess]);
 
