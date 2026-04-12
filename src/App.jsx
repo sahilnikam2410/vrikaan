@@ -89,6 +89,7 @@ const EmailAnalyzer = lazy(() => import("./assets/pages/EmailAnalyzer.jsx"));
 const CyberNews = lazy(() => import("./assets/pages/CyberNews.jsx"));
 const QRScanner = lazy(() => import("./assets/pages/QRScanner.jsx"));
 const PasswordChecker = lazy(() => import("./assets/pages/PasswordChecker.jsx"));
+const IdentityXray = lazy(() => import("./assets/pages/IdentityXray.jsx"));
 const ForgotPassword = lazy(() => import("./assets/pages/ForgotPassword.jsx"));
 
 function ScrollToTop() {
@@ -119,6 +120,7 @@ function AppRoutes() {
             <Route path="/about" element={<About />} />
             <Route path="/features" element={<FeaturesPage />} />
             <Route path="/emergency-help" element={<EmergencyHelp />} />
+            <Route path="/identity-xray" element={<IdentityXray />} />
 
             {/* Protected — Tools (login required) */}
             <Route path="/threat-map" element={<ProtectedRoute><ThreatMap /></ProtectedRoute>} />

@@ -12,4 +12,5 @@
   <url><loc>https://secuvion.vercel.app/terms</loc><priority>0.4</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://secuvion.vercel.app/emergency-help</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://secuvion.vercel.app/blog</loc><priority>0.7</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/identity-xray</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
 </urlset>

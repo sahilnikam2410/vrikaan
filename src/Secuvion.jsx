@@ -439,8 +439,8 @@ const Hero = () => {
 
           <Reveal delay={0.3}>
             <div className="hero-buttons" style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 56 }}>
-              <Btn primary to="/signup" icon="&#9889;">Start Free Protection</Btn>
-              <Btn to="/fraud-analyzer" icon="&#9670;">Analyze a Threat</Btn>
+              <Btn primary to="/identity-xray" icon="&#128300;">Scan Your Identity</Btn>
+              <Btn to="/signup" icon="&#9889;">Start Free Protection</Btn>
             </div>
           </Reveal>
 
