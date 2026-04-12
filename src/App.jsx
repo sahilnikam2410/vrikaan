@@ -90,6 +90,8 @@ const CyberNews = lazy(() => import("./assets/pages/CyberNews.jsx"));
 const QRScanner = lazy(() => import("./assets/pages/QRScanner.jsx"));
 const PasswordChecker = lazy(() => import("./assets/pages/PasswordChecker.jsx"));
 const IdentityXray = lazy(() => import("./assets/pages/IdentityXray.jsx"));
+const ShippingPolicy = lazy(() => import("./assets/pages/ShippingPolicy.jsx"));
+const RefundPolicy = lazy(() => import("./assets/pages/RefundPolicy.jsx"));
 const ForgotPassword = lazy(() => import("./assets/pages/ForgotPassword.jsx"));
 
 function ScrollToTop() {
@@ -116,6 +118,8 @@ function AppRoutes() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/shipping-policy" element={<ShippingPolicy />} />
+            <Route path="/refund-policy" element={<RefundPolicy />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<About />} />
             <Route path="/features" element={<FeaturesPage />} />

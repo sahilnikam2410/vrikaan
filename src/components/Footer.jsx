@@ -56,6 +56,8 @@ const Footer = () => (
             <FooterLink to="/email-analyzer">Email Analyzer</FooterLink>
             <FooterLink to="/ip-lookup">IP Lookup</FooterLink>
             <FooterLink to="/qr-scanner">QR Scanner</FooterLink>
+            <FooterLink to="/identity-xray">Identity X-Ray</FooterLink>
+            <FooterLink to="/password-checker">Password Checker</FooterLink>
           </ul>
         </div>
 
@@ -91,9 +93,10 @@ const Footer = () => (
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             <FooterLink to="/privacy">Privacy Policy</FooterLink>
             <FooterLink to="/terms">Terms of Service</FooterLink>
+            <FooterLink to="/shipping-policy">Shipping Policy</FooterLink>
+            <FooterLink to="/refund-policy">Cancellation & Refunds</FooterLink>
             <FooterLink to="/login">Login</FooterLink>
             <FooterLink to="/signup">Sign Up</FooterLink>
-            <FooterLink to="/dashboard">Dashboard</FooterLink>
           </ul>
         </div>
       </div>
