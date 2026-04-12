@@ -31,10 +31,8 @@ const Footer = () => (
           </p>
           <div style={{ display: "flex", gap: 10 }}>
             {[
-              { label: "X",  href: "https://x.com" },
-              { label: "In", href: "https://linkedin.com" },
-              { label: "Gh", href: "https://github.com" },
-              { label: "Yt", href: "https://youtube.com" },
+              { label: "In", href: "https://www.linkedin.com/in/sahil-nikam-" },
+              { label: "Gh", href: "https://github.com/sahilnikam2410" },
             ].map(s => (
               <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
                 <div style={{ width: 34, height: 34, borderRadius: 8, background: "rgba(148,163,184,0.04)", border: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: T.mutedDark, fontSize: 11, fontFamily: "var(--font-mono)", fontWeight: 600, cursor: "pointer", transition: "all 0.3s" }}

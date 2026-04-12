@@ -424,7 +424,7 @@ export default function About() {
                 </p>
                 <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                   <a
-                    href="https://www.linkedin.com/in/sahil-nikam"
+                    href="https://www.linkedin.com/in/sahil-nikam-"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -438,7 +438,7 @@ export default function About() {
                     LinkedIn
                   </a>
                   <a
-                    href="https://github.com/sahilnikam"
+                    href="https://github.com/sahilnikam2410"
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
