@@ -68,10 +68,21 @@ const inputStyle = (hasError) => ({
 });
 
 const paymentMethods = [
-  { id: "stripe", label: "Cards / UPI (Stripe)", icon: "\uD83D\uDCB3" },
+  { id: "cashfree", label: "Cards / UPI (Cashfree)", icon: "\uD83D\uDCB3" },
   { id: "upi", label: "UPI Direct", icon: "\uD83D\uDCF1" },
   { id: "crypto", label: "Crypto", icon: "\u20BF" },
 ];
+
+function loadCashfreeSDK() {
+  return new Promise((resolve) => {
+    if (window.Cashfree) { resolve(window.Cashfree); return; }
+    const script = document.createElement("script");
+    script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
+    script.onload = () => resolve(window.Cashfree);
+    script.onerror = () => resolve(null);
+    document.body.appendChild(script);
+  });
+}
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false);
@@ -134,7 +145,7 @@ export default function Checkout() {
   const plan = plans[planKey] || plans.pro;
 
   const [billing, setBilling] = useState("monthly");
-  const [method, setMethod] = useState("stripe");
+  const [method, setMethod] = useState("cashfree");
   const [processing, setProcessing] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({});
@@ -185,17 +196,17 @@ export default function Checkout() {
     setTimeout(() => navigate("/dashboard"), 3000);
   }, [planKey, updatePlan, navigate, savePaymentRecord]);
 
-  // Handle Stripe success redirect
+  // Handle Cashfree success redirect
   useEffect(() => {
     const isSuccess = params.get("success") === "true";
-    const sessionId = params.get("session_id");
-    if (isSuccess && sessionId) {
-      handlePaymentSuccess("stripe", sessionId);
+    const orderId = params.get("order_id");
+    if (isSuccess && orderId) {
+      handlePaymentSuccess("cashfree", orderId);
     }
   }, [params, handlePaymentSuccess]);
 
-  // Stripe Checkout handler
-  const handleStripeCheckout = async () => {
+  // Cashfree Checkout handler
+  const handleCashfreeCheckout = async () => {
     setProcessing(true);
     setErrors({});
     try {
@@ -206,16 +217,26 @@ export default function Checkout() {
           planKey,
           billing,
           email: user?.email || "",
+          name: user?.displayName || user?.name || "",
         }),
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || "Failed to create checkout session");
+        throw new Error(data.error || "Failed to create order");
       }
-      // Redirect to Stripe hosted checkout
-      window.location.href = data.url;
+
+      const CashfreeSDK = await loadCashfreeSDK();
+      if (!CashfreeSDK) {
+        throw new Error("Failed to load Cashfree SDK. Please check your internet connection.");
+      }
+
+      const cashfree = CashfreeSDK({ mode: import.meta.env.PROD ? "production" : "sandbox" });
+      cashfree.checkout({
+        paymentSessionId: data.paymentSessionId,
+        redirectTarget: "_self",
+      });
     } catch (err) {
-      setErrors({ stripe: err.message });
+      setErrors({ cashfree: err.message });
       setProcessing(false);
     }
   };
@@ -374,12 +395,12 @@ export default function Checkout() {
               ))}
             </div>
 
-            {/* ---- STRIPE METHOD ---- */}
-            {method === "stripe" && (
+            {/* ---- CASHFREE METHOD ---- */}
+            {method === "cashfree" && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, backdropFilter: "blur(10px)" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                   <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, margin: 0, fontFamily: "'Space Grotesk', sans-serif" }}>
-                    Pay with Stripe
+                    Pay with Cashfree
                   </h3>
                   <span style={{
                     fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 4,
@@ -387,17 +408,17 @@ export default function Checkout() {
                   }}>Recommended</span>
                 </div>
                 <p style={{ fontSize: 13, color: T.muted, marginBottom: 24 }}>
-                  Secure payment via Stripe — supports Cards, UPI, Net Banking, and Wallets
+                  Secure payment — supports UPI, Cards, Net Banking, and Wallets
                 </p>
 
                 <div style={{
                   display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 24,
                 }}>
                   {[
-                    { label: "Cards", desc: "Visa, Mastercard, Rupay" },
                     { label: "UPI", desc: "GPay, PhonePe, Paytm" },
+                    { label: "Cards", desc: "Visa, Mastercard, Rupay" },
                     { label: "Net Banking", desc: "All major banks" },
-                    { label: "Wallets", desc: "All popular wallets" },
+                    { label: "Wallets", desc: "Paytm, Amazon Pay" },
                   ].map((item) => (
                     <div key={item.label} style={{
                       padding: "14px 12px", borderRadius: 10, background: "rgba(15,23,42,0.6)",
@@ -425,13 +446,13 @@ export default function Checkout() {
                   ))}
                 </div>
 
-                {errors.stripe && (
+                {errors.cashfree && (
                   <div style={{ padding: "10px 14px", background: "rgba(239,68,68,0.1)", borderRadius: 8, border: `1px solid rgba(239,68,68,0.2)`, marginBottom: 16 }}>
-                    <span style={{ fontSize: 13, color: T.red }}>{errors.stripe}</span>
+                    <span style={{ fontSize: 13, color: T.red }}>{errors.cashfree}</span>
                   </div>
                 )}
 
-                <button onClick={handleStripeCheckout} disabled={processing} style={{
+                <button onClick={handleCashfreeCheckout} disabled={processing} style={{
                   width: "100%", padding: "16px", border: "none", borderRadius: 10,
                   background: processing ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                   color: "#fff", fontSize: 16, fontWeight: 700, cursor: processing ? "wait" : "pointer",
@@ -439,10 +460,10 @@ export default function Checkout() {
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "opacity 0.2s",
                 }}>
                   <IconLock size={18} color="#fff" />
-                  {processing ? "Redirecting to Stripe..." : `Pay \u20B9${price.toLocaleString("en-IN")}`}
+                  {processing ? "Opening Cashfree Checkout..." : `Pay \u20B9${price.toLocaleString("en-IN")}`}
                 </button>
                 <p style={{ fontSize: 11, color: T.muted, textAlign: "center", marginTop: 10 }}>
-                  You'll be redirected to Stripe's secure checkout page. Your card details never touch our servers.
+                  You'll be redirected to Cashfree's secure checkout. Your card details never touch our servers.
                 </p>
               </div>
             )}
@@ -672,7 +693,7 @@ export default function Checkout() {
                   borderRadius: 12, border: `1px solid ${T.border}`,
                 }}>
                   <p style={{ fontSize: 12, color: T.muted, marginBottom: 16 }}>
-                    Configure fallback payment details. Stripe keys are set via environment variables on Vercel.
+                    Configure fallback payment details. Cashfree keys are set via environment variables on Vercel.
                   </p>
                   {[
                     { label: "UPI ID", key: "upiId", placeholder: "business@upi" },
@@ -784,7 +805,7 @@ export default function Checkout() {
               {/* Trust badges */}
               <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 8 }}>
                 {[
-                  { icon: IconShieldCheck, label: "Powered by Stripe India", color: T.accent },
+                  { icon: IconShieldCheck, label: "Powered by Cashfree", color: T.accent },
                   { icon: IconCheck, label: "30-day Money Back Guarantee", color: T.green },
                   { icon: IconLightning, label: "Instant Activation", color: T.cyan },
                 ].map((badge) => (

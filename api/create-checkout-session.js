@@ -1,19 +1,20 @@
-import Stripe from "stripe";
 import { checkRateLimit } from "./_rateLimit.js";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const CASHFREE_API = process.env.CASHFREE_ENV === "production"
+  ? "https://api.cashfree.com/pg/orders"
+  : "https://sandbox.cashfree.com/pg/orders";
 
 const PRICES = {
-  starter_monthly: { amount: 4900, name: "Standard Monthly", interval: "month" },
-  standard_monthly: { amount: 4900, name: "Standard Monthly", interval: "month" },
-  starter_annual: { amount: 49000, name: "Standard Annual", interval: "year" },
-  standard_annual: { amount: 49000, name: "Standard Annual", interval: "year" },
-  pro_monthly: { amount: 9900, name: "Advanced Monthly", interval: "month" },
-  advanced_monthly: { amount: 9900, name: "Advanced Monthly", interval: "month" },
-  pro_annual: { amount: 99000, name: "Advanced Annual", interval: "year" },
-  advanced_annual: { amount: 99000, name: "Advanced Annual", interval: "year" },
-  enterprise_monthly: { amount: 19900, name: "Enterprise Monthly", interval: "month" },
-  enterprise_annual: { amount: 199000, name: "Enterprise Annual", interval: "year" },
+  starter_monthly: { amount: 49, name: "Standard Monthly" },
+  standard_monthly: { amount: 49, name: "Standard Monthly" },
+  starter_annual: { amount: 490, name: "Standard Annual" },
+  standard_annual: { amount: 490, name: "Standard Annual" },
+  pro_monthly: { amount: 99, name: "Advanced Monthly" },
+  advanced_monthly: { amount: 99, name: "Advanced Monthly" },
+  pro_annual: { amount: 990, name: "Advanced Annual" },
+  advanced_annual: { amount: 990, name: "Advanced Annual" },
+  enterprise_monthly: { amount: 199, name: "Enterprise Monthly" },
+  enterprise_annual: { amount: 1990, name: "Enterprise Annual" },
 };
 
 export default async function handler(req, res) {
@@ -29,7 +30,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { planKey, billing, email, successUrl, cancelUrl } = req.body;
+    const { planKey, billing, email, phone, name } = req.body;
 
     const priceKey = `${planKey}_${billing}`;
     const priceConfig = PRICES[priceKey];
@@ -38,34 +39,55 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Invalid plan or billing period" });
     }
 
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"],
-      mode: "payment",
-      customer_email: email || undefined,
-      line_items: [
-        {
-          price_data: {
-            currency: "inr",
-            product_data: {
-              name: `SECUVION ${priceConfig.name}`,
-              description: `${priceConfig.name} subscription — AI-powered cybersecurity`,
-            },
-            unit_amount: priceConfig.amount,
-          },
-          quantity: 1,
-        },
-      ],
-      metadata: {
-        planKey,
-        billing,
+    const orderId = `SECUVION_${planKey}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const origin = req.headers.origin || "https://secuvion.vercel.app";
+
+    const orderPayload = {
+      order_id: orderId,
+      order_amount: priceConfig.amount,
+      order_currency: "INR",
+      order_note: `SECUVION ${priceConfig.name} subscription`,
+      customer_details: {
+        customer_id: `cust_${Date.now()}`,
+        customer_email: email || "customer@secuvion.com",
+        customer_phone: phone || "9999999999",
+        customer_name: name || "SECUVION User",
       },
-      success_url: successUrl || `${req.headers.origin}/checkout?success=true&plan=${planKey}&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: cancelUrl || `${req.headers.origin}/checkout?plan=${planKey}`,
+      order_meta: {
+        return_url: `${origin}/checkout?success=true&plan=${planKey}&order_id=${orderId}`,
+        notify_url: `${origin}/api/cashfree-webhook`,
+      },
+      order_tags: {
+        plan: planKey,
+        billing: billing,
+      },
+    };
+
+    const response = await fetch(CASHFREE_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-version": "2023-08-01",
+        "x-client-id": process.env.CASHFREE_APP_ID,
+        "x-client-secret": process.env.CASHFREE_SECRET_KEY,
+      },
+      body: JSON.stringify(orderPayload),
     });
 
-    return res.status(200).json({ url: session.url, sessionId: session.id });
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Cashfree order error:", data);
+      return res.status(response.status).json({ error: data.message || "Failed to create order" });
+    }
+
+    return res.status(200).json({
+      orderId: data.order_id,
+      paymentSessionId: data.payment_session_id,
+      orderStatus: data.order_status,
+    });
   } catch (err) {
-    console.error("Stripe session error:", err.message);
+    console.error("Cashfree session error:", err.message);
     return res.status(500).json({ error: "Failed to create checkout session" });
   }
 }
