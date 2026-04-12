@@ -12,11 +12,11 @@ const T = {
 };
 
 const plans = {
-  starter: { name: "Standard", price: 49, priceUSD: 49, annual: 490, features: ["200 AI credits/day", "Real-time threat detection", "5 devices", "Email protection", "Phishing alerts", "Priority response"] },
-  standard: { name: "Standard", price: 49, priceUSD: 49, annual: 490, features: ["200 AI credits/day", "Real-time threat detection", "5 devices", "Email protection", "Phishing alerts", "Priority response"] },
-  pro: { name: "Advanced", price: 99, priceUSD: 99, annual: 990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"] },
-  advanced: { name: "Advanced", price: 99, priceUSD: 99, annual: 990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"] },
-  enterprise: { name: "Enterprise", price: 199, priceUSD: 199, annual: 1990, features: ["Unlimited AI credits", "Everything in Advanced", "Unlimited devices & users", "Custom API integrations", "24/7 dedicated SOC team", "Compliance reporting", "SLA-backed guarantee", "White-label options"] },
+  starter: { name: "Standard", price: 49, annual: 490, features: ["200 AI credits/day", "Real-time threat detection", "5 devices", "Email protection", "Phishing alerts", "Priority response"] },
+  standard: { name: "Standard", price: 49, annual: 490, features: ["200 AI credits/day", "Real-time threat detection", "5 devices", "Email protection", "Phishing alerts", "Priority response"] },
+  pro: { name: "Advanced", price: 99, annual: 990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"] },
+  advanced: { name: "Advanced", price: 99, annual: 990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"] },
+  enterprise: { name: "Enterprise", price: 199, annual: 1990, features: ["Unlimited AI credits", "Everything in Advanced", "Unlimited devices & users", "Custom API integrations", "24/7 dedicated SOC team", "Compliance reporting", "SLA-backed guarantee", "White-label options"] },
 };
 
 const IconCreditCard = ({ size = 18, color = "currentColor", style = {} }) => (
@@ -68,22 +68,10 @@ const inputStyle = (hasError) => ({
 });
 
 const paymentMethods = [
-  { id: "razorpay", label: "Razorpay (UPI/Cards)", icon: "\uD83C\uDFE6" },
+  { id: "stripe", label: "Cards / UPI (Stripe)", icon: "\uD83D\uDCB3" },
   { id: "upi", label: "UPI Direct", icon: "\uD83D\uDCF1" },
   { id: "crypto", label: "Crypto", icon: "\u20BF" },
-  { id: "card", label: "International Card", icon: "\uD83D\uDCB3" },
 ];
-
-function loadRazorpay() {
-  return new Promise((resolve) => {
-    if (window.Razorpay) { resolve(true); return; }
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-}
 
 function CopyButton({ text }) {
   const [copied, setCopied] = useState(false);
@@ -146,42 +134,30 @@ export default function Checkout() {
   const plan = plans[planKey] || plans.pro;
 
   const [billing, setBilling] = useState("monthly");
-  const [method, setMethod] = useState("razorpay");
+  const [method, setMethod] = useState("stripe");
   const [processing, setProcessing] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({});
   const [showAdmin, setShowAdmin] = useState(false);
 
-  // Card state
-  const [card, setCard] = useState({ number: "", name: "", expiry: "", cvv: "" });
   // UPI state
-  const [upiId, setUpiId] = useState("");
   const [upiTxnId, setUpiTxnId] = useState("");
   // Crypto state
   const [cryptoCoin, setCryptoCoin] = useState("btc");
   const [cryptoTxHash, setCryptoTxHash] = useState("");
   // Admin config state
   const [adminConfig, setAdminConfig] = useState({
-    razorpayKey: localStorage.getItem("secuvion_razorpay_key") || "rzp_test_SZnW53UUonge8j",
     upiId: localStorage.getItem("secuvion_upi_id") || "secuvion@ptyes",
     btcAddress: localStorage.getItem("secuvion_btc_address") || "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
     ethAddress: localStorage.getItem("secuvion_eth_address") || "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
   });
 
   const price = billing === "annual" ? plan.annual : plan.price;
-  const priceUSD = billing === "annual" ? (plan.priceUSD * 10).toFixed(2) : plan.priceUSD;
   const savings = billing === "annual" ? (plan.price * 12 - plan.annual) : 0;
 
   const merchantUpiId = localStorage.getItem("secuvion_upi_id") || "secuvion@ptyes";
   const btcAddress = localStorage.getItem("secuvion_btc_address") || "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
   const ethAddress = localStorage.getItem("secuvion_eth_address") || "0x71C7656EC7ab88b098defB751B7401B5f6d8976F";
-
-  const formatCard = (val) => val.replace(/\D/g, "").replace(/(.{4})/g, "$1 ").trim().slice(0, 19);
-  const formatExpiry = (val) => {
-    const clean = val.replace(/\D/g, "");
-    if (clean.length >= 2) return clean.slice(0, 2) + "/" + clean.slice(2, 4);
-    return clean;
-  };
 
   const savePaymentRecord = useCallback((paymentId, paymentMethod) => {
     const records = JSON.parse(localStorage.getItem("secuvion_payments") || "[]");
@@ -200,7 +176,7 @@ export default function Checkout() {
   const handlePaymentSuccess = useCallback((paymentMethod, paymentId) => {
     updatePlan(planKey);
     const creditData = JSON.parse(localStorage.getItem("secuvion_ai_credits") || "{}");
-    creditData.plan = planKey === "pro" ? "pro" : planKey === "enterprise" ? "unlimited" : "starter";
+    creditData.plan = planKey === "pro" || planKey === "advanced" ? "pro" : planKey === "enterprise" ? "unlimited" : "starter";
     creditData.used = 0;
     localStorage.setItem("secuvion_ai_credits", JSON.stringify(creditData));
     savePaymentRecord(paymentId || `pay_${Date.now()}`, paymentMethod);
@@ -209,38 +185,39 @@ export default function Checkout() {
     setTimeout(() => navigate("/dashboard"), 3000);
   }, [planKey, updatePlan, navigate, savePaymentRecord]);
 
-  // Razorpay handler
-  const handleRazorpay = async () => {
-    setProcessing(true);
-    const loaded = await loadRazorpay();
-    if (!loaded) {
-      setErrors({ razorpay: "Failed to load Razorpay SDK. Please check your internet connection." });
-      setProcessing(false);
-      return;
+  // Handle Stripe success redirect
+  useEffect(() => {
+    const isSuccess = params.get("success") === "true";
+    const sessionId = params.get("session_id");
+    if (isSuccess && sessionId) {
+      handlePaymentSuccess("stripe", sessionId);
     }
-    const options = {
-      key: localStorage.getItem("secuvion_razorpay_key") || "rzp_test_SZnW53UUonge8j",
-      amount: price * 100,
-      currency: "INR",
-      name: "SECUVION",
-      description: `${plan.name} Plan - ${billing} billing`,
-      image: "/favicon.svg",
-      handler: function (response) {
-        handlePaymentSuccess("razorpay", response.razorpay_payment_id);
-      },
-      prefill: { name: user?.name || "", email: user?.email || "" },
-      theme: { color: "#6366f1" },
-      method: { upi: true, card: true, netbanking: true, wallet: true },
-      modal: {
-        ondismiss: function () { setProcessing(false); },
-      },
-    };
-    const rzp = new window.Razorpay(options);
-    rzp.on("payment.failed", function () {
-      setErrors({ razorpay: "Payment failed. Please try again." });
+  }, [params, handlePaymentSuccess]);
+
+  // Stripe Checkout handler
+  const handleStripeCheckout = async () => {
+    setProcessing(true);
+    setErrors({});
+    try {
+      const res = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          planKey,
+          billing,
+          email: user?.email || "",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to create checkout session");
+      }
+      // Redirect to Stripe hosted checkout
+      window.location.href = data.url;
+    } catch (err) {
+      setErrors({ stripe: err.message });
       setProcessing(false);
-    });
-    rzp.open();
+    }
   };
 
   // UPI manual verification
@@ -267,29 +244,8 @@ export default function Checkout() {
     }, 1500);
   };
 
-  // Card payment
-  const validateCard = () => {
-    const e = {};
-    if (card.number.replace(/\s/g, "").length < 16) e.number = "Enter a valid card number";
-    if (!card.name.trim()) e.name = "Enter cardholder name";
-    if (card.expiry.length < 5) e.expiry = "Enter valid expiry";
-    if (card.cvv.length < 3) e.cvv = "Enter CVV";
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
-  const handleCardPayment = (e) => {
-    e.preventDefault();
-    if (!validateCard()) return;
-    setProcessing(true);
-    setTimeout(() => {
-      handlePaymentSuccess("international_card", `card_${Date.now()}`);
-    }, 2500);
-  };
-
   // Admin config save
   const saveAdminConfig = () => {
-    if (adminConfig.razorpayKey) localStorage.setItem("secuvion_razorpay_key", adminConfig.razorpayKey);
     if (adminConfig.upiId) localStorage.setItem("secuvion_upi_id", adminConfig.upiId);
     if (adminConfig.btcAddress) localStorage.setItem("secuvion_btc_address", adminConfig.btcAddress);
     if (adminConfig.ethAddress) localStorage.setItem("secuvion_eth_address", adminConfig.ethAddress);
@@ -301,12 +257,11 @@ export default function Checkout() {
   const btcQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${btcAddress}`;
   const ethQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${ethAddress}`;
 
-  // Approximate crypto prices (static estimates)
   const btcPriceINR = 5500000;
   const ethPriceINR = 220000;
   const btcEquiv = (price / btcPriceINR).toFixed(6);
   const ethEquiv = (price / ethPriceINR).toFixed(4);
-  const usdtEquiv = priceUSD;
+  const usdtEquiv = (price / 85).toFixed(2);
 
   /* ==================== SUCCESS SCREEN ==================== */
   if (success) {
@@ -419,23 +374,30 @@ export default function Checkout() {
               ))}
             </div>
 
-            {/* ---- RAZORPAY METHOD ---- */}
-            {method === "razorpay" && (
+            {/* ---- STRIPE METHOD ---- */}
+            {method === "stripe" && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, backdropFilter: "blur(10px)" }}>
-                <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Space Grotesk', sans-serif" }}>
-                  Pay with Razorpay
-                </h3>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                  <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, margin: 0, fontFamily: "'Space Grotesk', sans-serif" }}>
+                    Pay with Stripe
+                  </h3>
+                  <span style={{
+                    fontSize: 10, fontWeight: 600, padding: "3px 8px", borderRadius: 4,
+                    background: "rgba(99,102,241,0.15)", color: T.accent, textTransform: "uppercase",
+                  }}>Recommended</span>
+                </div>
                 <p style={{ fontSize: 13, color: T.muted, marginBottom: 24 }}>
-                  Supports UPI, Credit/Debit Cards, Net Banking, and Wallets
+                  Secure payment via Stripe — supports Cards, UPI, Net Banking, and Wallets
                 </p>
+
                 <div style={{
                   display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 24,
                 }}>
                   {[
-                    { label: "UPI", desc: "GPay, PhonePe, Paytm" },
                     { label: "Cards", desc: "Visa, Mastercard, Rupay" },
+                    { label: "UPI", desc: "GPay, PhonePe, Paytm" },
                     { label: "Net Banking", desc: "All major banks" },
-                    { label: "Wallets", desc: "Paytm, Freecharge" },
+                    { label: "Wallets", desc: "All popular wallets" },
                   ].map((item) => (
                     <div key={item.label} style={{
                       padding: "14px 12px", borderRadius: 10, background: "rgba(15,23,42,0.6)",
@@ -447,13 +409,29 @@ export default function Checkout() {
                   ))}
                 </div>
 
-                {errors.razorpay && (
+                {/* Security badges */}
+                <div style={{
+                  display: "flex", gap: 16, marginBottom: 24, flexWrap: "wrap",
+                }}>
+                  {["PCI DSS Level 1", "3D Secure", "256-bit SSL"].map((badge) => (
+                    <div key={badge} style={{
+                      display: "flex", alignItems: "center", gap: 6,
+                      padding: "8px 14px", borderRadius: 8,
+                      background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.12)",
+                    }}>
+                      <IconShieldCheck size={14} color={T.green} />
+                      <span style={{ fontSize: 12, color: T.green, fontWeight: 500 }}>{badge}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {errors.stripe && (
                   <div style={{ padding: "10px 14px", background: "rgba(239,68,68,0.1)", borderRadius: 8, border: `1px solid rgba(239,68,68,0.2)`, marginBottom: 16 }}>
-                    <span style={{ fontSize: 13, color: T.red }}>{errors.razorpay}</span>
+                    <span style={{ fontSize: 13, color: T.red }}>{errors.stripe}</span>
                   </div>
                 )}
 
-                <button onClick={handleRazorpay} disabled={processing} style={{
+                <button onClick={handleStripeCheckout} disabled={processing} style={{
                   width: "100%", padding: "16px", border: "none", borderRadius: 10,
                   background: processing ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                   color: "#fff", fontSize: 16, fontWeight: 700, cursor: processing ? "wait" : "pointer",
@@ -461,10 +439,10 @@ export default function Checkout() {
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "opacity 0.2s",
                 }}>
                   <IconLock size={18} color="#fff" />
-                  {processing ? "Opening Razorpay..." : `Pay \u20B9${price.toLocaleString("en-IN")}`}
+                  {processing ? "Redirecting to Stripe..." : `Pay \u20B9${price.toLocaleString("en-IN")}`}
                 </button>
                 <p style={{ fontSize: 11, color: T.muted, textAlign: "center", marginTop: 10 }}>
-                  Powered by Razorpay. You will be redirected to a secure payment page.
+                  You'll be redirected to Stripe's secure checkout page. Your card details never touch our servers.
                 </p>
               </div>
             )}
@@ -513,10 +491,6 @@ export default function Checkout() {
                       }}>
                         {"\u20B9"}{price.toLocaleString("en-IN")}
                       </div>
-                    </div>
-                    <div>
-                      <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 6 }}>Your UPI ID (optional)</label>
-                      <input value={upiId} onChange={(e) => setUpiId(e.target.value)} placeholder="yourname@upi" style={inputStyle(false)} />
                     </div>
                   </div>
                 </div>
@@ -653,78 +627,6 @@ export default function Checkout() {
               </div>
             )}
 
-            {/* ---- INTERNATIONAL CARD METHOD ---- */}
-            {method === "card" && (
-              <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, backdropFilter: "blur(10px)" }}>
-                <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Space Grotesk', sans-serif" }}>
-                  International Card Payment
-                </h3>
-                <p style={{ fontSize: 13, color: T.muted, marginBottom: 24 }}>
-                  Pay with Visa, Mastercard, or American Express
-                </p>
-
-                <form onSubmit={handleCardPayment}>
-                  {/* Card Number */}
-                  <div style={{ marginBottom: 20 }}>
-                    <label style={{ display: "block", fontSize: 13, fontWeight: 500, color: T.white, marginBottom: 6 }}>Card Number</label>
-                    <div style={{ position: "relative" }}>
-                      <input value={card.number}
-                        onChange={(e) => setCard({ ...card, number: formatCard(e.target.value) })}
-                        placeholder="1234 5678 9012 3456" maxLength={19}
-                        style={{
-                          ...inputStyle(!!errors.number),
-                          paddingLeft: 44, fontFamily: "'JetBrains Mono', monospace", letterSpacing: 1,
-                        }} />
-                      <IconCreditCard size={18} color={T.muted} style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }} />
-                    </div>
-                    {errors.number && <span style={{ fontSize: 12, color: T.red, marginTop: 4, display: "block" }}>{errors.number}</span>}
-                  </div>
-
-                  {/* Cardholder Name */}
-                  <div style={{ marginBottom: 20 }}>
-                    <label style={{ display: "block", fontSize: 13, fontWeight: 500, color: T.white, marginBottom: 6 }}>Cardholder Name</label>
-                    <input value={card.name} onChange={(e) => setCard({ ...card, name: e.target.value })}
-                      placeholder="John Doe" style={inputStyle(!!errors.name)} />
-                    {errors.name && <span style={{ fontSize: 12, color: T.red, marginTop: 4, display: "block" }}>{errors.name}</span>}
-                  </div>
-
-                  {/* Expiry + CVV */}
-                  <div style={{ display: "flex", gap: 16, marginBottom: 28 }}>
-                    <div style={{ flex: 1 }}>
-                      <label style={{ display: "block", fontSize: 13, fontWeight: 500, color: T.white, marginBottom: 6 }}>Expiry Date</label>
-                      <input value={card.expiry}
-                        onChange={(e) => setCard({ ...card, expiry: formatExpiry(e.target.value) })}
-                        placeholder="MM/YY" maxLength={5}
-                        style={{ ...inputStyle(!!errors.expiry), fontFamily: "'JetBrains Mono', monospace" }} />
-                      {errors.expiry && <span style={{ fontSize: 12, color: T.red, marginTop: 4, display: "block" }}>{errors.expiry}</span>}
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <label style={{ display: "block", fontSize: 13, fontWeight: 500, color: T.white, marginBottom: 6 }}>CVV</label>
-                      <input value={card.cvv}
-                        onChange={(e) => setCard({ ...card, cvv: e.target.value.replace(/\D/g, "").slice(0, 4) })}
-                        placeholder="123" type="password" maxLength={4}
-                        style={{ ...inputStyle(!!errors.cvv), fontFamily: "'JetBrains Mono', monospace" }} />
-                      {errors.cvv && <span style={{ fontSize: 12, color: T.red, marginTop: 4, display: "block" }}>{errors.cvv}</span>}
-                    </div>
-                  </div>
-
-                  <button type="submit" disabled={processing} style={{
-                    width: "100%", padding: "16px", border: "none", borderRadius: 10,
-                    background: processing ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
-                    color: "#fff", fontSize: 16, fontWeight: 700, cursor: processing ? "wait" : "pointer",
-                    fontFamily: "'Space Grotesk', sans-serif",
-                    display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "opacity 0.2s",
-                  }}>
-                    <IconLock size={18} color="#fff" />
-                    {processing ? "Processing Payment..." : `Pay ₹${priceUSD}`}
-                  </button>
-                </form>
-                <p style={{ fontSize: 11, color: T.muted, textAlign: "center", marginTop: 10 }}>
-                  Charged in INR. ₹{price.toLocaleString("en-IN")}
-                </p>
-              </div>
-            )}
-
             {/* Trust badges */}
             <div style={{
               display: "flex", alignItems: "center", justifyContent: "center",
@@ -770,10 +672,9 @@ export default function Checkout() {
                   borderRadius: 12, border: `1px solid ${T.border}`,
                 }}>
                   <p style={{ fontSize: 12, color: T.muted, marginBottom: 16 }}>
-                    Configure where payments are received. Changes are saved to your browser.
+                    Configure fallback payment details. Stripe keys are set via environment variables on Vercel.
                   </p>
                   {[
-                    { label: "Razorpay Key ID", key: "razorpayKey", placeholder: "rzp_live_xxxxxxxxx" },
                     { label: "UPI ID", key: "upiId", placeholder: "business@upi" },
                     { label: "Bitcoin Address", key: "btcAddress", placeholder: "bc1q..." },
                     { label: "Ethereum / USDT Address", key: "ethAddress", placeholder: "0x..." },
@@ -829,9 +730,6 @@ export default function Checkout() {
                   {"\u20B9"}{price.toLocaleString("en-IN")}
                   <span style={{ fontSize: 14, fontWeight: 400, color: T.muted }}>/{billing === "annual" ? "yr" : "mo"}</span>
                 </div>
-                <div style={{ fontSize: 12, color: T.muted, marginTop: 4 }}>
-                  ₹{priceUSD}/mo
-                </div>
                 {savings > 0 && (
                   <div style={{
                     display: "inline-flex", alignItems: "center", gap: 4, marginTop: 8,
@@ -886,7 +784,7 @@ export default function Checkout() {
               {/* Trust badges */}
               <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 8 }}>
                 {[
-                  { icon: IconShieldCheck, label: "256-bit SSL Encrypted", color: T.green },
+                  { icon: IconShieldCheck, label: "Powered by Stripe India", color: T.accent },
                   { icon: IconCheck, label: "30-day Money Back Guarantee", color: T.green },
                   { icon: IconLightning, label: "Instant Activation", color: T.cyan },
                 ].map((badge) => (
@@ -906,7 +804,7 @@ export default function Checkout() {
                   Accepted Payments
                 </div>
                 <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                  {["UPI", "Visa", "MC", "Rupay", "GPay", "BTC", "ETH", "USDT"].map((pm) => (
+                  {["Visa", "MC", "Rupay", "UPI", "GPay", "BTC", "ETH", "USDT"].map((pm) => (
                     <span key={pm} style={{
                       fontSize: 9, fontWeight: 600, color: T.muted, padding: "3px 7px",
                       background: "rgba(15,23,42,0.6)", borderRadius: 4, border: `1px solid ${T.border}`,
