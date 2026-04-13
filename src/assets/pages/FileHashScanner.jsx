@@ -38,7 +38,7 @@ export default function FileHashScanner() {
     if (!ok) return;
     setLoading(true); setError(""); setResult(null);
     try {
-      const res = await fetch("/api/file-hash-check", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ hash: hash.trim() }) });
+      const res = await fetch("/api/tools?tool=file-hash-check", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ hash: hash.trim() }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setResult(data);

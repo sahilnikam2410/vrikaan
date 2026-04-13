@@ -10,7 +10,7 @@ const T = { bg: "#030712", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: 
 
 const CHECKS = [
   { id: "breach", name: "Email Breach Check", description: "Check if email appears in known data breaches", api: "/api/breach" },
-  { id: "headers", name: "Security Headers", description: "Scan a website's security headers", api: "/api/security-headers" },
+  { id: "headers", name: "Security Headers", description: "Scan a website's security headers", api: "/api/tools?tool=security-headers" },
   { id: "ssl", name: "SSL Certificate", description: "Verify SSL certificate validity", api: "/api/ssl" },
 ];
 
@@ -50,7 +50,7 @@ export default function SecurityAudit() {
     if (domain.trim()) {
       setCurrentCheck("Scanning security headers...");
       try {
-        const res = await fetch("/api/security-headers", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: domain.trim() }) });
+        const res = await fetch("/api/tools?tool=security-headers", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: domain.trim() }) });
         const data = await res.json();
         auditResults.headers = data;
         if (data.score >= 70) score += 25;

@@ -23,7 +23,7 @@ export default function WhoisLookup() {
     if (!ok) return;
     setLoading(true); setError(""); setResult(null);
     try {
-      const res = await fetch("/api/whois", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ domain: domain.trim() }) });
+      const res = await fetch("/api/tools?tool=whois", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ domain: domain.trim() }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setResult(data);

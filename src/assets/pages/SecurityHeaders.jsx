@@ -23,7 +23,7 @@ export default function SecurityHeaders() {
     if (!ok) return;
     setLoading(true); setError(""); setResult(null);
     try {
-      const res = await fetch("/api/security-headers", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: url.trim() }) });
+      const res = await fetch("/api/tools?tool=security-headers", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ url: url.trim() }) });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setResult(data);
