@@ -375,7 +375,7 @@ Write a concise analysis in plain English (max 180 words) with:
 Format as markdown with short bullet points. Do not repeat the raw JSON. Do not use jargon.`;
 
   try {
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
     const gRes = await fetch(geminiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -405,7 +405,7 @@ Format as markdown with short bullet points. Do not repeat the raw JSON. Do not 
     }
 
     res.setHeader("Cache-Control", "no-store");
-    return res.status(200).json({ explanation, model: "gemini-1.5-flash" });
+    return res.status(200).json({ explanation, model: "gemini-2.0-flash" });
   } catch (err) {
     const message = err.name === "TimeoutError" ? "AI request timed out" : "AI service error";
     console.error("Gemini explain error:", err.message);
