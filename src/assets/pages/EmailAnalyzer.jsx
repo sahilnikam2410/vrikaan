@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { saveToolResult } from "../../services/toolHistoryService";
+import renderMarkdown from "../../utils/renderMarkdown";
 
 const T = { bg: "#030712", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
@@ -320,7 +321,7 @@ export default function EmailAnalyzer() {
                 <div style={{ marginTop: 16, padding: "14px 16px", background: "rgba(20,227,197,0.05)", border: "1px solid rgba(20,227,197,0.15)", borderRadius: 10 }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: T.cyan, fontFamily: "'JetBrains Mono', monospace", letterSpacing: 0.5, marginBottom: 8 }}>🤖 AI ANALYSIS</div>
                   {aiError ? <div style={{ fontSize: 13, color: T.red }}>{aiError}</div>
-                    : <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{aiExplanation}</div>}
+                    : <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.7 }}>{renderMarkdown(aiExplanation)}</div>}
                 </div>
               )}
               <div style={{ display: "flex", gap: 12, marginTop: 20 }}>

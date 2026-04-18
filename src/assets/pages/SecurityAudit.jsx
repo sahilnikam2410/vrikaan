@@ -6,6 +6,7 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { exportReport } from "../../utils/exportPDF";
 import { saveToolResult } from "../../services/toolHistoryService";
+import renderMarkdown from "../../utils/renderMarkdown";
 
 const T = { bg: "#030712", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
@@ -200,7 +201,7 @@ export default function SecurityAudit() {
                     <span style={{ fontSize: 12, fontWeight: 700, color: T.cyan, fontFamily: "'JetBrains Mono', monospace", letterSpacing: 0.5 }}>AI ANALYSIS</span>
                   </div>
                   {aiError ? <div style={{ fontSize: 13, color: T.red }}>{aiError}</div>
-                    : <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{aiExplanation}</div>}
+                    : <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.7 }}>{renderMarkdown(aiExplanation)}</div>}
                 </div>
               )}
             </div>

@@ -5,6 +5,7 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { saveToolResult } from "../../services/toolHistoryService";
 import { exportReport } from "../../utils/exportPDF";
+import renderMarkdown from "../../utils/renderMarkdown";
 
 const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
@@ -229,7 +230,7 @@ export default function FraudAnalyzer() {
                   {aiError ? (
                     <div style={{ fontSize: 13, color: T.red }}>{aiError}</div>
                   ) : (
-                    <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.7, whiteSpace: "pre-wrap" }}>{aiExplanation}</div>
+                    <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.7 }}>{renderMarkdown(aiExplanation)}</div>
                   )}
                 </div>
               )}
