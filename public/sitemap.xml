@@ -53,4 +53,22 @@
 
   <!-- Growth -->
   <url><loc>https://secuvion.vercel.app/referral</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+
+  <!-- Threat directory (programmatic SEO) -->
+  <url><loc>https://secuvion.vercel.app/threats</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/phishing</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/smishing</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/vishing</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/business-email-compromise</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/ransomware</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/credential-stuffing</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/man-in-the-middle</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/sim-swapping</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/formjacking</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/malvertising</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/cryptojacking</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/drive-by-download</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/tech-support-scam</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/romance-scam</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/threat/fake-invoice-scam</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
 </urlset>

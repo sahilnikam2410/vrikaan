@@ -1,0 +1,106 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Helpers ─────────────────────────────────────────────────
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Admin is determined by email address on the auth token.
+    // Keep this list in sync with ADMIN_EMAILS in AuthContext.jsx.
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.email in [
+        'sahilnikam133@gmail.com',
+        'sahilnikam1212@gmail.com',
+        'admin@secuvion.com'
+      ];
+    }
+
+    // ─── users ───────────────────────────────────────────────────
+    // Owner: full read/write on their own profile doc.
+    // Admin: full read/write on any profile (needed for AdminDashboard).
+    match /users/{uid} {
+      allow read, write: if isOwner(uid) || isAdmin();
+
+      // Payments subcollection — owner can create after server verification.
+      // Updates/deletes restricted to admin only (no history tampering).
+      match /payments/{payId} {
+        allow read: if isOwner(uid) || isAdmin();
+        allow create: if isOwner(uid);
+        allow update, delete: if isAdmin();
+      }
+
+      // Tool usage history — owner only.
+      match /toolHistory/{histId} {
+        allow read, write: if isOwner(uid) || isAdmin();
+      }
+
+      // Registered devices — owner only.
+      match /devices/{deviceId} {
+        allow read, write: if isOwner(uid) || isAdmin();
+      }
+
+      // Personal API keys — owner only.
+      match /apikeys/{keyId} {
+        allow read, write: if isOwner(uid) || isAdmin();
+      }
+
+      // Activity log — owner only.
+      match /activity/{actId} {
+        allow read, write: if isOwner(uid) || isAdmin();
+      }
+
+      // Security reports — owner only.
+      match /reports/{repId} {
+        allow read, write: if isOwner(uid) || isAdmin();
+      }
+    }
+
+    // ─── referrals ───────────────────────────────────────────────
+    // Each user owns exactly one referral-code document keyed by their uid.
+    // Any signed-in user can READ this collection (so signup can look up
+    // code owners), but only the owner can create / modify their own doc.
+    match /referrals/{uid} {
+      allow read: if isSignedIn();
+      allow create, update: if isOwner(uid);
+      allow delete: if isOwner(uid) || isAdmin();
+    }
+
+    // ─── referral_signups ────────────────────────────────────────
+    // New signups record a tracking entry.
+    // The referred user (self) creates the entry.
+    // The referrer or the referred user can read their own entries.
+    match /referral_signups/{sigId} {
+      allow read: if isSignedIn() && (
+        resource.data.referredBy == request.auth.uid ||
+        resource.data.referredUser == request.auth.uid ||
+        isAdmin()
+      );
+      // Creator must set referredUser == their own uid (prevents spoofing).
+      allow create: if isSignedIn()
+        && request.resource.data.referredUser == request.auth.uid
+        && request.resource.data.referredBy != request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    // ─── usage ───────────────────────────────────────────────────
+    // Document ID format: `{uid}_{YYYY-MM-DD}`.
+    // Only the owner (uid prefix) may read/write their own usage doc.
+    match /usage/{docId} {
+      allow read, write: if isSignedIn()
+        && docId.split('_')[0] == request.auth.uid;
+    }
+
+    // ─── Default deny ────────────────────────────────────────────
+    // Any collection not explicitly matched above is locked down.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

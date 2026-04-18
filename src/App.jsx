@@ -102,6 +102,8 @@ const DnsLeakTest = lazy(() => import("./assets/pages/DnsLeakTest.jsx"));
 const TwoFactorGuide = lazy(() => import("./assets/pages/TwoFactorGuide.jsx"));
 const Referral = lazy(() => import("./assets/pages/Referral.jsx"));
 const SecurityAudit = lazy(() => import("./assets/pages/SecurityAudit.jsx"));
+const ThreatDirectory = lazy(() => import("./assets/pages/ThreatDirectory.jsx"));
+const ThreatDetail = lazy(() => import("./assets/pages/ThreatDetail.jsx"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -134,6 +136,10 @@ function AppRoutes() {
             <Route path="/features" element={<FeaturesPage />} />
             <Route path="/emergency-help" element={<EmergencyHelp />} />
             <Route path="/identity-xray" element={<IdentityXray />} />
+
+            {/* Public — SEO threat pages (programmatic) */}
+            <Route path="/threats" element={<ThreatDirectory />} />
+            <Route path="/threat/:slug" element={<ThreatDetail />} />
 
             {/* Protected — Tools (login required) */}
             <Route path="/threat-map" element={<ProtectedRoute><ThreatMap /></ProtectedRoute>} />

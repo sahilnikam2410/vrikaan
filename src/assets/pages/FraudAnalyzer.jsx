@@ -89,6 +89,29 @@ export default function FraudAnalyzer() {
           if (/\.(ru|cn|tk|ml|ga|cf|gq)$/.test(trimmed)) { score -= 30; details.push("High-risk country TLD detected"); }
           if (/[0-9]{5,}/.test(trimmed)) { score -= 15; details.push("Excessive numbers in address"); }
           if (/paypal|amazon|apple|google|microsoft|bank/i.test(trimmed) && !/\.(com|org)$/.test(trimmed.split("@")[1])) { score -= 25; details.push("Brand name with unusual domain — possible impersonation"); }
+
+          // Breach lookup (XposedOrNot) — layered on top of local heuristics.
+          if (trimmed.includes("@")) {
+            try {
+              const bRes = await fetch("/api/tools?tool=breach-check", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: trimmed }),
+              });
+              if (bRes.ok) {
+                const bData = await bRes.json();
+                if (bData.breached) {
+                  const penalty = Math.min(35, bData.count * 5);
+                  score -= penalty;
+                  const list = bData.breaches.slice(0, 5).join(", ");
+                  details.push(`⚠ Found in ${bData.count} known breach${bData.count === 1 ? "" : "es"}: ${list}${bData.count > 5 ? "…" : ""}`);
+                } else {
+                  details.push("✓ Not found in any known data breach (XposedOrNot)");
+                }
+              }
+            } catch { /* breach check is best-effort; don't block result */ }
+          }
+
           if (details.length === 0) details.push("No suspicious patterns detected", "Domain appears legitimate");
         } else if (mode === "phone") {
           if (trimmed.replace(/\D/g, "").length < 10) { score -= 30; details.push("Phone number too short"); }

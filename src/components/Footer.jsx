@@ -71,6 +71,7 @@ const Footer = () => (
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             <FooterLink to="/learn">Learn Academy</FooterLink>
             <FooterLink to="/cyber-news">Cyber News</FooterLink>
+            <FooterLink to="/threats">Threat Directory</FooterLink>
             <FooterLink to="/blog">Blog</FooterLink>
             <FooterLink to="/security-checklist">Security Checklist</FooterLink>
             <FooterLink to="/security-score">Security Score</FooterLink>

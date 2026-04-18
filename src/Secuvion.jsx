@@ -1,7 +1,22 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
-import CyberGlobe from "./components/CyberGlobe";
+// Defer three.js / globe (~665kB) until after hero text paints.
+const CyberGlobe = lazy(() => import("./components/CyberGlobe"));
+const GlobePlaceholder = ({ size = 520 }) => (
+  <div
+    aria-hidden
+    style={{
+      width: size,
+      height: size,
+      borderRadius: "50%",
+      background:
+        "radial-gradient(circle at 30% 30%, rgba(20,227,197,0.12), rgba(99,102,241,0.06) 40%, transparent 70%)",
+      border: "1px solid rgba(20,227,197,0.12)",
+      opacity: 0.6,
+    }}
+  />
+);
 import ThreatMapLive from "./components/ThreatMapLive";
 import BackToTop from "./components/BackToTop";
 import SEO from "./components/SEO";
@@ -458,7 +473,9 @@ const Hero = () => {
           <div style={{ position: "relative", width: "100%", aspectRatio: "1", maxWidth: 560, margin: "0 auto" }} className="hero-globe">
             <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "radial-gradient(circle at 40% 40%, rgba(99,102,241,0.08), transparent 60%)" }} />
             <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-              <CyberGlobe size={typeof window !== "undefined" && window.innerWidth < 600 ? 280 : 560} />
+              <Suspense fallback={<GlobePlaceholder size={typeof window !== "undefined" && window.innerWidth < 600 ? 280 : 560} />}>
+                <CyberGlobe size={typeof window !== "undefined" && window.innerWidth < 600 ? 280 : 560} />
+              </Suspense>
             </div>
             {/* Floating stat cards */}
             <div style={{ position: "absolute", top: "8%", right: "-5%", padding: "12px 18px", background: "rgba(17,24,39,0.85)", backdropFilter: "blur(12px)", border: `1px solid ${T.border}`, borderRadius: 12, animation: "float 4s ease-in-out infinite" }}>
@@ -1389,7 +1406,9 @@ const ThreatMapSection = () => {
           <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${T.border}, transparent)` }} />
         </div>
         <div style={{ position: "relative", height: 500, borderRadius: 20, overflow: "hidden", border: `1px solid ${T.border}`, background: "radial-gradient(ellipse at 50% 50%, rgba(20,227,197,0.02) 0%, #030712 70%)" }}>
-          <CyberGlobe size={500} />
+          <Suspense fallback={<div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}><GlobePlaceholder size={400} /></div>}>
+            <CyberGlobe size={500} />
+          </Suspense>
           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, textAlign: "center", padding: "36px 0 20px", background: "linear-gradient(transparent, rgba(3,7,18,0.9))", pointerEvents: "none" }}>
             <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: T.mutedDark, marginBottom: 6 }}>Global operations detected</div>
             <div style={{ fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 800, color: T.accent, letterSpacing: "-0.02em" }}>{attackCount.toLocaleString()}</div>

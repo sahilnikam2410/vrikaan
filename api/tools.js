@@ -424,6 +424,61 @@ Format as markdown with short bullet points. Do not repeat the raw JSON. Do not 
   }
 }
 
+// ─── BREACH CHECK (XposedOrNot, free, no key) ───────────────────────
+
+async function handleBreachCheck(req, res) {
+  const { email } = req.body || {};
+  if (!email || typeof email !== "string") {
+    return res.status(400).json({ error: "email is required" });
+  }
+  const clean = email.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean)) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
+
+  try {
+    const r = await fetch(
+      `https://api.xposedornot.com/v1/check-email/${encodeURIComponent(clean)}`,
+      { signal: AbortSignal.timeout(8000) }
+    );
+
+    // 404 from XposedOrNot = not found in any known breach = good news.
+    if (r.status === 404) {
+      res.setHeader("Cache-Control", "public, max-age=600");
+      return res.status(200).json({
+        email: clean,
+        breached: false,
+        count: 0,
+        breaches: [],
+      });
+    }
+
+    if (!r.ok) {
+      console.error("XposedOrNot error:", r.status);
+      return res.status(502).json({ error: "Breach database unavailable" });
+    }
+
+    const data = await r.json();
+    // API returns { breaches: [["Canva","Linkedin",...]] } on hits.
+    const flat =
+      Array.isArray(data?.breaches) && Array.isArray(data.breaches[0])
+        ? data.breaches[0]
+        : [];
+
+    res.setHeader("Cache-Control", "public, max-age=600");
+    return res.status(200).json({
+      email: clean,
+      breached: flat.length > 0,
+      count: flat.length,
+      breaches: flat.slice(0, 20),
+    });
+  } catch (err) {
+    const msg = err.name === "TimeoutError" ? "Breach check timed out" : "Breach check failed";
+    console.error("breach-check error:", err.message);
+    return res.status(502).json({ error: msg });
+  }
+}
+
 // ─── ROUTER ─────────────────────────────────────────────────────────
 
 const HANDLERS = {
@@ -431,6 +486,7 @@ const HANDLERS = {
   "security-headers": handleSecurityHeaders,
   "file-hash-check": handleFileHashCheck,
   "ai-explain": handleGeminiExplain,
+  "breach-check": handleBreachCheck,
 };
 
 export default async function handler(req, res) {
