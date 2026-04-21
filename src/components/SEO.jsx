@@ -5,7 +5,7 @@ const defaults = {
   title: "SECUVION - AI-Powered Cyber Defense Platform",
   description: "Enterprise-grade cybersecurity for everyone. Real-time threat detection, fraud analysis, and digital protection powered by AI. 15+ security tools in one dashboard.",
   url: "https://secuvion.vercel.app",
-  image: "https://secuvion.vercel.app/og-image.svg",
+  image: "https://secuvion.vercel.app/api/og?title=SECUVION&subtitle=AI-Powered+Cyber+Defense+Platform",
   twitter: "@secuvion",
 };
 
