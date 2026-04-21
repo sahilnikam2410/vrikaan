@@ -58,6 +58,7 @@ function rewriteMeta(baseHtml, meta) {
     ogImage,
     ogType = "website",
     jsonLd,
+    noindex = false,
   } = meta;
 
   let html = baseHtml
@@ -97,6 +98,10 @@ function rewriteMeta(baseHtml, meta) {
     .replace(
       /(<meta name="twitter:image" content=")[^"]*(")/,
       `$1${htmlEscape(ogImage)}$2`
+    )
+    .replace(
+      /(<meta name="robots" content=")[^"]*(")/,
+      `$1${noindex ? "noindex, nofollow" : "index, follow"}$2`
     );
 
   // Canonical link — add or replace.
@@ -359,6 +364,116 @@ const PRIMARY_PAGES = [
     title: "Refund Policy",
     description: "SECUVION refund and cancellation policy.",
   },
+  {
+    path: "/shipping-policy",
+    title: "Shipping Policy",
+    description:
+      "SECUVION is a digital service — shipping policy for any physical deliverables (hardware security keys, merchandise).",
+  },
+
+  // --- Auth pages — noindex so they never appear in search results ---
+  {
+    path: "/login",
+    title: "Sign In",
+    description: "Sign in to your SECUVION account.",
+    noindex: true,
+  },
+  {
+    path: "/signup",
+    title: "Create Account",
+    description:
+      "Create a free SECUVION account — 15+ security tools, dark-web monitoring, and real-time threat alerts. No credit card required.",
+    ogSubtitle: "Free forever — no credit card required",
+  },
+  {
+    path: "/forgot-password",
+    title: "Reset Password",
+    description: "Reset your SECUVION account password.",
+    noindex: true,
+  },
+
+  // --- Additional tool pages ---
+  {
+    path: "/2fa-guide",
+    title: "2FA Setup Guide",
+    description:
+      "Step-by-step guides to enable two-factor authentication on Google, Apple, Microsoft, banking, and social accounts. Interactive and beginner-friendly.",
+    ogSubtitle: "Enable 2FA on every account that matters",
+    ogCategory: "Tutorials",
+  },
+  {
+    path: "/vulnerability-scanner",
+    title: "Vulnerability Scanner",
+    description:
+      "Scan any public-facing website for the OWASP Top 10 and common CVEs. Get a detailed report in seconds, no signup required.",
+    ogSubtitle: "OWASP Top 10 + CVE scanning",
+  },
+  {
+    path: "/phishing-trainer",
+    title: "Phishing Trainer",
+    description:
+      "Interactive training to teach you how to spot phishing emails, smishing texts, and vishing calls — before they catch you for real.",
+    ogSubtitle: "Train yourself to spot phishing",
+    ogCategory: "Tutorials",
+  },
+  {
+    path: "/file-hash-scanner",
+    title: "File Hash Scanner",
+    description:
+      "Compute SHA-256/MD5/SHA-1 hashes locally in your browser and check them against known-malware databases. No file is ever uploaded.",
+    ogSubtitle: "Check any file against malware DBs",
+  },
+  {
+    path: "/dns-leak-test",
+    title: "DNS Leak Test",
+    description:
+      "Verify your VPN is actually private. Our DNS leak test reveals which resolvers your system is really using, exposing VPN misconfigurations.",
+    ogSubtitle: "Is your VPN actually private?",
+  },
+  {
+    path: "/security-score",
+    title: "Security Score",
+    description:
+      "Get a personal cybersecurity posture score across passwords, 2FA, breach exposure, and device hygiene. Free and actionable.",
+    ogSubtitle: "Rate your personal cyber posture",
+  },
+  {
+    path: "/password-vault",
+    title: "Password Vault",
+    description:
+      "Zero-knowledge encrypted password storage. Your vault is encrypted client-side with your master password — we never see your data.",
+    ogSubtitle: "Zero-knowledge password storage",
+  },
+  {
+    path: "/security-checklist",
+    title: "Security Checklist",
+    description:
+      "A personal cybersecurity checklist covering passwords, devices, accounts, network, and backups. Track progress across all your security hygiene tasks.",
+    ogSubtitle: "Your personal cyber hygiene plan",
+    ogCategory: "Tips",
+  },
+  {
+    path: "/browser-fingerprint",
+    title: "Browser Fingerprint Test",
+    description:
+      "See exactly what information your browser leaks to every site you visit — canvas fingerprint, fonts, plugins, screen, timezone, and more.",
+    ogSubtitle: "What your browser leaks",
+  },
+  {
+    path: "/threat-map",
+    title: "Live Threat Map",
+    description:
+      "Real-time global map of cyber attacks, DDoS events, and malware campaigns as they happen around the world.",
+    ogSubtitle: "Real-time global cyber attacks",
+    ogCategory: "Threats",
+  },
+  {
+    path: "/referral",
+    title: "Refer a Friend",
+    description:
+      "Invite friends to SECUVION and both of you get premium features free. Help us make cybersecurity accessible to everyone.",
+    ogSubtitle: "Give security, get security",
+  },
 ];
 
 // ---------- main ----------
@@ -399,6 +514,7 @@ async function main() {
       ogImage,
       ogType: "website",
       jsonLd,
+      noindex: p.noindex === true,
     });
     writeRoute(p.path, html);
     count++;
