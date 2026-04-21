@@ -71,4 +71,22 @@
   <url><loc>https://secuvion.vercel.app/threat/tech-support-scam</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://secuvion.vercel.app/threat/romance-scam</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
   <url><loc>https://secuvion.vercel.app/threat/fake-invoice-scam</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+
+  <!-- Blog posts (16 SEO articles) -->
+  <url><loc>https://secuvion.vercel.app/blog/how-to-detect-phishing-emails-in-2026</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/the-rise-of-ai-powered-cyber-attacks</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/complete-guide-to-setting-up-2fa</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/top-10-password-managers-compared</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/ransomware-attacks-hit-record-high-in-q1-2026</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/understanding-zero-day-vulnerabilities</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/building-a-home-network-security-lab</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/social-engineering-the-human-factor</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/gdpr-compliance-checklist-for-startups</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/cloud-security-best-practices-for-2026</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/how-quantum-computing-will-impact-encryption</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/beginner-s-guide-to-ethical-hacking</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/securing-iot-devices-in-smart-homes</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/the-state-of-cybersecurity-jobs-in-2026</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/dns-security-protecting-your-first-line-of-defense</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://secuvion.vercel.app/blog/incident-response-playbook-a-step-by-step-guide</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
 </urlset>

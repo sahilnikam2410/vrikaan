@@ -1,11 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
-const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", ember: "#f97316", red: "#ef4444", gold: "#eab308", purple: "#a78bfa", blue: "#38bdf8", green: "#22c55e", pink: "#ec4899", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
+export const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", ember: "#f97316", red: "#ef4444", gold: "#eab308", purple: "#a78bfa", blue: "#38bdf8", green: "#22c55e", pink: "#ec4899", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
-const categoryColors = {
+export const categoryColors = {
   News: T.blue,
   Tutorials: T.cyan,
   Tips: T.green,
@@ -13,7 +14,7 @@ const categoryColors = {
   Industry: T.purple,
 };
 
-const categoryGradients = {
+export const categoryGradients = {
   News: "linear-gradient(135deg, #1e3a5f 0%, #0f172a 60%, #1e40af 100%)",
   Tutorials: "linear-gradient(135deg, #064e3b 0%, #0f172a 60%, #14532d 100%)",
   Tips: "linear-gradient(135deg, #1a2e05 0%, #0f172a 60%, #166534 100%)",
@@ -21,9 +22,19 @@ const categoryGradients = {
   Industry: "linear-gradient(135deg, #2e1065 0%, #0f172a 60%, #4c1d95 100%)",
 };
 
+// URL-safe slug from title
+export const slugify = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+// Lookup helpers used by Blog list + BlogPost detail page
+export const getArticleBySlug = (slug) => articles.find((a) => slugify(a.title) === slug);
+export const getRelatedArticles = (article, limit = 3) =>
+  articles
+    .filter((a) => a.id !== article.id && (a.category === article.category || a.tags.some((t) => article.tags.includes(t))))
+    .slice(0, limit);
+
 const tags = ["Encryption", "Phishing", "Malware", "Privacy", "AI", "Cloud", "IoT", "Zero Trust", "Ransomware", "VPN", "Firewall", "SIEM", "SOC", "Pentesting", "OSINT", "MFA", "DDoS", "Blockchain"];
 
-const authors = [
+export const authors = [
   { name: "Sarah Chen", initials: "SC", color: T.cyan, bio: "Senior cybersecurity analyst with 10+ years of experience in threat intelligence and incident response. Former SOC lead at a Fortune 500 company." },
   { name: "Marcus Webb", initials: "MW", color: T.accent, bio: "Ethical hacker and penetration tester. OSCP and CEH certified. Passionate about making security accessible to everyone." },
   { name: "Aisha Patel", initials: "AP", color: T.pink, bio: "Privacy advocate and compliance specialist. Helps startups navigate GDPR, CCPA, and emerging data protection regulations worldwide." },
@@ -32,7 +43,7 @@ const authors = [
   { name: "David Kim", initials: "DK", color: T.gold, bio: "AI security researcher focused on adversarial machine learning and the intersection of artificial intelligence and cybersecurity." },
 ];
 
-const articles = [
+export const articles = [
   {
     id: 1,
     title: "How to Detect Phishing Emails in 2026",
@@ -325,8 +336,6 @@ const articles = [
 ];
 
 const Blog = () => {
-  const [view, setView] = useState("grid");
-  const [selectedArticle, setSelectedArticle] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [newsletterEmail, setNewsletterEmail] = useState("");
@@ -335,8 +344,6 @@ const Blog = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [hoveredTag, setHoveredTag] = useState(null);
   const [hoveredCategory, setHoveredCategory] = useState(null);
-  const [activeSection, setActiveSection] = useState(0);
-  const contentRef = useRef(null);
 
   const categories = ["All", "News", "Tutorials", "Tips", "Threats", "Industry"];
 
@@ -352,48 +359,10 @@ const Blog = () => {
 
   const popularArticles = [...articles].sort((a, b) => b.likes - a.likes).slice(0, 5);
 
-  const openArticle = (article) => {
-    setSelectedArticle(article);
-    setView("detail");
-    setActiveSection(0);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const backToGrid = () => {
-    setView("grid");
-    setSelectedArticle(null);
-  };
-
   const toggleLike = (id, e) => {
+    e.preventDefault();
     e.stopPropagation();
     setLikedArticles((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
-
-  const getRelatedArticles = (article) => {
-    return articles.filter((a) => a.id !== article.id && (a.category === article.category || a.tags.some((t) => article.tags.includes(t)))).slice(0, 3);
-  };
-
-  useEffect(() => {
-    if (view !== "detail" || !contentRef.current) return;
-    const handleScroll = () => {
-      const sections = contentRef.current?.querySelectorAll("[data-section]");
-      if (!sections) return;
-      let current = 0;
-      sections.forEach((sec, i) => {
-        const rect = sec.getBoundingClientRect();
-        if (rect.top <= 200) current = i;
-      });
-      setActiveSection(current);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [view]);
-
-  const scrollToSection = (i) => {
-    const sections = contentRef.current?.querySelectorAll("[data-section]");
-    if (sections && sections[i]) {
-      sections[i].scrollIntoView({ behavior: "smooth", block: "start" });
-    }
   };
 
   // ─── Article Card ───
@@ -404,11 +373,12 @@ const Blog = () => {
     const liked = likedArticles[article.id];
 
     return (
-      <div
-        onClick={() => openArticle(article)}
+      <Link
+        to={`/blog/${slugify(article.title)}`}
         onMouseEnter={() => setHoveredCard(article.id)}
         onMouseLeave={() => setHoveredCard(null)}
         style={{
+          textDecoration: "none",
           background: T.card,
           border: `1px solid ${isHovered ? catColor + "40" : T.border}`,
           borderRadius: 16,
@@ -534,221 +504,10 @@ const Blog = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Link>
     );
   };
 
-  // ─── Detail View ───
-  if (view === "detail" && selectedArticle) {
-    const related = getRelatedArticles(selectedArticle);
-    const catColor = categoryColors[selectedArticle.category] || T.cyan;
-    return (
-      <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Plus Jakarta Sans'" }}>
-        <SEO title={`${selectedArticle.title} - SECUVION Blog`} description={selectedArticle.excerpt} />
-        <Navbar />
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "100px 24px 60px" }}>
-          {/* Back button */}
-          <button
-            onClick={backToGrid}
-            style={{
-              background: "none",
-              border: `1px solid ${T.border}`,
-              borderRadius: 10,
-              color: T.muted,
-              fontSize: 13,
-              fontWeight: 600,
-              cursor: "pointer",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              padding: "8px 16px",
-              fontFamily: "'Plus Jakarta Sans'",
-              marginBottom: 32,
-              transition: "all 0.2s",
-            }}
-            onMouseEnter={(e) => { e.target.style.color = T.cyan; e.target.style.borderColor = T.cyan + "40"; }}
-            onMouseLeave={(e) => { e.target.style.color = T.muted; e.target.style.borderColor = T.border; }}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7" /></svg>
-            Back to Blog
-          </button>
-
-          <div style={{ display: "flex", gap: 40 }}>
-            {/* Table of Contents Sidebar */}
-            <aside style={{ width: 220, flexShrink: 0, position: "sticky", top: 100, alignSelf: "flex-start", display: "none" }} className="toc-sidebar">
-              <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 20 }}>
-                <h4 style={{ fontFamily: "'Space Grotesk'", fontSize: 13, fontWeight: 700, color: T.mutedDark, margin: "0 0 14px 0", letterSpacing: 1, textTransform: "uppercase" }}>Contents</h4>
-                {selectedArticle.content.map((sec, i) => (
-                  <div
-                    key={i}
-                    onClick={() => scrollToSection(i)}
-                    style={{
-                      fontSize: 12,
-                      color: activeSection === i ? T.cyan : T.muted,
-                      padding: "6px 0 6px 12px",
-                      borderLeft: `2px solid ${activeSection === i ? T.cyan : T.border}`,
-                      cursor: "pointer",
-                      transition: "all 0.2s",
-                      marginBottom: 2,
-                      fontWeight: activeSection === i ? 600 : 400,
-                    }}
-                  >
-                    {sec.heading}
-                  </div>
-                ))}
-              </div>
-            </aside>
-
-            {/* Main Content */}
-            <div style={{ flex: 1, maxWidth: 780 }} ref={contentRef}>
-              {/* Category + meta */}
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
-                <span style={{ padding: "4px 14px", borderRadius: 8, fontSize: 12, fontWeight: 700, background: `${catColor}20`, color: catColor, textTransform: "uppercase", letterSpacing: 0.5 }}>
-                  {selectedArticle.category}
-                </span>
-                <span style={{ fontSize: 13, color: T.mutedDark }}>{selectedArticle.date}</span>
-                <span style={{ fontSize: 13, color: T.mutedDark }}>&middot;</span>
-                <span style={{ fontSize: 13, color: T.mutedDark }}>{selectedArticle.readTime}</span>
-              </div>
-
-              {/* Title */}
-              <h1 style={{ fontFamily: "'Space Grotesk'", fontSize: 36, fontWeight: 800, color: T.white, margin: "0 0 20px 0", lineHeight: 1.2 }}>
-                {selectedArticle.title}
-              </h1>
-
-              {/* Excerpt */}
-              <p style={{ fontSize: 17, color: T.muted, lineHeight: 1.7, margin: "0 0 28px 0" }}>{selectedArticle.excerpt}</p>
-
-              {/* Author bar */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 0", borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}`, marginBottom: 36, flexWrap: "wrap", gap: 12 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{ width: 44, height: 44, borderRadius: "50%", background: `${selectedArticle.author.color}20`, border: `2px solid ${selectedArticle.author.color}40`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: selectedArticle.author.color, fontFamily: "'Space Grotesk'" }}>
-                    {selectedArticle.author.initials}
-                  </div>
-                  <div>
-                    <div style={{ fontSize: 14, fontWeight: 700, color: T.white }}>{selectedArticle.author.name}</div>
-                    <div style={{ fontSize: 12, color: T.mutedDark }}>{selectedArticle.date} &middot; {selectedArticle.readTime}</div>
-                  </div>
-                </div>
-                {/* Share buttons */}
-                <div style={{ display: "flex", gap: 8 }}>
-                  {["Twitter", "LinkedIn", "Copy"].map((s) => (
-                    <button
-                      key={s}
-                      style={{
-                        background: T.card,
-                        border: `1px solid ${T.border}`,
-                        borderRadius: 8,
-                        color: T.muted,
-                        fontSize: 11,
-                        fontWeight: 600,
-                        padding: "6px 14px",
-                        cursor: "pointer",
-                        fontFamily: "'Plus Jakarta Sans'",
-                        transition: "all 0.2s",
-                      }}
-                      onMouseEnter={(e) => { e.target.style.borderColor = T.cyan + "40"; e.target.style.color = T.cyan; }}
-                      onMouseLeave={(e) => { e.target.style.borderColor = T.border; e.target.style.color = T.muted; }}
-                    >
-                      {s === "Twitter" ? "X / Twitter" : s === "Copy" ? "Copy Link" : s}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Mobile TOC */}
-              <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: "16px 20px", marginBottom: 32 }}>
-                <h4 style={{ fontFamily: "'Space Grotesk'", fontSize: 13, fontWeight: 700, color: T.mutedDark, margin: "0 0 12px 0", letterSpacing: 1, textTransform: "uppercase" }}>Table of Contents</h4>
-                {selectedArticle.content.map((sec, i) => (
-                  <div
-                    key={i}
-                    onClick={() => scrollToSection(i)}
-                    style={{
-                      fontSize: 13,
-                      color: activeSection === i ? T.cyan : T.muted,
-                      padding: "6px 0 6px 14px",
-                      borderLeft: `2px solid ${activeSection === i ? T.cyan : T.border}`,
-                      cursor: "pointer",
-                      transition: "all 0.2s",
-                      marginBottom: 2,
-                      fontWeight: activeSection === i ? 600 : 400,
-                    }}
-                  >
-                    {sec.heading}
-                  </div>
-                ))}
-              </div>
-
-              {/* Article content */}
-              {selectedArticle.content.map((section, i) => (
-                <div key={i} data-section={i} style={{ marginBottom: 36 }}>
-                  <h2 style={{ fontFamily: "'Space Grotesk'", fontSize: 22, fontWeight: 700, color: T.white, margin: "0 0 14px 0", paddingTop: 8 }}>{section.heading}</h2>
-                  <p style={{ fontSize: 15, color: T.muted, lineHeight: 1.8, margin: 0 }}>{section.text}</p>
-                </div>
-              ))}
-
-              {/* Tags */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, padding: "24px 0", borderTop: `1px solid ${T.border}` }}>
-                {selectedArticle.tags.map((tag) => (
-                  <span key={tag} style={{ padding: "4px 12px", borderRadius: 6, fontSize: 11, fontWeight: 600, background: `${T.accent}15`, color: T.accent, border: `1px solid ${T.accent}20` }}>#{tag}</span>
-                ))}
-              </div>
-
-              {/* Author bio */}
-              <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, marginTop: 12, marginBottom: 48, display: "flex", gap: 20, alignItems: "flex-start", flexWrap: "wrap" }}>
-                <div style={{ width: 56, height: 56, borderRadius: "50%", background: `${selectedArticle.author.color}20`, border: `2px solid ${selectedArticle.author.color}40`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, color: selectedArticle.author.color, fontFamily: "'Space Grotesk'", flexShrink: 0 }}>
-                  {selectedArticle.author.initials}
-                </div>
-                <div style={{ flex: 1, minWidth: 200 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: T.mutedDark, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}>Written by</div>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'", marginBottom: 8 }}>{selectedArticle.author.name}</div>
-                  <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.7, margin: 0 }}>{selectedArticle.author.bio}</p>
-                </div>
-              </div>
-
-              {/* Related articles */}
-              {related.length > 0 && (
-                <div>
-                  <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 20 }}>Related Articles</h3>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 20 }}>
-                    {related.map((a) => (
-                      <ArticleCard key={a.id} article={a} />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Desktop TOC sidebar - rendered via CSS media query workaround */}
-            <aside style={{ width: 220, flexShrink: 0, position: "sticky", top: 100, alignSelf: "flex-start" }}>
-              <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 20 }}>
-                <h4 style={{ fontFamily: "'Space Grotesk'", fontSize: 13, fontWeight: 700, color: T.mutedDark, margin: "0 0 14px 0", letterSpacing: 1, textTransform: "uppercase" }}>Contents</h4>
-                {selectedArticle.content.map((sec, i) => (
-                  <div
-                    key={i}
-                    onClick={() => scrollToSection(i)}
-                    style={{
-                      fontSize: 12,
-                      color: activeSection === i ? T.cyan : T.muted,
-                      padding: "6px 0 6px 12px",
-                      borderLeft: `2px solid ${activeSection === i ? T.cyan : T.border}`,
-                      cursor: "pointer",
-                      transition: "all 0.2s",
-                      marginBottom: 2,
-                      fontWeight: activeSection === i ? 600 : 400,
-                    }}
-                  >
-                    {sec.heading}
-                  </div>
-                ))}
-              </div>
-            </aside>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
 
   // ─── Grid View ───
   return (
@@ -894,17 +653,17 @@ const Blog = () => {
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 22, marginBottom: 20 }}>
               <h4 style={{ fontFamily: "'Space Grotesk'", fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 16px 0" }}>Popular Articles</h4>
               {popularArticles.map((a, i) => (
-                <div
+                <Link
                   key={a.id}
-                  onClick={() => openArticle(a)}
-                  style={{ display: "flex", gap: 12, padding: "10px 0", borderBottom: i < 4 ? `1px solid ${T.border}` : "none", cursor: "pointer", alignItems: "flex-start" }}
+                  to={`/blog/${slugify(a.title)}`}
+                  style={{ textDecoration: "none", display: "flex", gap: 12, padding: "10px 0", borderBottom: i < 4 ? `1px solid ${T.border}` : "none", cursor: "pointer", alignItems: "flex-start" }}
                 >
                   <span style={{ fontFamily: "'Space Grotesk'", fontSize: 20, fontWeight: 800, color: `${T.cyan}30`, minWidth: 28 }}>{String(i + 1).padStart(2, "0")}</span>
                   <div>
                     <div style={{ fontSize: 13, fontWeight: 600, color: T.white, lineHeight: 1.4, marginBottom: 4 }}>{a.title}</div>
                     <div style={{ fontSize: 11, color: T.mutedDark }}>{a.likes} likes &middot; {a.readTime}</div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
             {/* Tags */}
@@ -931,10 +690,10 @@ const Blog = () => {
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 22, backdropFilter: "blur(10px)" }}>
             <h4 style={{ fontFamily: "'Space Grotesk'", fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 16px 0" }}>Popular Articles</h4>
             {popularArticles.map((a, i) => (
-              <div
+              <Link
                 key={a.id}
-                onClick={() => openArticle(a)}
-                style={{ display: "flex", gap: 12, padding: "10px 0", borderBottom: i < 4 ? `1px solid ${T.border}` : "none", cursor: "pointer", alignItems: "flex-start", transition: "opacity 0.2s" }}
+                to={`/blog/${slugify(a.title)}`}
+                style={{ textDecoration: "none", display: "flex", gap: 12, padding: "10px 0", borderBottom: i < 4 ? `1px solid ${T.border}` : "none", cursor: "pointer", alignItems: "flex-start", transition: "opacity 0.2s" }}
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >
@@ -943,7 +702,7 @@ const Blog = () => {
                   <div style={{ fontSize: 13, fontWeight: 600, color: T.white, lineHeight: 1.4, marginBottom: 4 }}>{a.title}</div>
                   <div style={{ fontSize: 11, color: T.mutedDark }}>{a.likes} likes &middot; {a.readTime}</div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 

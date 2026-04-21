@@ -10,6 +10,18 @@ const defaults = {
 };
 
 /**
+ * Build a dynamic OG image URL from the @vercel/og edge function at /api/og.
+ * Returns a 1200x630 PNG cached for 1 year at the CDN.
+ */
+function buildDynamicOgImage({ title, subtitle, category }) {
+  const params = new URLSearchParams();
+  if (title) params.set("title", title);
+  if (subtitle) params.set("subtitle", subtitle);
+  if (category) params.set("category", category);
+  return `${defaults.url}/api/og?${params.toString()}`;
+}
+
+/**
  * SEO component — renders Helmet with title, description, OpenGraph, Twitter,
  * canonical, and optional JSON-LD structured data.
  *
@@ -22,6 +34,7 @@ const defaults = {
  *   keywords     — comma-separated keywords
  *   jsonLd       — object or array of JSON-LD structured data
  *   type         — og:type (default "website")
+ *   ogCategory   — category label shown on auto-generated OG image
  */
 export default function SEO({
   title,
@@ -32,11 +45,23 @@ export default function SEO({
   keywords,
   jsonLd,
   type = "website",
+  ogCategory,
 }) {
   const pageTitle = title ? `${title} | ${defaults.siteName}` : defaults.title;
   const pageDesc = description || defaults.description;
   const pageUrl = `${defaults.url}${path}`;
-  const pageImage = image || defaults.image;
+  // If caller passes explicit image use it; otherwise auto-generate per-page OG
+  // image via the @vercel/og edge function (cached 1 year at the CDN). If no
+  // title was passed either, fall back to the static site image.
+  const pageImage = image
+    ? image
+    : title
+      ? buildDynamicOgImage({
+          title,
+          subtitle: description ? description.slice(0, 80) : undefined,
+          category: ogCategory,
+        })
+      : defaults.image;
 
   const structuredData = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
 

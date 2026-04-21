@@ -83,6 +83,7 @@ const DarkWebMonitor = lazy(() => import("./assets/pages/DarkWebMonitor.jsx"));
 const PasswordVault = lazy(() => import("./assets/pages/PasswordVault.jsx"));
 const VulnerabilityScanner = lazy(() => import("./assets/pages/VulnerabilityScanner.jsx"));
 const Blog = lazy(() => import("./assets/pages/Blog.jsx"));
+const BlogPost = lazy(() => import("./assets/pages/BlogPost.jsx"));
 const IPLookup = lazy(() => import("./assets/pages/IPLookup.jsx"));
 const SecurityChecklist = lazy(() => import("./assets/pages/SecurityChecklist.jsx"));
 const EmailAnalyzer = lazy(() => import("./assets/pages/EmailAnalyzer.jsx"));
@@ -169,6 +170,7 @@ function AppRoutes() {
 
             {/* Public — Blog is indexable for SEO */}
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
 
             {/* Protected — Learn, News (login required) */}
             <Route path="/learn" element={<ProtectedRoute><Learn /></ProtectedRoute>} />
