@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     // Try XposedOrNot API (free, no key needed)
     const response = await fetch(
       `https://api.xposedornot.com/v1/check-email/${encodeURIComponent(email)}`,
-      { headers: { "Accept": "application/json", "User-Agent": "SECUVION/1.0" } }
+      { headers: { "Accept": "application/json", "User-Agent": "VRIKAAN/1.0" } }
     );
 
     if (response.status === 404) {
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
           {
             headers: {
               "hibp-api-key": hibpKey,
-              "User-Agent": "SECUVION/1.0",
+              "User-Agent": "VRIKAAN/1.0",
             },
           }
         );

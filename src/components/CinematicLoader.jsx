@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 /*
-  SECUVION — Cinematic Hollywood-Style Intro Loader
+  VRIKAAN — Cinematic Hollywood-Style Intro Loader
   Inspired by: Marvel/DC intros, Cyberpunk title sequences
   Flow: Dark → particles converge → hexagon builds → eye reveals →
         shield pulse → wordmark types in → tagline fades → transition out
@@ -359,7 +359,7 @@ export default function CinematicLoader({ onComplete }) {
           </>}
         </svg>
 
-        {/* SECUVION wordmark — cinematic type-in */}
+        {/* VRIKAAN wordmark — cinematic type-in */}
         <div style={{
           fontFamily: "'Orbitron', 'Space Grotesk', monospace",
           fontSize: "clamp(28px, 5vw, 42px)",
@@ -373,7 +373,7 @@ export default function CinematicLoader({ onComplete }) {
           marginTop: -12,
           userSelect: "none",
         }}>
-          SECUVION
+          VRIKAAN
         </div>
 
         {/* Tagline */}

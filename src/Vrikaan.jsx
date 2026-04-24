@@ -22,7 +22,7 @@ import BackToTop from "./components/BackToTop";
 import SEO from "./components/SEO";
 
 /* ═══════════════════════════════════════════════════════
-   SECUVION v5 — PROFESSIONAL CYBER DEFENSE PLATFORM
+   VRIKAAN v5 — PROFESSIONAL CYBER DEFENSE PLATFORM
    Aesthetic: CrowdStrike x SentinelOne x Vercel
    ═══════════════════════════════════════════════════════ */
 
@@ -57,7 +57,7 @@ const T = {
   gradient: "linear-gradient(135deg, #6366f1, #8b5cf6)",
 };
 
-/* ── SECUVION SHIELD LOGO ── */
+/* ── VRIKAAN SHIELD LOGO ── */
 let brandClipId = 0;
 const BrandIcon = ({ size = 50 }) => {
   const id = useState(() => ++brandClipId)[0];
@@ -526,7 +526,7 @@ const SplashScreen = ({ onDone }) => {
         opacity: phase >= 1 ? 1 : 0,
         transform: phase >= 1 ? "translateY(0)" : "translateY(20px)",
         transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s",
-      }}>SECUVION</div>
+      }}>VRIKAAN</div>
       <div style={{
         fontFamily: "var(--font-mono)", fontSize: 11, color: T.cyan, letterSpacing: 3,
         marginTop: 8,
@@ -725,7 +725,7 @@ const ProductDemo = () => {
 
   return (
     <Section id="demo">
-      <Reveal><SectionHeader badge="See It in Action" title={<>Platform <GradientText>Demo</GradientText></>} subtitle="Watch how Secuvion protects you in real-time across every threat vector." /></Reveal>
+      <Reveal><SectionHeader badge="See It in Action" title={<>Platform <GradientText>Demo</GradientText></>} subtitle="Watch how Vrikaan protects you in real-time across every threat vector." /></Reveal>
       <Reveal delay={0.1}>
         <div style={{ maxWidth: 960, margin: "0 auto" }}>
           {/* Tab bar */}
@@ -816,7 +816,7 @@ const ProductDemo = () => {
 /* ── BEFORE vs AFTER ── */
 const BeforeAfter = () => (
   <Section>
-    <Reveal><SectionHeader badge="The Difference" title={<>Life Without vs With <GradientText>Secuvion</GradientText></>} subtitle="See why 1.2M+ users made the switch to proactive security." /></Reveal>
+    <Reveal><SectionHeader badge="The Difference" title={<>Life Without vs With <GradientText>Vrikaan</GradientText></>} subtitle="See why 1.2M+ users made the switch to proactive security." /></Reveal>
     <div style={{ display: "grid", gridTemplateColumns: "1fr 60px 1fr", gap: 0, maxWidth: 960, margin: "0 auto", alignItems: "stretch" }} className="ba-grid">
       {/* BEFORE */}
       <Reveal>
@@ -826,7 +826,7 @@ const BeforeAfter = () => (
           position: "relative", overflow: "hidden", height: "100%",
         }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "linear-gradient(90deg, transparent, #ef4444, transparent)" }} />
-          <Badge color={T.red}>WITHOUT SECUVION</Badge>
+          <Badge color={T.red}>WITHOUT VRIKAAN</Badge>
           <h3 style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: T.red, margin: "20px 0 28px", letterSpacing: "-0.02em" }}>Exposed & Reactive</h3>
           {[
             { icon: "&#10007;", text: "Clicking phishing links unknowingly" },
@@ -863,7 +863,7 @@ const BeforeAfter = () => (
           position: "relative", overflow: "hidden", height: "100%",
         }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: "linear-gradient(90deg, transparent, #22c55e, transparent)" }} />
-          <Badge color="#22c55e">WITH SECUVION</Badge>
+          <Badge color="#22c55e">WITH VRIKAAN</Badge>
           <h3 style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "#22c55e", margin: "20px 0 28px", letterSpacing: "-0.02em" }}>Protected & Proactive</h3>
           {[
             { icon: "&#10003;", text: "AI blocks threats before you click" },
@@ -887,7 +887,7 @@ const BeforeAfter = () => (
 /* ── DEVICE MOCKUP / APP PREVIEW ── */
 const DeviceMockup = () => (
   <Section>
-    <Reveal><SectionHeader badge="Multi-Platform" title={<>Protection on <GradientText>Every Device</GradientText></>} subtitle="Desktop, mobile, tablet — Secuvion works seamlessly across all your devices." /></Reveal>
+    <Reveal><SectionHeader badge="Multi-Platform" title={<>Protection on <GradientText>Every Device</GradientText></>} subtitle="Desktop, mobile, tablet — Vrikaan works seamlessly across all your devices." /></Reveal>
     <Reveal delay={0.1}>
       <div style={{ maxWidth: 960, margin: "0 auto", display: "flex", justifyContent: "center", alignItems: "flex-end", gap: 32, position: "relative" }} className="device-mockup-wrapper">
         {/* Background glow */}
@@ -955,7 +955,7 @@ const DeviceMockup = () => (
             </div>
             {/* Phone content */}
             <div style={{ padding: "8px 12px 16px" }}>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: T.mutedDark, marginBottom: 8 }}>SECUVION MOBILE</div>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: T.mutedDark, marginBottom: 8 }}>VRIKAAN MOBILE</div>
               <div style={{ padding: "10px 8px", borderRadius: 8, background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.1)", marginBottom: 8 }}>
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: "#22c55e", fontWeight: 600 }}>ALL CLEAR</div>
                 <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700, color: "#22c55e", marginTop: 2 }}>Safe</div>
@@ -1641,7 +1641,7 @@ const Audience = () => {
 
 /* ── AI CHAT ASSISTANT ── */
 const AssistantSection = () => {
-  const [msgs, setMsgs] = useState([{ role: "ai", text: "SECUVION AI online. I can help assess threats, guide incident response, or answer any cybersecurity question. How can I assist you today?" }]);
+  const [msgs, setMsgs] = useState([{ role: "ai", text: "VRIKAAN AI online. I can help assess threats, guide incident response, or answer any cybersecurity question. How can I assist you today?" }]);
   const [input, setInput] = useState("");
   const endRef = useRef(null);
 
@@ -1705,7 +1705,7 @@ const AssistantSection = () => {
           <Card style={{ padding: 0, overflow: "hidden" }} hover={false}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px clamp(14px, 3vw, 22px)", borderBottom: `1px solid ${T.border}`, background: "rgba(0,0,0,0.2)" }}>
               <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e" }} />
-              <span style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.muted, fontWeight: 600 }}>Secuvion AI</span>
+              <span style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.muted, fontWeight: 600 }}>Vrikaan AI</span>
             </div>
             <div style={{ padding: "20px clamp(12px, 3vw, 24px)" }}>
               <div style={{ height: 300, overflowY: "auto", marginBottom: 16 }}>
@@ -1827,17 +1827,17 @@ const Education = () => {
 const FAQ = () => {
   const [open, setOpen] = useState(null);
   const faqs = [
-    { q: "Is Secuvion really free to use?", a: "Yes! Our Free tier includes basic fraud detection, email breach scanning, security advisories, and access to our education platform. No credit card required. Paid plans unlock advanced features like real-time AI monitoring, dark web surveillance, and priority incident response." },
+    { q: "Is Vrikaan really free to use?", a: "Yes! Our Free tier includes basic fraud detection, email breach scanning, security advisories, and access to our education platform. No credit card required. Paid plans unlock advanced features like real-time AI monitoring, dark web surveillance, and priority incident response." },
     { q: "How does the AI fraud detection work?", a: "Our AI engine cross-references over 12 billion threat signatures in real-time. When you scan a URL, email, or phone number, it analyzes patterns including domain age, SSL certificates, content similarity to known scams, and behavioral signals — achieving 99.7% detection accuracy." },
-    { q: "Can I use Secuvion on multiple devices?", a: "Absolutely. Free users get protection on 1 device. Sentinel (Pro) covers up to 5 devices, and Fortress (Enterprise) offers unlimited device protection with shared family/team dashboards." },
-    { q: "What happens if I detect a breach?", a: "Secuvion provides step-by-step incident recovery protocols. Our Emergency Response section guides you through account lockdown, credential rotation, financial alert setup, and authority reporting. Pro and Enterprise users get direct access to our security analyst team." },
+    { q: "Can I use Vrikaan on multiple devices?", a: "Absolutely. Free users get protection on 1 device. Sentinel (Pro) covers up to 5 devices, and Fortress (Enterprise) offers unlimited device protection with shared family/team dashboards." },
+    { q: "What happens if I detect a breach?", a: "Vrikaan provides step-by-step incident recovery protocols. Our Emergency Response section guides you through account lockdown, credential rotation, financial alert setup, and authority reporting. Pro and Enterprise users get direct access to our security analyst team." },
     { q: "How is my data protected?", a: "We use AES-256 encryption for all stored data, TLS 1.3 for data in transit, and follow a zero-knowledge architecture — we never see your passwords or personal data. Our infrastructure is SOC 2 Type II compliant." },
-    { q: "Do I need technical knowledge to use Secuvion?", a: "Not at all. Secuvion is designed for everyone — students, families, seniors, and small businesses. Our interface is intuitive with clear, jargon-free guidance. The AI assistant can explain any security concept in plain language." },
+    { q: "Do I need technical knowledge to use Vrikaan?", a: "Not at all. Vrikaan is designed for everyone — students, families, seniors, and small businesses. Our interface is intuitive with clear, jargon-free guidance. The AI assistant can explain any security concept in plain language." },
   ];
 
   return (
     <Section id="faq">
-      <Reveal><SectionHeader badge="FAQ" title={<>Frequently Asked <GradientText>Questions</GradientText></>} subtitle="Everything you need to know about Secuvion and cybersecurity." /></Reveal>
+      <Reveal><SectionHeader badge="FAQ" title={<>Frequently Asked <GradientText>Questions</GradientText></>} subtitle="Everything you need to know about Vrikaan and cybersecurity." /></Reveal>
       <div style={{ maxWidth: 800, margin: "0 auto", display: "flex", flexDirection: "column", gap: 12 }}>
         {faqs.map((f, i) => (
           <Reveal key={i} delay={i * 0.06}>
@@ -1959,10 +1959,10 @@ const FounderSection = () => (
               <Badge color={T.accent}>Founder & CEO</Badge>
               <h3 style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 600, color: T.white, margin: "12px 0 20px", letterSpacing: "-0.03em" }}>Sahil Anil Nikam</h3>
               <blockquote style={{ fontFamily: "var(--font-body)", fontSize: 17, color: T.white, lineHeight: 1.7, fontStyle: "italic", margin: "0 0 20px", opacity: 0.8, borderLeft: `3px solid ${T.accent}`, paddingLeft: 20 }}>
-                "The digital world connects billions of people, but it also exposes them to invisible threats. I created Secuvion because cybersecurity shouldn't be a luxury — it should be a right."
+                "The digital world connects billions of people, but it also exposes them to invisible threats. I created Vrikaan because cybersecurity shouldn't be a luxury — it should be a right."
               </blockquote>
               <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.75, margin: 0 }}>
-                Most cybersecurity platforms focus exclusively on enterprise clients, leaving billions of everyday users exposed. Secuvion was built to change that — creating a global defense network for students, families, and small businesses.
+                Most cybersecurity platforms focus exclusively on enterprise clients, leaving billions of everyday users exposed. Vrikaan was built to change that — creating a global defense network for students, families, and small businesses.
               </p>
             </div>
           </div>
@@ -1974,12 +1974,12 @@ const FounderSection = () => (
 
 /* ── TESTIMONIALS ── */
 const testimonials = [
-  { name: "Priya Sharma", role: "Startup Founder", text: "Secuvion caught a phishing attack targeting our company before anyone clicked. The real-time alerts are incredibly fast and the dashboard makes monitoring effortless.", score: "Threat blocked in < 2s" },
-  { name: "Marcus Johnson", role: "IT Manager", text: "We evaluated 5 cybersecurity platforms. Secuvion was the only one that combined enterprise-grade protection with a UI our non-technical staff could actually use.", score: "99.7% detection rate" },
-  { name: "Aiko Tanaka", role: "University Student", text: "As a student, I never thought about cybersecurity until my email was compromised. Secuvion's free tier gave me real protection without any cost. It's a game changer.", score: "Free tier user" },
+  { name: "Priya Sharma", role: "Startup Founder", text: "Vrikaan caught a phishing attack targeting our company before anyone clicked. The real-time alerts are incredibly fast and the dashboard makes monitoring effortless.", score: "Threat blocked in < 2s" },
+  { name: "Marcus Johnson", role: "IT Manager", text: "We evaluated 5 cybersecurity platforms. Vrikaan was the only one that combined enterprise-grade protection with a UI our non-technical staff could actually use.", score: "99.7% detection rate" },
+  { name: "Aiko Tanaka", role: "University Student", text: "As a student, I never thought about cybersecurity until my email was compromised. Vrikaan's free tier gave me real protection without any cost. It's a game changer.", score: "Free tier user" },
   { name: "David Mueller", role: "Financial Analyst", text: "The fraud analyzer saved me from a sophisticated investment scam. The AI detected patterns I never would have noticed. Worth every penny of the Pro plan.", score: "$12K fraud prevented" },
-  { name: "Sara Al-Rashid", role: "Healthcare Admin", text: "HIPAA compliance is critical for us. Secuvion's monitoring and alerting gives our small clinic the same level of protection as major hospital networks.", score: "100% compliance" },
-  { name: "Carlos Rivera", role: "E-commerce Owner", text: "Since deploying Secuvion, our checkout page hasn't had a single credential-stuffing incident. Our customers feel safer and our conversion rate actually improved.", score: "Zero breaches in 8mo" },
+  { name: "Sara Al-Rashid", role: "Healthcare Admin", text: "HIPAA compliance is critical for us. Vrikaan's monitoring and alerting gives our small clinic the same level of protection as major hospital networks.", score: "100% compliance" },
+  { name: "Carlos Rivera", role: "E-commerce Owner", text: "Since deploying Vrikaan, our checkout page hasn't had a single credential-stuffing incident. Our customers feel safer and our conversion rate actually improved.", score: "Zero breaches in 8mo" },
 ];
 
 const Testimonials = () => {
@@ -2128,7 +2128,7 @@ const CTABanner = () => (
             Ready to Secure Your <GradientText>Digital Life</GradientText>?
           </h2>
           <p style={{ fontFamily: "var(--font-body)", color: T.muted, fontSize: 16, lineHeight: 1.7, maxWidth: 500, margin: "0 auto 36px", position: "relative" }}>
-            Join over 1.2 million users who trust Secuvion to protect their digital presence. Start free, upgrade anytime.
+            Join over 1.2 million users who trust Vrikaan to protect their digital presence. Start free, upgrade anytime.
           </p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", position: "relative" }}>
             <Btn primary to="/signup" icon="&#9889;">Start Free Protection</Btn>
@@ -2159,7 +2159,7 @@ const Footer = () => (
       <div>
         <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
           <BrandIcon size={38} />
-          <span style={{ fontFamily: "var(--font-display)", fontSize: 17, letterSpacing: 3, color: T.white, fontWeight: 700 }}>SECUVION</span>
+          <span style={{ fontFamily: "var(--font-display)", fontSize: 17, letterSpacing: 3, color: T.white, fontWeight: 700 }}>VRIKAAN</span>
         </div>
         <p style={{ fontFamily: "var(--font-body)", color: T.mutedDark, fontSize: 14, lineHeight: 1.8, marginBottom: 20, maxWidth: 240 }}>
           AI-powered cyber defense for everyone. Enterprise security made accessible.
@@ -2191,7 +2191,7 @@ const Footer = () => (
       ))}
     </div>
     <div style={{ maxWidth: 1280, margin: "60px auto 0", paddingTop: 28, borderTop: `1px solid ${T.border}`, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
-      <span style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark }}>&copy; 2026 Secuvion. Founded by Sahil Anil Nikam. All rights reserved.</span>
+      <span style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark }}>&copy; 2026 Vrikaan. Founded by Sahil Anil Nikam. All rights reserved.</span>
       <span style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark, fontStyle: "italic" }}>Click with care, we are always there.</span>
     </div>
   </footer>
@@ -2200,7 +2200,7 @@ const Footer = () => (
 /* ══════════════════════════════
    MAIN APP
    ══════════════════════════════ */
-export default function SecuvionV2() {
+export default function VrikaanApp() {
   const { user } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -2398,7 +2398,7 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
       }}>
         <div onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{ display: "flex", alignItems: "center", gap: 14, cursor: "pointer" }}>
           <BrandIcon size={38} />
-          <span style={{ fontFamily: "var(--font-display)", fontSize: 17, letterSpacing: 3, color: T.white, fontWeight: 700 }}>SECUVION</span>
+          <span style={{ fontFamily: "var(--font-display)", fontSize: 17, letterSpacing: 3, color: T.white, fontWeight: 700 }}>VRIKAAN</span>
         </div>
         <div className="nav-links-desktop" style={{ display: "flex", gap: 28, alignItems: "center" }}>
           {navLinks.map(l => (

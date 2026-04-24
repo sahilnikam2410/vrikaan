@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   try {
     const response = await fetch(
       `https://api.pwnedpasswords.com/range/${hash.toUpperCase()}`,
-      { headers: { "User-Agent": "SECUVION/1.0" } }
+      { headers: { "User-Agent": "VRIKAAN/1.0" } }
     );
 
     if (!response.ok) {

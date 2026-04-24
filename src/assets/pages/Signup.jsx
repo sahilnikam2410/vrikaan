@@ -287,7 +287,7 @@ export default function Signup() {
     <div style={styles.page}>
       <SEO
         title="Sign Up"
-        description="Create your free Secuvion account and start protecting your digital life."
+        description="Create your free Vrikaan account and start protecting your digital life."
         path="/signup"
       />
       <Navbar />
@@ -341,7 +341,7 @@ export default function Signup() {
           <div style={styles.logoIcon}>S</div>
           <div style={styles.title}>Create Account</div>
         </div>
-        <p style={styles.subtitle}>Join SECUVION to protect your digital life</p>
+        <p style={styles.subtitle}>Join VRIKAAN to protect your digital life</p>
 
         {error && <div style={styles.error}>{error}</div>}
 

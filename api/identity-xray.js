@@ -38,7 +38,7 @@ export default async function handler(req, res) {
   try {
     const breachRes = await fetch(
       `https://api.xposedornot.com/v1/check-email/${encodeURIComponent(email)}`,
-      { headers: { Accept: "application/json", "User-Agent": "SECUVION-XRay/1.0" } }
+      { headers: { Accept: "application/json", "User-Agent": "VRIKAAN-XRay/1.0" } }
     );
     if (breachRes.ok) {
       const data = await breachRes.json();
@@ -97,7 +97,7 @@ export default async function handler(req, res) {
   try {
     const pasteRes = await fetch(
       `https://api.xposedornot.com/v1/breach-analytics?email=${encodeURIComponent(email)}`,
-      { headers: { Accept: "application/json", "User-Agent": "SECUVION-XRay/1.0" } }
+      { headers: { Accept: "application/json", "User-Agent": "VRIKAAN-XRay/1.0" } }
     );
     if (pasteRes.ok) {
       const pasteData = await pasteRes.json();

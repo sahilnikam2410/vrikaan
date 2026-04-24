@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import SecuvionV2 from "./Secuvion";
+import VrikaanApp from "./Vrikaan";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root")
@@ -8,6 +8,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <SecuvionV2 />
+    <VrikaanApp />
   </React.StrictMode>
 );

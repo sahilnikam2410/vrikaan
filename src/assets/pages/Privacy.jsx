@@ -10,7 +10,7 @@ export default function Privacy() {
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <SEO
         title="Privacy Policy"
-        description="SECUVION Privacy Policy. Learn how we collect, use, and protect your personal data. GDPR-compliant. AES-256 encryption. No data sold to third parties."
+        description="VRIKAAN Privacy Policy. Learn how we collect, use, and protect your personal data. GDPR-compliant. AES-256 encryption. No data sold to third parties."
         path="/privacy"
       />
       <Navbar />
@@ -32,8 +32,8 @@ export default function Privacy() {
           { title: "6. Third-Party Services", content: "We may share limited data with trusted service providers who assist in operating our platform (hosting, analytics, payment processing). All third-party providers are contractually obligated to maintain the confidentiality and security of your data." },
           { title: "7. Your Rights", content: "You have the right to access, correct, or delete your personal data. You may also request data portability or restrict processing of your information. For users in the EU/EEA, we comply fully with GDPR requirements. To exercise these rights, contact secuvion@gmail.com." },
           { title: "8. Children's Privacy", content: "Our services are not intended for children under 13. We do not knowingly collect personal information from children. If you believe a child has provided us with personal data, please contact us so we can take appropriate action." },
-          { title: "9. Changes to This Policy", content: "We may update this Privacy Policy from time to time. We will notify you of any material changes by email or through a prominent notice on our platform. Your continued use of Secuvion after changes are posted constitutes acceptance of the updated policy." },
-          { title: "10. Contact Us", content: "If you have questions about this Privacy Policy or our data practices, contact us at secuvion@gmail.com or write to: SECUVION, Nashik, Maharashtra, India." },
+          { title: "9. Changes to This Policy", content: "We may update this Privacy Policy from time to time. We will notify you of any material changes by email or through a prominent notice on our platform. Your continued use of Vrikaan after changes are posted constitutes acceptance of the updated policy." },
+          { title: "10. Contact Us", content: "If you have questions about this Privacy Policy or our data practices, contact us at secuvion@gmail.com or write to: VRIKAAN, Nashik, Maharashtra, India." },
         ].map((s, i) => (
           <div key={i} style={{ marginBottom: 36 }}>
             <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, color: T.white, margin: "0 0 12px" }}>{s.title}</h2>

@@ -155,7 +155,7 @@ export default function FraudAnalyzer() {
 
   return (
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <SEO title="Fraud Analyzer" description="Scan URLs, emails, phone numbers, and messages for fraud with Secuvion's AI-powered analyzer." path="/fraud-analyzer" />
+      <SEO title="Fraud Analyzer" description="Scan URLs, emails, phone numbers, and messages for fraud with Vrikaan's AI-powered analyzer." path="/fraud-analyzer" />
       <Navbar />
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "120px 24px 80px" }}>
         <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>

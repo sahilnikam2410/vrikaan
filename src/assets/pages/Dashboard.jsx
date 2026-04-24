@@ -8,7 +8,7 @@ export default function Dashboard() {
         padding: "40px",
       }}
     >
-      <h1>Secuvion Security Dashboard</h1>
+      <h1>Vrikaan Security Dashboard</h1>
 
       <p>Your cyber protection overview.</p>
 

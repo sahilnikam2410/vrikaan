@@ -512,7 +512,7 @@ const Blog = () => {
   // ─── Grid View ───
   return (
     <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Plus Jakarta Sans'" }}>
-      <SEO title="Cybersecurity Blog - SECUVION" description="Stay informed with the latest cybersecurity news, tips, tutorials, and insights from industry experts." />
+      <SEO title="Cybersecurity Blog - VRIKAAN" description="Stay informed with the latest cybersecurity news, tips, tutorials, and insights from industry experts." />
       <Navbar />
 
       {/* Inject responsive styles */}
@@ -534,7 +534,7 @@ const Blog = () => {
       {/* Hero */}
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "110px 24px 0", textAlign: "center" }}>
         <div style={{ marginBottom: 12 }}>
-          <span style={{ padding: "5px 14px", borderRadius: 20, fontSize: 12, fontWeight: 600, background: `${T.cyan}12`, color: T.cyan, border: `1px solid ${T.cyan}20`, fontFamily: "'Plus Jakarta Sans'" }}>SECUVION Blog</span>
+          <span style={{ padding: "5px 14px", borderRadius: 20, fontSize: 12, fontWeight: 600, background: `${T.cyan}12`, color: T.cyan, border: `1px solid ${T.cyan}20`, fontFamily: "'Plus Jakarta Sans'" }}>VRIKAAN Blog</span>
         </div>
         <h1
           className="blog-hero-title"

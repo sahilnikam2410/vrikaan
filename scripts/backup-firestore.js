@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * SECUVION Firestore backup script.
+ * VRIKAAN Firestore backup script.
  *
  * Exports all top-level collections (and their subcollections) to timestamped
  * JSON files under ./backups/YYYY-MM-DD/. Intended to run nightly via a host
@@ -15,7 +15,7 @@
  *
  * Scheduling examples (see PRODUCTION_RUNBOOK.md section 6 for details):
  *   - GitHub Actions:  .github/workflows/backup.yml with `cron: '0 3 * * *'`
- *   - Linux cron:      0 3 * * * cd /path/to/SECUVION && node scripts/backup-firestore.js
+ *   - Linux cron:      0 3 * * * cd /path/to/VRIKAAN && node scripts/backup-firestore.js
  *   - Windows Task:    schtasks /create /tn "SecuvionBackup" /tr ...
  */
 

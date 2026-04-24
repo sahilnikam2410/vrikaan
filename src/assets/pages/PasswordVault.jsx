@@ -252,7 +252,7 @@ export default function PasswordVault() {
 
   return (
     <>
-      <SEO title="Password Vault" description="Generate, store, and manage your passwords securely with SECUVION's Password Vault." path="/password-vault" />
+      <SEO title="Password Vault" description="Generate, store, and manage your passwords securely with VRIKAAN's Password Vault." path="/password-vault" />
       <Navbar />
       <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 80 }}>
 

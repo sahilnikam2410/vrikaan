@@ -117,7 +117,7 @@ export default function AdminDashboard() {
 
   // Settings
   const [settings, setSettings] = useState({
-    siteName: "SECUVION",
+    siteName: "VRIKAAN",
     razorpayKey: localStorage.getItem("razorpay_key") || "",
     upiId: localStorage.getItem("upi_id") || "",
     btcAddress: localStorage.getItem("btc_address") || "",
@@ -238,7 +238,7 @@ export default function AdminDashboard() {
   const handleExportUsers = () => {
     const blob = new Blob([JSON.stringify(users, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a"); a.href = url; a.download = "secuvion-users.json"; a.click();
+    const a = document.createElement("a"); a.href = url; a.download = "vrikaan-users.json"; a.click();
     URL.revokeObjectURL(url);
     toast?.success?.("Users exported");
   };
@@ -513,7 +513,7 @@ export default function AdminDashboard() {
 
   return (
     <>
-      <SEO title="Admin Dashboard" description="SECUVION admin panel" path="/admin" />
+      <SEO title="Admin Dashboard" description="VRIKAAN admin panel" path="/admin" />
       <style>{`
         @keyframes spin { to { transform: rotate(360deg) } }
         @keyframes fadeInUp { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:translateY(0) } }
@@ -553,7 +553,7 @@ export default function AdminDashboard() {
           display: "flex", flexDirection: "column", transition: "width 0.25s", overflowX: "hidden", overflowY: "hidden", position: "fixed", top: 0, left: 0, zIndex: 50,
         }}>
           <div style={{ padding: "24px 20px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ fontSize: 18, fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif", color: T.cyan, letterSpacing: 1 }}>SECUVION</div>
+            <div style={{ fontSize: 18, fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif", color: T.cyan, letterSpacing: 1 }}>VRIKAAN</div>
             <button onClick={() => setSideOpen(false)} style={{ background: "none", border: "none", color: T.muted, cursor: "pointer", display: "flex" }}><HiOutlineChevronLeft size={18} /></button>
           </div>
           <div style={{ fontSize: 10, color: T.muted, padding: "0 20px 12px", textTransform: "uppercase", letterSpacing: 2 }}>Admin Panel</div>

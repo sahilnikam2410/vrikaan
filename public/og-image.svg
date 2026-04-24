@@ -50,7 +50,7 @@
   <rect x="0" y="0" width="1200" height="3" fill="url(#accent)"/>
 
   <!-- Logo text -->
-  <text x="80" y="280" font-family="'Space Grotesk', sans-serif" font-size="72" font-weight="700" fill="#f1f5f9" letter-spacing="2">SECUVION</text>
+  <text x="80" y="280" font-family="'Space Grotesk', sans-serif" font-size="72" font-weight="700" fill="#f1f5f9" letter-spacing="2">VRIKAAN</text>
 
   <!-- Tagline -->
   <text x="80" y="340" font-family="'Inter', sans-serif" font-size="28" fill="#94a3b8">AI-Powered Cyber Defense Platform</text>
@@ -71,7 +71,7 @@
   <text x="80" y="510" font-family="monospace" font-size="14" fill="#64748b">99.7% Detection Rate  |  12B+ Threat Signatures  |  24/7 Active Monitoring</text>
 
   <!-- URL -->
-  <text x="80" y="570" font-family="monospace" font-size="16" fill="url(#accent)">secuvion.vercel.app</text>
+  <text x="80" y="570" font-family="monospace" font-size="16" fill="url(#accent)">vrikaan.com</text>
 
   <!-- Bottom accent line -->
   <rect x="0" y="627" width="1200" height="3" fill="url(#accent)"/>

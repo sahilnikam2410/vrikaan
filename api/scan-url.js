@@ -128,7 +128,7 @@ export default async function handler(req, res) {
     if (url.startsWith("http://")) {
       results.score -= 15;
       results.threats.push({
-        source: "SECUVION",
+        source: "VRIKAAN",
         type: "insecure connection",
         severity: "medium",
         detail: "Site uses HTTP instead of HTTPS — data is not encrypted in transit",
@@ -152,7 +152,7 @@ export default async function handler(req, res) {
       if (/xn--/.test(hostname)) {
         results.score -= 20;
         results.threats.push({
-          source: "SECUVION",
+          source: "VRIKAAN",
           type: "homograph attack",
           severity: "high",
           detail: "Internationalized domain name (IDN) — possible homograph/lookalike attack",
@@ -163,7 +163,7 @@ export default async function handler(req, res) {
         if (pattern.test(url)) {
           results.score -= 10;
           results.threats.push({
-            source: "SECUVION",
+            source: "VRIKAAN",
             type: "suspicious pattern",
             severity: "low",
             detail: msg,

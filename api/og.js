@@ -129,7 +129,7 @@ export default function handler(req) {
                               color: COLORS.white,
                               letterSpacing: "0.15em",
                             },
-                            children: "SECUVION",
+                            children: "VRIKAAN",
                           },
                         },
                       ],
@@ -219,7 +219,7 @@ export default function handler(req) {
                         fontWeight: 500,
                         display: "flex",
                       },
-                      children: "secuvion.vercel.app",
+                      children: "vrikaan.com",
                     },
                   },
                   {

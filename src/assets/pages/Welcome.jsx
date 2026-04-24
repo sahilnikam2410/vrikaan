@@ -49,7 +49,7 @@ async function generateMemberCertificate(userName, email, memberId) {
   ctx.lineWidth = 1;
   ctx.strokeRect(40, 40, W - 80, H - 80);
 
-  // ── SECUVION Logo (top-left) ──
+  // ── VRIKAAN Logo (top-left) ──
   if (logoImg) {
     const logoH = 90;
     const logoW = logoH * (logoImg.width / logoImg.height);
@@ -58,7 +58,7 @@ async function generateMemberCertificate(userName, email, memberId) {
       ctx.textAlign = "left";
       ctx.font = "bold 22px 'Arial', sans-serif";
       ctx.fillStyle = dark;
-      ctx.fillText("SECUVION", 80 + logoW + 16, 98);
+      ctx.fillText("VRIKAAN", 80 + logoW + 16, 98);
       ctx.font = "11px 'Arial', sans-serif";
       ctx.fillStyle = light;
       ctx.fillText("AI-Powered Cyber Defense", 80 + logoW + 16, 116);
@@ -86,7 +86,7 @@ async function generateMemberCertificate(userName, email, memberId) {
     ctx.textAlign = "left";
     ctx.font = "bold 28px 'Arial', sans-serif";
     ctx.fillStyle = dark;
-    ctx.fillText("SECUVION", 158, 100);
+    ctx.fillText("VRIKAAN", 158, 100);
     ctx.font = "12px 'Arial', sans-serif";
     ctx.fillStyle = light;
     ctx.fillText("PLATFORM", 158, 118);
@@ -127,13 +127,13 @@ async function generateMemberCertificate(userName, email, memberId) {
   // ── Description ──
   ctx.font = "18px 'Arial', sans-serif";
   ctx.fillStyle = gray;
-  ctx.fillText("is now a verified member of the SECUVION platform and is authorized", 120, 365);
+  ctx.fillText("is now a verified member of the VRIKAAN platform and is authorized", 120, 365);
   ctx.fillText("to access enterprise-grade cybersecurity tools and resources.", 120, 393);
 
   // ── Membership Plan ──
   ctx.font = "bold 28px 'Georgia', serif";
   ctx.fillStyle = dark;
-  ctx.fillText("SECUVION Platform — Official Member", 120, 460);
+  ctx.fillText("VRIKAAN Platform — Official Member", 120, 460);
 
   // ── Details line ──
   ctx.font = "16px 'Arial', sans-serif";
@@ -204,14 +204,14 @@ async function generateMemberCertificate(userName, email, memberId) {
   ctx.fillText("Sahil Anil Nikam", 120, 785);
   ctx.font = "13px 'Arial', sans-serif";
   ctx.fillStyle = gray;
-  ctx.fillText("Founder & CEO, SECUVION", 120, 765);
+  ctx.fillText("Founder & CEO, VRIKAAN", 120, 765);
 
   // Signature 2
   ctx.strokeStyle = "#d1d5db";
   ctx.beginPath(); ctx.moveTo(500, 760); ctx.lineTo(760, 760); ctx.stroke();
   ctx.font = "bold 14px 'Arial', sans-serif";
   ctx.fillStyle = dark;
-  ctx.fillText("SECUVION Platform", 500, 785);
+  ctx.fillText("VRIKAAN Platform", 500, 785);
   ctx.font = "13px 'Arial', sans-serif";
   ctx.fillStyle = gray;
   ctx.fillText("Membership Division", 500, 765);
@@ -278,7 +278,7 @@ async function generateMemberCertificate(userName, email, memberId) {
   ctx.textAlign = "right";
   ctx.font = "11px 'Arial', sans-serif";
   ctx.fillStyle = light;
-  ctx.fillText("© 2026 SECUVION. All rights reserved.", W - 120, H - 85);
+  ctx.fillText("© 2026 VRIKAAN. All rights reserved.", W - 120, H - 85);
 
   // ── Bottom accent bar ──
   const btmBar = ctx.createLinearGradient(0, 0, W, 0);
@@ -346,7 +346,7 @@ export default function Welcome() {
 
   return (
     <div style={{ minHeight: "100vh", background: T.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontFamily: "'Plus Jakarta Sans', sans-serif", position: "relative", overflow: "hidden", padding: 24 }}>
-      <SEO title="Welcome" description="Welcome to SECUVION — your cybersecurity journey starts here." path="/welcome" />
+      <SEO title="Welcome" description="Welcome to VRIKAAN — your cybersecurity journey starts here." path="/welcome" />
 
       {/* Animated background particles */}
       <style>{`
@@ -425,7 +425,7 @@ export default function Welcome() {
         {step === 0 && (
           <div style={{ animation: "fadeInUp 0.6s ease" }}>
             <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 800, color: T.white, marginBottom: 12 }}>
-              Welcome to <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>SECUVION</span>, {user.name?.split(" ")[0] || "there"}!
+              Welcome to <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>VRIKAAN</span>, {user.name?.split(" ")[0] || "there"}!
             </h1>
             <p style={{ fontSize: 17, color: T.muted, lineHeight: 1.7, marginBottom: 32 }}>
               Your cybersecurity journey begins now. Let's set up your protection in 3 quick steps.
@@ -545,7 +545,7 @@ export default function Welcome() {
               <div style={{ background: "rgba(17,24,39,0.8)", border: `1px solid ${T.border}`, borderRadius: 16, padding: 32, backdropFilter: "blur(10px)", marginBottom: 24 }}>
                 <div style={{ fontSize: 40, marginBottom: 12 }}>{"\uD83C\uDF93"}</div>
                 <h3 style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'", marginBottom: 8 }}>Your Membership Certificate</h3>
-                <p style={{ fontSize: 14, color: T.muted, marginBottom: 20 }}>Download your official SECUVION membership certificate with your name and unique member ID.</p>
+                <p style={{ fontSize: 14, color: T.muted, marginBottom: 20 }}>Download your official VRIKAAN membership certificate with your name and unique member ID.</p>
                 <button onClick={handleGenerateCert} style={{
                   padding: "14px 36px", background: "linear-gradient(135deg, #14e3c5, #6366f1)", border: "none", borderRadius: 10,
                   color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Space Grotesk'",

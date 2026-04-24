@@ -40,18 +40,18 @@ export default async function handler(req, res) {
     }
 
     const orderId = `SECUVION_${planKey}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-    const origin = req.headers.origin || "https://secuvion.vercel.app";
+    const origin = req.headers.origin || "https://vrikaan.com";
 
     const orderPayload = {
       order_id: orderId,
       order_amount: priceConfig.amount,
       order_currency: "INR",
-      order_note: `SECUVION ${priceConfig.name} subscription`,
+      order_note: `VRIKAAN ${priceConfig.name} subscription`,
       customer_details: {
         customer_id: `cust_${Date.now()}`,
-        customer_email: email || "customer@secuvion.com",
+        customer_email: email || "customer@vrikaan.com",
         customer_phone: phone || "9999999999",
-        customer_name: name || "SECUVION User",
+        customer_name: name || "VRIKAAN User",
       },
       order_meta: {
         return_url: `${origin}/checkout?plan=${planKey}&order_id=${orderId}`,

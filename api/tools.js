@@ -69,7 +69,7 @@ async function handleWhois(req, res) {
     let data = null;
     try {
       const rdapRes = await fetch(rdapUrl, {
-        headers: { Accept: "application/rdap+json", "User-Agent": "SECUVION/1.0" },
+        headers: { Accept: "application/rdap+json", "User-Agent": "VRIKAAN/1.0" },
         signal: AbortSignal.timeout(10000),
       });
       if (rdapRes.ok) data = await rdapRes.json();
@@ -78,7 +78,7 @@ async function handleWhois(req, res) {
     if (!data && RDAP_ENDPOINTS[tld]) {
       try {
         const fallbackRes = await fetch(`${RDAP_FALLBACK}${encodeURIComponent(cleanDomain)}`, {
-          headers: { Accept: "application/rdap+json", "User-Agent": "SECUVION/1.0" },
+          headers: { Accept: "application/rdap+json", "User-Agent": "VRIKAAN/1.0" },
           signal: AbortSignal.timeout(10000),
         });
         if (fallbackRes.ok) data = await fallbackRes.json();
@@ -255,7 +255,7 @@ async function handleSecurityHeaders(req, res) {
       method: "HEAD",
       redirect: "follow",
       signal: AbortSignal.timeout(10000),
-      headers: { "User-Agent": "SECUVION-SecurityHeadersChecker/1.0" },
+      headers: { "User-Agent": "VRIKAAN-SecurityHeadersChecker/1.0" },
     });
 
     let totalScore = 0;

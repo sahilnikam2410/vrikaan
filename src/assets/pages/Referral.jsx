@@ -52,7 +52,7 @@ export default function Referral() {
     })();
   }, [user]);
 
-  const referralLink = `https://secuvion.vercel.app/signup?ref=${code}`;
+  const referralLink = `https://vrikaan.com/signup?ref=${code}`;
 
   const copyLink = () => {
     navigator.clipboard.writeText(referralLink);
@@ -60,8 +60,8 @@ export default function Referral() {
   };
 
   const share = () => {
-    const text = `Check out SECUVION — free AI-powered cybersecurity tools! Use my referral code: ${code}\n${referralLink}`;
-    if (navigator.share) navigator.share({ title: "Join SECUVION", text, url: referralLink });
+    const text = `Check out VRIKAAN — free AI-powered cybersecurity tools! Use my referral code: ${code}\n${referralLink}`;
+    if (navigator.share) navigator.share({ title: "Join VRIKAAN", text, url: referralLink });
     else copyLink();
   };
 
@@ -74,7 +74,7 @@ export default function Referral() {
 
   return (
     <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>
-      <SEO title="Refer & Earn" description="Invite friends to SECUVION and earn free credits and subscription upgrades." path="/referral" />
+      <SEO title="Refer & Earn" description="Invite friends to VRIKAAN and earn free credits and subscription upgrades." path="/referral" />
       <Navbar />
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "120px 20px 60px" }}>
         <div style={{ textAlign: "center", marginBottom: 40 }}>
@@ -101,8 +101,8 @@ export default function Referral() {
 
               <div className="ref-share-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
                 <button onClick={share} style={{ padding: "10px", borderRadius: 8, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.white, fontSize: 13, cursor: "pointer", fontWeight: 600 }}>&#x1F4E4; Share</button>
-                <button onClick={() => { const url = `https://wa.me/?text=${encodeURIComponent(`Check out SECUVION! ${referralLink}`)}`; window.open(url, "_blank"); }} style={{ padding: "10px", borderRadius: 8, border: "1px solid rgba(34,197,94,0.2)", background: "rgba(34,197,94,0.06)", color: T.green, fontSize: 13, cursor: "pointer", fontWeight: 600 }}>WhatsApp</button>
-                <button onClick={() => { const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out SECUVION — free AI cybersecurity tools! ${referralLink}`)}`; window.open(url, "_blank"); }} style={{ padding: "10px", borderRadius: 8, border: "1px solid rgba(29,161,242,0.2)", background: "rgba(29,161,242,0.06)", color: "#1DA1F2", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Twitter</button>
+                <button onClick={() => { const url = `https://wa.me/?text=${encodeURIComponent(`Check out VRIKAAN! ${referralLink}`)}`; window.open(url, "_blank"); }} style={{ padding: "10px", borderRadius: 8, border: "1px solid rgba(34,197,94,0.2)", background: "rgba(34,197,94,0.06)", color: T.green, fontSize: 13, cursor: "pointer", fontWeight: 600 }}>WhatsApp</button>
+                <button onClick={() => { const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out VRIKAAN — free AI cybersecurity tools! ${referralLink}`)}`; window.open(url, "_blank"); }} style={{ padding: "10px", borderRadius: 8, border: "1px solid rgba(29,161,242,0.2)", background: "rgba(29,161,242,0.06)", color: "#1DA1F2", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>Twitter</button>
               </div>
             </div>
 

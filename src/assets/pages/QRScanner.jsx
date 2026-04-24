@@ -490,7 +490,7 @@ export default function QRScanner() {
 
   return (
     <>
-      <SEO title="QR Code Security Scanner - SECUVION" description="Scan QR code URLs for phishing, malware, and other threats. Generate safe QR codes." />
+      <SEO title="QR Code Security Scanner - VRIKAAN" description="Scan QR code URLs for phishing, malware, and other threats. Generate safe QR codes." />
       <style>{`
         @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
         @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
@@ -666,7 +666,7 @@ export default function QRScanner() {
                       maxHeight: 180, overflowY: "auto", fontFamily: fonts.mono, fontSize: 12, lineHeight: 1.8,
                     }}
                   >
-                    <div style={{ color: T.mutedDark, marginBottom: 4 }}>SECUVION QR Threat Analyzer v1.0.0</div>
+                    <div style={{ color: T.mutedDark, marginBottom: 4 }}>VRIKAAN QR Threat Analyzer v1.0.0</div>
                     {logs.map((l, i) => (
                       <div key={i} style={{ color: l.color }}>{l.text}</div>
                     ))}

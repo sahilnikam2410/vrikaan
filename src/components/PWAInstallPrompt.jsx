@@ -59,7 +59,7 @@ export default function PWAInstallPrompt() {
         </svg>
       </div>
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Install SECUVION</div>
+        <div style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Install VRIKAAN</div>
         <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Get instant access from your home screen</div>
       </div>
       <button onClick={handleInstall} style={{

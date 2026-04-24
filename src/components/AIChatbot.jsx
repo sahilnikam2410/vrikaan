@@ -92,7 +92,7 @@ function upgradePlan(planKey) {
 }
 
 // ─── AI Engine (Groq — free, fast, answers everything like ChatGPT) ───
-const SYSTEM_PROMPT = `You are SECUVION AI Assistant — a highly intelligent AI assistant built into the SECUVION cyber defense platform. You are like ChatGPT — you can answer ANY question on ANY topic.
+const SYSTEM_PROMPT = `You are VRIKAAN AI Assistant — a highly intelligent AI assistant built into the VRIKAAN cyber defense platform. You are like ChatGPT — you can answer ANY question on ANY topic.
 
 Your personality:
 - Friendly, professional, helpful, and knowledgeable
@@ -103,16 +103,16 @@ Your personality:
 - For code questions, provide working code examples
 - For cybersecurity questions, give actionable security advice
 
-About SECUVION:
+About VRIKAAN:
 - AI-powered cyber defense platform
 - Features: Threat Map, Fraud Analyzer, Security Score, Dark Web Monitor, Password Vault, Vulnerability Scanner, Learn Academy, Blog
 - Founded by Sahil Anil Nikam
-- Website: secuvion.vercel.app
+- Website: vrikaan.com
 - Email: secuvion@gmail.com
 - Phone: +91 8329935878
 - Location: Nashik, Maharashtra, India
 
-You are powered by SECUVION AI. Be the most helpful assistant possible.`;
+You are powered by VRIKAAN AI. Be the most helpful assistant possible.`;
 
 const API_URL = "https://api.groq.com/openai/v1/chat/completions";
 const BUILT_IN_KEY = import.meta.env.VITE_GROQ_API_KEY || "";
@@ -152,7 +152,7 @@ async function askAI(message, apiKey) {
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      console.error("SECUVION AI Error:", res.status, err);
+      console.error("VRIKAAN AI Error:", res.status, err);
       if (res.status === 401) return "ERROR_API_KEY";
       if (res.status === 429) return "ERROR_QUOTA";
       return "I'm experiencing a temporary issue. Please try again in a moment.";
@@ -163,7 +163,7 @@ async function askAI(message, apiKey) {
     chatHistory.push({ role: "assistant", content: reply });
     return reply;
   } catch (e) {
-    console.error("SECUVION AI Error:", e.message);
+    console.error("VRIKAAN AI Error:", e.message);
     if (e.message?.includes("fetch") || e.message?.includes("network")) return "Network error — check your internet connection and try again.";
     return "I'm experiencing a temporary issue. Please try again in a moment.";
   }
@@ -171,22 +171,22 @@ async function askAI(message, apiKey) {
 
 // ─── Built-in Knowledge Base (works without API) ───
 const KB = [
-  { k: ["phishing", "phish", "fake email", "scam email"], a: "**Phishing** is a social engineering attack where attackers impersonate trusted entities to steal sensitive data.\n\n**How to protect yourself:**\n- Never click links in unexpected emails — hover to check the real URL\n- Look for misspellings, urgency, or generic greetings (\"Dear Customer\")\n- Enable **2-Factor Authentication (2FA)** on all accounts\n- Use SECUVION's **Fraud Analyzer** to scan suspicious messages\n- Report phishing emails to your IT department or email provider\n\nRemember: legitimate companies never ask for passwords via email." },
-  { k: ["password", "strong password", "password security", "password manager"], a: "**Strong Password Best Practices:**\n\n- Use **12+ characters** with uppercase, lowercase, numbers & symbols\n- Never reuse passwords across sites\n- Use a **password manager** (like SECUVION's Password Vault)\n- Enable **2FA/MFA** wherever available\n- Avoid personal info (birthdays, names, pet names)\n- Consider using **passphrases** — e.g., \"Coffee!Mountain#Sunset42\"\n\nCheck your password strength using SECUVION's **Password Vault** tool!" },
+  { k: ["phishing", "phish", "fake email", "scam email"], a: "**Phishing** is a social engineering attack where attackers impersonate trusted entities to steal sensitive data.\n\n**How to protect yourself:**\n- Never click links in unexpected emails — hover to check the real URL\n- Look for misspellings, urgency, or generic greetings (\"Dear Customer\")\n- Enable **2-Factor Authentication (2FA)** on all accounts\n- Use VRIKAAN's **Fraud Analyzer** to scan suspicious messages\n- Report phishing emails to your IT department or email provider\n\nRemember: legitimate companies never ask for passwords via email." },
+  { k: ["password", "strong password", "password security", "password manager"], a: "**Strong Password Best Practices:**\n\n- Use **12+ characters** with uppercase, lowercase, numbers & symbols\n- Never reuse passwords across sites\n- Use a **password manager** (like VRIKAAN's Password Vault)\n- Enable **2FA/MFA** wherever available\n- Avoid personal info (birthdays, names, pet names)\n- Consider using **passphrases** — e.g., \"Coffee!Mountain#Sunset42\"\n\nCheck your password strength using VRIKAAN's **Password Vault** tool!" },
   { k: ["ransomware", "ransom", "encrypt files", "locked files"], a: "**Ransomware** is malware that encrypts your files and demands payment for the decryption key.\n\n**Prevention:**\n- Keep regular **offline backups** (3-2-1 rule)\n- Keep OS and software **updated**\n- Don't open suspicious email attachments\n- Use reputable **antivirus/EDR** solutions\n- Disable **macros** in Office documents from unknown sources\n- Use network **segmentation** to limit spread\n\n**If infected:** Don't pay the ransom — contact cybersecurity professionals and law enforcement." },
   { k: ["malware", "virus", "trojan", "worm", "spyware"], a: "**Malware** is malicious software designed to damage, disrupt, or gain unauthorized access.\n\n**Types:**\n- **Virus** — attaches to files, spreads when executed\n- **Trojan** — disguised as legitimate software\n- **Worm** — self-replicating, spreads across networks\n- **Spyware** — monitors your activity secretly\n- **Adware** — displays unwanted advertisements\n\n**Protection:**\n- Install reputable antivirus software\n- Keep your system updated\n- Download only from trusted sources\n- Scan files before opening them" },
   { k: ["vpn", "virtual private network", "privacy", "anonymous"], a: "**VPN (Virtual Private Network)** encrypts your internet traffic and masks your IP address.\n\n**Benefits:**\n- Encrypts data on public WiFi\n- Hides your browsing from ISPs\n- Bypasses geo-restrictions\n- Protects against man-in-the-middle attacks\n\n**Choose a VPN that:**\n- Has a **no-logs policy**\n- Uses **AES-256 encryption**\n- Offers a **kill switch**\n- Has servers in multiple countries\n\nNote: VPNs don't make you completely anonymous — combine with good security practices." },
   { k: ["2fa", "two factor", "mfa", "multi factor", "authenticator"], a: "**Two-Factor Authentication (2FA)** adds an extra layer of security beyond just a password.\n\n**Types (from most to least secure):**\n1. **Hardware keys** (YubiKey, FIDO2) — best protection\n2. **Authenticator apps** (Google Authenticator, Authy)\n3. **Push notifications** (Duo, Microsoft)\n4. **SMS codes** — better than nothing, but vulnerable to SIM swapping\n\n**Enable 2FA on:** Email, banking, social media, cloud storage, and any account with sensitive data.\n\nSECUVION recommends using authenticator apps for all critical accounts." },
-  { k: ["dark web", "darknet", "tor", "hidden web"], a: "The **Dark Web** is a part of the internet only accessible through special software like Tor.\n\n**Risks:**\n- Stolen credentials and personal data are traded\n- Compromised credit cards are sold\n- Corporate data leaks are shared\n\n**Protection:**\n- Use SECUVION's **Dark Web Monitor** to check if your data has been exposed\n- Never reuse passwords\n- Monitor your credit reports\n- Enable fraud alerts with your bank\n\nSECUVION actively scans the dark web for your compromised information." },
-  { k: ["firewall", "network security", "port", "intrusion"], a: "A **Firewall** monitors and controls incoming and outgoing network traffic based on security rules.\n\n**Types:**\n- **Network firewalls** — hardware/software at network perimeter\n- **Host-based firewalls** — on individual devices\n- **Next-gen firewalls (NGFW)** — deep packet inspection, IPS, application awareness\n\n**Best Practices:**\n- Enable your OS firewall (Windows Defender Firewall / iptables)\n- Block unnecessary inbound ports\n- Use **allow-list** approach (deny by default)\n- Log and monitor firewall events\n- Use SECUVION's **Vulnerability Scanner** to find open ports" },
-  { k: ["zero trust", "zero-trust", "never trust"], a: "**Zero Trust** is a security model: \"Never trust, always verify.\"\n\n**Core Principles:**\n- **Verify explicitly** — always authenticate and authorize\n- **Least privilege access** — give minimum permissions needed\n- **Assume breach** — minimize blast radius, segment access\n\n**Implementation:**\n- Strong identity verification (MFA everywhere)\n- Micro-segmentation of networks\n- Continuous monitoring and validation\n- Encrypt all data in transit and at rest\n- Device health verification\n\nZero Trust is not a product — it's a strategy that SECUVION can help you implement." },
+  { k: ["dark web", "darknet", "tor", "hidden web"], a: "The **Dark Web** is a part of the internet only accessible through special software like Tor.\n\n**Risks:**\n- Stolen credentials and personal data are traded\n- Compromised credit cards are sold\n- Corporate data leaks are shared\n\n**Protection:**\n- Use VRIKAAN's **Dark Web Monitor** to check if your data has been exposed\n- Never reuse passwords\n- Monitor your credit reports\n- Enable fraud alerts with your bank\n\nSECUVION actively scans the dark web for your compromised information." },
+  { k: ["firewall", "network security", "port", "intrusion"], a: "A **Firewall** monitors and controls incoming and outgoing network traffic based on security rules.\n\n**Types:**\n- **Network firewalls** — hardware/software at network perimeter\n- **Host-based firewalls** — on individual devices\n- **Next-gen firewalls (NGFW)** — deep packet inspection, IPS, application awareness\n\n**Best Practices:**\n- Enable your OS firewall (Windows Defender Firewall / iptables)\n- Block unnecessary inbound ports\n- Use **allow-list** approach (deny by default)\n- Log and monitor firewall events\n- Use VRIKAAN's **Vulnerability Scanner** to find open ports" },
+  { k: ["zero trust", "zero-trust", "never trust"], a: "**Zero Trust** is a security model: \"Never trust, always verify.\"\n\n**Core Principles:**\n- **Verify explicitly** — always authenticate and authorize\n- **Least privilege access** — give minimum permissions needed\n- **Assume breach** — minimize blast radius, segment access\n\n**Implementation:**\n- Strong identity verification (MFA everywhere)\n- Micro-segmentation of networks\n- Continuous monitoring and validation\n- Encrypt all data in transit and at rest\n- Device health verification\n\nZero Trust is not a product — it's a strategy that VRIKAAN can help you implement." },
   { k: ["social engineering", "pretexting", "baiting", "tailgating"], a: "**Social Engineering** exploits human psychology rather than technical vulnerabilities.\n\n**Common Techniques:**\n- **Phishing** — fake emails/messages\n- **Pretexting** — creating a fabricated scenario\n- **Baiting** — offering something enticing (USB drives, free downloads)\n- **Tailgating** — following someone into a restricted area\n- **Quid pro quo** — offering a service in exchange for info\n\n**Defense:**\n- Verify identity before sharing information\n- Be skeptical of unsolicited contacts\n- Follow security policies strictly\n- Regular security awareness training" },
-  { k: ["encryption", "encrypt", "aes", "rsa", "ssl", "tls", "https"], a: "**Encryption** converts data into unreadable code that only authorized parties can decrypt.\n\n**Types:**\n- **Symmetric** (AES-256) — same key encrypts/decrypts, fast\n- **Asymmetric** (RSA, ECC) — public/private key pair, used for key exchange\n- **TLS/SSL** — encrypts web traffic (look for HTTPS padlock)\n\n**Best Practices:**\n- Use **HTTPS** everywhere\n- Encrypt sensitive files and drives (BitLocker, FileVault)\n- Use **end-to-end encrypted** messaging (Signal)\n- Use SECUVION's **Vulnerability Scanner** to check TLS configuration" },
-  { k: ["secuvion", "platform", "features", "what can you do", "about"], a: "**SECUVION** is an AI-powered cyber defense platform founded by **Sahil Anil Nikam**.\n\n**Our Features:**\n- **Threat Map** — real-time global cyber threat visualization\n- **Fraud Analyzer** — AI-powered scam detection\n- **Security Score** — assess your digital security posture\n- **Dark Web Monitor** — check if your data is compromised\n- **Password Vault** — generate & manage strong passwords\n- **Vulnerability Scanner** — scan websites for security issues\n- **Learn Academy** — cybersecurity courses with certificates\n- **AI Chatbot** — your personal security advisor (that's me!)\n\nStart exploring at secuvion.com!" },
-  { k: ["hello", "hi", "hey", "good morning", "good evening", "greet"], a: "Hello! 👋 I'm your **SECUVION AI Assistant** — your personal cybersecurity advisor.\n\nI can help you with:\n- 🔒 Password security & best practices\n- 🎣 Phishing protection\n- 🛡️ Malware & ransomware defense\n- 🌐 VPN & network security\n- 🔐 Encryption & 2FA setup\n- 🕵️ Dark web monitoring\n- 📚 Security learning resources\n\nWhat would you like to know about cybersecurity?" },
-  { k: ["sql injection", "sqli", "database attack", "injection attack"], a: "**SQL Injection** is a code injection technique that exploits vulnerabilities in web applications' database queries.\n\n**How it works:** Attackers insert malicious SQL code into input fields to manipulate the database.\n\n**Prevention:**\n- Use **parameterized queries** / prepared statements\n- Implement **input validation** and sanitization\n- Use **ORM** frameworks\n- Apply **least privilege** to database accounts\n- Enable **WAF** (Web Application Firewall)\n- Use SECUVION's **Vulnerability Scanner** to detect SQL injection flaws" },
-  { k: ["ddos", "dos", "denial of service", "botnet"], a: "**DDoS (Distributed Denial of Service)** floods a target with traffic to overwhelm and take it offline.\n\n**Types:**\n- **Volumetric** — bandwidth flooding (UDP flood, DNS amplification)\n- **Protocol** — exploits network layer (SYN flood, Ping of Death)\n- **Application** — targets web apps (HTTP flood, Slowloris)\n\n**Protection:**\n- Use **CDN** services (Cloudflare, AWS Shield)\n- Implement **rate limiting**\n- Deploy **traffic analysis** and anomaly detection\n- Have a **DDoS response plan**\n- Use SECUVION's monitoring tools" },
-  { k: ["incident response", "breach", "hacked", "compromised", "data breach"], a: "**If you've been hacked, act fast:**\n\n**Immediate Steps:**\n1. **Change all passwords** — start with email and banking\n2. **Enable 2FA** on all accounts\n3. **Check for unauthorized** transactions or logins\n4. **Scan devices** for malware\n5. **Notify** your bank and relevant services\n\n**Long-term:**\n- Monitor your credit reports\n- Use SECUVION's **Dark Web Monitor** to check for leaked data\n- Review connected apps and revoke suspicious access\n- Consider a credit freeze\n- Report to authorities (IC3, local law enforcement)" },
+  { k: ["encryption", "encrypt", "aes", "rsa", "ssl", "tls", "https"], a: "**Encryption** converts data into unreadable code that only authorized parties can decrypt.\n\n**Types:**\n- **Symmetric** (AES-256) — same key encrypts/decrypts, fast\n- **Asymmetric** (RSA, ECC) — public/private key pair, used for key exchange\n- **TLS/SSL** — encrypts web traffic (look for HTTPS padlock)\n\n**Best Practices:**\n- Use **HTTPS** everywhere\n- Encrypt sensitive files and drives (BitLocker, FileVault)\n- Use **end-to-end encrypted** messaging (Signal)\n- Use VRIKAAN's **Vulnerability Scanner** to check TLS configuration" },
+  { k: ["secuvion", "platform", "features", "what can you do", "about"], a: "**VRIKAAN** is an AI-powered cyber defense platform founded by **Sahil Anil Nikam**.\n\n**Our Features:**\n- **Threat Map** — real-time global cyber threat visualization\n- **Fraud Analyzer** — AI-powered scam detection\n- **Security Score** — assess your digital security posture\n- **Dark Web Monitor** — check if your data is compromised\n- **Password Vault** — generate & manage strong passwords\n- **Vulnerability Scanner** — scan websites for security issues\n- **Learn Academy** — cybersecurity courses with certificates\n- **AI Chatbot** — your personal security advisor (that's me!)\n\nStart exploring at secuvion.com!" },
+  { k: ["hello", "hi", "hey", "good morning", "good evening", "greet"], a: "Hello! 👋 I'm your **VRIKAAN AI Assistant** — your personal cybersecurity advisor.\n\nI can help you with:\n- 🔒 Password security & best practices\n- 🎣 Phishing protection\n- 🛡️ Malware & ransomware defense\n- 🌐 VPN & network security\n- 🔐 Encryption & 2FA setup\n- 🕵️ Dark web monitoring\n- 📚 Security learning resources\n\nWhat would you like to know about cybersecurity?" },
+  { k: ["sql injection", "sqli", "database attack", "injection attack"], a: "**SQL Injection** is a code injection technique that exploits vulnerabilities in web applications' database queries.\n\n**How it works:** Attackers insert malicious SQL code into input fields to manipulate the database.\n\n**Prevention:**\n- Use **parameterized queries** / prepared statements\n- Implement **input validation** and sanitization\n- Use **ORM** frameworks\n- Apply **least privilege** to database accounts\n- Enable **WAF** (Web Application Firewall)\n- Use VRIKAAN's **Vulnerability Scanner** to detect SQL injection flaws" },
+  { k: ["ddos", "dos", "denial of service", "botnet"], a: "**DDoS (Distributed Denial of Service)** floods a target with traffic to overwhelm and take it offline.\n\n**Types:**\n- **Volumetric** — bandwidth flooding (UDP flood, DNS amplification)\n- **Protocol** — exploits network layer (SYN flood, Ping of Death)\n- **Application** — targets web apps (HTTP flood, Slowloris)\n\n**Protection:**\n- Use **CDN** services (Cloudflare, AWS Shield)\n- Implement **rate limiting**\n- Deploy **traffic analysis** and anomaly detection\n- Have a **DDoS response plan**\n- Use VRIKAAN's monitoring tools" },
+  { k: ["incident response", "breach", "hacked", "compromised", "data breach"], a: "**If you've been hacked, act fast:**\n\n**Immediate Steps:**\n1. **Change all passwords** — start with email and banking\n2. **Enable 2FA** on all accounts\n3. **Check for unauthorized** transactions or logins\n4. **Scan devices** for malware\n5. **Notify** your bank and relevant services\n\n**Long-term:**\n- Monitor your credit reports\n- Use VRIKAAN's **Dark Web Monitor** to check for leaked data\n- Review connected apps and revoke suspicious access\n- Consider a credit freeze\n- Report to authorities (IC3, local law enforcement)" },
 ];
 
 function getSmartResponse(message) {
@@ -203,7 +203,7 @@ function getSmartResponse(message) {
   // Generic helpful response for unmatched queries
   if (lower.includes("help") || lower.includes("what") || lower.includes("how"))
     return "Great question! I can help with many topics. Try asking about:\n\n- **Phishing** and email scams\n- **Password** security\n- **Ransomware** protection\n- **VPN** and network privacy\n- **Encryption** and 2FA\n- **Dark web** monitoring\n- **Social engineering** attacks\n\nJust type your question and I'll answer!";
-  return "I'm your **SECUVION AI Assistant**! I can help with **cybersecurity, programming, science, math**, and more.\n\nJust type your question — I'm powered by real AI!";
+  return "I'm your **VRIKAAN AI Assistant**! I can help with **cybersecurity, programming, science, math**, and more.\n\nJust type your question — I'm powered by real AI!";
 }
 
 // ─── Styles ───
@@ -261,8 +261,8 @@ export default function AIChatbot() {
       setMessages([{
         role: "bot",
         text: loggedIn
-          ? `Welcome! I'm your **SECUVION AI Assistant** — powered by real AI. You have ${creditText} on your **${PLANS[plan]?.name}** plan. Ask me anything! 🚀`
-          : `Hi! I'm **SECUVION AI Assistant** — powered by real AI. You have **25 guest credits**. **Log in** to get **50 daily credits** and unlock more! Ask me anything!`,
+          ? `Welcome! I'm your **VRIKAAN AI Assistant** — powered by real AI. You have ${creditText} on your **${PLANS[plan]?.name}** plan. Ask me anything! 🚀`
+          : `Hi! I'm **VRIKAAN AI Assistant** — powered by real AI. You have **25 guest credits**. **Log in** to get **50 daily credits** and unlock more! Ask me anything!`,
         time: new Date(),
       }]);
     }
@@ -455,10 +455,10 @@ export default function AIChatbot() {
       }}>
         <div style={{ width: 36, height: 36, borderRadius: 10, background: "linear-gradient(135deg, #6366f1, #14e3c5)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, fontWeight: 800, color: "#fff" }}>S</div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 14, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'" }}>SECUVION AI</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'" }}>VRIKAAN AI</div>
           <div style={{ fontSize: 11, color: T.green, display: "flex", alignItems: "center", gap: 4 }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", background: T.green }} />
-            Powered by SECUVION AI
+            Powered by VRIKAAN AI
           </div>
         </div>
         {/* Credits badge */}
@@ -486,7 +486,7 @@ export default function AIChatbot() {
               <span style={{ fontSize: 13, fontWeight: 700, color: T.green }}>AI is Active</span>
             </div>
             <div style={{ fontSize: 12, color: T.muted, lineHeight: 1.6 }}>
-              SECUVION AI is powered and ready. No setup needed — just ask anything!
+              VRIKAAN AI is powered and ready. No setup needed — just ask anything!
             </div>
           </div>
 
@@ -528,7 +528,7 @@ export default function AIChatbot() {
               const key = BUILT_IN_KEY;
               setApiKey(key); if (key) { initAI(key); setConnected(true); } else setConnected(false);
               chatHistory = [];
-              setMessages(p => [...p, { role: "bot", text: "Custom key removed. Using SECUVION's built-in AI.", time: new Date() }]);
+              setMessages(p => [...p, { role: "bot", text: "Custom key removed. Using VRIKAAN's built-in AI.", time: new Date() }]);
               setView("chat");
             }} style={{
               padding: "8px 14px", borderRadius: 8, border: `1px solid rgba(239,68,68,0.3)`,

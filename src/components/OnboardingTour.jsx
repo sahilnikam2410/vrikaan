@@ -14,7 +14,7 @@ const T = {
 const STEPS = [
   {
     icon: "🛡",
-    title: "Welcome to SECUVION",
+    title: "Welcome to VRIKAAN",
     desc: "Your all-in-one cybersecurity toolkit. Let's take a quick 30-second tour of what you can do here.",
     cta: null,
   },

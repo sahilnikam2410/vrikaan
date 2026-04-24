@@ -190,7 +190,7 @@ export default function DarkWebMonitor() {
 
   return (
     <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <SEO title="Dark Web Monitor — SECUVION" description="Check if your personal data has been exposed in data breaches on the dark web." />
+      <SEO title="Dark Web Monitor — VRIKAAN" description="Check if your personal data has been exposed in data breaches on the dark web." />
       <Navbar />
 
       {/* ── Hero ── */}

@@ -111,7 +111,7 @@ export default function PasswordChecker() {
 
   return (
     <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <SEO title="Password Breach Checker — SECUVION" description="Check if your password has been exposed in data breaches. Uses k-anonymity so your password never leaves the browser." />
+      <SEO title="Password Breach Checker — VRIKAAN" description="Check if your password has been exposed in data breaches. Uses k-anonymity so your password never leaves the browser." />
       <Navbar />
 
       {/* ── Hero ── */}

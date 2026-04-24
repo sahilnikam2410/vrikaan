@@ -24,7 +24,7 @@ const Footer = () => (
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
             <div style={{ width: 34, height: 34, borderRadius: 10, background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15, fontWeight: 700, color: T.bg }}>S</div>
-            <span style={{ fontFamily: "var(--font-display)", fontSize: 16, letterSpacing: 3, color: T.white, fontWeight: 700 }}>SECUVION</span>
+            <span style={{ fontFamily: "var(--font-display)", fontSize: 16, letterSpacing: 3, color: T.white, fontWeight: 700 }}>VRIKAAN</span>
           </div>
           <p style={{ fontFamily: "var(--font-body)", color: T.mutedDark, fontSize: 14, lineHeight: 1.8, marginBottom: 20, maxWidth: 240 }}>
             AI-powered cyber defense for everyone. Enterprise security made accessible.
@@ -113,7 +113,7 @@ const Footer = () => (
 
       {/* Bottom */}
       <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 28, display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
-        <div style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark }}>&copy; 2026 SECUVION. All rights reserved.</div>
+        <div style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark }}>&copy; 2026 VRIKAAN. All rights reserved.</div>
         <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(100,116,139,0.6)" }}>
           Founded by Sahil Anil Nikam | Built with security in mind | Protecting digital lives worldwide
         </div>

@@ -3,4 +3,4 @@ Allow: /
 Disallow: /dashboard
 Disallow: /admin
 
-Sitemap: https://secuvion.vercel.app/sitemap.xml
+Sitemap: https://vrikaan.com/sitemap.xml

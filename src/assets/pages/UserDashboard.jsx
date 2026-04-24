@@ -574,7 +574,7 @@ export default function UserDashboard() {
             <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.7, margin: 0 }}>
               {[
                 "Enable two-factor authentication on all your accounts. It blocks 99.9% of automated attacks even if your password is compromised.",
-                "Use unique passwords for every account. A password manager makes this easy — try SECUVION's Password Vault.",
+                "Use unique passwords for every account. A password manager makes this easy — try VRIKAAN's Password Vault.",
                 "Check URLs carefully before clicking. Phishing sites often use subtle misspellings like 'g00gle.com' instead of 'google.com'.",
                 "Keep your devices and software updated. Security patches fix vulnerabilities that attackers actively exploit.",
                 "Be cautious of unsolicited messages asking for personal info. Legitimate companies never ask for passwords via email.",
@@ -1230,7 +1230,7 @@ export default function UserDashboard() {
 
   return (
     <>
-      <SEO title="Dashboard | Secuvion" description="Manage your security, devices, and account settings." />
+      <SEO title="Dashboard | Vrikaan" description="Manage your security, devices, and account settings." />
       <OnboardingTour uid={user?.uid} />
       <div style={{ minHeight: "100vh", background: T.bg, display: "flex", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
         {/* Mobile hamburger */}

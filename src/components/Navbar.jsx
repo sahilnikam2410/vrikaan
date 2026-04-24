@@ -172,7 +172,7 @@ const Navbar = () => {
             display: "inline-flex", alignItems: "center", justifyContent: "center",
             fontSize: 14, fontWeight: 800, color: "#fff",
           }}>S</span>
-          SECUVION
+          VRIKAAN
         </Link>
 
         {/* Desktop links — only show Tools, Learn, News, Blog when logged in */}

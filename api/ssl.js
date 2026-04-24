@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     try {
       const sslRes = await fetch(
         `https://api.ssllabs.com/api/v3/analyze?host=${encodeURIComponent(domain)}&fromCache=on&maxAge=24`,
-        { headers: { "User-Agent": "SECUVION/1.0" } }
+        { headers: { "User-Agent": "VRIKAAN/1.0" } }
       );
 
       if (sslRes.ok) {

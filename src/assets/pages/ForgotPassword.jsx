@@ -152,7 +152,7 @@ export default function ForgotPassword() {
     <div style={styles.page}>
       <SEO
         title="Forgot Password"
-        description="Reset your Secuvion account password."
+        description="Reset your Vrikaan account password."
         path="/forgot-password"
       />
       <Navbar />

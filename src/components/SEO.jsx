@@ -1,11 +1,11 @@
 import { Helmet } from "react-helmet-async";
 
 const defaults = {
-  siteName: "SECUVION",
-  title: "SECUVION - AI-Powered Cyber Defense Platform",
+  siteName: "VRIKAAN",
+  title: "VRIKAAN - AI-Powered Cyber Defense Platform",
   description: "Enterprise-grade cybersecurity for everyone. Real-time threat detection, fraud analysis, and digital protection powered by AI. 15+ security tools in one dashboard.",
-  url: "https://secuvion.vercel.app",
-  image: "https://secuvion.vercel.app/api/og?title=SECUVION&subtitle=AI-Powered+Cyber+Defense+Platform",
+  url: "https://vrikaan.com",
+  image: "https://vrikaan.com/api/og?title=VRIKAAN&subtitle=AI-Powered+Cyber+Defense+Platform",
   twitter: "@secuvion",
 };
 
@@ -26,7 +26,7 @@ function buildDynamicOgImage({ title, subtitle, category }) {
  * canonical, and optional JSON-LD structured data.
  *
  * Props:
- *   title        — page title (gets appended with " | SECUVION")
+ *   title        — page title (gets appended with " | VRIKAAN")
  *   description  — meta description
  *   path         — URL path (e.g. "/pricing")
  *   image        — override og:image
@@ -107,7 +107,7 @@ export default function SEO({
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "SECUVION",
+  name: "VRIKAAN",
   url: defaults.url,
   logo: `${defaults.url}/favicon.svg`,
   sameAs: [],

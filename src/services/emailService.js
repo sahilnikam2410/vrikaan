@@ -12,7 +12,7 @@ function safeSend(templateId, params) {
     console.warn("EmailJS not configured — skipping email send");
     return Promise.resolve();
   }
-  return emailjs.send(SERVICE_ID, templateId, { from_name: "SECUVION", ...params }, PUBLIC_KEY);
+  return emailjs.send(SERVICE_ID, templateId, { from_name: "VRIKAAN", ...params }, PUBLIC_KEY);
 }
 
 /**
@@ -24,8 +24,8 @@ export async function sendWelcomeEmail(name, email) {
     await safeSend(WELCOME_TEMPLATE, {
       to_name: name,
       to_email: email,
-      subject: `Welcome to SECUVION, ${name}!`,
-      message: `Welcome to SECUVION, ${name}!
+      subject: `Welcome to VRIKAAN, ${name}!`,
+      message: `Welcome to VRIKAAN, ${name}!
 
 Your account is now active. Here's what you can do right away:
 
@@ -35,12 +35,12 @@ Your account is now active. Here's what you can do right away:
 - Test your browser privacy with Fingerprint Test
 - Train yourself to spot phishing with our Phishing Trainer
 
-Get started: https://secuvion.vercel.app/dashboard
+Get started: https://vrikaan.com/dashboard
 
 Want more power? Upgrade to a premium plan for unlimited scans, AI-powered analysis, and priority support.
 
 Stay safe,
-The SECUVION Team`,
+The VRIKAAN Team`,
     });
   } catch (error) {
     console.warn("Failed to send welcome email:", error);
@@ -55,7 +55,7 @@ export async function sendPaymentConfirmation(name, email, plan, amount, billing
     await safeSend(PAYMENT_TEMPLATE, {
       to_name: name,
       to_email: email,
-      subject: `Payment Confirmed — SECUVION ${plan} Plan`,
+      subject: `Payment Confirmed — VRIKAAN ${plan} Plan`,
       plan: plan.charAt(0).toUpperCase() + plan.slice(1),
       amount: `INR ${amount}`,
       billing: billing || "monthly",
@@ -73,10 +73,10 @@ You now have full access to premium features including:
 - PDF export for all reports
 - Advanced Security Audit
 
-Access your dashboard: https://secuvion.vercel.app/dashboard
+Access your dashboard: https://vrikaan.com/dashboard
 
-Thank you for choosing SECUVION!
-The SECUVION Team`,
+Thank you for choosing VRIKAAN!
+The VRIKAAN Team`,
     });
   } catch (error) {
     console.warn("Failed to send payment confirmation email:", error);
@@ -90,8 +90,8 @@ export async function sendPasswordResetNotification(email) {
   try {
     await safeSend(PASSWORD_RESET_TEMPLATE, {
       to_email: email,
-      subject: "Password Reset — SECUVION",
-      message: "A password reset has been requested for your SECUVION account. If you did not request this, please ignore this email. Otherwise, check your inbox for the reset link from Firebase.",
+      subject: "Password Reset — VRIKAAN",
+      message: "A password reset has been requested for your VRIKAAN account. If you did not request this, please ignore this email. Otherwise, check your inbox for the reset link from Firebase.",
     });
   } catch (error) {
     console.warn("Failed to send password reset notification:", error);
@@ -107,18 +107,18 @@ export async function sendExpiryWarning(name, email, plan, expiresAt) {
     await safeSend(NOTIFY_TEMPLATE, {
       to_name: name,
       to_email: email,
-      subject: `Your SECUVION ${plan} plan expires soon`,
+      subject: `Your VRIKAAN ${plan} plan expires soon`,
       message: `Hi ${name},
 
-Your SECUVION ${plan} plan expires on ${expDate}.
+Your VRIKAAN ${plan} plan expires on ${expDate}.
 
 Renew now to keep access to all premium features without interruption:
-https://secuvion.vercel.app/pricing
+https://vrikaan.com/pricing
 
 After expiry, your account will revert to the free plan with limited daily usage.
 
 Stay protected,
-The SECUVION Team`,
+The VRIKAAN Team`,
     });
   } catch (error) {
     console.warn("Failed to send expiry warning:", error);
@@ -144,10 +144,10 @@ We strongly recommend:
 3. Use unique passwords (try our Password Vault)
 4. Run a full Security Audit on your accounts
 
-Check details: https://secuvion.vercel.app/dark-web-monitor
+Check details: https://vrikaan.com/dark-web-monitor
 
 Stay vigilant,
-The SECUVION Team`,
+The VRIKAAN Team`,
     });
   } catch (error) {
     console.warn("Failed to send breach alert:", error);
@@ -162,7 +162,7 @@ export async function sendPromoEmail(name, email) {
     await safeSend(NOTIFY_TEMPLATE, {
       to_name: name,
       to_email: email,
-      subject: `${name}, have you tried these SECUVION tools?`,
+      subject: `${name}, have you tried these VRIKAAN tools?`,
       message: `Hi ${name},
 
 Here are some tools you might not have tried yet:
@@ -173,16 +173,16 @@ Here are some tools you might not have tried yet:
 4. File Hash Scanner — Check files for known malware
 5. Phishing Trainer — Test your phishing detection skills
 
-Explore all tools: https://secuvion.vercel.app/dashboard
+Explore all tools: https://vrikaan.com/dashboard
 
 Want unlimited access? Check out our premium plans:
-https://secuvion.vercel.app/pricing
+https://vrikaan.com/pricing
 
 Refer friends and earn free upgrades:
-https://secuvion.vercel.app/referral
+https://vrikaan.com/referral
 
 Best,
-The SECUVION Team`,
+The VRIKAAN Team`,
     });
   } catch (error) {
     console.warn("Failed to send promo email:", error);

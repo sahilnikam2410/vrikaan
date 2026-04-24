@@ -80,7 +80,7 @@ export default function PhishingTrainer() {
 
   const share = () => {
     const correct = answers.filter(a => a.correct).length;
-    const text = `I scored ${score} points (${correct}/${ROUNDS} correct) on SECUVION Phishing Trainer! Can you beat me? Try it at secuvion.vercel.app/phishing-trainer`;
+    const text = `I scored ${score} points (${correct}/${ROUNDS} correct) on VRIKAAN Phishing Trainer! Can you beat me? Try it at vrikaan.com/phishing-trainer`;
     if (navigator.share) { navigator.share({ title: "Phishing Trainer Score", text }); }
     else { navigator.clipboard.writeText(text); }
   };

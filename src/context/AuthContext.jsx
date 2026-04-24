@@ -22,12 +22,12 @@ import { setUser as setReporterUser } from "../services/errorReporter";
 const AuthContext = createContext(null);
 
 const DEMO_USERS = [
-  { id: 1, email: "admin@secuvion.com", password: "admin123", name: "Sahil Nikam", role: "admin", avatar: null, plan: "enterprise" },
-  { id: 2, email: "user@secuvion.com", password: "user123", name: "Demo User", role: "user", avatar: null, plan: "pro" },
+  { id: 1, email: "admin@vrikaan.com", password: "admin123", name: "Sahil Nikam", role: "admin", avatar: null, plan: "enterprise" },
+  { id: 2, email: "user@vrikaan.com", password: "user123", name: "Demo User", role: "user", avatar: null, plan: "pro" },
 ];
 
 // Admin emails — these users get admin role automatically
-const ADMIN_EMAILS = ["sahilnikam133@gmail.com", "sahilnikam1212@gmail.com", "admin@secuvion.com"];
+const ADMIN_EMAILS = ["sahilnikam133@gmail.com", "sahilnikam1212@gmail.com", "admin@vrikaan.com"];
 
 /**
  * Merge Firebase Auth user object with Firestore profile data.

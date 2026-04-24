@@ -68,8 +68,8 @@ const TECH = [
 ];
 
 const MILESTONES = [
-  { year: "2024", title: "Founded", desc: "SECUVION was born in Pune, India when founder Sahil Anil Nikam identified a critical gap in accessible cybersecurity tools for everyday users.", color: T.accent },
-  { year: "2025", title: "Platform Launch", desc: "Public launch of the SECUVION platform featuring dark web monitoring, password vault, vulnerability scanner, and an integrated learning hub.", color: T.cyan },
+  { year: "2024", title: "Founded", desc: "VRIKAAN was born in Pune, India when founder Sahil Anil Nikam identified a critical gap in accessible cybersecurity tools for everyday users.", color: T.accent },
+  { year: "2025", title: "Platform Launch", desc: "Public launch of the VRIKAAN platform featuring dark web monitoring, password vault, vulnerability scanner, and an integrated learning hub.", color: T.cyan },
   { year: "2026", title: "AI Integration", desc: "Deployed Google Gemini-powered AI chatbot and intelligent threat analysis engine, bringing conversational cybersecurity assistance to every user.", color: T.green },
   { year: "2027", title: "Global Expansion", desc: "Planned rollout across Southeast Asia, Europe, and Africa with localized threat intelligence and multilingual support for 20+ languages.", color: "#f97316" },
 ];
@@ -150,8 +150,8 @@ export default function About() {
   return (
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <SEO
-        title="About SECUVION"
-        description="Learn about SECUVION's mission to democratize AI-powered cybersecurity for everyone. Founded by Sahil Anil Nikam in Pune, India."
+        title="About VRIKAAN"
+        description="Learn about VRIKAAN's mission to democratize AI-powered cybersecurity for everyone. Founded by Sahil Anil Nikam in Pune, India."
         path="/about"
       />
       <Navbar />
@@ -167,7 +167,7 @@ export default function About() {
         <div style={{ textAlign: "center", ...sectionGap }}>
           <span style={badge(T.accent)}>About Us</span>
           <h1 style={{ ...heading("clamp(38px, 5vw, 56px)"), marginBottom: 20 }}>
-            About <span style={gradientText}>SECUVION</span>
+            About <span style={gradientText}>VRIKAAN</span>
           </h1>
           <p style={{ color: T.muted, fontSize: 20, maxWidth: 640, margin: "0 auto 28px", lineHeight: 1.7, fontWeight: 500 }}>
             AI-Powered Cyber Defense for Everyone
@@ -213,15 +213,15 @@ export default function About() {
           </div>
         </RevealSection>
 
-        {/* ── Why SECUVION ── */}
+        {/* ── Why VRIKAAN ── */}
         <RevealSection style={{ ...sectionGap, textAlign: "center" }}>
           <span style={badge("#f97316")}>Why Us</span>
           <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)"), marginBottom: 20 }}>
-            Why Choose <span style={gradientText}>SECUVION</span>?
+            Why Choose <span style={gradientText}>VRIKAAN</span>?
           </h2>
           <p style={{ color: T.muted, fontSize: 15, maxWidth: 620, margin: "0 auto 40px", lineHeight: 1.85 }}>
             Traditional cybersecurity tools are built for enterprises with dedicated IT teams.
-            SECUVION flips that model by delivering intelligent, automated protection designed
+            VRIKAAN flips that model by delivering intelligent, automated protection designed
             for people who have better things to do than monitor threat dashboards all day.
           </p>
           <div className="about-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
@@ -272,12 +272,12 @@ export default function About() {
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <span style={badge(T.cyan)}>Our Story</span>
             <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)"), marginBottom: 16 }}>
-              How <span style={gradientText}>SECUVION</span> Began
+              How <span style={gradientText}>VRIKAAN</span> Began
             </h2>
           </div>
           <div style={{ ...cardBase, borderRadius: 20, padding: "clamp(32px, 4vw, 56px)", maxWidth: 860, margin: "0 auto" }}>
             <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.9, margin: "0 0 20px" }}>
-              SECUVION was founded by <strong style={{ color: T.white }}>Sahil Anil Nikam</strong>, a
+              VRIKAAN was founded by <strong style={{ color: T.white }}>Sahil Anil Nikam</strong>, a
               cybersecurity enthusiast from <strong style={{ color: T.white }}>Pune, India</strong>,
               who witnessed firsthand how vulnerable everyday internet users are to digital threats.
               While studying cybersecurity and building personal projects, Sahil noticed a troubling
@@ -287,13 +287,13 @@ export default function About() {
             </p>
             <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.9, margin: "0 0 20px" }}>
               Driven by a conviction that protection should be universal, Sahil began building
-              SECUVION in 2024 as a solo project. The initial prototype included a dark web
+              VRIKAAN in 2024 as a solo project. The initial prototype included a dark web
               monitoring tool and a password vault. As the project grew, AI integration became the
               cornerstone of the platform, enabling real-time threat detection and intelligent
               security recommendations that adapt to each user's behavior and risk profile.
             </p>
             <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.9, margin: 0 }}>
-              Today, SECUVION has evolved into a comprehensive cybersecurity platform that combines
+              Today, VRIKAAN has evolved into a comprehensive cybersecurity platform that combines
               artificial intelligence, real-time monitoring, and an educational learning hub to
               empower users not only to defend themselves but to truly understand the threats they
               face. What started as one person's frustration with an inequitable industry has become
@@ -411,14 +411,14 @@ export default function About() {
                   paddingLeft: 20,
                 }}>
                   "The digital world connects billions of people, but it also exposes them to
-                  invisible threats. I created SECUVION because cybersecurity should not be a
+                  invisible threats. I created VRIKAAN because cybersecurity should not be a
                   luxury — it should be a right available to every person on Earth."
                 </blockquote>
                 <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.85, margin: "0 0 20px" }}>
                   Sahil is a cybersecurity enthusiast and self-taught developer from Pune, India.
                   His passion for digital security began during his early experiments with network
                   analysis and ethical hacking. Frustrated by the lack of affordable, user-friendly
-                  security tools for everyday people, he channeled his energy into building SECUVION
+                  security tools for everyday people, he channeled his energy into building VRIKAAN
                   from the ground up. Sahil handles everything from product architecture and AI
                   integration to frontend design and community engagement.
                 </p>

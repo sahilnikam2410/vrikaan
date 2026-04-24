@@ -8,7 +8,7 @@ const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 export default function Founder() {
   return (
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <SEO title="Founder" description="Meet Sahil Anil Nikam, founder and CEO of Secuvion." path="/founder" />
+      <SEO title="Founder" description="Meet Sahil Anil Nikam, founder and CEO of Vrikaan." path="/founder" />
       <Navbar />
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "120px 24px 80px" }}>
         <div style={{ marginBottom: 48 }}>
@@ -30,7 +30,7 @@ export default function Founder() {
             </div>
             <div>
               <blockquote style={{ fontSize: 18, color: T.white, lineHeight: 1.8, fontStyle: "italic", margin: "0 0 20px", opacity: 0.85, borderLeft: `3px solid ${T.accent}`, paddingLeft: 24 }}>
-                "The digital world connects billions of people, but it also exposes them to invisible threats. I created Secuvion because cybersecurity shouldn't be a luxury — it should be a right."
+                "The digital world connects billions of people, but it also exposes them to invisible threats. I created Vrikaan because cybersecurity shouldn't be a luxury — it should be a right."
               </blockquote>
             </div>
           </div>
@@ -40,9 +40,9 @@ export default function Founder() {
         <div style={{ display: "flex", flexDirection: "column", gap: 32, marginBottom: 64 }}>
           {[
             { title: "The Problem", text: "Billions of internet users are vulnerable to phishing attacks, online fraud, and identity theft every day. Most cybersecurity companies focus exclusively on protecting large corporations, leaving normal users — students, families, seniors — completely exposed." },
-            { title: "The Vision", text: "Secuvion was created with the vision of protecting everyday people from cybercrime. The goal is to build a global cyber defense platform that makes enterprise-grade security accessible and affordable for everyone, regardless of their technical knowledge." },
-            { title: "The Approach", text: "Using AI-powered threat detection trained on billions of signatures, Secuvion identifies and neutralizes threats in real-time. The platform is designed to be simple — users don't need to understand cybersecurity to be protected by it." },
-            { title: "The Impact", text: "Today, Secuvion protects users across 84 countries with a 99.7% threat detection rate. From students in India to families in Europe to small businesses in the Americas — we're building a defense network that spans the globe." },
+            { title: "The Vision", text: "Vrikaan was created with the vision of protecting everyday people from cybercrime. The goal is to build a global cyber defense platform that makes enterprise-grade security accessible and affordable for everyone, regardless of their technical knowledge." },
+            { title: "The Approach", text: "Using AI-powered threat detection trained on billions of signatures, Vrikaan identifies and neutralizes threats in real-time. The platform is designed to be simple — users don't need to understand cybersecurity to be protected by it." },
+            { title: "The Impact", text: "Today, Vrikaan protects users across 84 countries with a 99.7% threat detection rate. From students in India to families in Europe to small businesses in the Americas — we're building a defense network that spans the globe." },
           ].map((s, i) => (
             <div key={i} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: "32px 36px" }}>
               <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, margin: "0 0 12px", color: T.cyan }}>{s.title}</h3>

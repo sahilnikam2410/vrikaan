@@ -120,7 +120,7 @@ export default function IdentityXray() {
   };
 
   const handleShare = () => {
-    const text = `🛡️ My Digital Identity Risk Score: ${report.riskScore}/100 (${RISK_LABELS[report.riskLevel]})\n\nCheck yours free at secuvion.vercel.app/identity-xray\n\n#CyberSecurity #DigitalSafety #SECUVION`;
+    const text = `🛡️ My Digital Identity Risk Score: ${report.riskScore}/100 (${RISK_LABELS[report.riskLevel]})\n\nCheck yours free at vrikaan.com/identity-xray\n\n#CyberSecurity #DigitalSafety #VRIKAAN`;
     if (navigator.share) {
       navigator.share({ title: "My Digital Identity X-Ray", text }).catch(() => {});
     } else {

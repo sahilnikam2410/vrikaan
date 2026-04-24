@@ -28,7 +28,7 @@ const courses = [
     color: T.cyan,
     icon: "🛡️",
     category: "Fundamentals",
-    instructor: "SECUVION Academy",
+    instructor: "VRIKAAN Academy",
     rating: 4.8,
     students: 12450,
     chapters: [
@@ -59,7 +59,7 @@ const courses = [
     color: T.accent,
     icon: "🔓",
     category: "Offensive Security",
-    instructor: "SECUVION Academy",
+    instructor: "VRIKAAN Academy",
     rating: 4.9,
     students: 8730,
     chapters: [
@@ -90,7 +90,7 @@ const courses = [
     color: T.green,
     icon: "🌐",
     category: "Defense",
-    instructor: "SECUVION Academy",
+    instructor: "VRIKAAN Academy",
     rating: 4.7,
     students: 6320,
     chapters: [
@@ -120,7 +120,7 @@ const courses = [
     color: T.red,
     icon: "🦠",
     category: "Forensics",
-    instructor: "SECUVION Academy",
+    instructor: "VRIKAAN Academy",
     rating: 4.6,
     students: 4150,
     chapters: [
@@ -150,7 +150,7 @@ const courses = [
     color: T.blue,
     icon: "☁️",
     category: "Cloud",
-    instructor: "SECUVION Academy",
+    instructor: "VRIKAAN Academy",
     rating: 4.8,
     students: 9870,
     chapters: [
@@ -180,7 +180,7 @@ const courses = [
     color: T.gold,
     icon: "🔍",
     category: "Forensics",
-    instructor: "SECUVION Academy",
+    instructor: "VRIKAAN Academy",
     rating: 4.7,
     students: 3890,
     chapters: [
@@ -282,7 +282,7 @@ async function generateCertificate(courseName, userName) {
   ctx.lineWidth = 1;
   ctx.strokeRect(40, 40, W - 80, H - 80);
 
-  // ── SECUVION Academy Logo (top-left) ──
+  // ── VRIKAAN Academy Logo (top-left) ──
   if (logoImg) {
     // Draw the real academy logo
     const logoH = 90;
@@ -293,7 +293,7 @@ async function generateCertificate(courseName, userName) {
       ctx.textAlign = "left";
       ctx.font = "bold 22px 'Arial', sans-serif";
       ctx.fillStyle = dark;
-      ctx.fillText("SECUVION ACADEMY", 80 + logoW + 16, 98);
+      ctx.fillText("VRIKAAN ACADEMY", 80 + logoW + 16, 98);
       ctx.font = "11px 'Arial', sans-serif";
       ctx.fillStyle = light;
       ctx.fillText("AI-Powered Cyber Defense", 80 + logoW + 16, 116);
@@ -322,7 +322,7 @@ async function generateCertificate(courseName, userName) {
     ctx.textAlign = "left";
     ctx.font = "bold 28px 'Arial', sans-serif";
     ctx.fillStyle = dark;
-    ctx.fillText("SECUVION", 158, 100);
+    ctx.fillText("VRIKAAN", 158, 100);
     ctx.font = "12px 'Arial', sans-serif";
     ctx.fillStyle = light;
     ctx.fillText("ACADEMY", 158, 118);
@@ -335,7 +335,7 @@ async function generateCertificate(courseName, userName) {
   ctx.fillText("Powered by", W - 120, 88);
   ctx.font = "bold 16px 'Arial', sans-serif";
   ctx.fillStyle = "#6366f1";
-  ctx.fillText("SECUVION AI", W - 120, 108);
+  ctx.fillText("VRIKAAN AI", W - 120, 108);
   ctx.font = "10px 'Arial', sans-serif";
   ctx.fillStyle = light;
   ctx.fillText("Cyber Defense Platform", W - 120, 124);
@@ -379,13 +379,13 @@ async function generateCertificate(courseName, userName) {
   // ── Offered by line ──
   ctx.font = "16px 'Arial', sans-serif";
   ctx.fillStyle = gray;
-  ctx.fillText("an online non-credit course offered by SECUVION Academy", 120, 475);
+  ctx.fillText("an online non-credit course offered by VRIKAAN Academy", 120, 475);
 
   // ── Course description ──
   ctx.font = "15px 'Arial', sans-serif";
   ctx.fillStyle = light;
   ctx.fillText("The learner demonstrated proficiency in cybersecurity concepts, tools, and industry best practices", 120, 520);
-  ctx.fillText("as validated through the SECUVION Academy coursework and examination.", 120, 542);
+  ctx.fillText("as validated through the VRIKAAN Academy coursework and examination.", 120, 542);
 
   // ── Date and Certificate ID section ──
   const dateStr = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
@@ -447,14 +447,14 @@ async function generateCertificate(courseName, userName) {
   ctx.fillText("Sahil Anil Nikam", 120, 785);
   ctx.font = "13px 'Arial', sans-serif";
   ctx.fillStyle = gray;
-  ctx.fillText("Founder & CEO, SECUVION", 120, 805);
+  ctx.fillText("Founder & CEO, VRIKAAN", 120, 805);
 
   // Signature 2 — Academy Director
   ctx.strokeStyle = "#d1d5db";
   ctx.beginPath(); ctx.moveTo(500, 760); ctx.lineTo(760, 760); ctx.stroke();
   ctx.font = "bold 14px 'Arial', sans-serif";
   ctx.fillStyle = dark;
-  ctx.fillText("SECUVION Academy", 500, 785);
+  ctx.fillText("VRIKAAN Academy", 500, 785);
   ctx.font = "13px 'Arial', sans-serif";
   ctx.fillStyle = gray;
   ctx.fillText("Head of Education", 500, 805);
@@ -500,7 +500,7 @@ async function generateCertificate(courseName, userName) {
   ctx.textAlign = "right";
   ctx.font = "11px 'Arial', sans-serif";
   ctx.fillStyle = light;
-  ctx.fillText("© 2026 SECUVION. All rights reserved.", W - 120, H - 85);
+  ctx.fillText("© 2026 VRIKAAN. All rights reserved.", W - 120, H - 85);
 
   // ── Bottom accent bar ──
   const btmBar = ctx.createLinearGradient(0, 0, W, 0);
@@ -643,7 +643,7 @@ export default function Learn() {
   const renderCatalog = () => (
     <>
       <div style={{ textAlign: "center", marginBottom: 48 }}>
-        <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>SECUVION ACADEMY</span>
+        <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>VRIKAAN ACADEMY</span>
         <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>
           Learn Cybersecurity. <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Get Certified.</span>
         </h1>

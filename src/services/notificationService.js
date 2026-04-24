@@ -110,7 +110,7 @@ export function subscribe(fn) {
 export function seedWelcome(uid) {
   if (readAll(uid).length > 0) return;
   addNotification(uid, {
-    msg: "Welcome to SECUVION! Run your first scan to get started.",
+    msg: "Welcome to VRIKAAN! Run your first scan to get started.",
     color: "#6366f1",
     icon: "★",
   });

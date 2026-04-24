@@ -107,7 +107,7 @@ const faqs = [
   },
   {
     q: "Does the Enterprise plan support custom integrations?",
-    a: "Yes. Enterprise customers get full API access plus a dedicated integration manager who will help connect Secuvion with your existing security stack, SIEM tools, and internal workflows.",
+    a: "Yes. Enterprise customers get full API access plus a dedicated integration manager who will help connect Vrikaan with your existing security stack, SIEM tools, and internal workflows.",
   },
 ];
 
@@ -167,9 +167,9 @@ export default function Pricing() {
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <SEO
         title="Pricing — Free, Standard, Advanced & Enterprise Plans"
-        description="SECUVION pricing: Free plan with daily usage limits, Standard (₹49/mo), Advanced (₹99/mo), Enterprise (₹199/mo). 30-day money-back guarantee. UPI/cards accepted."
+        description="VRIKAAN pricing: Free plan with daily usage limits, Standard (₹49/mo), Advanced (₹99/mo), Enterprise (₹199/mo). 30-day money-back guarantee. UPI/cards accepted."
         path="/pricing"
-        keywords="cybersecurity pricing India, affordable security software, UPI security tools, SECUVION plans"
+        keywords="cybersecurity pricing India, affordable security software, UPI security tools, VRIKAAN plans"
         jsonLd={faqSchema(faqs)}
       />
       <Navbar />

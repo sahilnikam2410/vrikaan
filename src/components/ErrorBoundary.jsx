@@ -19,7 +19,7 @@ export default class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    console.error("[SECUVION] Uncaught error:", error, errorInfo);
+    console.error("[VRIKAAN] Uncaught error:", error, errorInfo);
     captureException(error, {
       tags: { source: "react.errorBoundary" },
       extra: { componentStack: errorInfo?.componentStack },

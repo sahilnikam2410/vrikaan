@@ -21,13 +21,13 @@ const SOCIALS = [
 ];
 
 const FAQS = [
-  { q: "What is SECUVION?", a: "SECUVION is a comprehensive cybersecurity platform that provides tools for dark web monitoring, vulnerability scanning, password management, and security education. We help individuals and organizations stay protected against evolving cyber threats." },
-  { q: "Is SECUVION free to use?", a: "We offer a free tier that gives you access to basic security tools and educational content. Premium plans unlock advanced features such as AI-powered threat analysis, unlimited dark web monitoring, and priority support." },
+  { q: "What is VRIKAAN?", a: "VRIKAAN is a comprehensive cybersecurity platform that provides tools for dark web monitoring, vulnerability scanning, password management, and security education. We help individuals and organizations stay protected against evolving cyber threats." },
+  { q: "Is VRIKAAN free to use?", a: "We offer a free tier that gives you access to basic security tools and educational content. Premium plans unlock advanced features such as AI-powered threat analysis, unlimited dark web monitoring, and priority support." },
   { q: "How does dark web monitoring work?", a: "Our dark web monitoring system continuously scans underground forums, data breach databases, and paste sites for your email addresses and credentials. If a match is found, you receive an instant alert with recommended actions." },
   { q: "How do I report a security vulnerability?", a: "We take security seriously. Please use the dedicated 'Report a Vulnerability' section on this page, or email secuvion@gmail.com with a detailed description. We follow responsible disclosure practices and acknowledge all valid reports." },
   { q: "What data do you collect from users?", a: "We collect only the minimum data needed to provide our services: your email, display name, and usage analytics. We never sell your data to third parties. Full details are available in our Privacy Policy." },
-  { q: "Can I use SECUVION for my organization?", a: "Absolutely. We offer team and enterprise plans with centralized dashboards, role-based access control, and dedicated account managers. Contact us via the Partnership subject option for a tailored proposal." },
-  { q: "Which browsers and devices are supported?", a: "SECUVION works on all modern browsers including Chrome, Firefox, Safari, and Edge. Our responsive design ensures a seamless experience on desktops, tablets, and mobile devices." },
+  { q: "Can I use VRIKAAN for my organization?", a: "Absolutely. We offer team and enterprise plans with centralized dashboards, role-based access control, and dedicated account managers. Contact us via the Partnership subject option for a tailored proposal." },
+  { q: "Which browsers and devices are supported?", a: "VRIKAAN works on all modern browsers including Chrome, Firefox, Safari, and Edge. Our responsive design ensures a seamless experience on desktops, tablets, and mobile devices." },
   { q: "How quickly do you respond to support requests?", a: "Standard support requests are answered within 24 hours on business days. Premium plan holders receive priority responses within 4 hours. Emergency security incidents are triaged immediately regardless of plan." },
 ];
 
@@ -118,7 +118,7 @@ export default function Contact() {
 
   return (
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <SEO title="Contact Us - SECUVION" description="Get in touch with the SECUVION team for support, partnerships, security reports, or general inquiries." path="/contact" />
+      <SEO title="Contact Us - VRIKAAN" description="Get in touch with the VRIKAAN team for support, partnerships, security reports, or general inquiries." path="/contact" />
       <Navbar />
 
       {/* ── Hero ── */}
@@ -241,7 +241,7 @@ export default function Contact() {
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.cyan}0c`, border: `1px solid ${T.cyan}20`, fontSize: 11, fontWeight: 600, color: T.cyan, marginBottom: 16, letterSpacing: 0.5, textTransform: "uppercase" }}>FAQ</span>
           <h2 style={{ ...heading("clamp(28px, 3vw, 38px)"), marginBottom: 12 }}>Frequently Asked Questions</h2>
-          <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.7 }}>Quick answers to common questions about SECUVION.</p>
+          <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.7 }}>Quick answers to common questions about VRIKAAN.</p>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {FAQS.map((faq, i) => (
@@ -283,7 +283,7 @@ export default function Contact() {
             ) : (
               <>
                 <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.8, margin: "0 0 20px" }}>
-                  We value the work of security researchers. If you have discovered a vulnerability in any SECUVION service,
+                  We value the work of security researchers. If you have discovered a vulnerability in any VRIKAAN service,
                   please report it responsibly. We commit to acknowledging your report within 48 hours, keeping you informed
                   on progress, and crediting you publicly (if desired) once the issue is resolved.
                 </p>

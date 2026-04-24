@@ -19,7 +19,7 @@ export default function Protection() {
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <SEO
         title="Multi-Layer Protection"
-        description="SECUVION's six-layer defense system: AI threat engine, firewall, email guardian, dark-web scanner, device protection, identity monitor. How the layers work together."
+        description="VRIKAAN's six-layer defense system: AI threat engine, firewall, email guardian, dark-web scanner, device protection, identity monitor. How the layers work together."
         path="/protection"
       />
       <Navbar />

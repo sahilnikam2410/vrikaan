@@ -8,7 +8,7 @@ const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 export default function RefundPolicy() {
   return (
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <SEO title="Cancellation & Refund Policy" description="SECUVION cancellation and refund policy for subscriptions." path="/refund-policy" />
+      <SEO title="Cancellation & Refund Policy" description="VRIKAAN cancellation and refund policy for subscriptions." path="/refund-policy" />
       <Navbar />
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "120px 24px 80px" }}>
         <div style={{ marginBottom: 48 }}>

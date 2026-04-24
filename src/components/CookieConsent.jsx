@@ -78,7 +78,7 @@ export default function CookieConsent() {
               Your privacy, your choice
             </h4>
             <p style={{ fontSize: 13, color: T.muted, margin: "0 0 14px", lineHeight: 1.6 }}>
-              We use cookies to keep SECUVION secure and to understand how the platform is used.
+              We use cookies to keep VRIKAAN secure and to understand how the platform is used.
               Under India's DPDP Act and GDPR, you control what we collect. Essential cookies keep
               authentication and security working — analytics are optional.{" "}
               <a href="/privacy" style={{ color: T.cyan, textDecoration: "none" }}>Privacy policy</a>

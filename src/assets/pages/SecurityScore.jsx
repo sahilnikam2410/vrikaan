@@ -42,7 +42,7 @@ export default function SecurityScore() {
 
   return (
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <SEO title="Security Score" description="Assess your cybersecurity posture with Secuvion's free security score assessment." path="/security-score" />
+      <SEO title="Security Score" description="Assess your cybersecurity posture with Vrikaan's free security score assessment." path="/security-score" />
       <Navbar />
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "120px 24px 80px" }}>
         <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>

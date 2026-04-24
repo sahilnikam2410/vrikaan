@@ -1,10 +1,10 @@
-// SECUVION prerender — runs after `vite build` as a postbuild hook.
+// VRIKAAN prerender — runs after `vite build` as a postbuild hook.
 //
 // Problem it solves: react-helmet-async mutates <head> on the client, but
 // social-share crawlers (Facebook, Twitter/X, LinkedIn, WhatsApp, Slack,
 // Discord, Telegram) don't execute JavaScript. They only see the static
 // meta tags in the initial index.html response. That means every page on
-// the SPA would otherwise share as the generic "SECUVION - AI-Powered
+// the SPA would otherwise share as the generic "VRIKAAN - AI-Powered
 // Cyber Defense Platform" card.
 //
 // Fix: for every known route (blog posts, threat pages, primary public
@@ -22,8 +22,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const DIST = path.join(ROOT, "dist");
 const INDEX = path.join(DIST, "index.html");
-const SITE = "https://secuvion.vercel.app";
-const SITE_NAME = "SECUVION";
+const SITE = "https://vrikaan.com";
+const SITE_NAME = "VRIKAAN";
 
 // ---------- helpers ----------
 
@@ -183,14 +183,14 @@ function extractArticles() {
 const PRIMARY_PAGES = [
   {
     path: "/",
-    title: "SECUVION — AI-Powered Cyber Defense Platform",
+    title: "VRIKAAN — AI-Powered Cyber Defense Platform",
     description:
       "Enterprise-grade cybersecurity for everyone. Real-time threat detection, fraud analysis, and digital protection powered by AI. 15+ security tools in one dashboard.",
     ogSubtitle: "AI-Powered Cyber Defense Platform",
   },
   {
     path: "/about",
-    title: "About SECUVION",
+    title: "About VRIKAAN",
     description:
       "Our mission: make enterprise-grade cybersecurity accessible to everyone — families, students, small businesses, not just Fortune 500s.",
     ogSubtitle: "Our mission and story",
@@ -213,14 +213,14 @@ const PRIMARY_PAGES = [
     path: "/contact",
     title: "Contact Us",
     description:
-      "Get in touch with the SECUVION team — security questions, partnership inquiries, press, or bug reports.",
+      "Get in touch with the VRIKAAN team — security questions, partnership inquiries, press, or bug reports.",
     ogSubtitle: "Get in touch with our team",
   },
   {
     path: "/founder",
     title: "Founder's Note",
     description:
-      "A personal letter from SECUVION's founder on why we're building accessible cybersecurity for everyone.",
+      "A personal letter from VRIKAAN's founder on why we're building accessible cybersecurity for everyone.",
     ogSubtitle: "A personal letter from our founder",
   },
   {
@@ -232,7 +232,7 @@ const PRIMARY_PAGES = [
   },
   {
     path: "/blog",
-    title: "SECUVION Blog",
+    title: "VRIKAAN Blog",
     description:
       "In-depth cybersecurity articles, tutorials, threat analysis, and industry news — written by practitioners for practitioners.",
     ogSubtitle: "Cybersecurity articles & tutorials",
@@ -352,43 +352,43 @@ const PRIMARY_PAGES = [
     path: "/privacy",
     title: "Privacy Policy",
     description:
-      "How SECUVION collects, uses, and protects your data. DPDP Act 2023 and GDPR compliant.",
+      "How VRIKAAN collects, uses, and protects your data. DPDP Act 2023 and GDPR compliant.",
   },
   {
     path: "/terms",
     title: "Terms of Service",
-    description: "SECUVION terms of service and acceptable use policy.",
+    description: "VRIKAAN terms of service and acceptable use policy.",
   },
   {
     path: "/refund-policy",
     title: "Refund Policy",
-    description: "SECUVION refund and cancellation policy.",
+    description: "VRIKAAN refund and cancellation policy.",
   },
   {
     path: "/shipping-policy",
     title: "Shipping Policy",
     description:
-      "SECUVION is a digital service — shipping policy for any physical deliverables (hardware security keys, merchandise).",
+      "VRIKAAN is a digital service — shipping policy for any physical deliverables (hardware security keys, merchandise).",
   },
 
   // --- Auth pages — noindex so they never appear in search results ---
   {
     path: "/login",
     title: "Sign In",
-    description: "Sign in to your SECUVION account.",
+    description: "Sign in to your VRIKAAN account.",
     noindex: true,
   },
   {
     path: "/signup",
     title: "Create Account",
     description:
-      "Create a free SECUVION account — 15+ security tools, dark-web monitoring, and real-time threat alerts. No credit card required.",
+      "Create a free VRIKAAN account — 15+ security tools, dark-web monitoring, and real-time threat alerts. No credit card required.",
     ogSubtitle: "Free forever — no credit card required",
   },
   {
     path: "/forgot-password",
     title: "Reset Password",
-    description: "Reset your SECUVION account password.",
+    description: "Reset your VRIKAAN account password.",
     noindex: true,
   },
 
@@ -471,7 +471,7 @@ const PRIMARY_PAGES = [
     path: "/referral",
     title: "Refer a Friend",
     description:
-      "Invite friends to SECUVION and both of you get premium features free. Help us make cybersecurity accessible to everyone.",
+      "Invite friends to VRIKAAN and both of you get premium features free. Help us make cybersecurity accessible to everyone.",
     ogSubtitle: "Give security, get security",
   },
 ];
@@ -492,7 +492,7 @@ async function main() {
       p.path === "/" ? p.title : `${p.title} | ${SITE_NAME}`;
     const canonical = `${SITE}${p.path === "/" ? "" : p.path}`;
     const ogImage = ogUrl({
-      title: p.path === "/" ? "SECUVION" : p.title,
+      title: p.path === "/" ? "VRIKAAN" : p.title,
       subtitle: p.ogSubtitle ?? p.description.slice(0, 80),
       category: p.ogCategory,
     });

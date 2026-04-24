@@ -307,7 +307,7 @@ export default function IPLookup() {
 
   return (
     <>
-      <SEO title="IP Lookup - SECUVION" description="Look up any IP address or domain for geolocation, ISP, threat assessment and more." />
+      <SEO title="IP Lookup - VRIKAAN" description="Look up any IP address or domain for geolocation, ISP, threat assessment and more." />
       <div style={{ minHeight: "100vh", background: T.bg, color: T.white, fontFamily: fonts.body }}>
         <Navbar />
 

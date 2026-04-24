@@ -56,7 +56,7 @@ const PageTransition = ({ children }) => {
 };
 
 /* ── Lazy-loaded Pages ── */
-const Secuvion = lazy(() => import("./Secuvion"));
+const Vrikaan = lazy(() => import("./Vrikaan"));
 const Home = lazy(() => import("./assets/pages/Home.jsx"));
 const ThreatMap = lazy(() => import("./assets/pages/ThreatMap.jsx"));
 const FraudAnalyzer = lazy(() => import("./assets/pages/FraudAnalyzer.jsx"));
@@ -121,7 +121,7 @@ function AppRoutes() {
         <PageTransition>
           <Routes>
             {/* Public */}
-            <Route path="/" element={<Secuvion />} />
+            <Route path="/" element={<Vrikaan />} />
             <Route path="/home" element={<Home />} />
             <Route path="/founder" element={<Founder />} />
             <Route path="/pricing" element={<Pricing />} />

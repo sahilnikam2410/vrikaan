@@ -17,7 +17,7 @@ export default function NotFound() {
 
   return (
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif", position: "relative", overflow: "hidden" }}>
-      <SEO title="404 — Page Not Found" description="The page you're looking for doesn't exist. Return to SECUVION to access our AI-powered cybersecurity tools." noindex />
+      <SEO title="404 — Page Not Found" description="The page you're looking for doesn't exist. Return to VRIKAAN to access our AI-powered cybersecurity tools." noindex />
       <Navbar />
 
       {/* Animated background grid */}

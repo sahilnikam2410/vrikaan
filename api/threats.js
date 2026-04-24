@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   try {
     const urlhausRes = await fetch("https://urlhaus-api.abuse.ch/v1/urls/recent/limit/50/", {
       method: "POST",
-      headers: { "User-Agent": "SECUVION/1.0" },
+      headers: { "User-Agent": "VRIKAAN/1.0" },
     });
     if (urlhausRes.ok) {
       const data = await urlhausRes.json();
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
   // ── 2. Feodo Tracker — Botnet C&C servers (abuse.ch) — free ──
   try {
     const feodoRes = await fetch("https://feodotracker.abuse.ch/downloads/ipblocklist_aggressive.json", {
-      headers: { "User-Agent": "SECUVION/1.0" },
+      headers: { "User-Agent": "VRIKAAN/1.0" },
     });
     if (feodoRes.ok) {
       const text = await feodoRes.text();
@@ -81,7 +81,7 @@ export default async function handler(req, res) {
   if (report.recentBotnets.length === 0) {
     try {
       const feodoRes2 = await fetch("https://feodotracker.abuse.ch/downloads/ipblocklist.json", {
-        headers: { "User-Agent": "SECUVION/1.0" },
+        headers: { "User-Agent": "VRIKAAN/1.0" },
       });
       if (feodoRes2.ok) {
         const data2 = await feodoRes2.json();

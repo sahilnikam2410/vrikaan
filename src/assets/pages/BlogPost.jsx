@@ -43,7 +43,7 @@ export default function BlogPost() {
   const catColor = categoryColors[article.category] || T.cyan;
   const grad = categoryGradients[article.category] || categoryGradients.News;
   const related = getRelatedArticles(article);
-  const url = `https://secuvion.vercel.app/blog/${slug}`;
+  const url = `https://vrikaan.com/blog/${slug}`;
 
   const scrollToSection = (i) => {
     const sections = contentRef.current?.querySelectorAll("[data-section]");
@@ -67,14 +67,14 @@ export default function BlogPost() {
       "@type": "Article",
       headline: article.title,
       description: article.excerpt,
-      image: `https://secuvion.vercel.app/api/og?title=${encodeURIComponent(article.title)}&category=${encodeURIComponent(article.category)}`,
+      image: `https://vrikaan.com/api/og?title=${encodeURIComponent(article.title)}&category=${encodeURIComponent(article.category)}`,
       datePublished: article.date,
       dateModified: article.date,
       author: { "@type": "Person", name: article.author.name },
       publisher: {
         "@type": "Organization",
-        name: "SECUVION",
-        logo: { "@type": "ImageObject", url: "https://secuvion.vercel.app/favicon.svg" },
+        name: "VRIKAAN",
+        logo: { "@type": "ImageObject", url: "https://vrikaan.com/favicon.svg" },
       },
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
       keywords: article.tags.join(", "),
@@ -84,8 +84,8 @@ export default function BlogPost() {
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://secuvion.vercel.app" },
-        { "@type": "ListItem", position: 2, name: "Blog", item: "https://secuvion.vercel.app/blog" },
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://vrikaan.com" },
+        { "@type": "ListItem", position: 2, name: "Blog", item: "https://vrikaan.com/blog" },
         { "@type": "ListItem", position: 3, name: article.title, item: url },
       ],
     },
@@ -97,7 +97,7 @@ export default function BlogPost() {
         title={article.title}
         description={article.excerpt}
         path={`/blog/${slug}`}
-        image={`https://secuvion.vercel.app/api/og?title=${encodeURIComponent(article.title)}&category=${encodeURIComponent(article.category)}`}
+        image={`https://vrikaan.com/api/og?title=${encodeURIComponent(article.title)}&category=${encodeURIComponent(article.category)}`}
         keywords={article.tags.join(", ")}
         type="article"
         jsonLd={jsonLd}
@@ -236,7 +236,7 @@ export default function BlogPost() {
               marginBottom: 48, textAlign: "center",
             }}>
               <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 22, fontWeight: 700, color: T.white, margin: "0 0 10px" }}>
-                Protect yourself with SECUVION
+                Protect yourself with VRIKAAN
               </h3>
               <p style={{ fontSize: 14, color: T.muted, margin: "0 0 18px", lineHeight: 1.6 }}>
                 Check for breaches, scan for threats, and get AI-powered fraud analysis — all free.

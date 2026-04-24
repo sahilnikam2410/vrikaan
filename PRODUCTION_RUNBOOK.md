@@ -1,6 +1,6 @@
-# SECUVION Production Runbook
+# VRIKAAN Production Runbook
 
-Operations guide for deploying, monitoring, and recovering the SECUVION platform.
+Operations guide for deploying, monitoring, and recovering the VRIKAAN platform.
 
 ---
 
@@ -77,7 +77,7 @@ To test a branch without affecting production, Vercel auto-creates a preview URL
 
 ## 4. Sentry Error Tracking
 
-SECUVION uses a lightweight direct-envelope client (`src/services/errorReporter.js`) — no Sentry SDK dependency.
+VRIKAAN uses a lightweight direct-envelope client (`src/services/errorReporter.js`) — no Sentry SDK dependency.
 
 ### Enable
 
@@ -97,7 +97,7 @@ Local dev is a no-op unless `VITE_SENTRY_DEBUG=true`.
 
 ## 5. Cashfree Payments
 
-**Webhook URL:** `https://secuvion.vercel.app/api/cashfree-webhook`
+**Webhook URL:** `https://vrikaan.com/api/cashfree-webhook`
 
 **Events configured:** `PAYMENT_SUCCESS_WEBHOOK`, `PAYMENT_FAILED_WEBHOOK`, `REFUND_STATUS_WEBHOOK`
 
@@ -127,7 +127,7 @@ gcloud firestore export gs://secuvion-backups/$(date +%Y%m%d)
 
 ### Scheduled daily backup (GitHub Actions — free)
 
-SECUVION ships with a nightly backup workflow at `.github/workflows/backup.yml` that runs `scripts/backup-firestore.js` and uploads the JSON dump as a 30-day-retention artifact.
+VRIKAAN ships with a nightly backup workflow at `.github/workflows/backup.yml` that runs `scripts/backup-firestore.js` and uploads the JSON dump as a 30-day-retention artifact.
 
 **One-time setup:**
 

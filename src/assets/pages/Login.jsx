@@ -504,7 +504,7 @@ export default function Login() {
     <div style={S.page}>
       <SEO
         title="Login"
-        description="Login to your Secuvion account to access your cybersecurity dashboard."
+        description="Login to your Vrikaan account to access your cybersecurity dashboard."
         path="/login"
       />
       <Navbar />

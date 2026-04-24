@@ -189,7 +189,7 @@ const CyberNews = () => {
 
   return (
     <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <SEO title="Cyber News - SECUVION" description="Real-time cybersecurity news, threat alerts, and breaking security intelligence." />
+      <SEO title="Cyber News - VRIKAAN" description="Real-time cybersecurity news, threat alerts, and breaking security intelligence." />
       <Navbar />
 
       {/* Threat Ticker */}

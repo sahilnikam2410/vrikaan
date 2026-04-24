@@ -30,7 +30,7 @@ export default function FeaturesPage() {
 
   return (
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <SEO title="Features" description="Explore Secuvion's AI-powered cybersecurity features including fraud detection, threat monitoring, and more." path="/features" />
+      <SEO title="Features" description="Explore Vrikaan's AI-powered cybersecurity features including fraud detection, threat monitoring, and more." path="/features" />
       <Navbar />
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "120px 24px 80px" }}>
         <div style={{ marginBottom: 48 }}>

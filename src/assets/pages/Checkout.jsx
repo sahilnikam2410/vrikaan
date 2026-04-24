@@ -344,7 +344,7 @@ export default function Checkout() {
     setTimeout(() => setErrors({}), 2000);
   };
 
-  const upiQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=${encodeURIComponent(merchantUpiId)}&pn=SECUVION&am=${price}&cu=INR`;
+  const upiQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=${encodeURIComponent(merchantUpiId)}&pn=VRIKAAN&am=${price}&cu=INR`;
   const btcQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${btcAddress}`;
   const ethQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${ethAddress}`;
 
@@ -421,7 +421,7 @@ export default function Checkout() {
   if (success) {
     return (
       <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-        <SEO title="Payment Successful" description="Your SECUVION subscription is now active." path="/checkout" />
+        <SEO title="Payment Successful" description="Your VRIKAAN subscription is now active." path="/checkout" />
         <Navbar />
         <ConfettiOverlay />
         <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", paddingTop: 100 }}>
@@ -439,7 +439,7 @@ export default function Checkout() {
               Payment Successful!
             </h2>
             <p style={{ fontSize: 16, color: T.cyan, marginBottom: 6, fontWeight: 600 }}>
-              Welcome to SECUVION {plan.name}
+              Welcome to VRIKAAN {plan.name}
             </p>
             <p style={{ fontSize: 14, color: T.muted, marginBottom: 24 }}>
               Your account has been upgraded. All features are now unlocked.
@@ -465,7 +465,7 @@ export default function Checkout() {
   /* ==================== MAIN CHECKOUT ==================== */
   return (
     <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <SEO title="Checkout" description="Complete your Secuvion subscription securely." path="/checkout" />
+      <SEO title="Checkout" description="Complete your Vrikaan subscription securely." path="/checkout" />
       <Navbar />
 
       <div style={{ paddingTop: 100 }}>
