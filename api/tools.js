@@ -427,19 +427,23 @@ Format as markdown with short bullet points. Do not repeat the raw JSON. Do not 
 
 // ─── GEMINI helper: shared call wrapper ─────────────────────────────
 // Used by all AI features below. Returns { ok, text, status, detail }.
-async function callGemini(prompt, { temperature = 0.4, maxOutputTokens = 600, parts } = {}) {
+// Pass json:true to force application/json response (no markdown fences,
+// no prose) — required for any handler that does JSON.parse on the result.
+async function callGemini(prompt, { temperature = 0.4, maxOutputTokens = 1500, parts, json = false } = {}) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return { ok: false, status: 503, detail: "AI not configured" };
   const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
   // parts overrides prompt — used for multimodal (audio + text) calls
   const reqParts = parts || [{ text: prompt }];
+  const generationConfig = { temperature, maxOutputTokens };
+  if (json) generationConfig.responseMimeType = "application/json";
   try {
     const r = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ role: "user", parts: reqParts }],
-        generationConfig: { temperature, maxOutputTokens },
+        generationConfig,
         safetySettings: [
           { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
           { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
@@ -447,7 +451,7 @@ async function callGemini(prompt, { temperature = 0.4, maxOutputTokens = 600, pa
           { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_ONLY_HIGH" },
         ],
       }),
-      signal: AbortSignal.timeout(20000),
+      signal: AbortSignal.timeout(30000),
     });
     if (!r.ok) {
       const text = await r.text().catch(() => "");
@@ -497,11 +501,12 @@ Reply ONLY with a strict JSON object — no markdown fences, no commentary — m
   "reasoning": "1-2 sentence summary in plain English (or Hindi if message was Hindi)",
   "advice": [string, ...]       // 2-4 short actionable steps the user should take
 }`;
-  const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 700 });
+  const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 1500, json: true });
   if (!r.ok) return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
   const parsed = tryParseJson(r.text);
   if (!parsed || typeof parsed.verdict !== "string") {
-    return res.status(502).json({ error: "AI returned malformed result", raw: r.text?.slice(0, 300) });
+    console.error("scam-check parse failed. raw:", r.text?.slice(0, 600));
+    return res.status(502).json({ error: "AI returned malformed result", raw: r.text?.slice(0, 600) });
   }
   res.setHeader("Cache-Control", "no-store");
   return res.status(200).json({
@@ -536,11 +541,12 @@ Reply ONLY with a strict JSON object — no markdown fences:
     "apache": "..."       // and Apache
   }
 }`;
-  const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 1200 });
+  const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 2500, json: true });
   if (!r.ok) return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
   const parsed = tryParseJson(r.text);
   if (!parsed || !parsed.fixedHeaders) {
-    return res.status(502).json({ error: "AI returned malformed fix", raw: r.text?.slice(0, 300) });
+    console.error("headers-fix parse failed. raw:", r.text?.slice(0, 600));
+    return res.status(502).json({ error: "AI returned malformed fix", raw: r.text?.slice(0, 600) });
   }
   res.setHeader("Cache-Control", "no-store");
   return res.status(200).json({
@@ -580,11 +586,12 @@ Reply ONLY with a strict JSON object — no markdown fences:
     { inlineData: { mimeType, data: audioBase64 } },
     { text: prompt },
   ];
-  const r = await callGemini("", { temperature: 0.2, maxOutputTokens: 1200, parts });
+  const r = await callGemini("", { temperature: 0.2, maxOutputTokens: 2500, parts, json: true });
   if (!r.ok) return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
   const parsed = tryParseJson(r.text);
   if (!parsed || typeof parsed.verdict !== "string") {
-    return res.status(502).json({ error: "AI returned malformed result", raw: r.text?.slice(0, 300) });
+    console.error("deepfake-audio parse failed. raw:", r.text?.slice(0, 600));
+    return res.status(502).json({ error: "AI returned malformed result", raw: r.text?.slice(0, 600) });
   }
   res.setHeader("Cache-Control", "no-store");
   return res.status(200).json({
