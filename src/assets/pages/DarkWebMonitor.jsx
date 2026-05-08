@@ -3,6 +3,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { exportReport } from "../../utils/exportPDF";
+import AIExplainButton from "../../components/AIExplainButton";
 
 const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", red: "#ef4444", orange: "#f97316", green: "#22c55e", yellow: "#eab308", purple: "#a78bfa", blue: "#38bdf8", pink: "#ec4899", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
@@ -264,7 +265,15 @@ export default function DarkWebMonitor() {
           {/* Summary */}
           <section style={{ padding: "0 20px 50px" }}>
             <div style={wrap}>
-              <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+              <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12, gap: 8, flexWrap: "wrap" }}>
+                <div>
+                  <AIExplainButton
+                    toolName="dark-web-monitor"
+                    input={results.email}
+                    result={{ breaches: results.breaches, score: results.score, source: results.source }}
+                    label="✨ AI Explain my breaches"
+                  />
+                </div>
                 <button
                   onClick={() => exportReport({
                     title: "Dark Web Monitor Report",

@@ -425,6 +425,179 @@ Format as markdown with short bullet points. Do not repeat the raw JSON. Do not 
   }
 }
 
+// ─── GEMINI helper: shared call wrapper ─────────────────────────────
+// Used by all AI features below. Returns { ok, text, status, detail }.
+async function callGemini(prompt, { temperature = 0.4, maxOutputTokens = 600, parts } = {}) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) return { ok: false, status: 503, detail: "AI not configured" };
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+  // parts overrides prompt — used for multimodal (audio + text) calls
+  const reqParts = parts || [{ text: prompt }];
+  try {
+    const r = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: reqParts }],
+        generationConfig: { temperature, maxOutputTokens },
+        safetySettings: [
+          { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
+          { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
+          { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_ONLY_HIGH" },
+          { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_ONLY_HIGH" },
+        ],
+      }),
+      signal: AbortSignal.timeout(20000),
+    });
+    if (!r.ok) {
+      const text = await r.text().catch(() => "");
+      let detail = "";
+      try { detail = (JSON.parse(text)?.error?.message) || ""; } catch { detail = text.slice(0, 200); }
+      return { ok: false, status: r.status, detail };
+    }
+    const data = await r.json();
+    const out = data?.candidates?.[0]?.content?.parts?.map((p) => p.text).join("").trim();
+    return out ? { ok: true, text: out } : { ok: false, status: 502, detail: "empty response" };
+  } catch (err) {
+    return { ok: false, status: 502, detail: err.name === "TimeoutError" ? "timeout" : err.message };
+  }
+}
+
+// Tries to coerce Gemini's text into a JSON object — strips ```json fences.
+function tryParseJson(text) {
+  if (!text) return null;
+  let s = text.trim().replace(/^```json\s*/i, "").replace(/^```\s*/, "").replace(/\s*```\s*$/, "");
+  const first = s.indexOf("{");
+  const last = s.lastIndexOf("}");
+  if (first >= 0 && last > first) s = s.slice(first, last + 1);
+  try { return JSON.parse(s); } catch { return null; }
+}
+
+// ─── #20 SCAM ANALYZER ──────────────────────────────────────────────
+// Paste an SMS / email / WhatsApp message, get verdict + red flags.
+async function handleScamCheck(req, res) {
+  const { text, channel = "unknown" } = req.body || {};
+  if (!text || typeof text !== "string" || text.trim().length < 5) {
+    return res.status(400).json({ error: "text required (min 5 chars)" });
+  }
+  const trimmed = text.slice(0, 2000);
+  const prompt = `You are a cybersecurity expert helping an Indian user. Analyze this ${channel} message for scam / phishing indicators. Common India-specific scams: UPI fraud, KYC update SMS, fake parcel-delivery, OTP requests, fake bank alerts, electricity-bill disconnection threats, fake GST/income-tax notices.
+
+Message:
+"""
+${trimmed}
+"""
+
+Reply ONLY with a strict JSON object — no markdown fences, no commentary — matching this shape:
+{
+  "verdict": "safe" | "suspicious" | "dangerous",
+  "score": 0-100 (higher = more dangerous),
+  "category": "phishing" | "upi-fraud" | "scam" | "spam" | "legitimate" | "unknown",
+  "redFlags": [string, ...],   // 0-6 short bullet points naming specific suspicious elements
+  "reasoning": "1-2 sentence summary in plain English (or Hindi if message was Hindi)",
+  "advice": [string, ...]       // 2-4 short actionable steps the user should take
+}`;
+  const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 700 });
+  if (!r.ok) return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
+  const parsed = tryParseJson(r.text);
+  if (!parsed || typeof parsed.verdict !== "string") {
+    return res.status(502).json({ error: "AI returned malformed result", raw: r.text?.slice(0, 300) });
+  }
+  res.setHeader("Cache-Control", "no-store");
+  return res.status(200).json({
+    verdict: parsed.verdict,
+    score: Number(parsed.score) || 0,
+    category: parsed.category || "unknown",
+    redFlags: Array.isArray(parsed.redFlags) ? parsed.redFlags.slice(0, 6) : [],
+    reasoning: parsed.reasoning || "",
+    advice: Array.isArray(parsed.advice) ? parsed.advice.slice(0, 4) : [],
+    model: "gemini-2.5-flash",
+  });
+}
+
+// ─── #24 SECURITY HEADERS — AUTO-FIX RECOMMENDER ────────────────────
+// Given a security-headers scan result, generate copy-paste-ready fixed CSP / HSTS / etc.
+async function handleHeadersFix(req, res) {
+  const { url, headers, missing } = req.body || {};
+  if (!url) return res.status(400).json({ error: "url required" });
+  const prompt = `You are a security engineer. The following site has security-header issues. Provide copy-paste-ready replacement headers in standard format (one header per line, "Header-Name: value").
+
+Site: ${url}
+Current headers: ${JSON.stringify(headers || {}).slice(0, 1500)}
+Missing/weak: ${JSON.stringify(missing || []).slice(0, 600)}
+
+Reply ONLY with a strict JSON object — no markdown fences:
+{
+  "fixedHeaders": "Content-Security-Policy: ...\\nStrict-Transport-Security: ...\\n...",   // multi-line string, ready to copy
+  "explanations": [ { "header": "Content-Security-Policy", "why": "1-line reason" }, ... ],
+  "platformTips": {
+    "vercel": "...",      // how to set on Vercel
+    "nginx":  "...",      // and Nginx
+    "apache": "..."       // and Apache
+  }
+}`;
+  const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 1200 });
+  if (!r.ok) return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
+  const parsed = tryParseJson(r.text);
+  if (!parsed || !parsed.fixedHeaders) {
+    return res.status(502).json({ error: "AI returned malformed fix", raw: r.text?.slice(0, 300) });
+  }
+  res.setHeader("Cache-Control", "no-store");
+  return res.status(200).json({
+    fixedHeaders: parsed.fixedHeaders,
+    explanations: Array.isArray(parsed.explanations) ? parsed.explanations : [],
+    platformTips: parsed.platformTips || {},
+    model: "gemini-2.5-flash",
+  });
+}
+
+// ─── #21 DEEPFAKE / SCAM-AUDIO DETECTOR ─────────────────────────────
+// Accepts a base64 audio clip + mime type, returns verdict + reasoning.
+// Uses Gemini multimodal (inlineData parts).
+async function handleDeepfakeAudio(req, res) {
+  const { audioBase64, mimeType, transcript } = req.body || {};
+  if (!audioBase64 || !mimeType) return res.status(400).json({ error: "audioBase64 and mimeType required" });
+  // Hard cap: 5 MB base64 (~3.7 MB binary). Prevents request-size blowups.
+  if (audioBase64.length > 7_000_000) return res.status(413).json({ error: "Audio too large (max ~5 MB)" });
+  const allowed = ["audio/mpeg", "audio/mp3", "audio/wav", "audio/webm", "audio/ogg", "audio/m4a", "audio/mp4"];
+  if (!allowed.some((m) => mimeType.startsWith(m.split("/")[0]) && mimeType.includes(m.split("/")[1].split(";")[0]))) {
+    // be permissive — Gemini supports most audio types
+  }
+  const prompt = `You are a cybersecurity analyst trained to spot AI-generated voice / vishing / scam phone calls. Analyze the attached audio. Listen for telltale indicators of synthetic voice (unnatural prosody, missing breaths, pitch artifacts, robotic intonation), social-engineering scripts (urgency, authority impersonation, OTP requests, payment demands), and India-specific vishing patterns (fake bank, fake police, fake courier, fake tax-officer scripts).
+
+${transcript ? `Provided transcript (use as context only, do not trust it absolutely):\n"""\n${transcript.slice(0, 2000)}\n"""\n` : ""}
+
+Reply ONLY with a strict JSON object — no markdown fences:
+{
+  "verdict": "likely-real" | "likely-deepfake" | "scam-script" | "uncertain",
+  "score": 0-100 (higher = higher risk),
+  "indicators": [string, ...],          // 0-6 specific things you heard
+  "transcript": "best-effort transcript of what the speaker says",
+  "scamCategory": "vishing" | "fake-bank" | "fake-courier" | "fake-tax" | "fake-police" | "investment-scam" | "none",
+  "advice": [string, ...]               // 2-4 next steps
+}`;
+  const parts = [
+    { inlineData: { mimeType, data: audioBase64 } },
+    { text: prompt },
+  ];
+  const r = await callGemini("", { temperature: 0.2, maxOutputTokens: 1200, parts });
+  if (!r.ok) return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
+  const parsed = tryParseJson(r.text);
+  if (!parsed || typeof parsed.verdict !== "string") {
+    return res.status(502).json({ error: "AI returned malformed result", raw: r.text?.slice(0, 300) });
+  }
+  res.setHeader("Cache-Control", "no-store");
+  return res.status(200).json({
+    verdict: parsed.verdict,
+    score: Number(parsed.score) || 0,
+    indicators: Array.isArray(parsed.indicators) ? parsed.indicators.slice(0, 6) : [],
+    transcript: parsed.transcript || "",
+    scamCategory: parsed.scamCategory || "none",
+    advice: Array.isArray(parsed.advice) ? parsed.advice.slice(0, 4) : [],
+    model: "gemini-2.5-flash",
+  });
+}
+
 // ─── BREACH CHECK (XposedOrNot, free, no key) ───────────────────────
 
 async function handleBreachCheck(req, res) {
@@ -1165,6 +1338,9 @@ const HANDLERS = {
   "team-invite": handleTeamInvite,
   "team-accept-invite": handleTeamAcceptInvite,
   "team-remove-member": handleTeamRemoveMember,
+  "scam-check": handleScamCheck,
+  "headers-fix": handleHeadersFix,
+  "deepfake-audio": handleDeepfakeAudio,
 };
 
 // Some tools accept GET (ip lookup, cron pings); others require POST.

@@ -28,3 +28,12 @@ dist-ssr
 .claude
 .vercel
 .env*.local
+
+# Generated marketing / report artifacts (local-only — regenerate via build scripts)
+*.pptx
+*.pdf
+*.docx
+scripts/ppt/node_modules/
+scripts/marketing/node_modules/
+scripts/ppt/package-lock.json
+scripts/marketing/package-lock.json

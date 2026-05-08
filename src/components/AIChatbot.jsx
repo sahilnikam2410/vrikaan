@@ -167,6 +167,81 @@ export default function AIChatbot() {
   const msgsRef = useRef(null);
   const inputRef = useRef(null);
 
+  // ── Voice (Web Speech API) ─────────────────────────────────────
+  // Persisted lang lets HI users keep Hindi between sessions.
+  const [voiceLang, setVoiceLang] = useState(
+    typeof window !== "undefined" ? (localStorage.getItem("vrikaan_voice_lang") || "en-IN") : "en-IN"
+  );
+  const [listening, setListening] = useState(false);
+  const [speechError, setSpeechError] = useState("");
+  const [voiceOutEnabled, setVoiceOutEnabled] = useState(
+    typeof window !== "undefined" ? localStorage.getItem("vrikaan_voice_out") !== "false" : true
+  );
+  const recognitionRef = useRef(null);
+
+  const SR = typeof window !== "undefined" && (window.SpeechRecognition || window.webkitSpeechRecognition);
+  const speechSupported = !!SR;
+  const synthSupported = typeof window !== "undefined" && "speechSynthesis" in window;
+
+  const startListening = () => {
+    if (!SR) { setSpeechError("Voice input not supported in this browser. Use Chrome/Edge."); return; }
+    setSpeechError("");
+    const rec = new SR();
+    rec.lang = voiceLang;
+    rec.interimResults = false;
+    rec.continuous = false;
+    rec.maxAlternatives = 1;
+    rec.onresult = (e) => {
+      const transcript = e.results[0][0].transcript;
+      setInput((prev) => (prev ? prev + " " : "") + transcript);
+    };
+    rec.onerror = (e) => {
+      setSpeechError(e.error === "not-allowed" ? "Microphone permission denied." : `Voice error: ${e.error}`);
+      setListening(false);
+    };
+    rec.onend = () => setListening(false);
+    recognitionRef.current = rec;
+    try { rec.start(); setListening(true); }
+    catch (err) { setSpeechError("Could not start microphone."); }
+  };
+
+  const stopListening = () => {
+    try { recognitionRef.current?.stop(); } catch {}
+    setListening(false);
+  };
+
+  // Speak the latest bot message when voiceOutEnabled
+  const speakText = (text) => {
+    if (!synthSupported || !voiceOutEnabled) return;
+    // Strip markdown for TTS — punctuation hurts prosody
+    const clean = String(text)
+      .replace(/\*\*([^*]+)\*\*/g, "$1")
+      .replace(/[*_`#>]/g, "")
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+      .replace(/\n+/g, ". ")
+      .slice(0, 600);
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(clean);
+      u.lang = voiceLang;
+      u.rate = 1.0; u.pitch = 1.0;
+      window.speechSynthesis.speak(u);
+    } catch {}
+  };
+
+  const toggleVoiceLang = () => {
+    const next = voiceLang === "en-IN" ? "hi-IN" : "en-IN";
+    setVoiceLang(next);
+    if (typeof window !== "undefined") localStorage.setItem("vrikaan_voice_lang", next);
+  };
+
+  const toggleVoiceOut = () => {
+    const next = !voiceOutEnabled;
+    setVoiceOutEnabled(next);
+    if (typeof window !== "undefined") localStorage.setItem("vrikaan_voice_out", String(next));
+    if (!next && synthSupported) window.speechSynthesis.cancel();
+  };
+
   // Sync auth user into credit system
   useEffect(() => {
     setCurrentUser(user || null);
@@ -246,12 +321,16 @@ export default function AIChatbot() {
 
     if (response === "ERROR_QUOTA") {
       const fallback = getSmartResponse(msg);
-      setMessages(p => [...p, { role: "bot", text: fallback + "\n\n*⚡ High traffic — using offline knowledge. Try again in a few seconds for full AI.*", time: new Date() }]);
+      const fullText = fallback + "\n\n*⚡ High traffic — using offline knowledge. Try again in a few seconds for full AI.*";
+      setMessages(p => [...p, { role: "bot", text: fullText, time: new Date() }]);
+      speakText(fallback);
       return;
     }
 
     setMessages(p => [...p, { role: "bot", text: response, time: new Date() }]);
-  }, [input, typing, messages]);
+    speakText(response);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [input, typing, messages, voiceOutEnabled, voiceLang]);
 
   const [showPaywall, setShowPaywall] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
@@ -560,14 +639,74 @@ export default function AIChatbot() {
             )}
           </div>
 
+          {/* Voice controls row (when supported) */}
+          {(speechSupported || synthSupported) && (
+            <div style={{ padding: "6px 14px 0", display: "flex", gap: 8, alignItems: "center", justifyContent: "flex-end" }}>
+              {/* Language toggle */}
+              <button
+                onClick={toggleVoiceLang}
+                title={`Voice language: ${voiceLang === "hi-IN" ? "Hindi" : "English"}. Click to switch.`}
+                style={{
+                  padding: "3px 9px", borderRadius: 6, fontSize: 10, fontWeight: 700,
+                  background: voiceLang === "hi-IN" ? "rgba(99,102,241,0.18)" : "rgba(20,227,197,0.15)",
+                  border: `1px solid ${voiceLang === "hi-IN" ? T.accent : T.cyan}40`,
+                  color: voiceLang === "hi-IN" ? T.accent : T.cyan,
+                  cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
+                }}
+              >{voiceLang === "hi-IN" ? "हि" : "EN"}</button>
+              {/* Speaker toggle (text-to-speech on/off) */}
+              {synthSupported && (
+                <button
+                  onClick={toggleVoiceOut}
+                  title={voiceOutEnabled ? "Mute bot voice" : "Unmute bot voice"}
+                  style={{
+                    width: 26, height: 22, borderRadius: 6, border: "none",
+                    background: voiceOutEnabled ? "rgba(20,227,197,0.15)" : "rgba(148,163,184,0.08)",
+                    cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={voiceOutEnabled ? T.cyan : T.muted} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                    {voiceOutEnabled
+                      ? <><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></>
+                      : <><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></>
+                    }
+                  </svg>
+                </button>
+              )}
+            </div>
+          )}
+          {speechError && (
+            <div style={{ padding: "0 14px", fontSize: 11, color: T.red }}>{speechError}</div>
+          )}
+
           {/* Input */}
           <div style={{ padding: "10px 14px", borderTop: `1px solid ${T.border}`, display: "flex", gap: 8, alignItems: "center" }}>
+            {speechSupported && (
+              <button
+                onClick={listening ? stopListening : startListening}
+                title={listening ? "Stop listening" : `Speak (${voiceLang === "hi-IN" ? "Hindi" : "English"})`}
+                style={{
+                  width: 38, height: 38, borderRadius: 10, border: "none", cursor: "pointer",
+                  background: listening ? `linear-gradient(135deg, ${T.red}, #f97316)` : "rgba(20,227,197,0.15)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  animation: listening ? "vrikaan-pulse 1.2s infinite" : "none",
+                }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={listening ? "#fff" : T.cyan} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                  <line x1="12" y1="19" x2="12" y2="23"/>
+                  <line x1="8" y1="23" x2="16" y2="23"/>
+                </svg>
+              </button>
+            )}
             <input
               ref={inputRef}
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === "Enter" && !e.shiftKey && handleSend()}
-              placeholder="Ask me anything..."
+              placeholder={voiceLang === "hi-IN" ? "कुछ भी पूछें..." : "Ask me anything..."}
               style={{
                 flex: 1, padding: "10px 14px", borderRadius: 10, border: `1px solid ${T.border}`,
                 background: "rgba(3,7,18,0.6)", color: T.white, fontSize: 13,

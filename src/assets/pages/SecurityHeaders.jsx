@@ -16,6 +16,41 @@ export default function SecurityHeaders() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
+  // AI auto-fix state — copy-paste-ready replacement headers from Gemini.
+  const [fixLoading, setFixLoading] = useState(false);
+  const [fix, setFix] = useState(null);
+  const [fixError, setFixError] = useState("");
+  const [copied, setCopied] = useState(false);
+
+  const generateFix = async () => {
+    if (!result) return;
+    setFixLoading(true); setFixError(""); setFix(null);
+    try {
+      // Reduce payload — pass only header names + status, plus full values where set
+      const headersMap = {};
+      const missing = [];
+      result.headers.forEach((h) => {
+        if (h.status === "present" || h.status === "misconfigured") headersMap[h.name] = h.value || "";
+        if (h.status === "missing" || h.status === "misconfigured") missing.push(h.name);
+      });
+      const r = await fetch("/api/tools?tool=headers-fix", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: result.url, headers: headersMap, missing }),
+      });
+      const data = await r.json();
+      if (!r.ok) throw new Error(data.error || "Fix generation failed");
+      setFix(data);
+    } catch (e) { setFixError(e.message); }
+    finally { setFixLoading(false); }
+  };
+
+  const copyFix = () => {
+    if (!fix?.fixedHeaders) return;
+    navigator.clipboard.writeText(fix.fixedHeaders);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const scan = async () => {
     if (!url.trim()) return;
@@ -73,8 +108,50 @@ export default function SecurityHeaders() {
                   <div style={{ fontSize: 13, color: T.muted }}>{result.summary.present} present, {result.summary.missing} missing</div>
                 </div>
               </div>
-              <button onClick={doExport} style={{ padding: "8px 16px", borderRadius: 8, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.muted, fontSize: 12, cursor: "pointer" }}>Export PDF</button>
+              <div style={{ display: "flex", gap: 8 }}>
+                <button onClick={generateFix} disabled={fixLoading || result.summary.missing + result.summary.misconfigured === 0} style={{ padding: "8px 16px", borderRadius: 8, border: `1px solid ${T.cyan}40`, background: "rgba(20,227,197,0.15)", color: T.cyan, fontSize: 12, fontWeight: 600, cursor: fixLoading ? "wait" : "pointer", opacity: result.summary.missing + result.summary.misconfigured === 0 ? 0.5 : 1 }}>
+                  {fixLoading ? "Generating…" : "✨ AI Auto-Fix"}
+                </button>
+                <button onClick={doExport} style={{ padding: "8px 16px", borderRadius: 8, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.muted, fontSize: 12, cursor: "pointer" }}>Export PDF</button>
+              </div>
             </div>
+
+            {/* AI auto-fix result */}
+            {fixError && <div style={{ padding: 12, marginBottom: 16, background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 8, color: T.red, fontSize: 13 }}>{fixError}</div>}
+            {fix && (
+              <div style={{ marginBottom: 24, padding: 18, background: "rgba(20,227,197,0.06)", border: `1px solid ${T.cyan}30`, borderRadius: 12 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12, paddingBottom: 12, borderBottom: `1px solid ${T.border}` }}>
+                  <div>
+                    <span style={{ color: T.cyan, fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}>✨ AI Auto-Fix</span>
+                    <p style={{ margin: "2px 0 0", color: T.muted, fontSize: 11 }}>Copy-paste-ready replacement headers</p>
+                  </div>
+                  <button onClick={copyFix} style={{ padding: "8px 14px", borderRadius: 8, border: "none", background: copied ? T.green : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`, color: "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>{copied ? "✓ Copied" : "Copy headers"}</button>
+                </div>
+                <pre style={{ margin: 0, padding: 14, background: "rgba(3,7,18,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: T.white, overflowX: "auto", lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{fix.fixedHeaders}</pre>
+                {fix.explanations?.length > 0 && (
+                  <details style={{ marginTop: 14 }}>
+                    <summary style={{ color: T.cyan, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Why these values?</summary>
+                    <ul style={{ margin: "8px 0 0", paddingLeft: 20, color: T.muted, fontSize: 12, lineHeight: 1.7 }}>
+                      {fix.explanations.map((e, i) => (
+                        <li key={i}><strong style={{ color: T.white }}>{e.header}</strong>: {e.why}</li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
+                {fix.platformTips && (Object.keys(fix.platformTips).length > 0) && (
+                  <details style={{ marginTop: 8 }}>
+                    <summary style={{ color: T.cyan, fontSize: 12, fontWeight: 600, cursor: "pointer" }}>How to deploy on your server</summary>
+                    <div style={{ marginTop: 8, color: T.muted, fontSize: 12, lineHeight: 1.7 }}>
+                      {Object.entries(fix.platformTips).map(([platform, tip]) => tip ? (
+                        <div key={platform} style={{ marginBottom: 8 }}>
+                          <strong style={{ color: T.white, textTransform: "capitalize" }}>{platform}:</strong> <span style={{ whiteSpace: "pre-wrap" }}>{tip}</span>
+                        </div>
+                      ) : null)}
+                    </div>
+                  </details>
+                )}
+              </div>
+            )}
 
             {/* Headers list */}
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
