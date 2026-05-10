@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>VRIKAAN Settings</title>
+  <link rel="stylesheet" href="popup.css" />
+  <style>
+    body { width: 480px; min-height: 320px; padding: 0; }
+    .opt { padding: 16px; border-bottom: 1px solid rgba(148,163,184,0.08); }
+    .opt label { display: block; margin-bottom: 8px; font-weight: 600; color: #f1f5f9; }
+    .opt p { margin: 0 0 8px; color: #94a3b8; font-size: 12px; }
+    .toggle { display: flex; align-items: center; gap: 10px; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon">🛡️</span>
+      <span class="logo-text">VRIKAAN — Settings</span>
+    </div>
+  </header>
+
+  <div class="opt">
+    <label class="toggle">
+      <input type="checkbox" id="auto-badge" checked />
+      Show suspicious-link badges on every page
+    </label>
+    <p>Adds a small ⚠️ next to shortened, IDN-spoofed, or bank-impersonating links. Local-only — no data leaves your browser.</p>
+  </div>
+
+  <div class="opt">
+    <label class="toggle">
+      <input type="checkbox" id="ctx-menu" checked />
+      Right-click "Scan with VRIKAAN" menu item
+    </label>
+    <p>Adds VRIKAAN to the right-click menu for selected text and links.</p>
+  </div>
+
+  <div class="opt">
+    <label>API endpoint</label>
+    <p>Override only if you self-host VRIKAAN. Leave default for vrikaan.com.</p>
+    <input type="url" id="api-base" placeholder="https://vrikaan.com/api/tools" />
+  </div>
+
+  <div class="opt">
+    <button class="btn-primary" id="save">Save settings</button>
+    <p id="saved" style="display:none;color:#22c55e;font-size:12px;margin-top:8px">✓ Saved</p>
+  </div>
+
+  <footer class="footer">
+    <span>v1.0.0</span>
+    <span class="divider">·</span>
+    <a href="https://vrikaan.com" target="_blank">vrikaan.com</a>
+    <span class="divider">·</span>
+    <a href="https://github.com/sahilnikam2410/vrikaan" target="_blank">github</a>
+  </footer>
+
+  <script src="options.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>VRIKAAN</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon">🛡️</span>
+      <span class="logo-text">VRIKAAN</span>
+    </div>
+    <a href="https://vrikaan.com" target="_blank" class="open-site" title="Open vrikaan.com">↗</a>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="page">This Page</button>
+    <button class="tab" data-tab="scam">Scam Check</button>
+    <button class="tab" data-tab="breach">Breach</button>
+  </div>
+
+  <!-- Tab 1: Current page scan -->
+  <section class="panel active" id="panel-page">
+    <div class="url-row">
+      <span class="label">Current URL</span>
+      <span class="url" id="current-url">…</span>
+    </div>
+    <button id="btn-scan-url" class="btn-primary">⚡ Scan this URL</button>
+    <button id="btn-headers" class="btn-secondary">🛡 Check security headers</button>
+    <div id="page-result" class="result"></div>
+  </section>
+
+  <!-- Tab 2: Paste-text scam check -->
+  <section class="panel" id="panel-scam">
+    <p class="hint">Paste any suspicious SMS, email, or WhatsApp message:</p>
+    <textarea id="scam-text" rows="5" maxlength="2000" placeholder="Paste the message here…"></textarea>
+    <div class="row">
+      <select id="scam-channel">
+        <option value="sms">SMS</option>
+        <option value="email">Email</option>
+        <option value="whatsapp">WhatsApp</option>
+        <option value="other">Other</option>
+      </select>
+      <button id="btn-scam" class="btn-primary">Check message</button>
+    </div>
+    <div id="scam-result" class="result"></div>
+  </section>
+
+  <!-- Tab 3: Breach check -->
+  <section class="panel" id="panel-breach">
+    <p class="hint">Check whether your email has appeared in a known data breach.</p>
+    <input type="email" id="breach-email" placeholder="you@example.com" autocomplete="email" />
+    <button id="btn-breach" class="btn-primary">Check breaches</button>
+    <div id="breach-result" class="result"></div>
+  </section>
+
+  <footer class="footer">
+    <span>vrikaan.com</span>
+    <span class="divider">·</span>
+    <a href="options.html" target="_blank">Settings</a>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

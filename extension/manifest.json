@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "VRIKAAN — AI Cyber Defense",
+  "short_name": "VRIKAAN",
+  "version": "1.0.0",
+  "description": "Scan any URL, paste text for scam-check, and watch for risky links — powered by VRIKAAN's AI cybersecurity platform.",
+  "homepage_url": "https://vrikaan.com",
+  "icons": {
+    "16":  "icons/icon-16.png",
+    "32":  "icons/icon-32.png",
+    "48":  "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_title": "VRIKAAN — Scan this page",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabs",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "https://vrikaan.com/*"
+  ],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+V"
+      },
+      "description": "Open VRIKAAN scanner"
+    }
+  },
+  "options_page": "options.html"
+}

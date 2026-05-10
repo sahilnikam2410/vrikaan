@@ -541,12 +541,12 @@ Reply ONLY with a strict JSON object — no markdown fences:
     "apache": "..."       // and Apache
   }
 }`;
-  const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 2500, json: true });
+  const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 4000, json: true });
   if (!r.ok) return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
   const parsed = tryParseJson(r.text);
   if (!parsed || !parsed.fixedHeaders) {
-    console.error("headers-fix parse failed. raw:", r.text?.slice(0, 600));
-    return res.status(502).json({ error: "AI returned malformed fix", raw: r.text?.slice(0, 600) });
+    console.error("headers-fix parse failed. raw:", r.text?.slice(0, 1000));
+    return res.status(502).json({ error: "AI returned malformed fix", raw: r.text?.slice(0, 1000) });
   }
   res.setHeader("Cache-Control", "no-store");
   return res.status(200).json({
