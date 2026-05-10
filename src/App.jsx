@@ -115,6 +115,8 @@ const Pricing = lazy(() => import("./assets/pages/Pricing.jsx"));
 const Team = lazy(() => import("./assets/pages/Team.jsx"));
 const ScamCheck = lazy(() => import("./assets/pages/ScamCheck.jsx"));
 const DeepfakeAudio = lazy(() => import("./assets/pages/DeepfakeAudio.jsx"));
+const VulnerabilityScan = lazy(() => import("./assets/pages/VulnerabilityScan.jsx"));
+const SocDashboard = lazy(() => import("./assets/pages/SocDashboard.jsx"));
 const Login = lazy(() => import("./assets/pages/Login.jsx"));
 const Signup = lazy(() => import("./assets/pages/Signup.jsx"));
 const AdminDashboard = lazy(() => import("./assets/pages/AdminDashboard.jsx"));
@@ -181,6 +183,8 @@ function AppRoutes() {
             <Route path="/team" element={<ProtectedRoute><Team /></ProtectedRoute>} />
             <Route path="/scam-check" element={<ScamCheck />} />
             <Route path="/deepfake-audio" element={<DeepfakeAudio />} />
+            <Route path="/vulnerability-scan" element={<VulnerabilityScan />} />
+            <Route path="/admin/soc" element={<ProtectedRoute><SocDashboard /></ProtectedRoute>} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />

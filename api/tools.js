@@ -1321,6 +1321,506 @@ async function handleRefund(req, res) {
   }
 }
 
+// ─── VULNERABILITY SCANNER — 14 passive checks ─────────────────────
+// All checks run in parallel from one handler. None of these touch the
+// target server with anything more aggressive than a single GET request,
+// so we do not require explicit consent and we never trigger IPS/IDS.
+
+// Helper: fetch with hard timeout that returns null on any failure
+async function fetchWithTimeout(url, opts = {}, ms = 8000) {
+  try {
+    return await fetch(url, { ...opts, signal: AbortSignal.timeout(ms) });
+  } catch { return null; }
+}
+
+// Normalize input — accept "example.com", "https://example.com", "https://www.example.com/path".
+function normalizeTarget(input) {
+  if (!input) return null;
+  const trimmed = String(input).trim();
+  let url;
+  try {
+    url = new URL(/^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`);
+  } catch { return null; }
+  return {
+    origin: url.origin,
+    hostname: url.hostname.replace(/^www\./, ""),
+    fullUrl: url.toString(),
+  };
+}
+
+// ─── Check 1: SSL Labs grade ────────────────────────────────────────
+// Cached server-side by SSL Labs; cheap to call. May queue first time
+// (returns READY/IN_PROGRESS); we ask for cached results only.
+async function checkSslLabs(host) {
+  const r = await fetchWithTimeout(
+    `https://api.ssllabs.com/api/v3/analyze?host=${encodeURIComponent(host)}&fromCache=on&maxAge=24`,
+    { headers: { "User-Agent": "Vrikaan-VulnScan" } },
+    12000,
+  );
+  if (!r || !r.ok) return { name: "tls", ok: false, severity: "info", note: "SSL Labs not yet cached — queue scan at ssllabs.com to populate" };
+  const data = await r.json().catch(() => null);
+  if (!data) return { name: "tls", ok: false, severity: "info", note: "SSL Labs response unavailable" };
+  if (data.status !== "READY") {
+    return { name: "tls", ok: false, severity: "info", note: `SSL Labs status: ${data.status}` };
+  }
+  const grades = (data.endpoints || []).map((e) => e.grade).filter(Boolean);
+  if (!grades.length) return { name: "tls", ok: false, severity: "info", note: "No SSL Labs endpoints" };
+  const worst = grades.sort()[grades.length - 1];
+  const sev = ["F", "T", "M"].includes(worst) ? "critical"
+    : ["E", "D"].includes(worst) ? "high"
+    : ["C"].includes(worst) ? "medium"
+    : ["B"].includes(worst) ? "low"
+    : "info";
+  return {
+    name: "tls", ok: sev === "info", severity: sev,
+    grade: worst,
+    findings: grades.length > 1 ? grades.map((g, i) => `Endpoint ${i + 1}: grade ${g}`) : [],
+    note: `SSL Labs grade: ${worst}`,
+  };
+}
+
+// ─── Check 2: HTTP security headers ─────────────────────────────────
+// Reuses the existing internal handleSecurityHeaders by issuing a self-call.
+async function checkHeaders(fullUrl) {
+  const r = await fetchWithTimeout(fullUrl, { redirect: "follow" }, 8000);
+  if (!r) return { name: "headers", ok: false, severity: "info", note: "Site unreachable" };
+  const expected = {
+    "content-security-policy": "high",
+    "strict-transport-security": "high",
+    "x-frame-options": "medium",
+    "x-content-type-options": "low",
+    "referrer-policy": "low",
+    "permissions-policy": "low",
+  };
+  const findings = [];
+  let worstSev = "info";
+  for (const [h, sev] of Object.entries(expected)) {
+    if (!r.headers.get(h)) {
+      findings.push(`Missing ${h}`);
+      if (severityRank(sev) > severityRank(worstSev)) worstSev = sev;
+    }
+  }
+  return {
+    name: "headers", ok: !findings.length, severity: findings.length ? worstSev : "info",
+    findings,
+    note: findings.length ? `${findings.length} security headers missing` : "All key headers present",
+  };
+}
+
+function severityRank(s) {
+  return { info: 0, low: 1, medium: 2, high: 3, critical: 4 }[s] || 0;
+}
+
+// ─── Check 3: DNS health (SPF / DMARC / DKIM via DoH) ───────────────
+async function dnsResolve(name, type) {
+  const r = await fetchWithTimeout(
+    `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(name)}&type=${type}`,
+    { headers: { Accept: "application/dns-json" } },
+    5000,
+  );
+  if (!r || !r.ok) return [];
+  const data = await r.json().catch(() => ({}));
+  return (data.Answer || []).map((a) => a.data);
+}
+
+async function checkDnsHealth(host) {
+  const [spfRecords, dmarcRecords, mxRecords] = await Promise.all([
+    dnsResolve(host, "TXT"),
+    dnsResolve(`_dmarc.${host}`, "TXT"),
+    dnsResolve(host, "MX"),
+  ]);
+  const findings = [];
+  let worstSev = "info";
+
+  const hasMx = mxRecords.length > 0;
+  const spf = spfRecords.find((t) => t.toLowerCase().includes("v=spf1"));
+  const dmarc = dmarcRecords.find((t) => t.toLowerCase().includes("v=dmarc1"));
+
+  if (hasMx && !spf) {
+    findings.push("Missing SPF record — easy to spoof email from this domain");
+    worstSev = "high";
+  }
+  if (hasMx && !dmarc) {
+    findings.push("Missing DMARC record — no email-spoofing policy");
+    if (severityRank("high") > severityRank(worstSev)) worstSev = "high";
+  } else if (dmarc) {
+    if (/p=none/i.test(dmarc)) {
+      findings.push("DMARC policy is p=none — monitoring only, spoofing not blocked");
+      if (severityRank("medium") > severityRank(worstSev)) worstSev = "medium";
+    }
+  }
+  if (spf && /\+all|\sall/i.test(spf) && !/-all|~all/i.test(spf)) {
+    findings.push("SPF policy ends in +all or all — anyone can send mail as this domain");
+    worstSev = "critical";
+  }
+  return {
+    name: "dns",
+    ok: !findings.length,
+    severity: findings.length ? worstSev : "info",
+    findings,
+    note: hasMx ? `${findings.length} email-auth issues` : "No MX records — domain not used for email",
+    spf: spf || null,
+    dmarc: dmarc || null,
+  };
+}
+
+// ─── Check 4: Subdomain leak hunt via crt.sh ────────────────────────
+async function checkSubdomains(host) {
+  const r = await fetchWithTimeout(
+    `https://crt.sh/?q=%25.${encodeURIComponent(host)}&output=json`,
+    { headers: { "User-Agent": "Vrikaan-VulnScan" } },
+    10000,
+  );
+  if (!r || !r.ok) return { name: "subdomains", ok: true, severity: "info", note: "crt.sh unavailable" };
+  const data = await r.json().catch(() => []);
+  const subs = new Set();
+  for (const row of data) {
+    const cn = (row.common_name || "").toLowerCase().trim();
+    const nameValue = (row.name_value || "").toLowerCase();
+    [cn, ...nameValue.split("\n")].forEach((s) => {
+      const v = s.trim();
+      if (v && v.endsWith(host) && !v.includes("*")) subs.add(v);
+    });
+  }
+  const list = Array.from(subs).sort();
+  // Flag any subdomain containing dev/staging/test/internal/admin keywords as risky exposure.
+  const RISKY = ["dev", "staging", "test", "uat", "internal", "admin", "qa", "sandbox", "preview", "beta"];
+  const flagged = list.filter((s) => {
+    const sub = s.replace(`.${host}`, "");
+    return RISKY.some((k) => sub.split(".").some((part) => part === k || part.startsWith(`${k}-`) || part.endsWith(`-${k}`)));
+  });
+  return {
+    name: "subdomains",
+    ok: flagged.length === 0,
+    severity: flagged.length ? (flagged.length > 5 ? "high" : "medium") : "info",
+    findings: flagged.slice(0, 12),
+    note: `${list.length} subdomains found in CT logs (${flagged.length} risky)`,
+    total: list.length,
+  };
+}
+
+// ─── Check 5: Tech-stack fingerprint ────────────────────────────────
+function fingerprintTech(headers, html) {
+  const tech = [];
+  const server = headers.get("server");
+  const xPoweredBy = headers.get("x-powered-by");
+  if (server) tech.push({ category: "server", value: server });
+  if (xPoweredBy) tech.push({ category: "framework", value: xPoweredBy });
+  // CMS/library hints from HTML
+  if (/wp-content|wp-includes|\/wp-json/i.test(html)) tech.push({ category: "cms", value: "WordPress" });
+  if (/<meta name="generator" content="Drupal/i.test(html)) tech.push({ category: "cms", value: "Drupal" });
+  if (/<meta name="generator" content="Joomla/i.test(html)) tech.push({ category: "cms", value: "Joomla" });
+  if (/data-react|__NEXT_DATA__|<div id="root"/i.test(html)) tech.push({ category: "frontend", value: "React" });
+  if (/<div id="app"|data-v-[a-f0-9]{8}/i.test(html)) tech.push({ category: "frontend", value: "Vue" });
+  if (/window\.__NUXT__|\/_nuxt\//i.test(html)) tech.push({ category: "frontend", value: "Nuxt" });
+  if (/cdn\.shopify\.com|Shopify\.theme/i.test(html)) tech.push({ category: "ecommerce", value: "Shopify" });
+  // Versioned signatures the CVE check can use
+  const versionedHints = [];
+  const wpVer = html.match(/<meta name="generator" content="WordPress (\d+\.\d+(?:\.\d+)?)"/i);
+  if (wpVer) versionedHints.push({ name: "wordpress", version: wpVer[1] });
+  const drupVer = html.match(/<meta name="generator" content="Drupal (\d+(?:\.\d+)?)"/i);
+  if (drupVer) versionedHints.push({ name: "drupal", version: drupVer[1] });
+  const jVer = html.match(/<meta name="generator" content="Joomla! - Open Source Content Management - Version (\d+\.\d+\.\d+)"/i);
+  if (jVer) versionedHints.push({ name: "joomla", version: jVer[1] });
+  // Nginx/Apache/etc with version
+  if (server) {
+    const m = server.match(/(nginx|Apache|caddy|Microsoft-IIS|cloudflare|LiteSpeed)\/(\d+\.\d+(?:\.\d+)?)/i);
+    if (m) versionedHints.push({ name: m[1].toLowerCase(), version: m[2] });
+  }
+  return { tech, versionedHints };
+}
+
+// ─── Check 6: CVE matching against NVD ──────────────────────────────
+// Uses NVD's free 2.0 search API — no key needed, 5 req/30s public.
+async function checkCves(versionedHints) {
+  if (!versionedHints?.length) return { name: "cves", ok: true, severity: "info", note: "No versioned tech detected" };
+  const allCves = [];
+  for (const hint of versionedHints.slice(0, 4)) {
+    const cpeName = `cpe:2.3:a:*:${hint.name}:${hint.version}:*:*:*:*:*:*:*`;
+    const r = await fetchWithTimeout(
+      `https://services.nvd.nist.gov/rest/json/cves/2.0?cpeName=${encodeURIComponent(cpeName)}&resultsPerPage=20`,
+      { headers: { "User-Agent": "Vrikaan-VulnScan" } },
+      10000,
+    );
+    if (!r || !r.ok) continue;
+    const data = await r.json().catch(() => null);
+    if (!data?.vulnerabilities) continue;
+    for (const v of data.vulnerabilities) {
+      const id = v.cve?.id;
+      const desc = v.cve?.descriptions?.find((d) => d.lang === "en")?.value;
+      const score = v.cve?.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore
+        ?? v.cve?.metrics?.cvssMetricV30?.[0]?.cvssData?.baseScore
+        ?? v.cve?.metrics?.cvssMetricV2?.[0]?.cvssData?.baseScore
+        ?? 0;
+      if (id) allCves.push({ id, score, desc: (desc || "").slice(0, 220), tech: hint.name, version: hint.version });
+    }
+  }
+  allCves.sort((a, b) => b.score - a.score);
+  const top = allCves.slice(0, 10);
+  const max = top[0]?.score || 0;
+  const sev = max >= 9 ? "critical" : max >= 7 ? "high" : max >= 4 ? "medium" : max > 0 ? "low" : "info";
+  return {
+    name: "cves",
+    ok: !top.length,
+    severity: sev,
+    findings: top.map((c) => `${c.id} (CVSS ${c.score}) — ${c.tech} ${c.version}: ${c.desc}`),
+    note: `${allCves.length} CVE(s) matched detected versions`,
+  };
+}
+
+// ─── Checks 7-13: bundle them under one HTTP fetch ──────────────────
+async function checkHttpResponse(fullUrl) {
+  const r = await fetchWithTimeout(fullUrl, { redirect: "follow" }, 8000);
+  if (!r) return null;
+  const html = await r.text().catch(() => "");
+  return { headers: r.headers, status: r.status, html };
+}
+
+// ─── Check 8: Mixed-content audit ───────────────────────────────────
+function checkMixedContent(html, originIsHttps) {
+  if (!originIsHttps) return { name: "mixed-content", ok: true, severity: "info", note: "Site not served over HTTPS — N/A" };
+  const httpResources = [];
+  const re = /(?:src|href|srcset|action)=["']http:\/\/([^"']+)["']/gi;
+  let m;
+  while ((m = re.exec(html)) !== null && httpResources.length < 20) {
+    if (!m[1].includes("schema.org") && !m[1].includes("w3.org")) httpResources.push(`http://${m[1]}`);
+  }
+  return {
+    name: "mixed-content",
+    ok: httpResources.length === 0,
+    severity: httpResources.length ? "medium" : "info",
+    findings: httpResources.slice(0, 10),
+    note: httpResources.length ? `${httpResources.length} HTTP resources loaded over HTTPS` : "No mixed content",
+  };
+}
+
+// ─── Check 9: Cookie security ───────────────────────────────────────
+function checkCookieSecurity(headers, originIsHttps) {
+  const setCookie = headers.get("set-cookie") || "";
+  if (!setCookie) return { name: "cookies", ok: true, severity: "info", note: "No Set-Cookie header" };
+  const cookies = setCookie.split(/,(?=\s*[A-Za-z0-9_-]+=)/);
+  const findings = [];
+  let worstSev = "info";
+  cookies.forEach((c) => {
+    const name = c.split("=")[0].trim();
+    const lower = c.toLowerCase();
+    if (originIsHttps && !lower.includes("secure")) {
+      findings.push(`${name}: missing Secure flag`);
+      if (severityRank("medium") > severityRank(worstSev)) worstSev = "medium";
+    }
+    if (!lower.includes("httponly")) {
+      findings.push(`${name}: missing HttpOnly flag`);
+      if (severityRank("medium") > severityRank(worstSev)) worstSev = "medium";
+    }
+    if (!/samesite=/i.test(lower)) {
+      findings.push(`${name}: no SameSite attribute`);
+      if (severityRank("low") > severityRank(worstSev)) worstSev = "low";
+    }
+  });
+  return { name: "cookies", ok: !findings.length, severity: findings.length ? worstSev : "info", findings: findings.slice(0, 10), note: `${cookies.length} cookies inspected` };
+}
+
+// ─── Check 10: CORS misconfig probe ─────────────────────────────────
+async function checkCors(fullUrl) {
+  const r = await fetchWithTimeout(fullUrl, {
+    method: "OPTIONS",
+    headers: { Origin: "https://evil.example.com", "Access-Control-Request-Method": "GET" },
+  }, 6000);
+  if (!r) return { name: "cors", ok: true, severity: "info", note: "OPTIONS not supported" };
+  const acao = r.headers.get("access-control-allow-origin") || "";
+  const acac = r.headers.get("access-control-allow-credentials") || "";
+  const findings = [];
+  let sev = "info";
+  if (acao === "*" && acac.toLowerCase() === "true") {
+    findings.push("ACAO: * combined with Allow-Credentials: true (browsers reject this combo, but indicates intent)");
+    sev = "high";
+  }
+  if (acao === "https://evil.example.com") {
+    findings.push("Origin reflected in ACAO — server echoes any origin (CORS misconfig)");
+    sev = "high";
+  }
+  return { name: "cors", ok: !findings.length, severity: sev, findings, note: `ACAO: ${acao || "(none)"}` };
+}
+
+// ─── Check 11: robots / sitemap leak ────────────────────────────────
+async function checkRobots(origin) {
+  const r = await fetchWithTimeout(`${origin}/robots.txt`, {}, 5000);
+  if (!r || !r.ok) return { name: "robots", ok: true, severity: "info", note: "No robots.txt" };
+  const text = (await r.text().catch(() => "")).slice(0, 6000);
+  const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+  const SENSITIVE = [/admin/i, /\.git/i, /\.env/i, /backup/i, /private/i, /test/i, /staging/i, /api[/_]key/i, /\/secret/i];
+  const flagged = lines.filter((l) => /^Disallow:|^Allow:/i.test(l) && SENSITIVE.some((re) => re.test(l)));
+  return {
+    name: "robots",
+    ok: !flagged.length,
+    severity: flagged.length ? "low" : "info",
+    findings: flagged.slice(0, 12),
+    note: flagged.length ? `${flagged.length} sensitive paths in robots.txt` : "robots.txt clean",
+  };
+}
+
+// ─── Check 12: Email spoofing risk (synthesized from DNS) ──────────
+function checkEmailSpoofRisk(dns) {
+  if (dns.findings && dns.findings.length) {
+    return { name: "email-spoof", ok: false, severity: dns.severity, findings: dns.findings, note: "Email-spoofing risk inherited from DNS findings" };
+  }
+  return { name: "email-spoof", ok: true, severity: "info", note: "No email-spoofing risk detected" };
+}
+
+// ─── Check 13: HSTS preload status ──────────────────────────────────
+async function checkHstsPreload(host) {
+  const r = await fetchWithTimeout(
+    `https://hstspreload.org/api/v2/status?domain=${encodeURIComponent(host)}`,
+    {}, 6000,
+  );
+  if (!r || !r.ok) return { name: "hsts-preload", ok: true, severity: "info", note: "Preload status unavailable" };
+  const data = await r.json().catch(() => ({}));
+  const status = data.status || "unknown";
+  // unknown/pending/preloaded
+  return {
+    name: "hsts-preload",
+    ok: status === "preloaded",
+    severity: status === "preloaded" ? "info" : "low",
+    note: `HSTS preload status: ${status}`,
+  };
+}
+
+// ─── Check 14: WordPress-specific (only if WP detected) ────────────
+async function checkWordPress(origin, isWp) {
+  if (!isWp) return { name: "wordpress", ok: true, severity: "info", note: "Not WordPress" };
+  const findings = [];
+  let worst = "info";
+  // /wp-json should normally be open but exposes user enumeration
+  const r1 = await fetchWithTimeout(`${origin}/wp-json/wp/v2/users`, {}, 6000);
+  if (r1 && r1.ok) {
+    const data = await r1.json().catch(() => null);
+    if (Array.isArray(data) && data.length) {
+      findings.push(`WP REST API exposes ${data.length} usernames at /wp-json/wp/v2/users`);
+      worst = "high";
+    }
+  }
+  // ?author=1 enumeration
+  const r2 = await fetchWithTimeout(`${origin}/?author=1`, { redirect: "manual" }, 6000);
+  if (r2 && (r2.status === 301 || r2.status === 302)) {
+    const loc = r2.headers.get("location") || "";
+    const m = loc.match(/\/author\/([^/?]+)/);
+    if (m) {
+      findings.push(`Author enumeration via ?author=1 reveals username: ${m[1]}`);
+      if (severityRank("medium") > severityRank(worst)) worst = "medium";
+    }
+  }
+  return { name: "wordpress", ok: !findings.length, severity: findings.length ? worst : "info", findings, note: findings.length ? `${findings.length} WordPress-specific issues` : "WordPress hardening OK" };
+}
+
+// ─── Main vuln-scan handler ────────────────────────────────────────
+async function handleVulnScan(req, res) {
+  const target = normalizeTarget(req.body?.target || req.query?.target);
+  if (!target) return res.status(400).json({ error: "target URL or domain required" });
+
+  // Run cheap checks in parallel; the HTTP body is reused for several.
+  const [httpResp, ssl, dns, subs, hsts, robots, cors] = await Promise.all([
+    checkHttpResponse(target.fullUrl),
+    checkSslLabs(target.hostname),
+    checkDnsHealth(target.hostname),
+    checkSubdomains(target.hostname),
+    checkHstsPreload(target.hostname),
+    checkRobots(target.origin),
+    checkCors(target.fullUrl),
+  ]);
+
+  const headersResult = !httpResp
+    ? { name: "headers", ok: false, severity: "info", note: "Site unreachable" }
+    : (() => {
+        const expected = {
+          "content-security-policy": "high",
+          "strict-transport-security": "high",
+          "x-frame-options": "medium",
+          "x-content-type-options": "low",
+          "referrer-policy": "low",
+          "permissions-policy": "low",
+        };
+        const findings = [];
+        let worst = "info";
+        for (const [h, sev] of Object.entries(expected)) {
+          if (!httpResp.headers.get(h)) {
+            findings.push(`Missing ${h}`);
+            if (severityRank(sev) > severityRank(worst)) worst = sev;
+          }
+        }
+        return { name: "headers", ok: !findings.length, severity: findings.length ? worst : "info", findings, note: findings.length ? `${findings.length} security headers missing` : "All key headers present" };
+      })();
+
+  const originIsHttps = target.origin.startsWith("https://");
+  const fingerprint = httpResp ? fingerprintTech(httpResp.headers, httpResp.html) : { tech: [], versionedHints: [] };
+  const cves = await checkCves(fingerprint.versionedHints);
+  const mixed = httpResp ? checkMixedContent(httpResp.html, originIsHttps) : { name: "mixed-content", ok: true, severity: "info", note: "N/A" };
+  const cookies = httpResp ? checkCookieSecurity(httpResp.headers, originIsHttps) : { name: "cookies", ok: true, severity: "info", note: "N/A" };
+  const isWp = fingerprint.tech.some((t) => t.value === "WordPress");
+  const wp = await checkWordPress(target.origin, isWp);
+  const emailSpoof = checkEmailSpoofRisk(dns);
+
+  const checks = [ssl, headersResult, dns, subs, fingerprint.tech.length ? { name: "tech", ok: true, severity: "info", findings: fingerprint.tech.map((t) => `${t.category}: ${t.value}`), note: `${fingerprint.tech.length} technologies detected` } : { name: "tech", ok: true, severity: "info", note: "No tech detected" }, cves, hsts, mixed, cookies, cors, robots, emailSpoof, wp];
+
+  // Summary score: 100 minus 25 per critical, 12 per high, 6 per medium, 2 per low.
+  let deduction = 0;
+  for (const c of checks) {
+    if (c.severity === "critical") deduction += 25;
+    else if (c.severity === "high") deduction += 12;
+    else if (c.severity === "medium") deduction += 6;
+    else if (c.severity === "low") deduction += 2;
+  }
+  const score = Math.max(0, 100 - deduction);
+  const grade = score >= 90 ? "A" : score >= 75 ? "B" : score >= 60 ? "C" : score >= 40 ? "D" : "F";
+
+  res.setHeader("Cache-Control", "no-store");
+  return res.status(200).json({
+    target,
+    score, grade,
+    summary: {
+      critical: checks.filter((c) => c.severity === "critical").length,
+      high:     checks.filter((c) => c.severity === "high").length,
+      medium:   checks.filter((c) => c.severity === "medium").length,
+      low:      checks.filter((c) => c.severity === "low").length,
+      ok:       checks.filter((c) => c.severity === "info").length,
+    },
+    checks,
+  });
+}
+
+// ─── AI synthesis on raw scan output ───────────────────────────────
+async function handleVulnSynthesize(req, res) {
+  const { scan } = req.body || {};
+  if (!scan?.checks) return res.status(400).json({ error: "scan.checks required" });
+  const findings = scan.checks
+    .filter((c) => c.severity && c.severity !== "info")
+    .map((c) => ({ name: c.name, severity: c.severity, note: c.note, findings: (c.findings || []).slice(0, 5) }));
+  const prompt = `You are a senior security engineer producing an executive risk summary for a non-technical site owner.
+
+Target: ${scan.target?.hostname || "unknown"}
+Score: ${scan.score}/100 (Grade ${scan.grade})
+
+Raw findings:
+${JSON.stringify(findings, null, 2).slice(0, 3000)}
+
+Reply ONLY with strict JSON (no markdown fences):
+{
+  "headline": "1-line summary suitable for a dashboard tile",
+  "topRisks": [{ "title": "...", "severity": "critical|high|medium|low", "explanation": "1-2 sentences", "fix": "concrete remediation step" }],
+  "executiveSummary": "2-3 sentence plain-English explanation a CEO can understand",
+  "complianceImpact": "1-2 sentences on PCI/GDPR/DPDP/SOC2 implications if any",
+  "next30Days": ["3-5 prioritized actions for the next 30 days"]
+}`;
+  const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 2500, json: true });
+  if (!r.ok) return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
+  const parsed = tryParseJson(r.text);
+  if (!parsed) {
+    console.error("vuln-synthesize parse failed. raw:", r.text?.slice(0, 800));
+    return res.status(502).json({ error: "AI returned malformed result" });
+  }
+  res.setHeader("Cache-Control", "no-store");
+  return res.status(200).json({ ...parsed, model: "gemini-2.5-flash" });
+}
+
 // ─── ROUTER ─────────────────────────────────────────────────────────
 
 const HANDLERS = {
@@ -1348,6 +1848,8 @@ const HANDLERS = {
   "scam-check": handleScamCheck,
   "headers-fix": handleHeadersFix,
   "deepfake-audio": handleDeepfakeAudio,
+  "vuln-scan": handleVulnScan,
+  "vuln-synthesize": handleVulnSynthesize,
 };
 
 // Some tools accept GET (ip lookup, cron pings); others require POST.
