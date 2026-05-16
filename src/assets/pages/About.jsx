@@ -68,7 +68,7 @@ const TECH = [
 ];
 
 const MILESTONES = [
-  { year: "2024", title: "Founded", desc: "VRIKAAN was born in Pune, India when founder Sahil Anil Nikam identified a critical gap in accessible cybersecurity tools for everyday users. Khushi I. Raigade later joined as co-founder, leading SOC, threat detection and security research.", color: T.accent },
+  { year: "2024", title: "Founded", desc: "VRIKAAN was born in Pune, India when founder Sahil Anil Nikam identified a critical gap in accessible cybersecurity tools for everyday users. Khushi Ishwar Raigade later joined as co-founder, leading SOC, threat detection and security research.", color: T.accent },
   { year: "2025", title: "Platform Launch", desc: "Public launch of the VRIKAAN platform featuring dark web monitoring, password vault, vulnerability scanner, and an integrated learning hub.", color: T.cyan },
   { year: "2026", title: "AI Integration", desc: "Deployed Google Gemini-powered AI chatbot and intelligent threat analysis engine, bringing conversational cybersecurity assistance to every user.", color: T.green },
   { year: "2027", title: "Global Expansion", desc: "Planned rollout across Southeast Asia, Europe, and Africa with localized threat intelligence and multilingual support for 20+ languages.", color: "#f97316" },
@@ -454,7 +454,7 @@ export default function About() {
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <span style={badge(T.cyan)}>Co-Founder</span>
-                  <h3 style={{ ...heading(22), marginTop: 8, marginBottom: 4 }}>Khushi I. Raigade</h3>
+                  <h3 style={{ ...heading(22), marginTop: 8, marginBottom: 4 }}>Khushi Ishwar Raigade</h3>
                   <p style={{ color: T.cyan, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>SOC Analyst &amp; Cybersecurity Researcher</p>
                 </div>
               </div>

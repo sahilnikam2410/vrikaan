@@ -14,7 +14,7 @@ const FACTS = [
   { label: "Founded", value: "2024" },
   { label: "Headquarters", value: "India" },
   { label: "Founder & CEO", value: "Sahil Anil Nikam" },
-  { label: "Co-Founder (SOC & Research)", value: "Khushi I. Raigade" },
+  { label: "Co-Founder (SOC & Research)", value: "Khushi Ishwar Raigade" },
   { label: "Category", value: "Cybersecurity / SaaS" },
   { label: "Mission", value: "Empower defenders for a safer digital future" },
   { label: "Audience", value: "Individuals, students, SMBs, family offices" },
@@ -35,7 +35,7 @@ const QUOTES = [
     quote: "The internet's threat model has shifted. Phishing, identity theft, and AI-powered fraud now hit individuals first — not enterprises. VRIKAAN puts enterprise-grade defense in the hands of one person, one family, one small team.",
   },
   {
-    name: "Khushi I. Raigade",
+    name: "Khushi Ishwar Raigade",
     role: "Co-Founder · SOC Analyst & Cybersecurity Researcher",
     quote: "Detection beats reaction. Real defenders find the attacker before they find the data — that's the philosophy we build VRIKAAN's SOC, MITRE ATT&CK mapping, and threat-intelligence pipeline around.",
   },
@@ -126,13 +126,13 @@ export default function Press() {
               It bundles enterprise-grade tools — phishing analysis, dark web monitoring, vulnerability scanning,
               breach checks, password vault, identity X-ray, MITRE ATT&CK-mapped SOC dashboard, and live threat
               intelligence — into a single, affordable subscription. Founded in 2024 by Sahil Anil Nikam (CEO) and
-              co-founded by Khushi I. Raigade (SOC Analyst &amp; Cybersecurity Researcher), VRIKAAN's mission is to
+              co-founded by Khushi Ishwar Raigade (SOC Analyst &amp; Cybersecurity Researcher), VRIKAAN's mission is to
               put serious cyber defense in reach of anyone, not just Fortune 500 SOCs. Headquartered in India, the
               platform currently serves users globally across web and PWA.
             </p>
             <button
               onClick={() => copy(
-                "VRIKAAN is an AI-powered cybersecurity platform built for individuals, students, and small teams. It bundles enterprise-grade tools — phishing analysis, dark web monitoring, vulnerability scanning, breach checks, password vault, identity X-ray, MITRE ATT&CK-mapped SOC dashboard, and live threat intelligence — into a single, affordable subscription. Founded in 2024 by Sahil Anil Nikam (CEO) and co-founded by Khushi I. Raigade (SOC Analyst & Cybersecurity Researcher), VRIKAAN's mission is to put serious cyber defense in reach of anyone, not just Fortune 500 SOCs. Headquartered in India, the platform currently serves users globally across web and PWA.",
+                "VRIKAAN is an AI-powered cybersecurity platform built for individuals, students, and small teams. It bundles enterprise-grade tools — phishing analysis, dark web monitoring, vulnerability scanning, breach checks, password vault, identity X-ray, MITRE ATT&CK-mapped SOC dashboard, and live threat intelligence — into a single, affordable subscription. Founded in 2024 by Sahil Anil Nikam (CEO) and co-founded by Khushi Ishwar Raigade (SOC Analyst & Cybersecurity Researcher), VRIKAAN's mission is to put serious cyber defense in reach of anyone, not just Fortune 500 SOCs. Headquartered in India, the platform currently serves users globally across web and PWA.",
                 "boilerplate"
               )}
               style={{

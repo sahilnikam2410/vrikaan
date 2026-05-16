@@ -8,7 +8,7 @@ const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 export default function Founder() {
   return (
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <SEO title="Founders" description="Meet the founders of VRIKAAN — Sahil Anil Nikam (CEO) and Khushi I. Raigade (Co-Founder, SOC Analyst & Cybersecurity Researcher)." path="/founder" />
+      <SEO title="Founders" description="Meet the founders of VRIKAAN — Sahil Anil Nikam (CEO) and Khushi Ishwar Raigade (Co-Founder, SOC Analyst & Cybersecurity Researcher)." path="/founder" />
       <Navbar />
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "120px 24px 80px" }}>
         <div style={{ marginBottom: 48 }}>
@@ -56,7 +56,7 @@ export default function Founder() {
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: 6, background: `${T.cyan}15`, color: T.cyan, fontSize: 10, fontWeight: 700, letterSpacing: 0.5, marginBottom: 8 }}>CO-FOUNDER</span>
-                <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, margin: 0 }}>Khushi I. Raigade</h2>
+                <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, margin: 0 }}>Khushi Ishwar Raigade</h2>
                 <p style={{ color: T.cyan, fontSize: 12, margin: "4px 0 0", letterSpacing: 0.3 }}>SOC Analyst · Cybersecurity Researcher</p>
               </div>
             </div>
