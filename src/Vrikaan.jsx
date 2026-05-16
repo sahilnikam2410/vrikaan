@@ -1961,27 +1961,61 @@ const Newsletter = () => {
   );
 };
 
-/* ── FOUNDER ── */
+/* ── FOUNDERS ── */
 const FounderSection = () => (
   <Section>
     <Reveal>
-      <div style={{ maxWidth: 800, margin: "0 auto" }}>
-        <Badge color={T.mutedDark}>Our Story</Badge>
-        <div style={{ marginTop: 36, background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: "clamp(32px, 4vw, 56px)", backdropFilter: "blur(8px)" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "100px 1fr", gap: 36, alignItems: "start" }} className="founder-grid">
-            <div style={{ width: 100, height: 100, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(139,92,246,0.06))", border: "1px solid rgba(99,102,241,0.15)", boxShadow: "0 12px 40px rgba(0,0,0,0.2)" }}>
-              <span style={{ fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 300, color: T.white, opacity: 0.9 }}>S</span>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 36 }}>
+          <Badge color={T.mutedDark}>Our Story</Badge>
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 3.5vw, 36px)", fontWeight: 700, color: T.white, margin: "16px 0 8px", letterSpacing: "-0.02em" }}>
+            Meet the Founders
+          </h2>
+          <p style={{ color: T.muted, fontSize: 14, maxWidth: 540, margin: "0 auto", lineHeight: 1.7 }}>
+            Two founders, one mission — making enterprise-grade cyber defense accessible to everyone.
+          </p>
+        </div>
+
+        <div className="founders-grid-home" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+
+          {/* Sahil */}
+          <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: "clamp(28px, 3vw, 40px)", backdropFilter: "blur(8px)" }}>
+            <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 18 }}>
+              <div style={{ width: 76, height: 76, borderRadius: 18, display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(139,92,246,0.10))", border: "1px solid rgba(99,102,241,0.25)", flexShrink: 0 }}>
+                <span style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 300, color: T.white }}>S</span>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <Badge color={T.accent}>Founder &amp; CEO</Badge>
+                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: T.white, margin: "10px 0 4px", letterSpacing: "-0.02em" }}>Sahil Anil Nikam</h3>
+                <p style={{ color: T.accent, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>Product · Engineering · AI</p>
+              </div>
             </div>
-            <div>
-              <Badge color={T.accent}>Founder & CEO</Badge>
-              <h3 style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 600, color: T.white, margin: "12px 0 20px", letterSpacing: "-0.03em" }}>Sahil Anil Nikam</h3>
-              <blockquote style={{ fontFamily: "var(--font-body)", fontSize: 17, color: T.white, lineHeight: 1.7, fontStyle: "italic", margin: "0 0 20px", opacity: 0.8, borderLeft: `3px solid ${T.accent}`, paddingLeft: 20 }}>
-                "The digital world connects billions of people, but it also exposes them to invisible threats. I created Vrikaan because cybersecurity shouldn't be a luxury — it should be a right."
-              </blockquote>
-              <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.75, margin: 0 }}>
-                Most cybersecurity platforms focus exclusively on enterprise clients, leaving billions of everyday users exposed. Vrikaan was built to change that — creating a global defense network for students, families, and small businesses.
-              </p>
+            <blockquote style={{ fontFamily: "var(--font-body)", fontSize: 14, color: T.white, lineHeight: 1.7, fontStyle: "italic", margin: "0 0 14px", opacity: 0.85, borderLeft: `3px solid ${T.accent}`, paddingLeft: 16 }}>
+              "Cybersecurity shouldn't be a luxury — it should be a right available to every person on Earth."
+            </blockquote>
+            <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.7, margin: 0 }}>
+              Drives Vrikaan's product architecture, AI integration, and the engineering pipeline behind every release.
+            </p>
+          </div>
+
+          {/* Khushi */}
+          <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: "clamp(28px, 3vw, 40px)", backdropFilter: "blur(8px)" }}>
+            <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 18 }}>
+              <div style={{ width: 76, height: 76, borderRadius: 18, display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, rgba(20,227,197,0.18), rgba(99,102,241,0.10))", border: "1px solid rgba(20,227,197,0.25)", flexShrink: 0 }}>
+                <span style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 300, color: T.white }}>K</span>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <Badge color={T.cyan}>Co-Founder</Badge>
+                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: T.white, margin: "10px 0 4px", letterSpacing: "-0.02em" }}>Khushi Ishwar Raigade</h3>
+                <p style={{ color: T.cyan, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>SOC Analyst · Cybersecurity Researcher</p>
+              </div>
             </div>
+            <blockquote style={{ fontFamily: "var(--font-body)", fontSize: 14, color: T.white, lineHeight: 1.7, fontStyle: "italic", margin: "0 0 14px", opacity: 0.85, borderLeft: `3px solid ${T.cyan}`, paddingLeft: 16 }}>
+              "Detection beats reaction. A defender's job is to find the attacker before they find the data."
+            </blockquote>
+            <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.7, margin: 0 }}>
+              Leads Vrikaan's threat-intelligence pipeline, MITRE ATT&amp;CK rule engineering, and SOC playbook design.
+            </p>
           </div>
         </div>
       </div>
@@ -2208,7 +2242,7 @@ const Footer = () => (
       ))}
     </div>
     <div style={{ maxWidth: 1280, margin: "60px auto 0", paddingTop: 28, borderTop: `1px solid ${T.border}`, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
-      <span style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark }}>&copy; 2026 Vrikaan. Founded by Sahil Anil Nikam. All rights reserved.</span>
+      <span style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark }}>&copy; 2026 Vrikaan. Founded by Sahil Anil Nikam &amp; Khushi Ishwar Raigade. All rights reserved.</span>
       <span style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark, fontStyle: "italic" }}>Click with care, we are always there.</span>
     </div>
   </footer>
@@ -2389,6 +2423,7 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
   .nav-links-desktop { display: none !important; }
   .nav-burger { display: flex !important; }
   .founder-grid { grid-template-columns: 1fr !important; }
+  .founders-grid-home { grid-template-columns: 1fr !important; }
   .how-connector { display: none !important; }
 }
 
