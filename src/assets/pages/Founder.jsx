@@ -36,15 +36,15 @@ export default function Founder() {
               <div style={{ flex: 1, minWidth: 0 }}>
                 <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: 6, background: `${T.accent}15`, color: T.accent, fontSize: 10, fontWeight: 700, letterSpacing: 0.5, marginBottom: 8 }}>FOUNDER &amp; CEO</span>
                 <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, margin: 0 }}>Sahil Anil Nikam</h2>
-                <p style={{ color: T.accent, fontSize: 12, margin: "4px 0 0", letterSpacing: 0.3 }}>Product · Engineering · AI</p>
+                <p style={{ color: T.accent, fontSize: 12, margin: "4px 0 0", letterSpacing: 0.3 }}>SOC Analyst · Cybersecurity Researcher</p>
               </div>
             </div>
             <blockquote style={{ fontSize: 14, color: T.white, lineHeight: 1.75, fontStyle: "italic", margin: "0 0 16px", opacity: 0.85, borderLeft: `3px solid ${T.accent}`, paddingLeft: 18 }}>
               "Cybersecurity shouldn't be a luxury — it should be a right available to every person on Earth."
             </blockquote>
             <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.85, margin: 0 }}>
-              Full-stack developer from Pune. Drives product architecture, AI integration,
-              payments and the engineering pipeline behind every VRIKAAN release.
+              SOC analyst, cybersecurity researcher, and full-stack developer from Pune. Drives product
+              architecture, AI integration, payments and the engineering pipeline behind every VRIKAAN release.
             </p>
           </div>
 

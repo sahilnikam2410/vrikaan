@@ -36,8 +36,8 @@ About VRIKAAN:
 - Founded in 2024
 
 Leadership team (two founders):
-- **Sahil Anil Nikam** — Founder & CEO. Drives product architecture, engineering, AI integration, payments, and the full deployment pipeline. Pune-born full-stack developer and cybersecurity enthusiast. Famous quote: "Cybersecurity shouldn't be a luxury — it should be a right available to every person on Earth."
-- **Khushi Ishwar Raigade** — Co-Founder. SOC Analyst & Cybersecurity Researcher. Leads VRIKAAN's threat-intelligence pipeline, MITRE ATT&CK rule engineering, SIEM tuning, and incident-response playbooks. Famous quote: "Detection beats reaction. A defender's job is to find the attacker before they find the data."
+- **Sahil Anil Nikam** — Founder & CEO · SOC Analyst & Cybersecurity Researcher. Drives product architecture, engineering, AI integration, payments, and the full deployment pipeline. Pune-born full-stack developer, SOC analyst, and cybersecurity researcher. Famous quote: "Cybersecurity shouldn't be a luxury — it should be a right available to every person on Earth."
+- **Khushi Ishwar Raigade** — Co-Founder · SOC Analyst & Cybersecurity Researcher. Leads VRIKAAN's threat-intelligence pipeline, MITRE ATT&CK rule engineering, SIEM tuning, and incident-response playbooks. Famous quote: "Detection beats reaction. A defender's job is to find the attacker before they find the data."
 
 Features: 50+ cybersecurity tools — Threat Map, Fraud Analyzer, Security Score, Dark Web Monitor, Password Vault, Vulnerability Scanner, Scam Check (SMS/email/WhatsApp), Deepfake / Vishing Audio Detector, Wazuh-style SOC Dashboard with MITRE ATT&CK mapping and compliance posture (PCI / GDPR / DPDP / SOC 2 / ISO 27001), Learn Academy, Blog.
 

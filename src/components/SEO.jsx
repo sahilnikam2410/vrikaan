@@ -117,7 +117,7 @@ export const organizationSchema = {
     "https://github.com/sahilnikam2410/vrikaan",
   ],
   founder: [
-    { "@type": "Person", name: "Sahil Anil Nikam", jobTitle: "Founder & CEO" },
+    { "@type": "Person", name: "Sahil Anil Nikam", jobTitle: "Founder & CEO · SOC Analyst & Cybersecurity Researcher" },
     { "@type": "Person", name: "Khushi Ishwar Raigade", jobTitle: "Co-Founder, SOC Analyst & Cybersecurity Researcher" },
   ],
   contactPoint: {

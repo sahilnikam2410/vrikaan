@@ -31,7 +31,7 @@ const ASSETS = [
 const QUOTES = [
   {
     name: "Sahil Anil Nikam",
-    role: "Founder & CEO",
+    role: "Founder & CEO · SOC Analyst & Cybersecurity Researcher",
     quote: "The internet's threat model has shifted. Phishing, identity theft, and AI-powered fraud now hit individuals first — not enterprises. VRIKAAN puts enterprise-grade defense in the hands of one person, one family, one small team.",
   },
   {

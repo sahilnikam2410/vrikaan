@@ -410,7 +410,7 @@ export default function About() {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <span style={badge(T.accent)}>Founder &amp; CEO</span>
                   <h3 style={{ ...heading(22), marginTop: 8, marginBottom: 4 }}>Sahil Anil Nikam</h3>
-                  <p style={{ color: T.accentSoft, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>Product, Engineering &amp; AI</p>
+                  <p style={{ color: T.accentSoft, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>SOC Analyst &amp; Cybersecurity Researcher</p>
                 </div>
               </div>
               <blockquote style={{
@@ -421,8 +421,8 @@ export default function About() {
                 "Cybersecurity should not be a luxury — it should be a right available to every person on Earth."
               </blockquote>
               <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.8, margin: "0 0 16px" }}>
-                Cybersecurity enthusiast and full-stack developer from Pune. Drives product architecture,
-                AI integration, payments and the engineering pipeline behind every VRIKAAN release.
+                SOC analyst, cybersecurity researcher, and full-stack developer from Pune. Drives product
+                architecture, AI integration, payments and the engineering pipeline behind every VRIKAAN release.
               </p>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                 <a href="https://www.linkedin.com/company/vrikaan-ai-cybersecurity" target="_blank" rel="noopener noreferrer" style={{
