@@ -8,31 +8,65 @@ const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 export default function Founder() {
   return (
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-      <SEO title="Founder" description="Meet Sahil Anil Nikam, founder and CEO of Vrikaan." path="/founder" />
+      <SEO title="Founders" description="Meet the founders of VRIKAAN — Sahil Anil Nikam (CEO) and Khushi I. Raigade (Co-Founder, SOC Analyst & Cybersecurity Researcher)." path="/founder" />
       <Navbar />
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "120px 24px 80px" }}>
+      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "120px 24px 80px" }}>
         <div style={{ marginBottom: 48 }}>
           <Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link>
         </div>
 
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: 64 }}>
-          <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>Founder & CEO</span>
-          <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(40px, 5vw, 56px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Sahil Anil Nikam</h1>
-          <p style={{ color: T.muted, fontSize: 17, maxWidth: 500, margin: "0 auto", lineHeight: 1.7 }}>Building the world's most accessible cyber defense platform.</p>
+        <div style={{ textAlign: "center", marginBottom: 56 }}>
+          <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>Leadership</span>
+          <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(40px, 5vw, 56px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Meet the Founders</h1>
+          <p style={{ color: T.muted, fontSize: 17, maxWidth: 600, margin: "0 auto", lineHeight: 1.7 }}>
+            Two founders, one mission — building the world's most accessible cyber defense platform.
+          </p>
         </div>
 
-        {/* Avatar + Quote */}
-        <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: "clamp(36px, 4vw, 56px)", marginBottom: 48, backdropFilter: "blur(8px)" }}>
-          <div style={{ display: "flex", gap: 36, alignItems: "start" }}>
-            <div style={{ width: 100, height: 100, borderRadius: 24, background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(20,227,197,0.06))", border: "1px solid rgba(99,102,241,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 12px 40px rgba(0,0,0,0.3)" }}>
-              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 44, fontWeight: 300, color: T.white, opacity: 0.9 }}>S</span>
+        {/* Founders grid */}
+        <div className="founders-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginBottom: 56 }}>
+
+          {/* Sahil */}
+          <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: 36, backdropFilter: "blur(8px)" }}>
+            <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 20 }}>
+              <div style={{ width: 78, height: 78, borderRadius: 20, background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(20,227,197,0.08))", border: "1px solid rgba(99,102,241,0.25)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 36, fontWeight: 300, color: T.white }}>S</span>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: 6, background: `${T.accent}15`, color: T.accent, fontSize: 10, fontWeight: 700, letterSpacing: 0.5, marginBottom: 8 }}>FOUNDER &amp; CEO</span>
+                <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, margin: 0 }}>Sahil Anil Nikam</h2>
+                <p style={{ color: T.accent, fontSize: 12, margin: "4px 0 0", letterSpacing: 0.3 }}>Product · Engineering · AI</p>
+              </div>
             </div>
-            <div>
-              <blockquote style={{ fontSize: 18, color: T.white, lineHeight: 1.8, fontStyle: "italic", margin: "0 0 20px", opacity: 0.85, borderLeft: `3px solid ${T.accent}`, paddingLeft: 24 }}>
-                "The digital world connects billions of people, but it also exposes them to invisible threats. I created Vrikaan because cybersecurity shouldn't be a luxury — it should be a right."
-              </blockquote>
+            <blockquote style={{ fontSize: 14, color: T.white, lineHeight: 1.75, fontStyle: "italic", margin: "0 0 16px", opacity: 0.85, borderLeft: `3px solid ${T.accent}`, paddingLeft: 18 }}>
+              "Cybersecurity shouldn't be a luxury — it should be a right available to every person on Earth."
+            </blockquote>
+            <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.85, margin: 0 }}>
+              Full-stack developer from Pune. Drives product architecture, AI integration,
+              payments and the engineering pipeline behind every VRIKAAN release.
+            </p>
+          </div>
+
+          {/* Khushi */}
+          <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: 36, backdropFilter: "blur(8px)" }}>
+            <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 20 }}>
+              <div style={{ width: 78, height: 78, borderRadius: 20, background: "linear-gradient(135deg, rgba(20,227,197,0.18), rgba(99,102,241,0.08))", border: "1px solid rgba(20,227,197,0.25)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 36, fontWeight: 300, color: T.white }}>K</span>
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: 6, background: `${T.cyan}15`, color: T.cyan, fontSize: 10, fontWeight: 700, letterSpacing: 0.5, marginBottom: 8 }}>CO-FOUNDER</span>
+                <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, margin: 0 }}>Khushi I. Raigade</h2>
+                <p style={{ color: T.cyan, fontSize: 12, margin: "4px 0 0", letterSpacing: 0.3 }}>SOC Analyst · Cybersecurity Researcher</p>
+              </div>
             </div>
+            <blockquote style={{ fontSize: 14, color: T.white, lineHeight: 1.75, fontStyle: "italic", margin: "0 0 16px", opacity: 0.85, borderLeft: `3px solid ${T.cyan}`, paddingLeft: 18 }}>
+              "Detection beats reaction. A defender's job is to find the attacker before they find the data."
+            </blockquote>
+            <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.85, margin: 0 }}>
+              SOC analyst and cybersecurity researcher. Leads VRIKAAN's threat-intelligence pipeline,
+              MITRE ATT&amp;CK rule engineering, SIEM tuning and incident-response playbooks.
+            </p>
           </div>
         </div>
 
@@ -78,6 +112,7 @@ export default function Founder() {
       <style>{`
   @media (max-width: 768px) {
     .resp-grid-3 { grid-template-columns: 1fr !important; }
+    .founders-grid { grid-template-columns: 1fr !important; }
   }
 `}</style>
       <Footer />

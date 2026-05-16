@@ -116,6 +116,10 @@ export const organizationSchema = {
     "https://www.instagram.com/vrikaan_official/",
     "https://github.com/sahilnikam2410/vrikaan",
   ],
+  founder: [
+    { "@type": "Person", name: "Sahil Anil Nikam", jobTitle: "Founder & CEO" },
+    { "@type": "Person", name: "Khushi I. Raigade", jobTitle: "Co-Founder, SOC Analyst & Cybersecurity Researcher" },
+  ],
   contactPoint: {
     "@type": "ContactPoint",
     email: "hello@vrikaan.com",

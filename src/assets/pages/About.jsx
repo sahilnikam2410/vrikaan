@@ -68,7 +68,7 @@ const TECH = [
 ];
 
 const MILESTONES = [
-  { year: "2024", title: "Founded", desc: "VRIKAAN was born in Pune, India when founder Sahil Anil Nikam identified a critical gap in accessible cybersecurity tools for everyday users.", color: T.accent },
+  { year: "2024", title: "Founded", desc: "VRIKAAN was born in Pune, India when founder Sahil Anil Nikam identified a critical gap in accessible cybersecurity tools for everyday users. Khushi I. Raigade later joined as co-founder, leading SOC, threat detection and security research.", color: T.accent },
   { year: "2025", title: "Platform Launch", desc: "Public launch of the VRIKAAN platform featuring dark web monitoring, password vault, vulnerability scanner, and an integrated learning hub.", color: T.cyan },
   { year: "2026", title: "AI Integration", desc: "Deployed Google Gemini-powered AI chatbot and intelligent threat analysis engine, bringing conversational cybersecurity assistance to every user.", color: T.green },
   { year: "2027", title: "Global Expansion", desc: "Planned rollout across Southeast Asia, Europe, and Africa with localized threat intelligence and multilingual support for 20+ languages.", color: "#f97316" },
@@ -395,63 +395,99 @@ export default function About() {
         <RevealSection style={sectionGap}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <span style={badge(T.cyan)}>Leadership</span>
-            <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)") }}>Meet the Founder</h2>
+            <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)") }}>Meet the Founders</h2>
           </div>
-          <div style={{ ...cardBase, borderRadius: 20, padding: "clamp(32px, 4vw, 56px)", maxWidth: 860, margin: "0 auto" }}>
-            <div className="about-founder-row" style={{ display: "flex", gap: 36, alignItems: "flex-start" }}>
-              <div style={{ width: 100, height: 100, borderRadius: 22, background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(20,227,197,0.08))", border: `1px solid ${T.accent}25`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 40, fontWeight: 300, color: T.white, opacity: 0.9 }}>S</span>
-              </div>
-              <div style={{ flex: 1 }}>
-                <span style={badge(T.accent)}>Founder & CEO</span>
-                <h3 style={{ ...heading(28), marginBottom: 16 }}>Sahil Anil Nikam</h3>
-                <blockquote style={{
-                  fontSize: 16, color: T.white, lineHeight: 1.75, fontStyle: "italic",
-                  margin: "0 0 20px", opacity: 0.8, borderLeft: `3px solid ${T.accent}`,
-                  paddingLeft: 20,
-                }}>
-                  "The digital world connects billions of people, but it also exposes them to
-                  invisible threats. I created VRIKAAN because cybersecurity should not be a
-                  luxury — it should be a right available to every person on Earth."
-                </blockquote>
-                <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.85, margin: "0 0 20px" }}>
-                  Sahil is a cybersecurity enthusiast and self-taught developer from Pune, India.
-                  His passion for digital security began during his early experiments with network
-                  analysis and ethical hacking. Frustrated by the lack of affordable, user-friendly
-                  security tools for everyday people, he channeled his energy into building VRIKAAN
-                  from the ground up. Sahil handles everything from product architecture and AI
-                  integration to frontend design and community engagement.
-                </p>
-                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                  <a
-                    href="https://www.linkedin.com/company/vrikaan-ai-cybersecurity"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "inline-flex", alignItems: "center", gap: 8,
-                      padding: "10px 20px", borderRadius: 10, fontSize: 13, fontWeight: 600,
-                      background: "rgba(99,102,241,0.08)", border: `1px solid ${T.accent}25`,
-                      color: T.accentSoft, textDecoration: "none", transition: "all 0.2s",
-                    }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-                    LinkedIn
-                  </a>
-                  <a
-                    href="https://github.com/sahilnikam2410/vrikaan"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "inline-flex", alignItems: "center", gap: 8,
-                      padding: "10px 20px", borderRadius: 10, fontSize: 13, fontWeight: 600,
-                      background: "rgba(148,163,184,0.06)", border: `1px solid ${T.border}`,
-                      color: T.muted, textDecoration: "none", transition: "all 0.2s",
-                    }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
-                    GitHub
-                  </a>
+
+          {/* Founder cards — Sahil (CEO) + Khushi (Co-Founder / SOC) */}
+          <div className="about-founders-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 1100, margin: "0 auto" }}>
+
+            {/* ── Sahil ── */}
+            <div style={{ ...cardBase, borderRadius: 20, padding: "32px 28px" }}>
+              <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 18 }}>
+                <div style={{ width: 72, height: 72, borderRadius: 18, background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(20,227,197,0.10))", border: `1px solid ${T.accent}30`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 300, color: T.white }}>S</span>
                 </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <span style={badge(T.accent)}>Founder &amp; CEO</span>
+                  <h3 style={{ ...heading(22), marginTop: 8, marginBottom: 4 }}>Sahil Anil Nikam</h3>
+                  <p style={{ color: T.accentSoft, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>Product, Engineering &amp; AI</p>
+                </div>
+              </div>
+              <blockquote style={{
+                fontSize: 14, color: T.white, lineHeight: 1.7, fontStyle: "italic",
+                margin: "0 0 16px", opacity: 0.85, borderLeft: `3px solid ${T.accent}`,
+                paddingLeft: 16,
+              }}>
+                "Cybersecurity should not be a luxury — it should be a right available to every person on Earth."
+              </blockquote>
+              <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.8, margin: "0 0 16px" }}>
+                Cybersecurity enthusiast and full-stack developer from Pune. Drives product architecture,
+                AI integration, payments and the engineering pipeline behind every VRIKAAN release.
+              </p>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <a href="https://www.linkedin.com/company/vrikaan-ai-cybersecurity" target="_blank" rel="noopener noreferrer" style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "8px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600,
+                  background: "rgba(99,102,241,0.08)", border: `1px solid ${T.accent}25`,
+                  color: T.accentSoft, textDecoration: "none",
+                }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                  LinkedIn
+                </a>
+                <a href="https://github.com/sahilnikam2410/vrikaan" target="_blank" rel="noopener noreferrer" style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "8px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600,
+                  background: "rgba(148,163,184,0.06)", border: `1px solid ${T.border}`,
+                  color: T.muted, textDecoration: "none",
+                }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
+
+            {/* ── Khushi ── */}
+            <div style={{ ...cardBase, borderRadius: 20, padding: "32px 28px" }}>
+              <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 18 }}>
+                <div style={{ width: 72, height: 72, borderRadius: 18, background: "linear-gradient(135deg, rgba(20,227,197,0.18), rgba(99,102,241,0.10))", border: `1px solid ${T.cyan}30`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 300, color: T.white }}>K</span>
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <span style={badge(T.cyan)}>Co-Founder</span>
+                  <h3 style={{ ...heading(22), marginTop: 8, marginBottom: 4 }}>Khushi I. Raigade</h3>
+                  <p style={{ color: T.cyan, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>SOC Analyst &amp; Cybersecurity Researcher</p>
+                </div>
+              </div>
+              <blockquote style={{
+                fontSize: 14, color: T.white, lineHeight: 1.7, fontStyle: "italic",
+                margin: "0 0 16px", opacity: 0.85, borderLeft: `3px solid ${T.cyan}`,
+                paddingLeft: 16,
+              }}>
+                "Detection beats reaction. A defender's job is to find the attacker before they find the data."
+              </blockquote>
+              <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.8, margin: "0 0 16px" }}>
+                SOC analyst and cybersecurity researcher specialising in threat detection, SIEM tuning,
+                and incident response. Leads VRIKAAN's threat-intelligence pipeline, MITRE ATT&amp;CK
+                rule engineering, and SOC playbook design.
+              </p>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <a href="https://www.linkedin.com/company/vrikaan-ai-cybersecurity" target="_blank" rel="noopener noreferrer" style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "8px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600,
+                  background: "rgba(20,227,197,0.08)", border: `1px solid ${T.cyan}30`,
+                  color: T.cyan, textDecoration: "none",
+                }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                  LinkedIn
+                </a>
+                <span style={{
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                  padding: "8px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600,
+                  background: "rgba(148,163,184,0.06)", border: `1px solid ${T.border}`,
+                  color: T.muted,
+                }}>
+                  🛡 SOC · MITRE ATT&amp;CK · IR
+                </span>
               </div>
             </div>
           </div>
@@ -568,6 +604,7 @@ export default function About() {
           .about-grid-2, .about-grid-3, .about-grid-4 { grid-template-columns: 1fr !important; }
           .about-founder-row { flex-direction: column !important; align-items: center !important; text-align: center !important; }
           .about-founder-row blockquote { text-align: left !important; }
+          .about-founders-grid { grid-template-columns: 1fr !important; }
         }
         @media (max-width: 900px) and (min-width: 769px) {
           .about-grid-3, .about-grid-4 { grid-template-columns: 1fr 1fr !important; }
