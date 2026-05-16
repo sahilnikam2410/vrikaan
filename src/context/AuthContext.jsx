@@ -31,7 +31,7 @@ const DEMO_USERS = [
 ];
 
 // Admin emails — these users get admin role automatically
-const ADMIN_EMAILS = ["sahilnikam133@gmail.com", "sahilnikam1212@gmail.com", "admin@vrikaan.com"];
+const ADMIN_EMAILS = ["sahilnikam133@gmail.com", "sahilnikam1212@gmail.com", "khushiraygade76666@gmail.com", "admin@vrikaan.com"];
 
 /**
  * Merge Firebase Auth user object with Firestore profile data.
