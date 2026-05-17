@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import BackToTop from "./BackToTop";
+import PageJump from "./PageJump";
 import EmailRouting from "./EmailRouting";
 
 const T = {
@@ -151,7 +151,7 @@ const Footer = () => (
         footer > div > div:first-child { grid-template-columns: 1fr !important; }
       }
     `}</style>
-    <BackToTop />
+    <PageJump />
   </footer>
 );
 

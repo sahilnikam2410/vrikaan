@@ -18,7 +18,7 @@ const GlobePlaceholder = ({ size = 520 }) => (
   />
 );
 import ThreatMapLive from "./components/ThreatMapLive";
-import BackToTop from "./components/BackToTop";
+import PageJump from "./components/PageJump";
 import SEO from "./components/SEO";
 
 /* ═══════════════════════════════════════════════════════
@@ -2611,7 +2611,7 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
         <Newsletter />
         <CTABanner />
         <Footer />
-        <BackToTop />
+        <PageJump />
       </div>
     </div>
   );
