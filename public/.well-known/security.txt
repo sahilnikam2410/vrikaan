@@ -2,9 +2,9 @@ Contact: mailto:hello@vrikaan.com
 Contact: mailto:vrikaan.ai@gmail.com
 Expires: 2027-12-31T23:59:59.000Z
 Preferred-Languages: en, hi
-Canonical: https://vrikaan.com/.well-known/security.txt
-Policy: https://vrikaan.com/responsible-disclosure
-Acknowledgments: https://vrikaan.com/security/hall-of-fame
+Canonical: https://www.vrikaan.com/.well-known/security.txt
+Policy: https://www.vrikaan.com/responsible-disclosure
+Acknowledgments: https://www.vrikaan.com/security/hall-of-fame
 
 # Found a vulnerability in VRIKAAN?
 #
