@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import PageJump from "./PageJump";
+import ScrollProgress from "./ScrollProgress";
 import EmailRouting from "./EmailRouting";
 
 const T = {
@@ -152,6 +153,7 @@ const Footer = () => (
       }
     `}</style>
     <PageJump />
+    <ScrollProgress />
   </footer>
 );
 
