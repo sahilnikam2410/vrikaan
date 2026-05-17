@@ -2460,6 +2460,25 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
               onMouseEnter={e => e.target.style.color = T.white}
               onMouseLeave={e => e.target.style.color = T.mutedDark}>{l.label}</span>
           ))}
+          <Link to="/careers" className="nav-link-animated" style={{
+            fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 500,
+            color: T.mutedDark, textDecoration: "none",
+            transition: "color 0.3s", position: "relative", padding: "4px 0",
+            display: "inline-flex", alignItems: "center", gap: 6,
+          }}
+            onMouseEnter={e => e.currentTarget.style.color = T.white}
+            onMouseLeave={e => e.currentTarget.style.color = T.mutedDark}
+          >
+            Careers
+            <span style={{
+              fontSize: 9, fontWeight: 700, letterSpacing: 0.5,
+              padding: "2px 7px", borderRadius: 999,
+              background: "rgba(20,227,197,0.18)", color: "#14E3C5",
+              border: "1px solid rgba(20,227,197,0.4)",
+              textTransform: "uppercase",
+              animation: "pulse-dot 2.4s ease-in-out infinite",
+            }}>Hiring</span>
+          </Link>
           {user ? (
             <Btn primary to="/dashboard" style={{ padding: "9px 22px", fontSize: 13 }}>Dashboard</Btn>
           ) : (
@@ -2485,7 +2504,18 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
               {l.label}
             </div>
           ))}
-          <div style={{ marginTop: 40, opacity: 0, animation: `card-enter 0.5s ease forwards ${navLinks.length * 0.08}s`, display: "flex", flexDirection: "column", gap: 12 }}>
+          <Link to="/careers" onClick={() => setMenuOpen(false)}
+            style={{ padding: "22px 0", borderBottom: `1px solid ${T.border}`, fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 600, color: T.white, textDecoration: "none", letterSpacing: "-0.03em", opacity: 0, animation: `card-enter 0.5s ease forwards ${navLinks.length * 0.08}s`, display: "flex", alignItems: "center", gap: 12 }}>
+            Careers
+            <span style={{
+              fontSize: 11, fontWeight: 700, letterSpacing: 0.5,
+              padding: "4px 10px", borderRadius: 999,
+              background: "rgba(20,227,197,0.18)", color: "#14E3C5",
+              border: "1px solid rgba(20,227,197,0.4)",
+              textTransform: "uppercase",
+            }}>Hiring</span>
+          </Link>
+          <div style={{ marginTop: 40, opacity: 0, animation: `card-enter 0.5s ease forwards ${(navLinks.length + 1) * 0.08}s`, display: "flex", flexDirection: "column", gap: 12 }}>
             {user ? (
               <Btn primary to="/dashboard" style={{ width: "100%", justifyContent: "center" }}>Dashboard</Btn>
             ) : (
