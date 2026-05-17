@@ -217,6 +217,14 @@ const PRIMARY_PAGES = [
     ogSubtitle: "Get in touch with our team",
   },
   {
+    path: "/careers",
+    title: "Careers",
+    description:
+      "Open roles and internships at VRIKAAN — India's AI-powered cyber defense platform. SOC analysts, full-stack engineers, ML engineers, content marketers wanted.",
+    ogSubtitle: "We're hiring — SOC, full-stack, AI, marketing",
+    ogCategory: "Careers",
+  },
+  {
     path: "/founder",
     title: "Founder's Note",
     description:

@@ -156,6 +156,127 @@ const TYPE_COLORS = { Internship: T.cyan, "Full-Time": T.accent, Contract: T.amb
 const TEAMS = ["All", "Security", "Engineering", "Marketing"];
 const TYPES = ["All", "Internship", "Full-Time", "Contract"];
 
+// ── Google JobPosting schema helpers (https://developers.google.com/search/docs/appearance/structured-data/job-posting) ──
+const SITE_URL = "https://vrikaan.com";
+
+// Parse min/max + unit (MONTH for stipend, YEAR for LPA) out of duration strings like:
+//   "3 months · stipend ₹5,000–₹15,000 / month + perf bonus"
+//   "Full-time · ₹4–8 LPA + ESOPs"
+function parseSalary(duration = "") {
+  // Match LPA pattern first (annual)
+  const lpa = duration.match(/₹\s*(\d+(?:\.\d+)?)\s*[–-]\s*(\d+(?:\.\d+)?)\s*LPA/i);
+  if (lpa) {
+    return { min: Number(lpa[1]) * 100000, max: Number(lpa[2]) * 100000, unit: "YEAR" };
+  }
+  // Match monthly stipend like ₹5,000–₹15,000 / month
+  const mon = duration.match(/₹\s*([\d,]+)\s*[–-]\s*₹?\s*([\d,]+)/);
+  if (mon) {
+    return { min: Number(mon[1].replace(/,/g, "")), max: Number(mon[2].replace(/,/g, "")), unit: "MONTH" };
+  }
+  return null;
+}
+
+function buildJobPostingSchema(job) {
+  const sal = parseSalary(job.duration);
+  // datePosted: 7 days ago (so Google considers it "fresh" but not "just posted")
+  // validThrough: 60 days from today
+  const now = new Date();
+  const datePosted = new Date(now.getTime() - 7 * 86400000).toISOString().slice(0, 10);
+  const validThrough = new Date(now.getTime() + 60 * 86400000).toISOString().slice(0, 10);
+
+  const employmentTypeMap = {
+    "Internship": "INTERN",
+    "Full-Time": "FULL_TIME",
+    "Contract": "CONTRACTOR",
+    "Part-Time": "PART_TIME",
+  };
+
+  // Build plain-text description Google likes: summary + sections
+  const sectionToText = (label, items) => items?.length
+    ? `${label}:\n${items.map(i => `• ${i}`).join("\n")}`
+    : "";
+  const description = [
+    job.summary,
+    "",
+    sectionToText("What you will do", job.responsibilities),
+    "",
+    sectionToText("Must-have", job.musts),
+    "",
+    sectionToText("Nice-to-have", job.nice),
+    "",
+    `Compensation: ${job.duration}`,
+    `Apply: ${SITE_URL}/careers#${job.id}  ·  or ${SITE_URL}/apply`,
+  ].filter(Boolean).join("\n");
+
+  const schema = {
+    "@context": "https://schema.org/",
+    "@type": "JobPosting",
+    "title": job.title,
+    "description": description,
+    "identifier": {
+      "@type": "PropertyValue",
+      "name": "VRIKAAN",
+      "value": job.id,
+    },
+    "datePosted": datePosted,
+    "validThrough": validThrough,
+    "employmentType": employmentTypeMap[job.type] || "OTHER",
+    "hiringOrganization": {
+      "@type": "Organization",
+      "name": "VRIKAAN",
+      "sameAs": SITE_URL,
+      "logo": `${SITE_URL}/wolf-icon.png`,
+    },
+    "jobLocationType": "TELECOMMUTE",
+    "applicantLocationRequirements": {
+      "@type": "Country",
+      "name": "IN",
+    },
+    // Fallback physical address (Nashik HQ) — required when jobLocationType is set
+    "jobLocation": {
+      "@type": "Place",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Nashik",
+        "addressRegion": "Maharashtra",
+        "addressCountry": "IN",
+      },
+    },
+    "directApply": true,
+    "url": `${SITE_URL}/careers#${job.id}`,
+  };
+
+  if (sal) {
+    schema.baseSalary = {
+      "@type": "MonetaryAmount",
+      "currency": "INR",
+      "value": {
+        "@type": "QuantitativeValue",
+        "minValue": sal.min,
+        "maxValue": sal.max,
+        "unitText": sal.unit,
+      },
+    };
+  }
+
+  if (job.seniority) {
+    schema.experienceRequirements = {
+      "@type": "OccupationalExperienceRequirements",
+      "monthsOfExperience": /freshe?r|student/i.test(job.seniority) ? 0
+        : /(\d+)\s*[–-]?\s*(\d+)?\s*yrs?/i.test(job.seniority)
+          ? Number(RegExp.$1) * 12
+          : 0,
+    };
+    schema.qualifications = job.musts?.join(" · ") || job.seniority;
+  }
+
+  schema.skills = (job.musts || []).concat(job.nice || []).slice(0, 10).join(", ");
+  schema.industry = "Cybersecurity";
+  schema.workHours = "Flexible";
+
+  return schema;
+}
+
 export default function Careers() {
   const [team, setTeam] = useState("All");
   const [type, setType] = useState("All");
@@ -174,6 +295,10 @@ export default function Careers() {
     fulltime: OPENINGS.filter(j => j.type === "Full-Time").length,
   }), []);
 
+  // Google JobPosting JSON-LD — one per opening, lets each role surface in
+  // Google Jobs search (jobs.google.com) and rich-result cards on Google.com
+  const jobSchemas = useMemo(() => OPENINGS.map(buildJobPostingSchema), []);
+
   return (
     <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <SEO
@@ -181,6 +306,7 @@ export default function Careers() {
         description="Open roles and internships at VRIKAAN — India's AI-powered cyber defense platform. SOC analysts, full-stack engineers, ML engineers, content marketers wanted."
         path="/careers"
         keywords="vrikaan careers, cybersecurity jobs india, SOC analyst internship, security internship india, remote cybersecurity intern"
+        jsonLd={jobSchemas}
       />
       <Navbar />
 
