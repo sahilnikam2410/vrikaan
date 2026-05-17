@@ -45,6 +45,11 @@ const mainLinks = [
   { to: "/pricing", label: "Pricing" },
 ];
 
+// Always-visible links (rendered for both logged-in and logged-out users)
+const alwaysLinks = [
+  { to: "/careers", label: "Careers", badge: "Hiring" },
+];
+
 const SEARCH_ITEMS = [
   { label: "Threat Map", to: "/threat-map", cat: "Tools", icon: "\uD83C\uDF0D" },
   { label: "Fraud Analyzer", to: "/fraud-analyzer", cat: "Tools", icon: "\uD83D\uDD0D" },
@@ -240,17 +245,29 @@ const Navbar = () => {
                 )}
               </div>
 
-              {/* Regular links (Learn, News, Blog) */}
+              {/* Regular links (Learn, News, Blog, Careers) */}
               {mainLinks.filter(l => l.to !== "/pricing").map(l => (
                 <Link key={l.to} to={l.to} style={{
                   color: isActive(l.to) ? T.accent : T.muted,
                   textDecoration: "none", fontSize: 14, fontWeight: 500,
                   padding: "8px 14px", borderRadius: 8, transition: "all 0.2s",
                   background: isActive(l.to) ? "rgba(99,102,241,0.08)" : "transparent",
+                  display: "inline-flex", alignItems: "center", gap: 6,
                 }}
                   onMouseEnter={e => { if (!isActive(l.to)) e.currentTarget.style.color = T.white; }}
                   onMouseLeave={e => { if (!isActive(l.to)) e.currentTarget.style.color = T.muted; }}
-                >{l.label}</Link>
+                >
+                  {l.label}
+                  {l.badge && (
+                    <span style={{
+                      fontSize: 9, fontWeight: 700, letterSpacing: 0.5,
+                      padding: "2px 6px", borderRadius: 999,
+                      background: "rgba(20,227,197,0.18)", color: "#14E3C5",
+                      border: "1px solid rgba(20,227,197,0.4)",
+                      textTransform: "uppercase",
+                    }}>{l.badge}</span>
+                  )}
+                </Link>
               ))}
             </>
           )}
@@ -265,6 +282,32 @@ const Navbar = () => {
             onMouseEnter={e => { if (!isActive("/pricing")) e.currentTarget.style.color = T.white; }}
             onMouseLeave={e => { if (!isActive("/pricing")) e.currentTarget.style.color = T.muted; }}
           >Pricing</Link>
+
+          {/* Always-visible (Careers w/ hiring badge) */}
+          {alwaysLinks.map(l => (
+            <Link key={l.to} to={l.to} style={{
+              color: isActive(l.to) ? T.accent : T.muted,
+              textDecoration: "none", fontSize: 14, fontWeight: 500,
+              padding: "8px 14px", borderRadius: 8, transition: "all 0.2s",
+              background: isActive(l.to) ? "rgba(99,102,241,0.08)" : "transparent",
+              display: "inline-flex", alignItems: "center", gap: 6,
+            }}
+              onMouseEnter={e => { if (!isActive(l.to)) e.currentTarget.style.color = T.white; }}
+              onMouseLeave={e => { if (!isActive(l.to)) e.currentTarget.style.color = T.muted; }}
+            >
+              {l.label}
+              {l.badge && (
+                <span style={{
+                  fontSize: 9, fontWeight: 700, letterSpacing: 0.5,
+                  padding: "2px 7px", borderRadius: 999,
+                  background: "rgba(20,227,197,0.18)", color: "#14E3C5",
+                  border: "1px solid rgba(20,227,197,0.4)",
+                  textTransform: "uppercase",
+                  animation: "pulse-dot 2.4s ease-in-out infinite",
+                }}>{l.badge}</span>
+              )}
+            </Link>
+          ))}
         </div>
 
         {/* Desktop auth buttons */}
@@ -511,14 +554,26 @@ const Navbar = () => {
                 </div>
               )}
 
-              {/* Learn, News, Blog — only when logged in */}
+              {/* Learn, News, Blog, Careers — only when logged in */}
               {mainLinks.filter(l => l.to !== "/pricing").map(l => (
                 <Link key={l.to} to={l.to} style={{
                   color: isActive(l.to) ? T.accent : T.white,
                   textDecoration: "none", fontSize: 20, fontWeight: 600,
                   fontFamily: "'Space Grotesk', sans-serif",
                   padding: "12px 24px", transition: "color 0.2s",
-                }}>{l.label}</Link>
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                }}>
+                  {l.label}
+                  {l.badge && (
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, letterSpacing: 0.5,
+                      padding: "3px 8px", borderRadius: 999,
+                      background: "rgba(20,227,197,0.18)", color: "#14E3C5",
+                      border: "1px solid rgba(20,227,197,0.4)",
+                      textTransform: "uppercase",
+                    }}>{l.badge}</span>
+                  )}
+                </Link>
               ))}
             </>
           )}
@@ -530,6 +585,28 @@ const Navbar = () => {
             fontFamily: "'Space Grotesk', sans-serif",
             padding: "12px 24px", transition: "color 0.2s",
           }}>Pricing</Link>
+
+          {/* Always-visible (Careers w/ hiring badge) */}
+          {alwaysLinks.map(l => (
+            <Link key={l.to} to={l.to} style={{
+              color: isActive(l.to) ? T.accent : T.white,
+              textDecoration: "none", fontSize: 20, fontWeight: 600,
+              fontFamily: "'Space Grotesk', sans-serif",
+              padding: "12px 24px", transition: "color 0.2s",
+              display: "inline-flex", alignItems: "center", gap: 8,
+            }}>
+              {l.label}
+              {l.badge && (
+                <span style={{
+                  fontSize: 10, fontWeight: 700, letterSpacing: 0.5,
+                  padding: "3px 8px", borderRadius: 999,
+                  background: "rgba(20,227,197,0.18)", color: "#14E3C5",
+                  border: "1px solid rgba(20,227,197,0.4)",
+                  textTransform: "uppercase",
+                }}>{l.badge}</span>
+              )}
+            </Link>
+          ))}
 
           <Link to="/about" style={{ color: T.muted, textDecoration: "none", fontSize: 16, fontWeight: 500, padding: "8px 24px" }}>About</Link>
           <Link to="/contact" style={{ color: T.muted, textDecoration: "none", fontSize: 16, fontWeight: 500, padding: "8px 24px" }}>Contact</Link>
