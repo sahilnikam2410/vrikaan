@@ -4,6 +4,8 @@ import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { subscribe as subNotif, listNotifications, markAllRead as notifMarkAll, dismissNotification, markRead, seedWelcome } from "../services/notificationService";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { getToolTier, userMeetsTier, tierLabel, tierColor } from "../lib/toolTiers";
+import UpgradeModal from "./UpgradeModal";
 
 const TD = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", accent: "#6366f1", cyan: "#14e3c5", border: "rgba(148,163,184,0.08)" };
 const TL = { bg: "#f8fafc", white: "#0f172a", muted: "#475569", accent: "#6366f1", cyan: "#0d9488", border: "rgba(15,23,42,0.08)" };
@@ -95,6 +97,7 @@ const Navbar = () => {
   const [notifOpen, setNotifOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [paywallTool, setPaywallTool] = useState(null); // { name, path, tier } or null
   const [searchQuery, setSearchQuery] = useState("");
   const [notifications, setNotifications] = useState([]);
   useEffect(() => {
@@ -223,22 +226,62 @@ const Navbar = () => {
                         <div style={{ fontSize: 11, fontWeight: 700, color: T.accent, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, padding: "0 8px" }}>
                           {group.label}
                         </div>
-                        {group.items.map(item => (
-                          <Link key={item.to} to={item.to} style={{
-                            display: "flex", alignItems: "center", gap: 10, padding: "8px 10px",
-                            borderRadius: 8, textDecoration: "none", transition: "background 0.15s",
-                            background: isActive(item.to) ? "rgba(99,102,241,0.1)" : "transparent",
-                          }}
-                            onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.08)"}
-                            onMouseLeave={e => e.currentTarget.style.background = isActive(item.to) ? "rgba(99,102,241,0.1)" : "transparent"}
-                          >
-                            <span style={{ fontSize: 18, lineHeight: 1 }}>{item.label.split(" ")[0]}</span>
-                            <div>
-                              <div style={{ fontSize: 13, fontWeight: 600, color: isActive(item.to) ? T.accent : T.white }}>{item.label.split(" ").slice(1).join(" ")}</div>
-                              <div style={{ fontSize: 11, color: T.muted }}>{item.desc}</div>
-                            </div>
-                          </Link>
-                        ))}
+                        {group.items.map(item => {
+                          const { tier, name } = getToolTier(item.to);
+                          const userPlan = user?.plan || "free";
+                          const eligible = userMeetsTier(userPlan, tier);
+                          const locked = !eligible && tier !== "free";
+                          const tColor = tierColor(tier);
+                          return (
+                            <Link
+                              key={item.to}
+                              to={item.to}
+                              onClick={(e) => {
+                                if (locked) {
+                                  e.preventDefault();
+                                  setPaywallTool({ name: name || item.label.split(" ").slice(1).join(" "), path: item.to, tier });
+                                  setToolsOpen(false);
+                                }
+                              }}
+                              style={{
+                                display: "flex", alignItems: "center", gap: 10, padding: "8px 10px",
+                                borderRadius: 8, textDecoration: "none", transition: "background 0.15s",
+                                background: isActive(item.to) ? "rgba(99,102,241,0.1)" : "transparent",
+                                opacity: locked ? 0.85 : 1,
+                              }}
+                              onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.08)"}
+                              onMouseLeave={e => e.currentTarget.style.background = isActive(item.to) ? "rgba(99,102,241,0.1)" : "transparent"}
+                            >
+                              <span style={{ fontSize: 18, lineHeight: 1 }}>{item.label.split(" ")[0]}</span>
+                              <div style={{ flex: 1, minWidth: 0 }}>
+                                <div style={{
+                                  display: "flex", alignItems: "center", gap: 6,
+                                  fontSize: 13, fontWeight: 600,
+                                  color: isActive(item.to) ? T.accent : T.white,
+                                }}>
+                                  <span>{item.label.split(" ").slice(1).join(" ")}</span>
+                                  {tier !== "free" && (
+                                    <span style={{
+                                      display: "inline-flex", alignItems: "center", gap: 2,
+                                      fontSize: 8, fontWeight: 800, letterSpacing: 0.8,
+                                      padding: "2px 5px", borderRadius: 999,
+                                      background: locked ? "transparent" : `${tColor}22`,
+                                      color: tColor,
+                                      border: `1px solid ${locked ? `${tColor}66` : `${tColor}33`}`,
+                                      textTransform: "uppercase",
+                                      fontFamily: "ui-monospace, Menlo, monospace",
+                                      lineHeight: 1,
+                                    }}>
+                                      {locked && <span style={{ fontSize: 7 }}>🔒</span>}
+                                      {tierLabel(tier)}
+                                    </span>
+                                  )}
+                                </div>
+                                <div style={{ fontSize: 11, color: T.muted }}>{item.desc}</div>
+                              </div>
+                            </Link>
+                          );
+                        })}
                       </div>
                     ))}
                   </div>
@@ -698,6 +741,18 @@ const Navbar = () => {
           .mobile-bottom-nav { display: flex !important; }
         }
       `}</style>
+
+      {/* Paywall modal (fired by Tools dropdown click on locked tool) */}
+      {paywallTool && (
+        <UpgradeModal
+          open={!!paywallTool}
+          onClose={() => setPaywallTool(null)}
+          toolName={paywallTool.name}
+          toolPath={paywallTool.path}
+          tier={paywallTool.tier}
+          userPlan={user?.plan || "free"}
+        />
+      )}
     </>
   );
 };

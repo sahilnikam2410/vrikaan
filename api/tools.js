@@ -1,5 +1,101 @@
 import { applyRateLimit } from "./_rateLimit.js";
-import { getAdminFirestore } from "./_firebaseAdmin.js";
+import { getAdminFirestore, getAdminAuth } from "./_firebaseAdmin.js";
+
+// ─── Tier gate (server-trusted) ─────────────────────────────────────
+// Map each action → required plan tier.
+// "free" = anyone (including unauthenticated)
+// "pro"  = paid Pro plan OR allowed daily free-quota slots
+// "enterprise" = Enterprise plan only, no free quota
+const ACTION_TIERS = {
+  // FREE tier (educational, public utility)
+  whois:               "free",
+  ip:                  "free",
+  "breach-check":      "free",
+  "password-check":    "free",
+  "weekly-digest":     "free", // cron auth handled separately inside handler
+  "leak-check":        "free",
+
+  // PRO tier (AI, data-heavy, paid value)
+  "scam-check":         "pro",
+  "headers-fix":        "pro",
+  "deepfake-audio":     "pro",
+  "security-headers":   "pro",
+  "file-hash-check":    "pro",
+  "ai-explain":         "pro",
+  "vuln-scan":          "pro",
+  "vuln-synthesize":    "pro",
+
+  // ENTERPRISE tier (team / webhooks / refunds / 2FA admin)
+  "team-create":         "enterprise",
+  "team-invite":         "enterprise",
+  "team-accept-invite":  "enterprise",
+  "team-remove-member":  "enterprise",
+  "webhook-set":         "enterprise",
+  "webhook-clear":       "enterprise",
+  "webhook-test":        "enterprise",
+  refund:                "enterprise",
+  "totp-setup":          "free",  // 2FA available to all
+  "totp-confirm":        "free",
+  "totp-verify":         "free",
+  "totp-disable":        "free",
+};
+
+const TIER_LEVEL = { free: 0, pro: 1, enterprise: 2 };
+function planMeetsTier(plan, required) {
+  return (TIER_LEVEL[plan || "free"] ?? 0) >= (TIER_LEVEL[required || "free"] ?? 0);
+}
+
+// Daily free-quota for Pro tools — per-uid for authed users, per-IP fallback.
+// 3 free uses per tool per day. In-memory; resets on cold start (acceptable).
+const PRO_FREE_QUOTA_PER_DAY = 3;
+const _quotaCounter = new Map(); // key: `${uid|ip}|${tool}|${YYYY-MM-DD}` → count
+function _quotaKey(scope, tool) {
+  const day = new Date().toISOString().slice(0, 10);
+  return `${scope}|${tool}|${day}`;
+}
+function getFreeQuota(scope, tool) {
+  const k = _quotaKey(scope, tool);
+  const used = _quotaCounter.get(k) || 0;
+  return { used, limit: PRO_FREE_QUOTA_PER_DAY, remaining: Math.max(0, PRO_FREE_QUOTA_PER_DAY - used) };
+}
+function bumpFreeQuota(scope, tool) {
+  const k = _quotaKey(scope, tool);
+  _quotaCounter.set(k, (_quotaCounter.get(k) || 0) + 1);
+}
+
+/**
+ * Resolve caller plan from request — try Firebase ID token first
+ * (browser users) then API token (external clients). Returns:
+ *   { plan, uid, source } where source = "id-token" | "api-token" | "anon"
+ */
+async function resolveCaller(req) {
+  const header = req.headers["authorization"] || "";
+  // 1) Firebase ID token (Authorization: Bearer <jwt> from browser)
+  const jwtMatch = /^Bearer\s+(eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+)\s*$/i.exec(header);
+  if (jwtMatch) {
+    const auth = getAdminAuth();
+    const fs = getAdminFirestore();
+    if (auth && fs) {
+      try {
+        const decoded = await auth.verifyIdToken(jwtMatch[1]);
+        const uid = decoded.uid;
+        let plan = "free";
+        try {
+          const snap = await fs.collection("users").doc(uid).get();
+          plan = snap.exists ? (snap.data().plan || "free") : "free";
+        } catch {}
+        return { plan, uid, source: "id-token" };
+      } catch {
+        // Invalid/expired ID token → fall through to API token then anon
+      }
+    }
+  }
+  // 2) Long-lived API token (existing flow)
+  const apiTok = await validateApiToken(header);
+  if (apiTok.valid) return { plan: apiTok.plan || "free", uid: apiTok.uid, source: "api-token" };
+  // 3) Anonymous
+  return { plan: "free", uid: null, source: "anon" };
+}
 
 // ─── WHOIS ──────────────────────────────────────────────────────────
 
@@ -1893,15 +1989,49 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  // API token auth — Pro+ users get higher rate limits and can call
-  // from external clients without the browser-origin check.
-  const tokenAuth = await validateApiToken(req.headers["authorization"]);
-  req.apiClient = tokenAuth; // { valid, uid, plan }
+  // Caller auth — Firebase ID token (browser) or long-lived API token
+  const caller = await resolveCaller(req);
+  req.apiClient = { valid: caller.source !== "anon", uid: caller.uid, plan: caller.plan, source: caller.source };
+
+  // Tier gate — refuse Pro/Enterprise actions for under-tier callers.
+  // Free callers get a daily 3-use quota on Pro actions (scoped by uid or IP).
+  const required = ACTION_TIERS[tool] || "free";
+  if (!planMeetsTier(caller.plan, required)) {
+    if (required === "enterprise") {
+      return res.status(402).json({
+        error: "Enterprise plan required",
+        code: "TIER_ENTERPRISE_REQUIRED",
+        requiredTier: "enterprise",
+        callerPlan: caller.plan,
+        upgradeUrl: "/contact?intent=enterprise",
+      });
+    }
+    // required === "pro" → check daily free quota
+    const scope = caller.uid || (req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "ip-unknown").split(",")[0].trim();
+    const q = getFreeQuota(scope, tool);
+    if (q.remaining <= 0) {
+      res.setHeader("X-Quota-Used", String(q.used));
+      res.setHeader("X-Quota-Limit", String(q.limit));
+      return res.status(402).json({
+        error: "Pro plan required (daily free quota exhausted)",
+        code: "TIER_QUOTA_EXHAUSTED",
+        requiredTier: "pro",
+        callerPlan: caller.plan,
+        used: q.used,
+        limit: q.limit,
+        upgradeUrl: "/pricing",
+      });
+    }
+    bumpFreeQuota(scope, tool);
+    res.setHeader("X-Quota-Used", String(q.used + 1));
+    res.setHeader("X-Quota-Limit", String(q.limit));
+    res.setHeader("X-Quota-Remaining", String(q.remaining - 1));
+  }
 
   if (!RL_EXEMPT.has(tool)) {
-    const rateLimits = tokenAuth.valid
+    const rateLimits = (caller.plan === "pro" || caller.plan === "enterprise")
       ? { ipLimit: 200, userLimit: 600, windowMs: 60000 }   // Pro+
-      : { ipLimit: 20, userLimit: 60, windowMs: 60000 };    // Anonymous / free
+      : { ipLimit: 20, userLimit: 60, windowMs: 60000 };    // Free / anon
     const rl = applyRateLimit(req, rateLimits);
     if (!rl.allowed) {
       res.setHeader("Retry-After", rl.retryAfter);

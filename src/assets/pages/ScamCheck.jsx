@@ -2,6 +2,10 @@ import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
+import QuotaBanner from "../../components/QuotaBanner";
+import UpgradeModal from "../../components/UpgradeModal";
+import { useToolQuota } from "../../hooks/useToolQuota";
+import { apiFetch, parseTierError } from "../../lib/apiFetch";
 
 const T = { bg: "#030712", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
@@ -23,19 +27,30 @@ export default function ScamCheck() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
+  const [paywall, setPaywall] = useState(false);
+  const quota = useToolQuota({ path: "/scam-check" });
 
   const run = async () => {
     if (text.trim().length < 5) { setError("Paste at least 5 characters."); return; }
+    if (!quota.allowed) { setPaywall(true); return; }
     setLoading(true); setError(""); setResult(null);
     try {
-      const r = await fetch("/api/tools?tool=scam-check", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, channel }),
+      await quota.run(async () => {
+        const r = await apiFetch("/api/tools?tool=scam-check", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text, channel }),
+        });
+        const tierErr = await parseTierError(r);
+        if (tierErr) {
+          setPaywall(true);
+          quota.refresh();
+          throw new Error(tierErr.error);
+        }
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || "Request failed");
+        setResult(data);
       });
-      const data = await r.json();
-      if (!r.ok) throw new Error(data.error || "Request failed");
-      setResult(data);
     } catch (e) { setError(e.message); }
     finally { setLoading(false); }
   };
@@ -58,6 +73,16 @@ export default function ScamCheck() {
         <p style={{ color: T.muted, fontSize: 14, margin: "0 0 24px" }}>
           Paste an SMS, email, or WhatsApp message. AI analyzes it for India-specific scam patterns — UPI fraud, fake KYC, parcel-delivery scams, OTP requests, and more.
         </p>
+
+        <QuotaBanner
+          unlimited={quota.unlimited}
+          used={quota.used}
+          limit={quota.limit}
+          remaining={quota.remaining}
+          resetAt={quota.resetAt}
+          tier={quota.tier}
+          path="/scam-check"
+        />
 
         {/* Channel selector */}
         <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
@@ -174,6 +199,16 @@ export default function ScamCheck() {
         )}
       </div>
       <Footer />
+      {paywall && (
+        <UpgradeModal
+          open={paywall}
+          onClose={() => setPaywall(false)}
+          toolName="Scam Check (AI)"
+          toolPath="/scam-check"
+          tier={quota.tier}
+          userPlan={quota.userPlan}
+        />
+      )}
     </div>
   );
 }

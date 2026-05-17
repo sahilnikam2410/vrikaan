@@ -36,11 +36,13 @@ export function ProtectedRoute({ children, adminOnly = false, tier: tierOverride
   }
   if (adminOnly && user.role !== "admin") return <Navigate to="/dashboard" replace />;
 
-  // Tier check — explicit override OR derived from path
+  // Tier check — explicit override OR derived from path.
+  // Free Pro tools get a daily quota (handled in-page via useToolQuota +
+  // QuotaBanner). Enterprise tools hard-block at the route level.
   const requiredTier = tierOverride || getToolTier(location.pathname).tier;
   const userPlan = user.plan || "free";
-  if (requiredTier !== "free" && !userMeetsTier(userPlan, requiredTier)) {
-    return <UpgradeWall path={location.pathname} requiredTier={requiredTier} userPlan={userPlan} />;
+  if (requiredTier === "enterprise" && !userMeetsTier(userPlan, "enterprise")) {
+    return <UpgradeWall path={location.pathname} requiredTier="enterprise" userPlan={userPlan} />;
   }
 
   return children;
