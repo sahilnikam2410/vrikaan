@@ -1981,7 +1981,10 @@ async function validateApiToken(authHeader) {
 export default async function handler(req, res) {
   const tool = req.query.tool;
   if (!tool || !HANDLERS[tool]) {
-    return res.status(400).json({ error: `Unknown tool: ${tool || "(missing)"}. Valid: ${Object.keys(HANDLERS).join(", ")}` });
+    // Don't enumerate available actions in the response — reduces attack surface
+    // visibility. Log the attempted name server-side so we can spot probing.
+    if (tool) console.warn(`[api/tools] unknown action requested: ${String(tool).slice(0, 64)}`);
+    return res.status(400).json({ error: "Missing or unknown tool parameter" });
   }
 
   const allowGet = GET_ALLOWED.has(tool);

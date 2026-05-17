@@ -1,0 +1,42 @@
+Contact: mailto:hello@vrikaan.com
+Contact: mailto:vrikaan.ai@gmail.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: en, hi
+Canonical: https://vrikaan.com/.well-known/security.txt
+Policy: https://vrikaan.com/responsible-disclosure
+Acknowledgments: https://vrikaan.com/security/hall-of-fame
+
+# Found a vulnerability in VRIKAAN?
+#
+# Email hello@vrikaan.com with:
+#  - A clear description (impact + steps to reproduce)
+#  - Affected URL or endpoint
+#  - Your name / handle if you'd like credit in the Hall of Fame
+#
+# We acknowledge every report within 48 hours. Coordinated disclosure
+# preferred — please give us 90 days to fix before public disclosure.
+#
+# Bounties: VRIKAAN is bootstrapped, so we cannot pay USD-scale bounties
+# yet. We currently offer:
+#  - Public credit (vrikaan.com/security/hall-of-fame)
+#  - 1-year free Pro plan
+#  - For critical findings: ₹5,000-25,000 INR depending on severity
+#
+# Out of scope:
+#  - Denial-of-service or rate-limit-exhaustion reports
+#  - Reports from automated scanners with no manual validation
+#  - Missing security headers without demonstrated impact
+#  - Self-XSS or social-engineering attacks
+#  - Vulnerabilities in third-party services (Firebase, Vercel, Cashfree)
+#
+# In scope:
+#  - vrikaan.com + www.vrikaan.com (production)
+#  - vrikaan.com/api/* (serverless functions)
+#  - Authentication bypass / privilege escalation
+#  - IDOR / data leakage between users
+#  - Stored or reflected XSS, SQL/NoSQL injection
+#  - Cashfree webhook signature bypass
+#  - Firestore security rule bypass
+#
+# Thanks for helping us keep VRIKAAN safe.
+# — Sahil Anil Nikam · Khushi Ishwar Raigade
