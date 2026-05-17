@@ -2,18 +2,27 @@ import { Link } from "react-router-dom";
 import PageJump from "./PageJump";
 import ScrollProgress from "./ScrollProgress";
 import EmailRouting from "./EmailRouting";
+import SmartToolLink from "./SmartToolLink";
 
 const T = {
   bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b",
   cyan: "#14e3c5", accent: "#6366f1", border: "rgba(148,163,184,0.08)",
 };
 
+// Plain link (Company / Legal columns — non-tool pages, no tier gating)
 const FooterLink = ({ to, children }) => (
   <li style={{ marginBottom: 10 }}>
     <Link to={to} style={{ color: T.mutedDark, textDecoration: "none", fontSize: 14, fontFamily: "var(--font-body)", transition: "color 0.2s" }}
       onMouseEnter={e => e.currentTarget.style.color = T.white}
       onMouseLeave={e => e.currentTarget.style.color = T.mutedDark}
     >{children}</Link>
+  </li>
+);
+
+// Tool link (Security Tools / Resources columns — shows tier badge + paywall for locked tools)
+const FooterTool = ({ to, children }) => (
+  <li style={{ marginBottom: 10 }}>
+    <SmartToolLink to={to}>{children}</SmartToolLink>
   </li>
 );
 
@@ -64,20 +73,20 @@ const Footer = () => (
         <div>
           <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Security Tools</h4>
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-            <FooterLink to="/threat-map">Threat Map</FooterLink>
-            <FooterLink to="/fraud-analyzer">Fraud Analyzer</FooterLink>
-            <FooterLink to="/vulnerability-scanner">Vulnerability Scanner</FooterLink>
-            <FooterLink to="/dark-web-monitor">Dark Web Monitor</FooterLink>
-            <FooterLink to="/password-vault">Password Vault</FooterLink>
-            <FooterLink to="/email-analyzer">Email Analyzer</FooterLink>
-            <FooterLink to="/ip-lookup">IP Lookup</FooterLink>
-            <FooterLink to="/qr-scanner">QR Scanner</FooterLink>
-            <FooterLink to="/identity-xray">Identity X-Ray</FooterLink>
-            <FooterLink to="/password-checker">Password Checker</FooterLink>
-            <FooterLink to="/whois-lookup">WHOIS Lookup</FooterLink>
-            <FooterLink to="/security-headers">Security Headers</FooterLink>
-            <FooterLink to="/file-hash-scanner">File Hash Scanner</FooterLink>
-            <FooterLink to="/security-audit">Security Audit</FooterLink>
+            <FooterTool to="/threat-map">Threat Map</FooterTool>
+            <FooterTool to="/fraud-analyzer">Fraud Analyzer</FooterTool>
+            <FooterTool to="/vulnerability-scanner">Vulnerability Scanner</FooterTool>
+            <FooterTool to="/dark-web-monitor">Dark Web Monitor</FooterTool>
+            <FooterTool to="/password-vault">Password Vault</FooterTool>
+            <FooterTool to="/email-analyzer">Email Analyzer</FooterTool>
+            <FooterTool to="/ip-lookup">IP Lookup</FooterTool>
+            <FooterTool to="/qr-scanner">QR Scanner</FooterTool>
+            <FooterTool to="/identity-xray">Identity X-Ray</FooterTool>
+            <FooterTool to="/password-checker">Password Checker</FooterTool>
+            <FooterTool to="/whois-lookup">WHOIS Lookup</FooterTool>
+            <FooterTool to="/security-headers">Security Headers</FooterTool>
+            <FooterTool to="/file-hash-scanner">File Hash Scanner</FooterTool>
+            <FooterTool to="/security-audit">Security Audit</FooterTool>
           </ul>
         </div>
 
@@ -85,19 +94,19 @@ const Footer = () => (
         <div>
           <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Resources</h4>
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-            <FooterLink to="/learn">Learn Academy</FooterLink>
-            <FooterLink to="/cyber-news">Cyber News</FooterLink>
-            <FooterLink to="/threats">Threat Directory</FooterLink>
-            <FooterLink to="/blog">Blog</FooterLink>
-            <FooterLink to="/security-checklist">Security Checklist</FooterLink>
-            <FooterLink to="/security-score">Security Score</FooterLink>
-            <FooterLink to="/scam-database">Scam Database</FooterLink>
-            <FooterLink to="/emergency-help">Emergency Help</FooterLink>
-            <FooterLink to="/2fa-guide">2FA Setup Guide</FooterLink>
-            <FooterLink to="/phishing-trainer">Phishing Trainer</FooterLink>
-            <FooterLink to="/browser-fingerprint">Browser Fingerprint</FooterLink>
-            <FooterLink to="/dns-leak-test">DNS Leak Test</FooterLink>
-            <FooterLink to="/referral">Refer & Earn</FooterLink>
+            <FooterTool to="/learn">Learn Academy</FooterTool>
+            <FooterTool to="/cyber-news">Cyber News</FooterTool>
+            <FooterTool to="/threats">Threat Directory</FooterTool>
+            <FooterTool to="/blog">Blog</FooterTool>
+            <FooterTool to="/security-checklist">Security Checklist</FooterTool>
+            <FooterTool to="/security-score">Security Score</FooterTool>
+            <FooterTool to="/scam-database">Scam Database</FooterTool>
+            <FooterTool to="/emergency-help">Emergency Help</FooterTool>
+            <FooterTool to="/2fa-guide">2FA Setup Guide</FooterTool>
+            <FooterTool to="/phishing-trainer">Phishing Trainer</FooterTool>
+            <FooterTool to="/browser-fingerprint">Browser Fingerprint</FooterTool>
+            <FooterTool to="/dns-leak-test">DNS Leak Test</FooterTool>
+            <FooterTool to="/referral">Refer & Earn</FooterTool>
           </ul>
         </div>
 
