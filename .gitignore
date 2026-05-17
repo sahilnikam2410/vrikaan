@@ -33,6 +33,8 @@ dist-ssr
 *.pptx
 *.pdf
 *.docx
+*.mp4
+marketing-out/
 scripts/ppt/node_modules/
 scripts/marketing/node_modules/
 scripts/ppt/package-lock.json

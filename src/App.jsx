@@ -156,6 +156,7 @@ const SecurityAudit = lazy(() => import("./assets/pages/SecurityAudit.jsx"));
 const ThreatDirectory = lazy(() => import("./assets/pages/ThreatDirectory.jsx"));
 const ThreatDetail = lazy(() => import("./assets/pages/ThreatDetail.jsx"));
 const Press = lazy(() => import("./assets/pages/Press.jsx"));
+const Careers = lazy(() => import("./assets/pages/Careers.jsx"));
 const Status = lazy(() => import("./assets/pages/Status.jsx"));
 const Compare = lazy(() => import("./assets/pages/Compare.jsx"));
 const BulkScanner = lazy(() => import("./assets/pages/BulkScanner.jsx"));
@@ -195,6 +196,10 @@ function AppRoutes() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<About />} />
             <Route path="/press" element={<Press />} />
+            <Route path="/careers" element={<Careers />} />
+            <Route path="/jobs" element={<Careers />} />
+            <Route path="/internship" element={<Careers />} />
+            <Route path="/internships" element={<Careers />} />
             <Route path="/status" element={<Status />} />
             <Route path="/vs/:competitor" element={<Compare />} />
             <Route path="/bulk-scanner" element={<ProtectedRoute><BulkScanner /></ProtectedRoute>} />

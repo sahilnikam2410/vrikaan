@@ -52,6 +52,7 @@ const COMMANDS = [
   { id: "about", label: "About", path: "/about", group: "Pages", icon: "ℹ️" },
   { id: "founder", label: "Founder", path: "/founder", group: "Pages", icon: "👤" },
   { id: "press", label: "Press Kit", path: "/press", group: "Pages", icon: "📰", keywords: "media brand" },
+  { id: "careers", label: "Careers · We are hiring", path: "/careers", group: "Pages", icon: "💼", keywords: "jobs internship hire intern openings" },
   { id: "contact", label: "Contact", path: "/contact", group: "Pages", icon: "✉️" },
   { id: "features", label: "Features", path: "/features", group: "Pages", icon: "✨" },
   { id: "emergency", label: "Emergency Help", path: "/emergency-help", group: "Pages", icon: "🚨", keywords: "panic urgent" },

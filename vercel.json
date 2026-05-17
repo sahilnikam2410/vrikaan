@@ -35,6 +35,9 @@
       ]
     }
   ],
+  "redirects": [
+    { "source": "/apply", "destination": "https://forms.gle/ff3vA9kDC9vZaEzm9", "permanent": false }
+  ],
   "rewrites": [
     { "source": "/((?!api|assets|favicon|manifest|sitemap|robots|sw|og-|google).*)", "destination": "/index.html" }
   ],

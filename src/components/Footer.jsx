@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import BackToTop from "./BackToTop";
+import EmailRouting from "./EmailRouting";
 
 const T = {
   bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b",
@@ -108,6 +109,8 @@ const Footer = () => (
             <FooterLink to="/pricing">Pricing</FooterLink>
             <FooterLink to="/contact">Contact</FooterLink>
             <FooterLink to="/features">Features</FooterLink>
+            <FooterLink to="/careers">Careers · We are hiring</FooterLink>
+            <FooterLink to="/press">Press</FooterLink>
           </ul>
         </div>
 
@@ -125,11 +128,16 @@ const Footer = () => (
         </div>
       </div>
 
+      {/* Email routing pills */}
+      <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 20, marginTop: 8 }}>
+        <EmailRouting variant="compact" />
+      </div>
+
       {/* Bottom */}
-      <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 28, display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+      <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 20, marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
         <div style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark }}>&copy; 2026 VRIKAAN. All rights reserved.</div>
         <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(100,116,139,0.6)" }}>
-          Founded by Sahil Anil Nikam | Built with security in mind | Protecting digital lives worldwide
+          Founded by Sahil Anil Nikam &amp; Khushi Ishwar Raigade | SOC Analysts &amp; Cybersecurity Researchers | Nashik, India
         </div>
       </div>
     </div>
