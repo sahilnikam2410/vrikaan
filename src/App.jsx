@@ -149,6 +149,7 @@ const SecurityHeaders = lazy(() => import("./assets/pages/SecurityHeaders.jsx"))
 const BrowserFingerprint = lazy(() => import("./assets/pages/BrowserFingerprint.jsx"));
 const PhishingTrainer = lazy(() => import("./assets/pages/PhishingTrainer.jsx"));
 const FileHashScanner = lazy(() => import("./assets/pages/FileHashScanner.jsx"));
+const DeviceScanner = lazy(() => import("./assets/pages/DeviceScanner.jsx"));
 const DnsLeakTest = lazy(() => import("./assets/pages/DnsLeakTest.jsx"));
 const TwoFactorGuide = lazy(() => import("./assets/pages/TwoFactorGuide.jsx"));
 const Referral = lazy(() => import("./assets/pages/Referral.jsx"));
@@ -230,6 +231,8 @@ function AppRoutes() {
             <Route path="/browser-fingerprint" element={<ProtectedRoute><BrowserFingerprint /></ProtectedRoute>} />
             <Route path="/phishing-trainer" element={<ProtectedRoute><PhishingTrainer /></ProtectedRoute>} />
             <Route path="/file-hash-scanner" element={<ProtectedRoute><FileHashScanner /></ProtectedRoute>} />
+            <Route path="/device-scan" element={<ProtectedRoute><DeviceScanner /></ProtectedRoute>} />
+            <Route path="/device-scanner" element={<ProtectedRoute><DeviceScanner /></ProtectedRoute>} />
             <Route path="/dns-leak-test" element={<ProtectedRoute><DnsLeakTest /></ProtectedRoute>} />
             <Route path="/2fa-guide" element={<ProtectedRoute><TwoFactorGuide /></ProtectedRoute>} />
             <Route path="/security-audit" element={<ProtectedRoute><SecurityAudit /></ProtectedRoute>} />

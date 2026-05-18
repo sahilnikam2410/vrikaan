@@ -85,6 +85,8 @@ export const TOOL_TIERS = {
   "/security-score":         { tier: "pro", name: "Security Score" },
   "/scam-check":             { tier: "pro", name: "Scam Check (AI)" },
   "/deepfake-audio":         { tier: "pro", name: "Deepfake Audio Detector" },
+  "/device-scan":            { tier: "pro", name: "Device Scanner" },
+  "/device-scanner":         { tier: "pro", name: "Device Scanner" },
 
   // ── ENTERPRISE TIER (SOC, team, bulk, integrations) ──
   "/admin/soc":            { tier: "enterprise", name: "SOC Dashboard" },
