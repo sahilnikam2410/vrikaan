@@ -13,6 +13,8 @@ const TL = { bg: "#f8fafc", white: "#0f172a", muted: "#475569", accent: "#6366f1
 const toolsMenu = [
   { label: "Security Tools", items: [
     { to: "/device-scan", label: "🛡️ Device Scanner", desc: "Scan files / folders / USB" },
+    { to: "/aadhaar-mask", label: "🪪 Aadhaar Mask", desc: "Redact Aadhaar before share" },
+    { to: "/festival-fraud", label: "📅 Festival Fraud", desc: "Diwali/Holi scam alerts" },
     { to: "/threat-map", label: "🌍 Threat Map", desc: "Real-time global threats" },
     { to: "/fraud-analyzer", label: "🔍 Fraud Analyzer", desc: "AI scam detection" },
     { to: "/security-score", label: "📊 Security Score", desc: "Check your security" },

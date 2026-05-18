@@ -225,6 +225,30 @@ const PRIMARY_PAGES = [
     ogCategory: "Careers",
   },
   {
+    path: "/device-scan",
+    title: "Device Scanner",
+    description:
+      "Scan files, folders, downloads, or USB drives for malware. SHA-256 hashes checked against malware databases. Privacy-first — files never leave your browser.",
+    ogSubtitle: "Free malware scan · India-built · Privacy-first",
+    ogCategory: "Security Tools",
+  },
+  {
+    path: "/festival-fraud",
+    title: "Festival Fraud Forecast",
+    description:
+      "Diwali / Holi / Rakhi / wedding season scam alerts — tailored to India. AI surfaces top scam patterns 7 days before each festival so you can warn your family.",
+    ogSubtitle: "India-first festival scam forecast",
+    ogCategory: "Threat Intelligence",
+  },
+  {
+    path: "/aadhaar-mask",
+    title: "Aadhaar Mask Tool",
+    description:
+      "Paste or upload an Aadhaar / PAN / driving license — get a redacted version in 2 seconds. Free, no signup. Mask Aadhaar before sharing on WhatsApp.",
+    ogSubtitle: "Free Aadhaar redaction · No upload to our servers",
+    ogCategory: "Privacy Tools",
+  },
+  {
     path: "/founder",
     title: "Founder's Note",
     description:
