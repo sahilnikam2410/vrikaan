@@ -249,6 +249,14 @@ const PRIMARY_PAGES = [
     ogCategory: "Privacy Tools",
   },
   {
+    path: "/scam-recovery",
+    title: "Scam Recovery Hotline",
+    description:
+      "Just got scammed? Get a personalized recovery plan in 30 seconds — exact helplines (1930, NPCI, RBI), IPC sections, pre-filled FIR draft, recovery odds.",
+    ogSubtitle: "Emergency recovery plan · India-first · Free",
+    ogCategory: "Emergency",
+  },
+  {
     path: "/founder",
     title: "Founder's Note",
     description:

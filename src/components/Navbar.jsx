@@ -12,6 +12,7 @@ const TL = { bg: "#f8fafc", white: "#0f172a", muted: "#475569", accent: "#6366f1
 
 const toolsMenu = [
   { label: "Security Tools", items: [
+    { to: "/scam-recovery", label: "🚨 Scam Recovery", desc: "Just got scammed? Help now" },
     { to: "/device-scan", label: "🛡️ Device Scanner", desc: "Scan files / folders / USB" },
     { to: "/aadhaar-mask", label: "🪪 Aadhaar Mask", desc: "Redact Aadhaar before share" },
     { to: "/festival-fraud", label: "📅 Festival Fraud", desc: "Diwali/Holi scam alerts" },

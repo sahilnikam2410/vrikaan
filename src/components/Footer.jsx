@@ -73,6 +73,7 @@ const Footer = () => (
         <div>
           <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Security Tools</h4>
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+            <FooterTool to="/scam-recovery">🚨 Scam Recovery Hotline</FooterTool>
             <FooterTool to="/device-scan">Device Scanner</FooterTool>
             <FooterTool to="/aadhaar-mask">Aadhaar Mask Tool</FooterTool>
             <FooterTool to="/festival-fraud">Festival Fraud Forecast</FooterTool>
