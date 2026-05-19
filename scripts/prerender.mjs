@@ -289,6 +289,46 @@ const PRIMARY_PAGES = [
     ogCategory: "Desktop App",
   },
   {
+    path: "/otp-decay",
+    title: "OTP Decay — Just Shared an OTP? Act in 90 seconds",
+    description:
+      "Bank fraud helpline + 1-tap call buttons + countdown timer. RBI zero-liability rule + exact script to say. Free, India-built.",
+    ogSubtitle: "Emergency · India-first · 1-tap bank helplines",
+    ogCategory: "Emergency",
+  },
+  {
+    path: "/upi-lookup",
+    title: "UPI Scam Lookup — Check Before You Pay",
+    description:
+      "Paste any UPI / VPA → instant red-flag analysis + community scam database. Free, India-built. Saves lakhs.",
+    ogSubtitle: "Check UPI ID before paying · India-first",
+    ogCategory: "Privacy Tools",
+  },
+  {
+    path: "/voiceprint",
+    title: "Voiceprint Family Vault — Beat AI Voice Clones",
+    description:
+      "Record your real voice once. Compare against suspicious calls later via Deepfake Audio Detector. Mic-only, stored in browser.",
+    ogSubtitle: "Reference voice samples for deepfake detection",
+    ogCategory: "Family Safety",
+  },
+  {
+    path: "/stolen-phone",
+    title: "Stolen Phone Recovery — India Action Plan",
+    description:
+      "Phone lost or stolen? 7-step recovery flow for Android + iPhone. SIM block helplines (Jio/Airtel/Vi/BSNL), CEIR IMEI block, FIR steps. Free.",
+    ogSubtitle: "60-min recovery flow · India-first",
+    ogCategory: "Emergency",
+  },
+  {
+    path: "/loan-app-check",
+    title: "Loan App Profiler — RBI-aware Safety Check",
+    description:
+      "Check any loan app before installing. Cross-checks RBI's registered NBFC list, known predatory apps, permission red flags, APR.",
+    ogSubtitle: "Avoid loan-app harassment · India-first",
+    ogCategory: "Privacy Tools",
+  },
+  {
     path: "/founder",
     title: "Founder's Note",
     description:

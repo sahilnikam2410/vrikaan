@@ -157,6 +157,11 @@ const SafeWordVault = lazy(() => import("./assets/pages/SafeWordVault.jsx"));
 const WhatsAppAudit = lazy(() => import("./assets/pages/WhatsAppAudit.jsx"));
 const ReceiptAudit = lazy(() => import("./assets/pages/ReceiptAudit.jsx"));
 const Desktop = lazy(() => import("./assets/pages/Desktop.jsx"));
+const OtpDecay = lazy(() => import("./assets/pages/OtpDecay.jsx"));
+const UpiHoneypot = lazy(() => import("./assets/pages/UpiHoneypot.jsx"));
+const VoiceprintVault = lazy(() => import("./assets/pages/VoiceprintVault.jsx"));
+const StolenPhone = lazy(() => import("./assets/pages/StolenPhone.jsx"));
+const LoanAppProfiler = lazy(() => import("./assets/pages/LoanAppProfiler.jsx"));
 const DnsLeakTest = lazy(() => import("./assets/pages/DnsLeakTest.jsx"));
 const TwoFactorGuide = lazy(() => import("./assets/pages/TwoFactorGuide.jsx"));
 const Referral = lazy(() => import("./assets/pages/Referral.jsx"));
@@ -259,6 +264,19 @@ function AppRoutes() {
             <Route path="/desktop" element={<Desktop />} />
             <Route path="/download" element={<Desktop />} />
             <Route path="/desktop-app" element={<Desktop />} />
+            <Route path="/otp-decay" element={<OtpDecay />} />
+            <Route path="/shared-otp" element={<OtpDecay />} />
+            <Route path="/block-card" element={<OtpDecay />} />
+            <Route path="/upi-lookup" element={<UpiHoneypot />} />
+            <Route path="/upi-check" element={<UpiHoneypot />} />
+            <Route path="/voiceprint" element={<VoiceprintVault />} />
+            <Route path="/voiceprint-vault" element={<VoiceprintVault />} />
+            <Route path="/stolen-phone" element={<StolenPhone />} />
+            <Route path="/lost-phone" element={<StolenPhone />} />
+            <Route path="/phone-stolen" element={<StolenPhone />} />
+            <Route path="/loan-app-check" element={<LoanAppProfiler />} />
+            <Route path="/loan-app-profiler" element={<LoanAppProfiler />} />
+            <Route path="/check-loan-app" element={<LoanAppProfiler />} />
             <Route path="/dns-leak-test" element={<ProtectedRoute><DnsLeakTest /></ProtectedRoute>} />
             <Route path="/2fa-guide" element={<ProtectedRoute><TwoFactorGuide /></ProtectedRoute>} />
             <Route path="/security-audit" element={<ProtectedRoute><SecurityAudit /></ProtectedRoute>} />
