@@ -10,11 +10,12 @@
   "scripts": {
     "start": "electron .",
     "dev": "NODE_ENV=development electron .",
-    "build": "electron-builder",
-    "build:win": "electron-builder --win",
-    "build:mac": "electron-builder --mac",
-    "build:linux": "electron-builder --linux",
-    "publish": "electron-builder --publish always"
+    "icons": "node scripts/generate-icons.cjs",
+    "build": "npm run icons && electron-builder",
+    "build:win": "npm run icons && electron-builder --win",
+    "build:mac": "npm run icons && electron-builder --mac",
+    "build:linux": "npm run icons && electron-builder --linux",
+    "publish": "npm run icons && electron-builder --publish always"
   },
   "dependencies": {
     "electron-store": "^10.0.0",

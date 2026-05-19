@@ -1,0 +1,142 @@
+name: Build VRIKAAN Desktop
+
+# Builds signed installers for Windows / macOS / Linux on every tag push (vX.Y.Z)
+# and uploads them to GitHub Releases. Auto-update via electron-updater pulls
+# from here.
+#
+# Manual trigger also supported (workflow_dispatch) for ad-hoc builds without
+# publishing.
+#
+# Required secrets (Settings → Secrets and variables → Actions):
+#   - GH_TOKEN              — GitHub personal access token w/ `repo` scope (for Releases publish)
+#   - WIN_CSC_LINK          — Base64-encoded Windows code-signing .pfx file (optional, builds unsigned if absent)
+#   - WIN_CSC_KEY_PASSWORD  — password for the .pfx
+#   - MAC_CSC_LINK          — Base64-encoded macOS Developer ID .p12 (optional)
+#   - MAC_CSC_KEY_PASSWORD  — password for the .p12
+#   - APPLE_ID              — Apple Developer email (for notarization)
+#   - APPLE_ID_PASSWORD     — app-specific password (NOT main Apple ID password)
+#   - APPLE_TEAM_ID         — 10-char team ID from developer.apple.com
+
+on:
+  push:
+    tags:
+      - "desktop-v*"          # e.g. desktop-v0.1.0
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish to GitHub Releases?"
+        required: false
+        default: "false"
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            arch: x64
+            build_cmd: build:win
+          - os: macos-latest
+            arch: x64
+            build_cmd: build:mac
+          - os: ubuntu-latest
+            arch: x64
+            build_cmd: build:linux
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - name: Install desktop deps
+        working-directory: desktop
+        run: npm ci || npm install
+
+      # ── Windows code-sign cert ───────────────────────────────────
+      - name: Decode Windows signing cert
+        if: matrix.os == 'windows-latest' && env.WIN_CSC_LINK != ''
+        run: |
+          $bytes = [Convert]::FromBase64String("${{ secrets.WIN_CSC_LINK }}")
+          [IO.File]::WriteAllBytes("$env:RUNNER_TEMP\cert.pfx", $bytes)
+          echo "WIN_CSC_LINK_PATH=$env:RUNNER_TEMP\cert.pfx" >> $env:GITHUB_ENV
+        env:
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+        shell: pwsh
+
+      # ── macOS code-sign cert ─────────────────────────────────────
+      - name: Decode macOS signing cert
+        if: matrix.os == 'macos-latest' && env.MAC_CSC_LINK != ''
+        run: |
+          echo "${{ secrets.MAC_CSC_LINK }}" | base64 --decode > $RUNNER_TEMP/cert.p12
+          echo "MAC_CSC_LINK_PATH=$RUNNER_TEMP/cert.p12" >> $GITHUB_ENV
+        env:
+          MAC_CSC_LINK: ${{ secrets.MAC_CSC_LINK }}
+
+      # ── Build ─────────────────────────────────────────────────────
+      - name: Build installer
+        working-directory: desktop
+        run: npm run ${{ matrix.build_cmd }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          # Windows
+          CSC_LINK: ${{ env.WIN_CSC_LINK_PATH || env.MAC_CSC_LINK_PATH || '' }}
+          CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD || secrets.MAC_CSC_KEY_PASSWORD || '' }}
+          # macOS notarization
+          APPLE_ID: ${{ secrets.APPLE_ID || '' }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD || '' }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID || '' }}
+          # Disable signing if no cert (still produces unsigned installer)
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+
+      # ── Upload as workflow artifact ──────────────────────────────
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrikaan-desktop-${{ matrix.os }}
+          path: |
+            desktop/dist/*.exe
+            desktop/dist/*.msi
+            desktop/dist/*.dmg
+            desktop/dist/*.zip
+            desktop/dist/*.AppImage
+            desktop/dist/*.deb
+            desktop/dist/*.rpm
+            desktop/dist/*.snap
+            desktop/dist/latest*.yml
+          if-no-files-found: ignore
+          retention-days: 30
+
+      # ── Publish to GitHub Releases (only on tag push) ─────────────
+      - name: Publish to GitHub Releases
+        if: startsWith(github.ref, 'refs/tags/desktop-v')
+        working-directory: desktop
+        run: npm run publish
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          CSC_LINK: ${{ env.WIN_CSC_LINK_PATH || env.MAC_CSC_LINK_PATH || '' }}
+          CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD || secrets.MAC_CSC_KEY_PASSWORD || '' }}
+          APPLE_ID: ${{ secrets.APPLE_ID || '' }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD || '' }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID || '' }}
+
+  # ── Roll up release notes after all 3 OS builds succeed ──────────
+  release-notes:
+    name: Generate release notes
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/desktop-v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Append download links to Release
+        run: |
+          echo "Release auto-generated by electron-builder via the build job above."
+          echo "Edit the GitHub Release manually if you want richer notes."

@@ -14,6 +14,8 @@ const toolsMenu = [
   { label: "Security Tools", items: [
     { to: "/scam-recovery", label: "🚨 Scam Recovery", desc: "Just got scammed? Help now" },
     { to: "/safe-word", label: "🛡️ Family Safe-Word", desc: "Beat AI voice clones" },
+    { to: "/whatsapp-audit", label: "💬 WhatsApp Audit", desc: "Detect scam groups" },
+    { to: "/receipt-audit", label: "🧾 Receipt Audit", desc: "Catch fake bills" },
     { to: "/device-scan", label: "🛡️ Device Scanner", desc: "Scan files / folders / USB" },
     { to: "/aadhaar-mask", label: "🪪 Aadhaar Mask", desc: "Redact Aadhaar before share" },
     { to: "/festival-fraud", label: "📅 Festival Fraud", desc: "Diwali/Holi scam alerts" },

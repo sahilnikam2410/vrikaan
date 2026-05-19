@@ -75,6 +75,8 @@ const Footer = () => (
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             <FooterTool to="/scam-recovery">🚨 Scam Recovery Hotline</FooterTool>
             <FooterTool to="/safe-word">Family Safe-Word</FooterTool>
+            <FooterTool to="/whatsapp-audit">WhatsApp Group Audit</FooterTool>
+            <FooterTool to="/receipt-audit">Receipt Authenticity</FooterTool>
             <FooterTool to="/device-scan">Device Scanner</FooterTool>
             <FooterTool to="/aadhaar-mask">Aadhaar Mask Tool</FooterTool>
             <FooterTool to="/festival-fraud">Festival Fraud Forecast</FooterTool>

@@ -265,6 +265,22 @@ const PRIMARY_PAGES = [
     ogCategory: "Family Safety",
   },
   {
+    path: "/whatsapp-audit",
+    title: "WhatsApp Group Auditor",
+    description:
+      "Export any WhatsApp group's chat → AI flags pump-and-dump patterns, fake admins, hidden URLs, UPI dumps, mass-adders. India-first. Free, no upload.",
+    ogSubtitle: "Detect scam investment groups · India-first",
+    ogCategory: "Privacy Tools",
+  },
+  {
+    path: "/receipt-audit",
+    title: "Receipt Authenticity Scanner",
+    description:
+      "Spot fake restaurant / fuel / parking bills in India. Validates GSTIN, checks CGST+SGST math, flags illegal service charge, catches overcharge tax. Free.",
+    ogSubtitle: "Catch overcharged bills · GSTIN-aware",
+    ogCategory: "Privacy Tools",
+  },
+  {
     path: "/founder",
     title: "Founder's Note",
     description:
