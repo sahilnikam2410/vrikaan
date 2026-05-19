@@ -77,6 +77,7 @@ const Footer = () => (
             <FooterTool to="/safe-word">Family Safe-Word</FooterTool>
             <FooterTool to="/whatsapp-audit">WhatsApp Group Audit</FooterTool>
             <FooterTool to="/receipt-audit">Receipt Authenticity</FooterTool>
+            <FooterTool to="/desktop">💻 Desktop App (waitlist)</FooterTool>
             <FooterTool to="/device-scan">Device Scanner</FooterTool>
             <FooterTool to="/aadhaar-mask">Aadhaar Mask Tool</FooterTool>
             <FooterTool to="/festival-fraud">Festival Fraud Forecast</FooterTool>

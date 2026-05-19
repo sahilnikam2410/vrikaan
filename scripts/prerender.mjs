@@ -281,6 +281,14 @@ const PRIMARY_PAGES = [
     ogCategory: "Privacy Tools",
   },
   {
+    path: "/desktop",
+    title: "VRIKAAN Desktop — Native AI Cyber Defense",
+    description:
+      "Whole-disk malware scan + real-time download watcher + USB auto-scan for Windows / macOS / Linux. India-built, privacy-first. Free. Coming Q2 2026 — join waitlist.",
+    ogSubtitle: "Native cyber defense for India · Win/Mac/Linux",
+    ogCategory: "Desktop App",
+  },
+  {
     path: "/founder",
     title: "Founder's Note",
     description:

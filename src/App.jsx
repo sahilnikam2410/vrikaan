@@ -156,6 +156,7 @@ const ScamRecovery = lazy(() => import("./assets/pages/ScamRecovery.jsx"));
 const SafeWordVault = lazy(() => import("./assets/pages/SafeWordVault.jsx"));
 const WhatsAppAudit = lazy(() => import("./assets/pages/WhatsAppAudit.jsx"));
 const ReceiptAudit = lazy(() => import("./assets/pages/ReceiptAudit.jsx"));
+const Desktop = lazy(() => import("./assets/pages/Desktop.jsx"));
 const DnsLeakTest = lazy(() => import("./assets/pages/DnsLeakTest.jsx"));
 const TwoFactorGuide = lazy(() => import("./assets/pages/TwoFactorGuide.jsx"));
 const Referral = lazy(() => import("./assets/pages/Referral.jsx"));
@@ -255,6 +256,9 @@ function AppRoutes() {
             <Route path="/whatsapp-group-audit" element={<WhatsAppAudit />} />
             <Route path="/receipt-audit" element={<ReceiptAudit />} />
             <Route path="/bill-check" element={<ReceiptAudit />} />
+            <Route path="/desktop" element={<Desktop />} />
+            <Route path="/download" element={<Desktop />} />
+            <Route path="/desktop-app" element={<Desktop />} />
             <Route path="/dns-leak-test" element={<ProtectedRoute><DnsLeakTest /></ProtectedRoute>} />
             <Route path="/2fa-guide" element={<ProtectedRoute><TwoFactorGuide /></ProtectedRoute>} />
             <Route path="/security-audit" element={<ProtectedRoute><SecurityAudit /></ProtectedRoute>} />
