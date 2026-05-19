@@ -49,8 +49,41 @@ export default function DeviceScanner() {
   const [scanning, setScanning] = useState(false);
   const [waitlistEmail, setWaitlistEmail] = useState("");
   const [waitlistOk, setWaitlistOk] = useState(false);
+  const [nativeScan, setNativeScan] = useState(null); // { current, total, threats, files }
   const fileRef = useRef(null);
   const folderRef = useRef(null);
+
+  // Detect VRIKAAN Desktop wrapper — unlocks whole-disk scan
+  const isDesktop = typeof window !== "undefined" && window.vrikaan?.isDesktop;
+
+  // Native (Electron) whole-folder scan
+  const scanNativeFolder = useCallback(async () => {
+    if (!isDesktop) return;
+    const folder = await window.vrikaan.chooseFolder();
+    if (!folder) return;
+    setNativeScan({ phase: "starting", current: 0, total: 0, threats: 0, folder, files: [] });
+    try {
+      const result = await window.vrikaan.scanPath(folder, {
+        onProgress: (p) => setNativeScan(s => ({ ...s, ...p })),
+        extensionsOnly: true,
+        maxFiles: 10000,
+      });
+      setNativeScan({
+        phase: "done",
+        current: result.scanned,
+        total: result.total,
+        threats: result.threats,
+        suspicious: result.suspicious,
+        clean: result.clean,
+        unknown: result.unknown,
+        folder,
+        files: result.files,
+        durationMs: result.durationMs,
+      });
+    } catch (e) {
+      setNativeScan(s => ({ ...s, phase: "error", error: e.message }));
+    }
+  }, [isDesktop]);
 
   const maxFiles = quota.unlimited ? MAX_FILES_PRO : MAX_FILES_FREE;
 
@@ -253,6 +286,15 @@ export default function DeviceScanner() {
             {!quota.unlimited && <span> Free tier limit. <Link to="/pricing" style={{ color: T.cyan }}>Upgrade to Pro</Link> for 500 files.</span>}
           </div>
           <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
+            {isDesktop && (
+              <button onClick={scanNativeFolder} style={{
+                ...btnPrimary(),
+                background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`,
+                color: "#fff",
+              }}>
+                🖥 Scan whole disk · NATIVE
+              </button>
+            )}
             <input ref={fileRef} type="file" multiple onChange={(e) => addFiles(e.target.files)} style={{ display: "none" }} />
             <button onClick={() => fileRef.current?.click()} style={btnPrimary()}>
               📄 Select files
@@ -274,6 +316,52 @@ export default function DeviceScanner() {
             🔒 Files never leave your browser. We only send the SHA-256 hash (a short fingerprint) to our servers.
           </p>
         </div>
+
+        {/* Native scan progress (Electron only) */}
+        {nativeScan && (
+          <div style={{
+            background: T.card, border: `1px solid ${nativeScan.threats > 0 ? T.red + "55" : T.cyan + "55"}`,
+            borderRadius: 14, padding: 18, marginBottom: 18,
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10, flexWrap: "wrap" }}>
+              <span style={{
+                fontSize: 10, fontWeight: 800, letterSpacing: 1.5, textTransform: "uppercase",
+                padding: "3px 10px", borderRadius: 999,
+                background: `${T.cyan}22`, color: T.cyan, border: `1px solid ${T.cyan}55`,
+              }}>🖥 NATIVE SCAN</span>
+              <span style={{ color: T.white, fontWeight: 600, fontSize: 13, fontFamily: "ui-monospace, Menlo, monospace" }}>{nativeScan.folder}</span>
+            </div>
+            {nativeScan.phase !== "done" && nativeScan.phase !== "error" && (
+              <>
+                <div style={{ color: T.white, fontSize: 13, marginBottom: 6 }}>
+                  Scanning… {nativeScan.current} / {nativeScan.total || "?"} files
+                </div>
+                <div style={{ height: 6, background: "rgba(148,163,184,0.18)", borderRadius: 999, overflow: "hidden" }}>
+                  <div style={{
+                    height: "100%",
+                    width: nativeScan.total ? `${(nativeScan.current / nativeScan.total) * 100}%` : "0%",
+                    background: T.cyan, transition: "width 0.3s",
+                  }} />
+                </div>
+              </>
+            )}
+            {nativeScan.phase === "done" && (
+              <div style={{
+                display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
+                gap: 10, marginTop: 4,
+              }}>
+                <NativeStat label="Scanned" value={nativeScan.current} color={T.cyan} />
+                <NativeStat label="Clean" value={nativeScan.clean} color={T.green} />
+                <NativeStat label="Suspicious" value={nativeScan.suspicious} color={T.yellow} />
+                <NativeStat label="Threats" value={nativeScan.threats} color={nativeScan.threats > 0 ? T.red : T.muted} />
+                <NativeStat label="Took" value={`${Math.round((nativeScan.durationMs || 0) / 1000)}s`} color={T.muted} />
+              </div>
+            )}
+            {nativeScan.phase === "error" && (
+              <div style={{ color: T.red, fontSize: 13 }}>❌ {nativeScan.error}</div>
+            )}
+          </div>
+        )}
 
         {/* Summary + scan controls */}
         {files.length > 0 && (
@@ -503,6 +591,18 @@ export default function DeviceScanner() {
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────
+function NativeStat({ label, value, color }) {
+  return (
+    <div style={{
+      padding: "10px 12px", borderRadius: 10,
+      background: "rgba(2,6,23,0.5)", border: `1px solid rgba(148,163,184,0.12)`,
+      textAlign: "center",
+    }}>
+      <div style={{ fontSize: 20, fontWeight: 800, color, fontFamily: "'Space Grotesk', sans-serif" }}>{value}</div>
+      <div style={{ fontSize: 10, color: T.muted, textTransform: "uppercase", letterSpacing: 1, marginTop: 2 }}>{label}</div>
+    </div>
+  );
+}
 function btnPrimary(opacity = 1) {
   return {
     padding: "11px 22px", background: T.cyan, color: T.bg,

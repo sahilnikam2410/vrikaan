@@ -257,6 +257,14 @@ const PRIMARY_PAGES = [
     ogCategory: "Emergency",
   },
   {
+    path: "/safe-word",
+    title: "Family Safe-Word Vault",
+    description:
+      "Set a family safe-word that AI voice clones can't fake. India's defense against deepfake-voice scams targeting parents and grandparents. Free, no signup, stored on your device.",
+    ogSubtitle: "Beat AI voice clones · India-first · Free",
+    ogCategory: "Family Safety",
+  },
+  {
     path: "/founder",
     title: "Founder's Note",
     description:

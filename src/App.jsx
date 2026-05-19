@@ -153,6 +153,7 @@ const DeviceScanner = lazy(() => import("./assets/pages/DeviceScanner.jsx"));
 const AadhaarMask = lazy(() => import("./assets/pages/AadhaarMask.jsx"));
 const FestivalFraud = lazy(() => import("./assets/pages/FestivalFraud.jsx"));
 const ScamRecovery = lazy(() => import("./assets/pages/ScamRecovery.jsx"));
+const SafeWordVault = lazy(() => import("./assets/pages/SafeWordVault.jsx"));
 const DnsLeakTest = lazy(() => import("./assets/pages/DnsLeakTest.jsx"));
 const TwoFactorGuide = lazy(() => import("./assets/pages/TwoFactorGuide.jsx"));
 const Referral = lazy(() => import("./assets/pages/Referral.jsx"));
@@ -244,6 +245,9 @@ function AppRoutes() {
             <Route path="/hacked" element={<ScamRecovery />} />
             <Route path="/scammed" element={<ScamRecovery />} />
             <Route path="/recovery" element={<ScamRecovery />} />
+            <Route path="/safe-word" element={<SafeWordVault />} />
+            <Route path="/family-safe-word" element={<SafeWordVault />} />
+            <Route path="/safeword-vault" element={<SafeWordVault />} />
             <Route path="/dns-leak-test" element={<ProtectedRoute><DnsLeakTest /></ProtectedRoute>} />
             <Route path="/2fa-guide" element={<ProtectedRoute><TwoFactorGuide /></ProtectedRoute>} />
             <Route path="/security-audit" element={<ProtectedRoute><SecurityAudit /></ProtectedRoute>} />

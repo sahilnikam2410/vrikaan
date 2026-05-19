@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+assets/icon.ico
+assets/icon.icns
+assets/icon.png
+assets/tray.png
+assets/tray-mac.png

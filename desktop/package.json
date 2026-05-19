@@ -1,0 +1,69 @@
+{
+  "name": "vrikaan-desktop",
+  "version": "0.1.0",
+  "description": "VRIKAAN Desktop — native cyber defense for Windows / macOS / Linux. Real disk scan, USB watcher, download monitor.",
+  "main": "main.js",
+  "author": "Sahil Anil Nikam & Khushi Ishwar Raigade <hello@vrikaan.com>",
+  "homepage": "https://vrikaan.com",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "NODE_ENV=development electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux",
+    "publish": "electron-builder --publish always"
+  },
+  "dependencies": {
+    "electron-store": "^10.0.0",
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.vrikaan.desktop",
+    "productName": "VRIKAAN",
+    "copyright": "Copyright © 2026 VRIKAAN",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "scan-engine.js",
+      "renderer/**/*",
+      "assets/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": ["nsis", "portable"],
+      "icon": "assets/icon.ico",
+      "publisherName": "VRIKAAN"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.security"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "icon": "assets/icon.png",
+      "category": "Security"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "VRIKAAN"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "sahilnikam2410",
+      "repo": "vrikaan"
+    }
+  }
+}
