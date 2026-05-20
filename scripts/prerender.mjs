@@ -329,6 +329,30 @@ const PRIMARY_PAGES = [
     ogCategory: "Privacy Tools",
   },
   {
+    path: "/hi",
+    title: "VRIKAAN · भारत का फ्री AI साइबर डिफेंस",
+    description:
+      "UPI धोखाधड़ी, deepfake कॉल, Aadhaar leak, loan app harassment से बचाव — 60+ tools बिल्कुल मुफ्त। हिन्दी में। SOC analysts ने नाशिक में बनाया।",
+    ogSubtitle: "60+ tools · हिन्दी · नाशिक से · फ्री",
+    ogCategory: "Hindi · हिन्दी",
+  },
+  {
+    path: "/responsible-disclosure",
+    title: "Responsible Disclosure · Bug Bounty",
+    description:
+      "Found a vulnerability in VRIKAAN? Report responsibly — ₹2k-25k INR bounties + Hall of Fame credit + 1-year Pro plan. 48h acknowledgement SLA.",
+    ogSubtitle: "Bug bounty program · India-first · INR payouts",
+    ogCategory: "Security",
+  },
+  {
+    path: "/security/hall-of-fame",
+    title: "Security Hall of Fame",
+    description:
+      "Researchers who helped make VRIKAAN safer through responsible disclosure. Thank you for keeping Indian users protected.",
+    ogSubtitle: "Researchers credited · Bug bounty",
+    ogCategory: "Security",
+  },
+  {
     path: "/founder",
     title: "Founder's Note",
     description:

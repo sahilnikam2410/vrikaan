@@ -162,6 +162,9 @@ const UpiHoneypot = lazy(() => import("./assets/pages/UpiHoneypot.jsx"));
 const VoiceprintVault = lazy(() => import("./assets/pages/VoiceprintVault.jsx"));
 const StolenPhone = lazy(() => import("./assets/pages/StolenPhone.jsx"));
 const LoanAppProfiler = lazy(() => import("./assets/pages/LoanAppProfiler.jsx"));
+const ResponsibleDisclosure = lazy(() => import("./assets/pages/ResponsibleDisclosure.jsx"));
+const HallOfFame = lazy(() => import("./assets/pages/HallOfFame.jsx"));
+const HindiLanding = lazy(() => import("./assets/pages/HindiLanding.jsx"));
 const DnsLeakTest = lazy(() => import("./assets/pages/DnsLeakTest.jsx"));
 const TwoFactorGuide = lazy(() => import("./assets/pages/TwoFactorGuide.jsx"));
 const Referral = lazy(() => import("./assets/pages/Referral.jsx"));
@@ -277,6 +280,13 @@ function AppRoutes() {
             <Route path="/loan-app-check" element={<LoanAppProfiler />} />
             <Route path="/loan-app-profiler" element={<LoanAppProfiler />} />
             <Route path="/check-loan-app" element={<LoanAppProfiler />} />
+            <Route path="/responsible-disclosure" element={<ResponsibleDisclosure />} />
+            <Route path="/bug-bounty" element={<ResponsibleDisclosure />} />
+            <Route path="/security/hall-of-fame" element={<HallOfFame />} />
+            <Route path="/hall-of-fame" element={<HallOfFame />} />
+            <Route path="/hi" element={<HindiLanding />} />
+            <Route path="/hindi" element={<HindiLanding />} />
+            <Route path="/in" element={<HindiLanding />} />
             <Route path="/dns-leak-test" element={<ProtectedRoute><DnsLeakTest /></ProtectedRoute>} />
             <Route path="/2fa-guide" element={<ProtectedRoute><TwoFactorGuide /></ProtectedRoute>} />
             <Route path="/security-audit" element={<ProtectedRoute><SecurityAudit /></ProtectedRoute>} />
