@@ -464,23 +464,25 @@ const Hero = () => {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <p style={{ fontFamily: "var(--font-body)", fontSize: "clamp(16px, 1.5vw, 18px)", color: T.muted, maxWidth: 480, lineHeight: 1.8, marginBottom: 40 }}>
-              AI-powered protection against fraud, phishing, and identity theft. Enterprise-grade security made accessible for everyone — students, families, and businesses.
+            <p style={{ fontFamily: "var(--font-body)", fontSize: "clamp(16px, 1.5vw, 18px)", color: T.muted, maxWidth: 520, lineHeight: 1.8, marginBottom: 40 }}>
+              <strong style={{ color: T.white }}>60+ AI-powered cybersecurity tools.</strong> Scam detection, deepfake audio AI, MITRE ATT&amp;CK SOC, Aadhaar mask, OTP emergency. Built in India, bilingual EN+हिन्दी. Free forever.
             </p>
           </Reveal>
 
           <Reveal delay={0.3}>
             <div className="hero-buttons" style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 56 }}>
-              <Btn primary to="/identity-xray" icon="&#128300;">Scan Your Identity</Btn>
-              <Btn to="/signup" icon="&#9889;">Start Free Protection</Btn>
+              <Btn primary to="/scam-recovery" icon="&#128680;">Just got scammed?</Btn>
+              <Btn to="/device-scan" icon="&#128737;">Scan files free</Btn>
+              <Btn to="/signup" icon="&#9889;">Sign up</Btn>
             </div>
           </Reveal>
 
           <Reveal delay={0.4}>
-            <div className="hero-stats" style={{ display: "flex", gap: 48, flexWrap: "wrap" }}>
+            <div className="hero-stats" style={{ display: "flex", gap: 36, flexWrap: "wrap" }}>
+              <HeroCounter end={60} label="Tools" color={T.cyan} suffix="+" />
               <HeroCounter end={2841029} label="Threats Blocked" color={T.accent} />
-              <HeroCounter end={1200000} label="Users Protected" color={T.cyan} suffix="+" />
-              <HeroCounter end={84} label="Countries" color={T.ember} />
+              <HeroCounter end={1200000} label="Users Protected" color={T.ember} suffix="+" />
+              <HeroCounter end={84} label="Countries" color={T.cyan} />
             </div>
           </Reveal>
         </div>
@@ -1127,6 +1129,184 @@ const TrustedBy = () => (
     </Reveal>
   </div>
 );
+
+/* ── JUST SHIPPED — showcase new tools ── */
+const JustShipped = () => {
+  const items = [
+    { to: "/scam-recovery",    icon: "🚨", title: "Scam Recovery Hotline",   desc: "30-sec triage · IPC sections · pre-filled FIR", tag: "EMERGENCY", color: T.red },
+    { to: "/otp-decay",        icon: "⏱",       title: "OTP Decay Emergency",     desc: "90-sec countdown · 15 bank helplines · 1-tap call", tag: "EMERGENCY", color: T.red },
+    { to: "/safe-word",        icon: "🛡", title: "Family Safe-Word Vault",  desc: "Beat AI voice clones · WhatsApp family share",      tag: "FAMILY", color: T.cyan },
+    { to: "/aadhaar-mask",     icon: "🪪", title: "Aadhaar Mask Tool",        desc: "Redact Aadhaar/PAN in text + image · OCR in browser", tag: "PRIVACY", color: T.accent },
+    { to: "/festival-fraud",   icon: "🎊", title: "Festival Fraud Forecast",  desc: "Diwali/Holi/wedding-season scam alerts · WhatsApp share", tag: "INDIA", color: T.gold },
+    { to: "/device-scan",      icon: "💻", title: "Device Scanner",           desc: "Multi-file + folder scan · privacy-first · 10/day free", tag: "MALWARE", color: T.cyan },
+    { to: "/whatsapp-audit",   icon: "💬", title: "WhatsApp Group Auditor",   desc: "Detect investment-scam groups · 40+ pattern AI",     tag: "PRIVACY", color: "#25D366" },
+    { to: "/receipt-audit",    icon: "🧾", title: "Receipt Authenticity",     desc: "GSTIN validate · CGST math check · catch overcharge", tag: "INDIA", color: T.gold },
+    { to: "/upi-lookup",       icon: "🔍", title: "UPI Scam Lookup",          desc: "VPA red-flag + community scam DB",                    tag: "FINANCE", color: T.cyan },
+    { to: "/loan-app-check",   icon: "💸", title: "Loan App Profiler",        desc: "RBI-registered check · 30+ predatory apps · permissions", tag: "FINANCE", color: T.accent },
+    { to: "/stolen-phone",     icon: "📱", title: "Stolen Phone Recovery",    desc: "OS-specific 7-step flow · SIM block · CEIR IMEI",     tag: "EMERGENCY", color: T.red },
+    { to: "/voiceprint",       icon: "🎙", title: "Voiceprint Family Vault",  desc: "Record real voice · compare against deepfake calls",  tag: "FAMILY", color: T.cyan },
+  ];
+
+  return (
+    <Section id="just-shipped">
+      <Reveal>
+        <SectionHeader
+          badge="🚀 Shipped This Month"
+          title={<>14 new tools, <GradientText>all free.</GradientText></>}
+          subtitle="Real solutions for India's actual scam patterns. Built by SOC analysts. Privacy-first — most run entirely in your browser."
+        />
+      </Reveal>
+
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+        gap: 18,
+        marginTop: 16,
+      }}>
+        {items.map((it, i) => (
+          <Reveal key={it.to} delay={Math.min(i, 6) * 0.04}>
+            <Link to={it.to} style={{ textDecoration: "none", display: "block", height: "100%" }}>
+              <Card style={{
+                height: "100%", padding: "22px 22px 18px",
+                cursor: "pointer", transition: "transform 0.2s, border-color 0.2s",
+                position: "relative", overflow: "hidden",
+              }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.borderColor = it.color + "55"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.borderColor = ""; }}
+              >
+                <div style={{
+                  position: "absolute", top: 14, right: 14,
+                  fontSize: 9, fontWeight: 800, letterSpacing: 1.2,
+                  padding: "3px 8px", borderRadius: 999,
+                  background: it.color + "1a", color: it.color,
+                  border: `1px solid ${it.color}55`, textTransform: "uppercase",
+                  fontFamily: "ui-monospace, Menlo, monospace",
+                }}>{it.tag}</div>
+
+                <div style={{
+                  width: 48, height: 48, borderRadius: 12,
+                  background: it.color + "12", border: `1px solid ${it.color}28`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 24, marginBottom: 16,
+                }}>{it.icon}</div>
+
+                <h3 style={{
+                  fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 700,
+                  color: T.white, margin: "0 0 8px",
+                }}>{it.title}</h3>
+
+                <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.55, margin: 0 }}>{it.desc}</p>
+
+                <div style={{
+                  marginTop: 14, paddingTop: 12,
+                  borderTop: `1px dashed ${T.border}`,
+                  fontSize: 12, fontWeight: 600, color: it.color,
+                  display: "flex", alignItems: "center", gap: 6,
+                }}>Open tool →</div>
+              </Card>
+            </Link>
+          </Reveal>
+        ))}
+      </div>
+
+      <Reveal>
+        <div style={{ textAlign: "center", marginTop: 40 }}>
+          <Btn to="/features" icon="✨">See all 60+ tools</Btn>
+        </div>
+      </Reveal>
+    </Section>
+  );
+};
+
+/* ── INDIA-FIRST — vs Norton/McAfee comparison ── */
+const IndiaFirst = () => {
+  const rows = [
+    { feat: "Price",                vrk: "₹0 free · ₹990/yr Pro",                norton: "₹2,000+/yr",        mc: "$40+/yr (~₹3,300)" },
+    { feat: "Made in",              vrk: "🇮🇳 Nashik, India",                     norton: "🇺🇸 USA",            mc: "🇺🇸 USA" },
+    { feat: "Hindi UI",             vrk: "✓ EN + हिन्दी",                          norton: "❌ English only",   mc: "❌ English only" },
+    { feat: "Scam SMS / WhatsApp AI",vrk:"✓ India-tuned",                          norton: "❌",                mc: "❌" },
+    { feat: "Aadhaar / PAN mask",   vrk: "✓ Free + offline",                       norton: "❌",                mc: "❌" },
+    { feat: "Deepfake audio detector",vrk:"✓ Free tier",                           norton: "❌",                mc: "❌" },
+    { feat: "MITRE ATT&CK SOC dashboard",vrk:"✓ Free tier",                        norton: "Enterprise only",   mc: "Enterprise only" },
+    { feat: "UPI fraud helpline (1930)",vrk:"✓ Built-in 1-tap call",               norton: "❌",                mc: "❌" },
+    { feat: "Payment",              vrk: "INR Cashfree (UPI/cards)",               norton: "Foreign card only", mc: "Foreign card only" },
+    { feat: "Source visible",       vrk: "Partial · GitHub",                       norton: "Closed",            mc: "Closed" },
+  ];
+  return (
+    <Section id="india-first">
+      <Reveal>
+        <SectionHeader
+          badge="🇮🇳 India-First"
+          title={<>Why <GradientText>India</GradientText> picks VRIKAAN</>}
+          subtitle="Norton + McAfee built for the West. VRIKAAN built for the threats Indian families and SMBs actually face."
+        />
+      </Reveal>
+      <Reveal>
+        <div style={{
+          background: T.card, border: `1px solid ${T.border}`, borderRadius: 18,
+          overflow: "hidden", marginTop: 18,
+        }}>
+          <div style={{
+            display: "grid", gridTemplateColumns: "1.6fr 1.2fr 1fr 1fr",
+            gap: 8, padding: "14px 22px",
+            borderBottom: `1px solid ${T.border}`,
+            fontSize: 11, fontWeight: 800, letterSpacing: 1.5, textTransform: "uppercase",
+            color: T.muted,
+          }} className="ifirst-header">
+            <div>Feature</div>
+            <div style={{ color: T.cyan }}>VRIKAAN</div>
+            <div>Norton</div>
+            <div>McAfee</div>
+          </div>
+          {rows.map((r, i) => (
+            <div key={i} style={{
+              display: "grid", gridTemplateColumns: "1.6fr 1.2fr 1fr 1fr",
+              gap: 8, padding: "14px 22px",
+              borderTop: i === 0 ? "none" : `1px solid ${T.border}`,
+              alignItems: "center", fontSize: 13,
+            }} className="ifirst-row">
+              <div style={{ color: T.white, fontWeight: 600 }}>{r.feat}</div>
+              <div style={{
+                color: T.cyan, fontWeight: 700,
+                fontFamily: r.vrk.includes("₹") || r.vrk.includes("✓") ? "inherit" : "inherit",
+              }}>{r.vrk}</div>
+              <div style={{ color: r.norton.startsWith("❌") ? T.red : T.muted, fontFamily: "inherit" }}>{r.norton}</div>
+              <div style={{ color: r.mc.startsWith("❌") ? T.red : T.muted, fontFamily: "inherit" }}>{r.mc}</div>
+            </div>
+          ))}
+        </div>
+      </Reveal>
+
+      <Reveal>
+        <div style={{
+          marginTop: 28, padding: 24, borderRadius: 18, textAlign: "center",
+          background: `linear-gradient(135deg, ${T.accent}1a, ${T.cyan}1a)`,
+          border: `1px solid ${T.cyan}33`,
+        }}>
+          <h3 style={{
+            fontFamily: "var(--font-display)", fontSize: 22, color: T.white,
+            margin: "0 0 8px",
+          }}>India lost ₹11,000 Cr+ to scams last year.</h3>
+          <p style={{ color: T.muted, fontSize: 14, margin: "0 0 18px" }}>
+            Foreign antivirus doesn't speak Hindi or know UPI. We do.
+          </p>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap", justifyContent: "center" }}>
+            <Btn primary to="/scam-recovery" icon="🚨">Scam recovery (free)</Btn>
+            <Btn to="/festival-fraud" icon="🎉">Festival fraud watch</Btn>
+          </div>
+        </div>
+      </Reveal>
+
+      <style>{`
+        @media (max-width: 720px) {
+          .ifirst-header, .ifirst-row { grid-template-columns: 1.4fr 1fr !important; gap: 6px !important; padding-left: 14px !important; padding-right: 14px !important; font-size: 12px !important; }
+          .ifirst-header > div:nth-child(3), .ifirst-header > div:nth-child(4),
+          .ifirst-row > div:nth-child(3), .ifirst-row > div:nth-child(4) { display: none !important; }
+        }
+      `}</style>
+    </Section>
+  );
+};
 
 /* ── FEATURES — Premium grid ── */
 const Features = () => {
@@ -2544,6 +2724,10 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
           </svg>
         </div>
 
+        <JustShipped />
+        <div className="section-divider" />
+        <IndiaFirst />
+        <div className="section-divider" />
         <Features />
         <div className="section-divider" />
         <HowItWorks />
