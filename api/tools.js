@@ -1920,7 +1920,7 @@ Reply ONLY with strict JSON (no markdown fences):
 
 // ─── ROUTER ─────────────────────────────────────────────────────────
 
-// ── Newsletter subscribe — write email to Firestore `newsletter` collection ──
+// ── Newsletter subscribe — Brevo + Firestore log (server-side, key never in browser) ──
 async function handleNewsletterSubscribe(req, res) {
   const { email, source } = req.body || {};
   if (!email || typeof email !== "string" || !/^\S+@\S+\.\S+$/.test(email)) {
@@ -1928,21 +1928,68 @@ async function handleNewsletterSubscribe(req, res) {
   }
   const cleanEmail = email.trim().toLowerCase().slice(0, 254);
   const cleanSource = String(source || "unknown").slice(0, 64);
+  const userAgent = (req.headers?.["user-agent"] || "").slice(0, 200);
+  const ip = (req.headers?.["x-forwarded-for"]?.split(",")[0] || "").trim().slice(0, 64);
+
+  // ── Step 1: Write to Firestore for audit / fallback ────────────
   try {
     const db = getAdminFirestore();
-    if (!db) return res.status(200).json({ ok: true, note: "logged-locally" });
-    // Use email as doc ID (one entry per email, idempotent)
-    await db.collection("newsletter").doc(cleanEmail).set({
-      email: cleanEmail,
-      source: cleanSource,
-      subscribedAt: new Date(),
-      userAgent: (req.headers?.["user-agent"] || "").slice(0, 200),
-      ip: (req.headers?.["x-forwarded-for"]?.split(",")[0] || "").trim().slice(0, 64),
-    }, { merge: true });
-    return res.status(200).json({ ok: true });
+    if (db) {
+      await db.collection("newsletter").doc(cleanEmail).set({
+        email: cleanEmail,
+        source: cleanSource,
+        subscribedAt: new Date(),
+        userAgent,
+        ip,
+      }, { merge: true });
+    }
   } catch (err) {
-    console.error("newsletter-subscribe error:", err.message);
-    return res.status(500).json({ error: "Could not subscribe" });
+    console.warn("newsletter: firestore write failed:", err.message);
+    // Don't bail — Brevo is the primary channel
+  }
+
+  // ── Step 2: Push to Brevo (server-side, BREVO_API_KEY never in browser) ────
+  const brevoKey = process.env.BREVO_API_KEY;
+  const brevoList = process.env.BREVO_LIST_ID;
+  if (!brevoKey || !brevoList) {
+    // Brevo not configured — Firestore-only mode
+    return res.status(200).json({ ok: true, channel: "firestore" });
+  }
+
+  try {
+    const brevoRes = await fetch("https://api.brevo.com/v3/contacts", {
+      method: "POST",
+      headers: {
+        "api-key": brevoKey,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify({
+        email: cleanEmail,
+        listIds: [Number(brevoList)],
+        attributes: {
+          SOURCE: cleanSource,
+          SIGNED_UP_AT: new Date().toISOString(),
+        },
+        updateEnabled: true,  // idempotent — updates existing contact
+      }),
+    });
+
+    if (brevoRes.ok || brevoRes.status === 204) {
+      return res.status(200).json({ ok: true, channel: "brevo" });
+    }
+
+    const data = await brevoRes.json().catch(() => ({}));
+    // Treat duplicate as success
+    if (data?.code === "duplicate_parameter") {
+      return res.status(200).json({ ok: true, channel: "brevo", note: "already-subscribed" });
+    }
+    console.warn("newsletter: brevo error", brevoRes.status, data?.message);
+    // Brevo failed but Firestore succeeded → still report success to user
+    return res.status(200).json({ ok: true, channel: "firestore", brevoStatus: brevoRes.status });
+  } catch (err) {
+    console.error("newsletter: brevo fetch failed:", err.message);
+    return res.status(200).json({ ok: true, channel: "firestore" });
   }
 }
 

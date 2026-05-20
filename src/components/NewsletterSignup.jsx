@@ -3,12 +3,15 @@ import { useState } from "react";
 /**
  * NewsletterSignup — reusable component for capturing emails before launch.
  *
- * Backend strategy (graceful degradation):
- *   1. If VITE_BREVO_LIST_ID + VITE_BREVO_API_KEY set → POST direct to Brevo
- *      (api.brevo.com/v3/contacts) — list-managed, double-opt-in, auto-tagged
- *   2. Else → POST to /api/tools?tool=newsletter-subscribe (server-side,
- *      writes to Firestore `newsletter` collection — manual export later)
- *   3. Else → localStorage fallback (logs to vrk_newsletter_v1, never lost)
+ * All subscriptions route through /api/tools?tool=newsletter-subscribe (server).
+ * The server (api/tools.js handleNewsletterSubscribe):
+ *   1. Writes to Firestore `newsletter` collection (audit log + idempotent)
+ *   2. Pushes to Brevo list (server-side, BREVO_API_KEY stays in Vercel env)
+ *
+ * If both backend + Brevo fail → falls back to localStorage queue locally.
+ *
+ * Brevo API key is NEVER sent to the browser. Set BREVO_API_KEY +
+ * BREVO_LIST_ID in Vercel env vars (NO VITE_ prefix).
  *
  * Props:
  *   compact   — small inline variant (default: false, full card)
@@ -16,7 +19,7 @@ import { useState } from "react";
  *   accent    — color override (default cyan)
  *   title     — heading text (only shown if compact=false)
  *   subtitle  — sub-copy
- *   cta       — button text (default: "Get launch updates")
+ *   cta       — button text (default: "Subscribe")
  */
 export default function NewsletterSignup({
   compact = false,
@@ -42,36 +45,7 @@ export default function NewsletterSignup({
 
     const payload = { email: email.trim().toLowerCase(), source, ts: Date.now() };
 
-    // Try Brevo first (env-var driven, set on Vercel)
-    const brevoKey = import.meta.env.VITE_BREVO_API_KEY;
-    const brevoList = import.meta.env.VITE_BREVO_LIST_ID;
-    if (brevoKey && brevoList) {
-      try {
-        const res = await fetch("https://api.brevo.com/v3/contacts", {
-          method: "POST",
-          headers: {
-            "api-key": brevoKey,
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          },
-          body: JSON.stringify({
-            email: payload.email,
-            listIds: [Number(brevoList)],
-            attributes: { SOURCE: source, SIGNED_UP_AT: new Date().toISOString() },
-            updateEnabled: true,
-          }),
-        });
-        if (res.ok || res.status === 204) { onSuccess(payload); return; }
-        const data = await res.json().catch(() => ({}));
-        // 400 w/ "Contact already exist" → treat as success
-        if (data?.code === "duplicate_parameter") { onSuccess(payload); return; }
-        throw new Error(data?.message || `Brevo error ${res.status}`);
-      } catch (err) {
-        console.warn("Brevo failed, falling back to API:", err.message);
-      }
-    }
-
-    // Fall back to our own backend
+    // Single route through our backend (handles Brevo server-side)
     try {
       const res = await fetch("/api/tools?tool=newsletter-subscribe", {
         method: "POST",
@@ -79,9 +53,13 @@ export default function NewsletterSignup({
         body: JSON.stringify(payload),
       });
       if (res.ok) { onSuccess(payload); return; }
-    } catch {}
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data?.error || `Server error ${res.status}`);
+    } catch (err) {
+      console.warn("newsletter: backend failed:", err.message);
+    }
 
-    // Final fallback — localStorage queue (will retry on next visit)
+    // Final fallback — localStorage queue (so we never lose a signup)
     try {
       const stored = JSON.parse(localStorage.getItem("vrk_newsletter_v1") || "[]");
       if (!stored.find(x => x.email === payload.email)) {
