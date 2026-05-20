@@ -1,6 +1,6 @@
-const CACHE_NAME = "vrikaan-v7";
-const STATIC_CACHE = "vrikaan-static-v7";
-const API_CACHE = "vrikaan-api-v7";
+const CACHE_NAME = "vrikaan-v8";
+const STATIC_CACHE = "vrikaan-static-v8";
+const API_CACHE = "vrikaan-api-v8";
 const PRECACHE_URLS = ["/", "/index.html", "/favicon.svg", "/manifest.json", "/offline.html", "/wolf-mark.png", "/wolf-icon.png"];
 
 // Idempotent /api/tools queries safe to cache (GET-only, public-data tools).
