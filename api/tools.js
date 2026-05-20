@@ -14,6 +14,7 @@ const ACTION_TIERS = {
   "password-check":    "free",
   "weekly-digest":     "free", // cron auth handled separately inside handler
   "leak-check":        "free",
+  "newsletter-subscribe": "free",
 
   // PRO tier (AI, data-heavy, paid value)
   "scam-check":         "pro",
@@ -1919,8 +1920,35 @@ Reply ONLY with strict JSON (no markdown fences):
 
 // ─── ROUTER ─────────────────────────────────────────────────────────
 
+// ── Newsletter subscribe — write email to Firestore `newsletter` collection ──
+async function handleNewsletterSubscribe(req, res) {
+  const { email, source } = req.body || {};
+  if (!email || typeof email !== "string" || !/^\S+@\S+\.\S+$/.test(email)) {
+    return res.status(400).json({ error: "Valid email required" });
+  }
+  const cleanEmail = email.trim().toLowerCase().slice(0, 254);
+  const cleanSource = String(source || "unknown").slice(0, 64);
+  try {
+    const db = getAdminFirestore();
+    if (!db) return res.status(200).json({ ok: true, note: "logged-locally" });
+    // Use email as doc ID (one entry per email, idempotent)
+    await db.collection("newsletter").doc(cleanEmail).set({
+      email: cleanEmail,
+      source: cleanSource,
+      subscribedAt: new Date(),
+      userAgent: (req.headers?.["user-agent"] || "").slice(0, 200),
+      ip: (req.headers?.["x-forwarded-for"]?.split(",")[0] || "").trim().slice(0, 64),
+    }, { merge: true });
+    return res.status(200).json({ ok: true });
+  } catch (err) {
+    console.error("newsletter-subscribe error:", err.message);
+    return res.status(500).json({ error: "Could not subscribe" });
+  }
+}
+
 const HANDLERS = {
   whois: handleWhois,
+  "newsletter-subscribe": handleNewsletterSubscribe,
   "security-headers": handleSecurityHeaders,
   "file-hash-check": handleFileHashCheck,
   "ai-explain": handleGeminiExplain,

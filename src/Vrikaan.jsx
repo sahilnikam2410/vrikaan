@@ -19,6 +19,7 @@ const GlobePlaceholder = ({ size = 520 }) => (
 );
 import ThreatMapLive from "./components/ThreatMapLive";
 import PageJump from "./components/PageJump";
+import NewsletterSignup from "./components/NewsletterSignup";
 import SEO from "./components/SEO";
 
 /* ═══════════════════════════════════════════════════════
@@ -2108,33 +2109,127 @@ const Newsletter = () => {
             Weekly threat briefings, security tips, and platform updates. No spam — just actionable intelligence.
           </p>
 
-          {submitted ? (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, padding: "16px 24px", borderRadius: 12, background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)", animation: "fadeIn 0.4s ease" }}>
-              <span style={{ color: "#22c55e", fontSize: 18 }}>&#10003;</span>
-              <span style={{ fontFamily: "var(--font-body)", fontSize: 15, color: "#22c55e", fontWeight: 600 }}>You're in! Check your inbox for confirmation.</span>
-            </div>
-          ) : (
-            <div style={{ display: "flex", gap: 12, maxWidth: 460, margin: "0 auto" }} className="newsletter-form">
-              <input
-                value={email} onChange={e => setEmail(e.target.value)}
-                onKeyDown={e => e.key === "Enter" && handleSubmit()}
-                placeholder="Enter your email..."
-                style={{
-                  flex: 1, padding: "14px 20px", borderRadius: 12,
-                  background: "rgba(3,7,18,0.6)", border: `1px solid ${T.border}`,
-                  color: T.white, fontFamily: "var(--font-body)", fontSize: 14, outline: "none",
-                  transition: "border-color 0.3s",
-                }}
-                onFocus={e => e.target.style.borderColor = "rgba(99,102,241,0.3)"}
-                onBlur={e => e.target.style.borderColor = T.border}
-              />
-              <Btn primary onClick={handleSubmit}>Subscribe</Btn>
-            </div>
-          )}
+          <div style={{ maxWidth: 480, margin: "0 auto" }}>
+            <NewsletterSignup
+              compact
+              source="homepage-newsletter-section"
+              cta="Subscribe"
+            />
+          </div>
 
           <p style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: T.mutedDark, marginTop: 16 }}>
-            12,400+ subscribers &bull; Unsubscribe anytime
+            DPDP Act compliant &bull; 1-click unsubscribe &bull; ~2 emails / month
           </p>
+        </div>
+      </Reveal>
+    </Section>
+  );
+};
+
+/* ── INDIA TRUST STRIP — credentials wall ── */
+const IndiaTrust = () => {
+  const badges = [
+    { icon: "🇮🇳",  label: "Made in India",        sub: "Nashik, Maharashtra · 2024" },
+    { icon: "📜",  label: "DPDP Act 2023",        sub: "Indian data law compliant" },
+    { icon: "🔒",  label: "NIST AAL2 2FA",        sub: "RFC 6238 TOTP" },
+    { icon: "🛰️",  label: "MITRE ATT&CK",         sub: "12 tactics · 40+ techniques" },
+    { icon: "🏦",  label: "RBI-aware",            sub: "Bank fraud rules baked in" },
+    { icon: "💳",  label: "NPCI 1930",            sub: "UPI dispute path automated" },
+    { icon: "🛡",   label: "Zero file upload",     sub: "Hashes only · privacy first" },
+    { icon: "⚖️",  label: "IPC §66 / §420",       sub: "Recovery flow w/ legal cites" },
+    { icon: "💸",  label: "Cashfree INR",          sub: "UPI · cards · netbanking" },
+    { icon: "🧪",  label: "109 automated tests",   sub: "Vitest + RTL coverage" },
+    { icon: "🌐",  label: "EN + हिन्दी",            sub: "Full bilingual UI" },
+    { icon: "📂",  label: "Source visible",        sub: "Partial open-source on GitHub" },
+  ];
+
+  return (
+    <Section>
+      <Reveal>
+        <SectionHeader
+          badge="🇮🇳 Built for India"
+          title={<>Credentials, <GradientText>not vaporware</GradientText></>}
+          subtitle="Real frameworks. Real laws. Real protection. No 'AI-powered cybersecurity' buzzwords without proof."
+        />
+      </Reveal>
+      <Reveal>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
+          gap: 12,
+          marginTop: 8,
+        }}>
+          {badges.map(b => (
+            <div key={b.label} style={{
+              padding: "16px 18px", borderRadius: 14,
+              background: T.card, border: `1px solid ${T.border}`,
+              display: "flex", alignItems: "center", gap: 12,
+              transition: "transform 0.15s, border-color 0.15s",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.borderColor = T.cyan + "55"; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.borderColor = T.border; }}
+            >
+              <div style={{
+                fontSize: 26, lineHeight: 1, flexShrink: 0,
+                width: 44, height: 44, borderRadius: 10,
+                background: "rgba(20,227,197,0.08)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>{b.icon}</div>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ color: T.white, fontWeight: 700, fontSize: 13, lineHeight: 1.3 }}>{b.label}</div>
+                <div style={{ color: T.muted, fontSize: 11, marginTop: 3, lineHeight: 1.4 }}>{b.sub}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Reveal>
+
+      {/* As-seen-on placeholder strip */}
+      <Reveal>
+        <div style={{
+          marginTop: 28, padding: "18px 24px", borderRadius: 14,
+          background: "rgba(2,6,23,0.5)", border: `1px solid ${T.border}`,
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 28, flexWrap: "wrap",
+        }}>
+          <span style={{
+            fontSize: 10, fontWeight: 800, letterSpacing: 2, color: T.muted,
+            textTransform: "uppercase", whiteSpace: "nowrap",
+          }}>Listed in</span>
+          {[
+            { name: "Product Hunt",  status: "soon" },
+            { name: "Hacker News",   status: "soon" },
+            { name: "Crunchbase",    status: "soon" },
+            { name: "GitHub",        status: "live", url: "https://github.com/sahilnikam2410/vrikaan" },
+            { name: "RBI Sachet",    status: "research" },
+          ].map(s => (
+            s.url ? (
+              <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" style={{
+                color: T.white, fontSize: 13, fontWeight: 600, textDecoration: "none",
+                fontFamily: "var(--font-mono)", opacity: 0.9,
+                display: "inline-flex", alignItems: "center", gap: 6,
+              }}>
+                {s.name}
+                <span style={{
+                  fontSize: 9, padding: "2px 6px", borderRadius: 4,
+                  background: T.green + "22", color: T.green,
+                  border: `1px solid ${T.green}55`, textTransform: "uppercase", letterSpacing: 1,
+                }}>LIVE</span>
+              </a>
+            ) : (
+              <span key={s.name} style={{
+                color: T.mutedDark, fontSize: 13, fontWeight: 500,
+                fontFamily: "var(--font-mono)",
+                display: "inline-flex", alignItems: "center", gap: 6,
+              }}>
+                {s.name}
+                <span style={{
+                  fontSize: 9, padding: "2px 6px", borderRadius: 4,
+                  background: "rgba(148,163,184,0.1)", color: T.mutedDark,
+                  border: `1px solid ${T.border}`, textTransform: "uppercase", letterSpacing: 1,
+                }}>{s.status}</span>
+              </span>
+            )
+          ))}
         </div>
       </Reveal>
     </Section>
@@ -2788,6 +2883,8 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
 
         <PricingSection />
         <PricingComparison />
+        <div className="section-divider" />
+        <IndiaTrust />
         <div className="section-divider" />
         <FounderSection />
         <div className="section-divider" />
