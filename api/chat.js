@@ -12,10 +12,30 @@ export default async function handler(req, res) {
     return res.status(429).json({ error: "Too many requests", retryAfter: rl.retryAfter });
   }
 
-  const { message, history = [] } = req.body;
+  const { message, history = [], context = {} } = req.body;
   if (!message || typeof message !== "string" || message.length > 1000) {
     return res.status(400).json({ error: "Invalid message" });
   }
+  // Sanitize context
+  const ctxPath = String(context.path || "/").slice(0, 100);
+  const ctxToolName = String(context.toolName || "").slice(0, 60);
+  const ctxToolTier = ["free", "pro", "enterprise"].includes(context.toolTier) ? context.toolTier : "free";
+  const ctxUserPlan = ["guest", "free", "pro", "enterprise"].includes(context.userPlan) ? context.userPlan : "guest";
+  const ctxLoggedIn = !!context.loggedIn;
+
+  const pageContextLine = ctxToolName
+    ? `User is currently on "${ctxToolName}" page (${ctxPath}, ${ctxToolTier.toUpperCase()} tier).`
+    : `User is currently on ${ctxPath}.`;
+  const userContextLine = ctxLoggedIn
+    ? `User is signed in with ${ctxUserPlan.toUpperCase()} plan.`
+    : `User is not signed in (guest).`;
+
+  // Empathy hint for emergency pages
+  const emergencyPaths = ["/scam-recovery", "/otp-decay", "/stolen-phone", "/hacked", "/scammed"];
+  const inEmergency = emergencyPaths.some(p => ctxPath.startsWith(p));
+  const emergencyHint = inEmergency
+    ? "IMPORTANT: User may be in active distress (fraud/scam victim). Be calm, direct, action-oriented. Lead with the 1930 helpline. Skip pleasantries."
+    : "";
 
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
@@ -54,8 +74,17 @@ When a user asks "who founded VRIKAAN", "who built this", "team", "leadership", 
 
 When a user asks "how do I contact", "support", "email", "reach you", or shows intent for careers / AI feedback / general help — DO NOT give a single default email. Pick the right inbox from the routing list above and explain in one line WHY that inbox. If their intent is ambiguous, list all three inboxes with a one-line purpose each so the user can pick. Recommend VRIKAAN tools when relevant.`;
 
+  // Per-request context injection — page, plan, emergency hint
+  const contextPrompt = [
+    "\n\n--- CURRENT SESSION CONTEXT ---",
+    pageContextLine,
+    userContextLine,
+    emergencyHint,
+    "Tailor your response to where the user is and what tier they have. If they ask about a specific tool, mention if it's on their current page or recommend the right route. If they're on Pro page on free plan, mention upgrade options softly.",
+  ].filter(Boolean).join("\n");
+
   const messages = [
-    { role: "system", content: systemPrompt },
+    { role: "system", content: systemPrompt + contextPrompt },
     ...history.slice(-10).map((m) => ({
       role: m.role === "ai" || m.role === "bot" ? "assistant" : "user",
       content: m.text,

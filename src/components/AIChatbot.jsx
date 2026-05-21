@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { getToolTier } from "../lib/toolTiers";
 
 // ─── Credit System (login-aware) ───
 const PLANS = {
@@ -92,12 +93,23 @@ function upgradePlan(planKey) {
 }
 
 // ─── AI Engine — calls server-side /api/chat (key stays server-side) ───
-async function askAI(message, history) {
+// Includes sticky context: current page, user plan, tool tier.
+async function askAI(message, history, ctx = {}) {
   try {
     const res = await fetch("/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message, history: history.slice(-10) }),
+      body: JSON.stringify({
+        message,
+        history: history.slice(-10),
+        context: {
+          path: ctx.path || "/",
+          toolName: ctx.toolName || "",
+          toolTier: ctx.toolTier || "free",
+          userPlan: ctx.userPlan || "guest",
+          loggedIn: !!ctx.loggedIn,
+        },
+      }),
     });
 
     if (!res.ok) {
@@ -112,6 +124,35 @@ async function askAI(message, history) {
     console.error("VRIKAAN AI Error:", e.message);
     return "Network error — check your internet connection and try again.";
   }
+}
+
+// Map page paths → suggested quick-reply chips (page-aware nudges)
+const QUICK_REPLIES_BY_PATH = {
+  "/scam-recovery":  ["What helpline to call?", "How to file FIR?", "Recovery odds for UPI fraud?"],
+  "/otp-decay":      ["I shared OTP, what now?", "Block card script", "RBI zero-liability rule?"],
+  "/safe-word":      ["Suggest a safe-word", "Send briefing to family", "How does it stop voice clones?"],
+  "/aadhaar-mask":   ["Why mask Aadhaar?", "UIDAI rules?", "Did my Aadhaar leak?"],
+  "/festival-fraud": ["Top Diwali scams?", "How to warn family?", "Wedding-season fraud?"],
+  "/device-scan":    ["What does it scan?", "Is my file safe?", "Pro vs free limits?"],
+  "/upi-lookup":     ["Check this UPI for me", "Report scam UPI", "What's NPCI 1930?"],
+  "/loan-app-check": ["Is KreditBee safe?", "What RBI rules?", "App harassing me"],
+  "/stolen-phone":   ["Block my SIM how?", "CEIR IMEI block steps", "File phone-stolen FIR"],
+  "/voiceprint":     ["How does it help?", "Record best practices", "Compare against deepfake"],
+  "/whatsapp-audit": ["Export chat how?", "Spot scam group signs", "Leave group safely"],
+  "/receipt-audit":  ["What's a valid GSTIN?", "Can I refuse service charge?", "Tax-slab rules"],
+  "/desktop":        ["When does it launch?", "How is it different?", "Notify me on release"],
+  "/careers":        ["Apply how?", "What's the stipend?", "Remote OK?"],
+  "/pricing":        ["What unlocks in Pro?", "INR payment options?", "Refund policy?"],
+  "/hi":             ["Hindi में बात करो", "UPI ठगी से कैसे बचूँ?", "मेरा OTP share हो गया"],
+};
+
+function getQuickRepliesForPath(path) {
+  if (!path) return [];
+  // Exact match
+  if (QUICK_REPLIES_BY_PATH[path]) return QUICK_REPLIES_BY_PATH[path];
+  // Partial prefix match (e.g. /pricing?from=x)
+  const key = Object.keys(QUICK_REPLIES_BY_PATH).find(k => path.startsWith(k));
+  return key ? QUICK_REPLIES_BY_PATH[key] : [];
 }
 
 // ─── Built-in Knowledge Base (works without API) ───
@@ -160,6 +201,9 @@ const T = { bg: "#030712", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", 
 export default function AIChatbot() {
   const { user } = useAuth() || {};
   const navigate = useNavigate();
+  const location = useLocation();
+  const pageMeta = getToolTier(location.pathname); // { tier, name }
+  const quickReplies = getQuickRepliesForPath(location.pathname);
   const [open, setOpen] = useState(false);
   const [view, setView] = useState("chat"); // chat | setup | credits
   const [messages, setMessages] = useState([]);
@@ -319,7 +363,13 @@ export default function AIChatbot() {
     setTyping(true);
 
     const history = messages.map(m => ({ role: m.role, text: m.text }));
-    const response = await askAI(msg, history);
+    const response = await askAI(msg, history, {
+      path: location.pathname,
+      toolName: pageMeta.name,
+      toolTier: pageMeta.tier,
+      userPlan: user?.plan || "guest",
+      loggedIn: !!user,
+    });
     setTyping(false);
 
     if (response === "ERROR_QUOTA") {
@@ -681,6 +731,32 @@ export default function AIChatbot() {
           )}
           {speechError && (
             <div style={{ padding: "0 14px", fontSize: 11, color: T.red }}>{speechError}</div>
+          )}
+
+          {/* Page-aware quick-reply chips */}
+          {quickReplies.length > 0 && messages.length < 3 && (
+            <div style={{
+              padding: "8px 14px 4px",
+              borderTop: `1px solid ${T.border}`,
+              display: "flex", gap: 6, flexWrap: "wrap",
+              background: "rgba(20,227,197,0.04)",
+            }}>
+              <div style={{
+                fontSize: 9, fontWeight: 800, letterSpacing: 1.5,
+                color: T.cyan, textTransform: "uppercase",
+                width: "100%", marginBottom: 4,
+              }}>💡 Suggested for {pageMeta.name || "this page"}</div>
+              {quickReplies.map((q, i) => (
+                <button key={i} onClick={() => { setInput(q); setTimeout(() => inputRef.current?.focus(), 10); }} style={{
+                  padding: "5px 10px", borderRadius: 999,
+                  background: "rgba(20,227,197,0.08)",
+                  border: `1px solid ${T.cyan}33`,
+                  color: T.cyan, fontSize: 11, fontWeight: 600,
+                  cursor: "pointer", fontFamily: "'Plus Jakarta Sans'",
+                  whiteSpace: "nowrap",
+                }}>{q}</button>
+              ))}
+            </div>
           )}
 
           {/* Input */}
