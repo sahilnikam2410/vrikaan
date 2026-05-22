@@ -329,6 +329,14 @@ const PRIMARY_PAGES = [
     ogCategory: "Privacy Tools",
   },
   {
+    path: "/enterprise",
+    title: "VRIKAAN Enterprise SOC — Managed Security for India",
+    description:
+      "24×7 SOC-as-a-Service for Indian fintech, banks, IT services. MITRE ATT&CK, DPDP-ready, ₹50k-50L/mo. INR billing, Hindi-fluent on-call, India data residency (AWS Mumbai).",
+    ogSubtitle: "SOC-as-a-Service · India · ₹50k-50L/mo",
+    ogCategory: "Enterprise",
+  },
+  {
     path: "/hi",
     title: "VRIKAAN · भारत का फ्री AI साइबर डिफेंस",
     description:

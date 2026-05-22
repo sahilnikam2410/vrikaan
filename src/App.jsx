@@ -165,6 +165,7 @@ const LoanAppProfiler = lazy(() => import("./assets/pages/LoanAppProfiler.jsx"))
 const ResponsibleDisclosure = lazy(() => import("./assets/pages/ResponsibleDisclosure.jsx"));
 const HallOfFame = lazy(() => import("./assets/pages/HallOfFame.jsx"));
 const HindiLanding = lazy(() => import("./assets/pages/HindiLanding.jsx"));
+const Enterprise = lazy(() => import("./assets/pages/Enterprise.jsx"));
 const DnsLeakTest = lazy(() => import("./assets/pages/DnsLeakTest.jsx"));
 const TwoFactorGuide = lazy(() => import("./assets/pages/TwoFactorGuide.jsx"));
 const Referral = lazy(() => import("./assets/pages/Referral.jsx"));
@@ -287,6 +288,9 @@ function AppRoutes() {
             <Route path="/hi" element={<HindiLanding />} />
             <Route path="/hindi" element={<HindiLanding />} />
             <Route path="/in" element={<HindiLanding />} />
+            <Route path="/enterprise" element={<Enterprise />} />
+            <Route path="/soc-services" element={<Enterprise />} />
+            <Route path="/business" element={<Enterprise />} />
             <Route path="/dns-leak-test" element={<ProtectedRoute><DnsLeakTest /></ProtectedRoute>} />
             <Route path="/2fa-guide" element={<ProtectedRoute><TwoFactorGuide /></ProtectedRoute>} />
             <Route path="/security-audit" element={<ProtectedRoute><SecurityAudit /></ProtectedRoute>} />

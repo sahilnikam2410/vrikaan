@@ -17,6 +17,7 @@ const toolsMenu = [
     { to: "/whatsapp-audit", label: "💬 WhatsApp Audit", desc: "Detect scam groups" },
     { to: "/receipt-audit", label: "🧾 Receipt Audit", desc: "Catch fake bills" },
     { to: "/desktop", label: "💻 Desktop App", desc: "Native scan · waitlist" },
+    { to: "/enterprise", label: "🏛 Enterprise SOC", desc: "₹50k-50L/mo · MITRE · DPDP" },
     { to: "/otp-decay", label: "🚨 OTP Emergency", desc: "Shared OTP? Act in 90s" },
     { to: "/stolen-phone", label: "📱 Stolen Phone", desc: "7-step recovery flow" },
     { to: "/upi-lookup", label: "🔍 UPI Lookup", desc: "Check ID before pay" },

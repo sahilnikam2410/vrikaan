@@ -84,6 +84,7 @@ const Footer = () => (
             <FooterTool to="/voiceprint">Voiceprint Vault</FooterTool>
             <FooterTool to="/desktop">💻 Desktop App (waitlist)</FooterTool>
             <FooterTool to="/hi">🇮🇳 हिन्दी में</FooterTool>
+            <FooterTool to="/enterprise">🏛 Enterprise SOC</FooterTool>
             <FooterTool to="/device-scan">Device Scanner</FooterTool>
             <FooterTool to="/aadhaar-mask">Aadhaar Mask Tool</FooterTool>
             <FooterTool to="/festival-fraud">Festival Fraud Forecast</FooterTool>
