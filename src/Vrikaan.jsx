@@ -20,6 +20,9 @@ const GlobePlaceholder = ({ size = 520 }) => (
 import ThreatMapLive from "./components/ThreatMapLive";
 import PageJump from "./components/PageJump";
 import NewsletterSignup from "./components/NewsletterSignup";
+import LiveSocTicker from "./components/LiveSocTicker";
+import Spotlight from "./components/Spotlight";
+import StickyFab from "./components/StickyFab";
 import SEO from "./components/SEO";
 
 /* ═══════════════════════════════════════════════════════
@@ -433,6 +436,7 @@ const Hero = () => {
 
   return (
     <section ref={parallaxRef} style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", padding: "120px clamp(16px, 5vw, 80px) 80px", maxWidth: "100vw", boxSizing: "border-box" }}>
+      <Spotlight color="rgba(20,227,197,0.16)" size={700} />
       {/* Parallax background glows */}
       <div style={{ position: "absolute", top: "10%", left: "5%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.07), transparent 65%)", pointerEvents: "none", transform: `translateY(${parallaxOffset * 0.5}px)`, transition: "transform 0.1s linear" }} />
       <div style={{ position: "absolute", bottom: "5%", right: "5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(20,227,197,0.04), transparent 65%)", pointerEvents: "none", transform: `translateY(${parallaxOffset * -0.3}px)`, transition: "transform 0.1s linear" }} />
@@ -1166,14 +1170,25 @@ const JustShipped = () => {
       }}>
         {items.map((it, i) => (
           <Reveal key={it.to} delay={Math.min(i, 6) * 0.04}>
-            <Link to={it.to} style={{ textDecoration: "none", display: "block", height: "100%" }}>
+            <Link to={it.to} className="vrk-tilt-card" style={{ textDecoration: "none", display: "block", height: "100%", perspective: 1000 }}>
               <Card style={{
                 height: "100%", padding: "22px 22px 18px",
-                cursor: "pointer", transition: "transform 0.2s, border-color 0.2s",
+                cursor: "pointer",
+                transition: "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.25s, box-shadow 0.25s",
                 position: "relative", overflow: "hidden",
+                transformStyle: "preserve-3d",
+                willChange: "transform",
               }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.borderColor = it.color + "55"; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.borderColor = ""; }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = "translateY(-6px) rotateX(2deg) rotateY(-3deg) scale(1.015)";
+                  e.currentTarget.style.borderColor = it.color + "66";
+                  e.currentTarget.style.boxShadow = `0 22px 50px -12px ${it.color}40, 0 0 0 1px ${it.color}22`;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = "translateY(0) rotateX(0) rotateY(0) scale(1)";
+                  e.currentTarget.style.borderColor = "";
+                  e.currentTarget.style.boxShadow = "";
+                }}
               >
                 <div style={{
                   position: "absolute", top: 14, right: 14,
@@ -2726,6 +2741,8 @@ export default function VrikaanApp() {
   return (
     <div style={{ background: T.bg, color: T.white, minHeight: "100vh", fontFamily: "var(--font-body)", overflowX: "hidden" }}>
       <SEO path="/" />
+      <LiveSocTicker />
+      <StickyFab />
 
       <style>{`
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
