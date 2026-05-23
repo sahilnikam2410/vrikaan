@@ -20,7 +20,6 @@ const GlobePlaceholder = ({ size = 520 }) => (
 import ThreatMapLive from "./components/ThreatMapLive";
 import PageJump from "./components/PageJump";
 import NewsletterSignup from "./components/NewsletterSignup";
-import LiveSocTicker from "./components/LiveSocTicker";
 import Spotlight from "./components/Spotlight";
 import StickyFab from "./components/StickyFab";
 import SEO from "./components/SEO";
@@ -2741,7 +2740,6 @@ export default function VrikaanApp() {
   return (
     <div style={{ background: T.bg, color: T.white, minHeight: "100vh", fontFamily: "var(--font-body)", overflowX: "hidden" }}>
       <SEO path="/" />
-      <LiveSocTicker />
       <StickyFab />
 
       <style>{`
