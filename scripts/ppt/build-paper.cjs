@@ -221,8 +221,8 @@ const doc = new Document({
         spacing: { after: 320 },
         children: [
           new ExternalHyperlink({
-            children: [new TextRun({ text: "hello@vrikaan.com", font: FONT_BODY, size: 22, color: "0891B2", underline: {} })],
-            link: "mailto:hello@vrikaan.com",
+            children: [new TextRun({ text: "hello.vrikaan@gmail.com", font: FONT_BODY, size: 22, color: "0891B2", underline: {} })],
+            link: "mailto:hello.vrikaan@gmail.com",
           }),
           new TextRun({ text: "  |  Live: ", font: FONT_BODY, size: 22 }),
           new ExternalHyperlink({

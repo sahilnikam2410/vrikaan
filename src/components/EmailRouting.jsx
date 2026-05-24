@@ -1,14 +1,19 @@
 /**
- * EmailRouting — shared 3-inbox routing block used on Careers, Contact, Press.
+ * EmailRouting — shared 4-inbox routing block used on Careers, Contact, Press.
  *
- * Three inboxes:
- *  • hr.vrikaan@gmail.com  → HR · Careers
- *  • vrikaan.ai@gmail.com  → AI · Product · Dev
- *  • hello@vrikaan.com     → General · Press · Support
+ * Four inboxes:
+ *  • hr.vrikaan@gmail.com       → HR · People ops
+ *  • career.vrikaan@gmail.com   → Careers · Applications · Internships
+ *  • vrikaan.ai@gmail.com       → AI · Product · Dev
+ *  • hello.vrikaan@gmail.com    → General · Press · Support
+ *
+ * Founders' direct mail (shown on /founder, /about only — not public contact):
+ *  • founder.vrikaan@gmail.com    → Sahil Nikam
+ *  • cofounder.vrikaan@gmail.com  → Khushi Raygade
  *
  * Props:
- *   variant   — "full" (default, 3 cards) | "compact" (single row, footer-friendly)
- *   highlight — "hr" | "ai" | "general" — visually emphasises one inbox
+ *   variant   — "full" (default, 4 cards) | "compact" (single row, footer-friendly)
+ *   highlight — "hr" | "careers" | "ai" | "general" — emphasises one inbox
  *   title     — heading override (full only)
  *   subtitle  — sub-copy override (full only)
  */
@@ -21,13 +26,22 @@ const T = {
 
 export const INBOXES = [
   {
-    key: "hr",
-    tag: "HR · Careers",
+    key: "careers",
+    tag: "Careers · Internships",
     color: T.cyan,
     icon: "💼",
-    email: "hr.vrikaan@gmail.com",
+    email: "career.vrikaan@gmail.com",
     body: "Job + internship applications, take-home submissions, interview logistics.",
     subject: "Careers — ",
+  },
+  {
+    key: "hr",
+    tag: "HR · People Ops",
+    color: "#06b6d4",
+    icon: "🧑‍💼",
+    email: "hr.vrikaan@gmail.com",
+    body: "Payroll, onboarding, employee/intern HR queries, policy questions.",
+    subject: "HR — ",
   },
   {
     key: "ai",
@@ -43,17 +57,23 @@ export const INBOXES = [
     tag: "General · Press · Support",
     color: T.green,
     icon: "✉️",
-    email: "hello@vrikaan.com",
+    email: "hello.vrikaan@gmail.com",
     body: "Customer support, press & media, general enquiries, brand & partnership requests outside AI/dev.",
     subject: "Hello — ",
   },
+];
+
+// Founder direct emails — surface on /founder, /about, internal pages only.
+export const FOUNDERS = [
+  { name: "Sahil Anil Nikam", role: "Founder & CEO", email: "founder.vrikaan@gmail.com" },
+  { name: "Khushi Raygade",   role: "Co-founder & CTO", email: "cofounder.vrikaan@gmail.com" },
 ];
 
 export default function EmailRouting({
   variant = "full",
   highlight,
   title = "Reach the right inbox",
-  subtitle = "We monitor 3 inboxes. Pick the one that matches your message — we reply within 7 days.",
+  subtitle = "We monitor 4 inboxes. Pick the one that matches your message — we reply within 7 days.",
 }) {
   if (variant === "compact") {
     return (

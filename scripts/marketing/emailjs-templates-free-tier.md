@@ -39,7 +39,7 @@ Apply to **Production + Preview + Development**. Redeploy after saving (env vars
 **Subject:** `Welcome to VRIKAAN, {{to_name}}!`
 **From Name:** `VRIKAAN`
 **From Email:** Use Default Email Address ✓
-**Reply To:** `hello@vrikaan.com`
+**Reply To:** `hello.vrikaan@gmail.com`
 **To Email:** `{{to_email}}`
 
 ### Replace HTML body with:
@@ -100,7 +100,7 @@ Apply to **Production + Preview + Development**. Redeploy after saving (env vars
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:13px;color:#cbd5e1;">
                 <tr><td style="padding:4px 0;">💼 <a href="mailto:hr.vrikaan@gmail.com" style="color:#14E3C5;text-decoration:none;">hr.vrikaan@gmail.com</a> — careers</td></tr>
                 <tr><td style="padding:4px 0;">🤖 <a href="mailto:vrikaan.ai@gmail.com" style="color:#6366F1;text-decoration:none;">vrikaan.ai@gmail.com</a> — AI / product / bugs</td></tr>
-                <tr><td style="padding:4px 0;">✉️ <a href="mailto:hello@vrikaan.com" style="color:#22C55E;text-decoration:none;">hello@vrikaan.com</a> — general / press / support</td></tr>
+                <tr><td style="padding:4px 0;">✉️ <a href="mailto:hello.vrikaan@gmail.com" style="color:#22C55E;text-decoration:none;">hello.vrikaan@gmail.com</a> — general / press / support</td></tr>
               </table>
             </td>
           </tr>
@@ -133,7 +133,7 @@ Apply to **Production + Preview + Development**. Redeploy after saving (env vars
 **Subject:** `{{subject}}`   ← dynamic, lets every call set its own subject
 **From Name:** `VRIKAAN`
 **From Email:** Use Default Email Address ✓
-**Reply To:** `hello@vrikaan.com`
+**Reply To:** `hello.vrikaan@gmail.com`
 **To Email:** `{{to_email}}`
 
 ### Replace HTML body with:
@@ -194,7 +194,7 @@ Apply to **Production + Preview + Development**. Redeploy after saving (env vars
               <p style="margin:0;color:#cbd5e1;font-size:12px;line-height:1.9;">
                 💼 <a href="mailto:hr.vrikaan@gmail.com" style="color:#14E3C5;text-decoration:none;">hr.vrikaan@gmail.com</a> — careers<br>
                 🤖 <a href="mailto:vrikaan.ai@gmail.com" style="color:#6366F1;text-decoration:none;">vrikaan.ai@gmail.com</a> — AI / product / bugs<br>
-                ✉️ <a href="mailto:hello@vrikaan.com" style="color:#22C55E;text-decoration:none;">hello@vrikaan.com</a> — general / press / support
+                ✉️ <a href="mailto:hello.vrikaan@gmail.com" style="color:#22C55E;text-decoration:none;">hello.vrikaan@gmail.com</a> — general / press / support
               </p>
             </td>
           </tr>
@@ -240,7 +240,7 @@ If you want the sender card to vanish for non-contact-form emails, **delete the 
 For each of the 2 templates:
 1. dashboard.emailjs.com → **Email Templates** → click the **edit pencil** ✏️
 2. **Subject** field — paste the subject from above (templates 1 + 2 differ)
-3. **From Name** — `VRIKAAN`  ·  **From Email** — Use Default ✓  ·  **Reply To** — `hello@vrikaan.com`
+3. **From Name** — `VRIKAAN`  ·  **From Email** — Use Default ✓  ·  **Reply To** — `hello.vrikaan@gmail.com`
 4. Click **Edit Content** (top right of Content card)
 5. In the popup, switch to **`</>` Code** tab
 6. **Select All → Delete** old HTML

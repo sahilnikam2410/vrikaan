@@ -4,7 +4,7 @@ Three inboxes, three canned auto-replies. Fires immediately on every incoming em
 
 Free Gmail tier supports:
 - **Vacation responder** — one canned message per account, fires on *every* incoming. Best for `hr.vrikaan@gmail.com` + `vrikaan.ai@gmail.com` (single-purpose inboxes).
-- **Filters → canned response templates** — multiple per account, conditional on subject/body. Best for `hello@vrikaan.com` (multi-intent — careers, press, billing, support).
+- **Filters → canned response templates** — multiple per account, conditional on subject/body. Best for `hello.vrikaan@gmail.com` (multi-intent — careers, press, billing, support).
 
 Below: exact setup steps + templates ready to paste.
 
@@ -44,7 +44,7 @@ While you wait:
 
 For non-careers questions, route to the right inbox:
 • AI / Product / Dev    → vrikaan.ai@gmail.com
-• General / Press / Help → hello@vrikaan.com
+• General / Press / Help → hello.vrikaan@gmail.com
 
 — VRIKAAN HR
 Nashik, India
@@ -87,7 +87,7 @@ Live SOC:  https://vrikaan.com/admin/soc  (login required)
 
 For non-AI questions, route to the right inbox:
 • Careers / Internships  → hr.vrikaan@gmail.com
-• General / Press / Help → hello@vrikaan.com
+• General / Press / Help → hello.vrikaan@gmail.com
 
 — VRIKAAN AI / Product
 Sahil & Khushi · Nashik, India
@@ -95,7 +95,7 @@ Sahil & Khushi · Nashik, India
 
 ---
 
-## INBOX 3 — `hello@vrikaan.com`  (multi-intent — use filters, not vacation responder)
+## INBOX 3 — `hello.vrikaan@gmail.com`  (multi-intent — use filters, not vacation responder)
 
 Vacation responder would block your real outbound replies too, so for this main inbox use **filters with canned templates**.
 
@@ -131,7 +131,7 @@ Settings → **Filters and Blocked Addresses** → **Create a new filter**
 ```
 Hi,
 
-Looks like you wrote to hello@vrikaan.com about a careers / job / internship matter. I've forwarded your email to our HR inbox — hr.vrikaan@gmail.com — and they'll take it from here.
+Looks like you wrote to hello.vrikaan@gmail.com about a careers / job / internship matter. I've forwarded your email to our HR inbox — hr.vrikaan@gmail.com — and they'll take it from here.
 
 For future applications, please use:
 • Application form: https://vrikaan.com/apply
@@ -192,7 +192,7 @@ Pricing:       https://vrikaan.com/pricing
 Resolution SLA: within 3 business days for refunds, immediate for invoice resends.
 
 — VRIKAAN Support
-hello@vrikaan.com
+hello.vrikaan@gmail.com
 ```
 
 ---
@@ -203,7 +203,7 @@ hello@vrikaan.com
 ```
 Hi,
 
-Got your email at hello@vrikaan.com — landed safely. We read every message within 24 hours on business days.
+Got your email at hello.vrikaan@gmail.com — landed safely. We read every message within 24 hours on business days.
 
 If your question is one of these, the right inbox replies faster:
 
@@ -227,7 +227,7 @@ https://vrikaan.com
 Gmail filters can't directly auto-send a template. Workaround = one Apps Script that runs every 5 min, finds new threads w/ a specific label, sends the matching template, removes the label.
 
 ### Setup
-1. Open **script.google.com** while signed in as `hello@vrikaan.com`
+1. Open **script.google.com** while signed in as `hello.vrikaan@gmail.com`
 2. **New project** → name it `Vrikaan Auto-Reply`
 3. Paste the code below
 4. Run once manually (will prompt for permissions — grant Gmail access)
@@ -282,7 +282,7 @@ Refund policy: https://vrikaan.com/refund-policy
     subject: "Message received — VRIKAAN",
     body: `Hi,
 
-Got your message at hello@vrikaan.com. We read every email within 24 hours on business days.
+Got your message at hello.vrikaan@gmail.com. We read every email within 24 hours on business days.
 
 Right inbox for faster reply:
 • Careers   → hr.vrikaan@gmail.com  (https://vrikaan.com/apply)
@@ -331,7 +331,7 @@ After setup:
 2. Within ≤5 min (general/AI/HR have instant vacation responder) you should receive the canned reply
 3. Check the subject lines / template bodies match the intent
 
-If `hello@vrikaan.com` doesn't auto-reply, check:
+If `hello.vrikaan@gmail.com` doesn't auto-reply, check:
 - ☑️ Apps Script trigger is enabled (`script.google.com` → Triggers tab)
 - ☑️ Filter actually applies the `auto:<intent>` label (right-click new email → check labels)
 - ☑️ Permissions granted to the script

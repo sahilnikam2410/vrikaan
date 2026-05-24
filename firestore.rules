@@ -19,7 +19,8 @@ service cloud.firestore {
         'sahilnikam133@gmail.com',
         'sahilnikam1212@gmail.com',
         'khushiraygade76666@gmail.com',
-        'admin@vrikaan.com'
+        'founder.vrikaan@gmail.com',
+        'cofounder.vrikaan@gmail.com'
       ];
     }
 

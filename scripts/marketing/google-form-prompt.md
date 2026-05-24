@@ -96,7 +96,7 @@ After publishing, copy the form URL and replace `https://forms.gle/your-google-f
 9. Hit **Send** → **Link tab** → toggle **Shorten URL** → copy.
 10. Replace `https://forms.gle/your-google-form-id` in `src/assets/pages/Careers.jsx` (line ~245) with the real `forms.gle/...` URL.
 11. **Responses** tab → click the **green Sheets icon** → creates a linked Google Sheet that auto-fills with each submission. Pin that sheet.
-12. (Optional) Add a **Forms add-on**: "Form Notifications" → emails `careers@vrikaan.com` instantly on each submission.
+12. (Optional) Add a **Forms add-on**: "Form Notifications" → emails `career.vrikaan@gmail.com` instantly on each submission.
 
 ---
 

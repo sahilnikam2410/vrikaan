@@ -185,7 +185,7 @@ X: x.com/vrikaan  ·  LinkedIn: linkedin.com/company/vrikaan-ai-cybersecurity
       <div style="font-size:11px;color:#6366F1;font-weight:600;margin-top:2px;">🛡️ AI-powered cyber defense · Nashik, India</div>
       <div style="margin-top:8px;font-size:12px;color:#475569;line-height:1.7;">
         🌐 <a href="https://vrikaan.com/careers" style="color:#14E3C5;text-decoration:none;">vrikaan.com/careers</a> · 📋 <a href="https://vrikaan.com/apply" style="color:#14E3C5;text-decoration:none;">apply form</a><br>
-        📧 hr.vrikaan@gmail.com (this inbox) · 📧 hello@vrikaan.com (general)
+        📧 hr.vrikaan@gmail.com (this inbox) · 📧 hello.vrikaan@gmail.com (general)
       </div>
       <div style="margin-top:8px;font-size:10px;color:#94A3B8;">
         We reply to every application within 7 days. No ghosting policy.

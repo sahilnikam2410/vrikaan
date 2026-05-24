@@ -417,7 +417,7 @@ export default function Status() {
               <li><strong style={{ color: T.cyan }}>90-day history</strong> is computed from your local check log (stored in your browser). A day shows green if 100% of checks passed, amber if {">"}80% passed, red otherwise.</li>
               <li><strong style={{ color: T.cyan }}>Aggregate uptime</strong> = average of per-endpoint uptime across all services with recorded history.</li>
               <li>Issues on this page may not reflect global availability — try refreshing or checking from a different network.</li>
-              <li>For real outage reports, contact <a href="mailto:hello@vrikaan.com" style={{ color: T.cyan, textDecoration: "none" }}>hello@vrikaan.com</a>.</li>
+              <li>For real outage reports, contact <a href="mailto:hello.vrikaan@gmail.com" style={{ color: T.cyan, textDecoration: "none" }}>hello.vrikaan@gmail.com</a>.</li>
             </ul>
           </div>
         </section>

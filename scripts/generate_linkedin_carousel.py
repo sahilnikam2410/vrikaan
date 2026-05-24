@@ -390,7 +390,7 @@ def slide_5(c):
     c.setFillColor(MUTED)
     c.setFont("Helvetica", 14)
     c.drawString(60, 110, "— Sahil Anil Nikam, Founder")
-    c.drawString(60, 90, "hello@vrikaan.com  ·  +91 8329935878")
+    c.drawString(60, 90, "hello.vrikaan@gmail.com  ·  +91 8329935878")
 
     draw_swipe_hint(c, 5, 5)
     c.showPage()

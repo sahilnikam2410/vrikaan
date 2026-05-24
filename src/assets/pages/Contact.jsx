@@ -10,7 +10,7 @@ const T = { bg: "#030712", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", 
 const SUBJECTS = ["General Inquiry", "Technical Support", "Partnership", "Bug Report", "Feature Request"];
 
 const CONTACT_INFO = [
-  { icon: "\u2709\uFE0F", label: "Email", value: "hello@vrikaan.com", sub: "We typically respond within 24 hours" },
+  { icon: "\u2709\uFE0F", label: "Email", value: "hello.vrikaan@gmail.com", sub: "We typically respond within 24 hours" },
   { icon: "\uD83D\uDCDE", label: "Phone", value: "+91 8329935878", sub: "Available 24/7" },
   { icon: "\uD83D\uDCCD", label: "Location", value: "Nashik, Maharashtra, India", sub: "Serving clients globally" },
   { icon: "\uD83D\uDD52", label: "Hours", value: "24/7", sub: "Always available for support" },
@@ -27,7 +27,7 @@ const FAQS = [
   { q: "What is VRIKAAN?", a: "VRIKAAN is a comprehensive cybersecurity platform that provides tools for dark web monitoring, vulnerability scanning, password management, and security education. We help individuals and organizations stay protected against evolving cyber threats." },
   { q: "Is VRIKAAN free to use?", a: "We offer a free tier that gives you access to basic security tools and educational content. Premium plans unlock advanced features such as AI-powered threat analysis, unlimited dark web monitoring, and priority support." },
   { q: "How does dark web monitoring work?", a: "Our dark web monitoring system continuously scans underground forums, data breach databases, and paste sites for your email addresses and credentials. If a match is found, you receive an instant alert with recommended actions." },
-  { q: "How do I report a security vulnerability?", a: "We take security seriously. Please use the dedicated 'Report a Vulnerability' section on this page, or email hello@vrikaan.com with a detailed description. We follow responsible disclosure practices and acknowledge all valid reports." },
+  { q: "How do I report a security vulnerability?", a: "We take security seriously. Please use the dedicated 'Report a Vulnerability' section on this page, or email hello.vrikaan@gmail.com with a detailed description. We follow responsible disclosure practices and acknowledge all valid reports." },
   { q: "What data do you collect from users?", a: "We collect only the minimum data needed to provide our services: your email, display name, and usage analytics. We never sell your data to third parties. Full details are available in our Privacy Policy." },
   { q: "Can I use VRIKAAN for my organization?", a: "Absolutely. We offer team and enterprise plans with centralized dashboards, role-based access control, and dedicated account managers. Contact us via the Partnership subject option for a tailored proposal." },
   { q: "Which browsers and devices are supported?", a: "VRIKAAN works on all modern browsers including Chrome, Firefox, Safari, and Edge. Our responsive design ensures a seamless experience on desktops, tablets, and mobile devices." },

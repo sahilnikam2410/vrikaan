@@ -122,7 +122,7 @@ export const organizationSchema = {
   ],
   contactPoint: {
     "@type": "ContactPoint",
-    email: "hello@vrikaan.com",
+    email: "hello.vrikaan@gmail.com",
     contactType: "customer support",
     areaServed: "IN",
     availableLanguage: ["en"],

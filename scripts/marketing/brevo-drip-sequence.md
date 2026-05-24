@@ -73,7 +73,7 @@ Build this flow in Brevo's visual editor:
 For each email below, in Brevo:
 1. **Email templates** → Create new template
 2. Paste the HTML provided
-3. Set subject, preview text, sender ("VRIKAAN" / hello@vrikaan.com)
+3. Set subject, preview text, sender ("VRIKAAN" / hello.vrikaan@gmail.com)
 4. Save
 5. Back in automation → assign template to that step
 
@@ -85,8 +85,8 @@ For each email below, in Brevo:
 - **Subject A:** `Welcome to VRIKAAN, {{contact.FIRSTNAME|default:"there"}} 🛡️`
 - **Subject B (A/B test):** `🚨 Quick: scan your phone right now`
 - **Preview text:** `Your free India-built cyber defense starts now. Here's how to use it.`
-- **From:** VRIKAAN \<hello@vrikaan.com\>
-- **Reply-to:** hello@vrikaan.com
+- **From:** VRIKAAN \<hello.vrikaan@gmail.com\>
+- **Reply-to:** hello.vrikaan@gmail.com
 
 ### Body (paste as HTML)
 
@@ -430,7 +430,7 @@ Then in Brevo automation, the Day 28 conditional step checks `PLAN == "pro"` and
 ## DELIVERABILITY CHECKLIST (do once before going live)
 
 - [ ] Set up SPF, DKIM, DMARC for vrikaan.com mail (see security report — DKIM via Brevo dashboard, takes 5 min)
-- [ ] Verify sender email in Brevo: `hello@vrikaan.com`
+- [ ] Verify sender email in Brevo: `hello.vrikaan@gmail.com`
 - [ ] Test send all 5 emails to your own Gmail + check inbox vs spam folder
 - [ ] Run mail-tester.com — paste the test email's link, target score 8+/10
 - [ ] First 100 sends → keep manual eye on Brevo dashboard for bounces / spam reports

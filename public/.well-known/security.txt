@@ -1,4 +1,4 @@
-Contact: mailto:hello@vrikaan.com
+Contact: mailto:hello.vrikaan@gmail.com
 Contact: mailto:vrikaan.ai@gmail.com
 Expires: 2027-12-31T23:59:59.000Z
 Preferred-Languages: en, hi
@@ -8,7 +8,7 @@ Acknowledgments: https://www.vrikaan.com/security/hall-of-fame
 
 # Found a vulnerability in VRIKAAN?
 #
-# Email hello@vrikaan.com with:
+# Email hello.vrikaan@gmail.com with:
 #  - A clear description (impact + steps to reproduce)
 #  - Affected URL or endpoint
 #  - Your name / handle if you'd like credit in the Hall of Fame

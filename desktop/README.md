@@ -134,4 +134,4 @@ Desktop wrapper unlocks all of these. Same code in DeviceScanner.jsx detects `wi
 
 ## License
 
-UNLICENSED · proprietary to VRIKAAN, Nashik. Contact hello@vrikaan.com for distribution rights.
+UNLICENSED · proprietary to VRIKAAN, Nashik. Contact hello.vrikaan@gmail.com for distribution rights.

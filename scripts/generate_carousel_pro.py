@@ -647,7 +647,7 @@ def slide_5():
     d.text((110, cta_y + 75), "vrikaan.com", font=f(FONT_BOLD, 56), fill=WHITE)
     d.text((110, cta_y + 145), "Free  ·  No card  ·  Setup in 30 sec", font=f(FONT_BOLD, 18), fill=(220, 230, 255, 240))
 
-    d.text((60, 945), "— Sahil Anil Nikam  ·  Founder  ·  hello@vrikaan.com",
+    d.text((60, 945), "— Sahil Anil Nikam  ·  Founder  ·  hello.vrikaan@gmail.com",
            font=f(FONT_REG, 16), fill=MUTED)
 
     draw_footer(img, 5, 5)

@@ -43,7 +43,7 @@
 vrikaan.com.  CAA  0  issue "letsencrypt.org"
 vrikaan.com.  CAA  0  issue "digicert.com"
 vrikaan.com.  CAA  0  issue "amazon.com"
-vrikaan.com.  CAA  0  iodef "mailto:hello@vrikaan.com"
+vrikaan.com.  CAA  0  iodef "mailto:hello.vrikaan@gmail.com"
 ```
 The `iodef` line sends you an email if anyone tries to issue an unauthorized cert. Propagation: 5-30 min after DNS save.
 
@@ -51,12 +51,12 @@ The `iodef` line sends you an email if anyone tries to issue an unauthorized cer
 **Severity:** High (email spoofing risk)
 **Evidence:**
 ```
-_dmarc.vrikaan.com  TXT  "v=DMARC1; p=none; rua=mailto:hello@vrikaan.com"
+_dmarc.vrikaan.com  TXT  "v=DMARC1; p=none; rua=mailto:hello.vrikaan@gmail.com"
 ```
-**Risk:** `p=none` tells receiving mail servers "report failures to me but **deliver the mail anyway**". Anyone can spoof `From: founders@vrikaan.com` and mail your users — the spoof still lands in their inbox. With your brand growing, expect spoof attempts within weeks.
+**Risk:** `p=none` tells receiving mail servers "report failures to me but **deliver the mail anyway**". Anyone can spoof `From: founder.vrikaan@gmail.com` and mail your users — the spoof still lands in their inbox. With your brand growing, expect spoof attempts within weeks.
 **Fix:** Run `p=none` for 2 weeks to collect aggregate reports (verify legitimate senders), then escalate:
 ```
-_dmarc.vrikaan.com  TXT  "v=DMARC1; p=quarantine; pct=25; rua=mailto:hello@vrikaan.com; ruf=mailto:hello@vrikaan.com; aspf=r; adkim=r"
+_dmarc.vrikaan.com  TXT  "v=DMARC1; p=quarantine; pct=25; rua=mailto:hello.vrikaan@gmail.com; ruf=mailto:hello.vrikaan@gmail.com; aspf=r; adkim=r"
 ```
 After 2 more weeks at `p=quarantine; pct=25`, bump `pct` to 100, then escalate `p` to `reject`. **Required prerequisite:** valid DKIM record for the sending domain (see M1 below).
 
@@ -86,7 +86,7 @@ After 2 more weeks at `p=quarantine; pct=25`, bump `pct` to 100, then escalate `
 **Risk:** Security researchers can't reach you for coordinated disclosure. They may publish vulns publicly instead of reporting privately.
 **Fix:** Add `public/.well-known/security.txt` (Vercel serves `public/` as-is):
 ```
-Contact: mailto:hello@vrikaan.com
+Contact: mailto:hello.vrikaan@gmail.com
 Contact: mailto:vrikaan.ai@gmail.com
 Expires: 2027-12-31T23:59:59.000Z
 Preferred-Languages: en, hi
@@ -139,8 +139,8 @@ Log the attempted tool name server-side instead of echoing it.
 
 ### M7 — DMARC `rua` only points to one mailbox
 **Severity:** Medium (operational, not security)
-**Evidence:** `rua=mailto:hello@vrikaan.com` only.
-**Risk:** All DMARC aggregate reports flood `hello@vrikaan.com`. If that inbox is busy with customer support, you'll miss legit DMARC failures (which signal active spoofing campaigns).
+**Evidence:** `rua=mailto:hello.vrikaan@gmail.com` only.
+**Risk:** All DMARC aggregate reports flood `hello.vrikaan@gmail.com`. If that inbox is busy with customer support, you'll miss legit DMARC failures (which signal active spoofing campaigns).
 **Fix:** Either set up a dedicated `dmarc-reports@vrikaan.com` alias, or use a free DMARC aggregator like **dmarc.postmarkapp.com** or **EasyDMARC** (free tier 10k reports/mo). They parse the XML reports into a readable dashboard.
 
 ---

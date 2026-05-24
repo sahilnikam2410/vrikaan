@@ -18,7 +18,7 @@ Without CAA, **any** Certificate Authority on Earth can mint a TLS cert for `vri
 | CAA | `@` | 0 | `issue` | `letsencrypt.org` | 1 hr |
 | CAA | `@` | 0 | `issue` | `digicert.com` | 1 hr |
 | CAA | `@` | 0 | `issue` | `amazon.com` | 1 hr |
-| CAA | `@` | 0 | `iodef` | `mailto:hello@vrikaan.com` | 1 hr |
+| CAA | `@` | 0 | `iodef` | `mailto:hello.vrikaan@gmail.com` | 1 hr |
 
 > The `iodef` record sends you an email if **anyone** tries to issue an unauthorized cert. Free early-warning for cert misissuance.
 
@@ -78,10 +78,10 @@ Or use **MX Toolbox**: https://mxtoolbox.com/dkim.aspx — enter `vrikaan.com` +
 
 You currently have:
 ```
-_dmarc.vrikaan.com  TXT  "v=DMARC1; p=none; rua=mailto:hello@vrikaan.com"
+_dmarc.vrikaan.com  TXT  "v=DMARC1; p=none; rua=mailto:hello.vrikaan@gmail.com"
 ```
 
-`p=none` means "report failures but deliver anyway" — anyone can spoof `From: founders@vrikaan.com` and Gmail will accept it. Escalate in stages.
+`p=none` means "report failures but deliver anyway" — anyone can spoof `From: founder.vrikaan@gmail.com` and Gmail will accept it. Escalate in stages.
 
 ### Stage 1 — better reporting (do NOW, after DKIM is verified)
 
@@ -93,7 +93,7 @@ _dmarc.vrikaan.com  TXT  "v=DMARC1; p=none; rua=mailto:hello@vrikaan.com"
 
 Changes vs current:
 - `pct=100` — apply policy to 100% of mail (was implicit)
-- `rua=mailto:dmarc@vrikaan.com` — aggregate reports to a dedicated alias (set up `dmarc@vrikaan.com` as forward to `hello@vrikaan.com` in GoDaddy email aliases, OR sign up at **dmarc.postmarkapp.com** free tier and use the email they give you)
+- `rua=mailto:dmarc@vrikaan.com` — aggregate reports to a dedicated alias (set up `dmarc@vrikaan.com` as forward to `hello.vrikaan@gmail.com` in GoDaddy email aliases, OR sign up at **dmarc.postmarkapp.com** free tier and use the email they give you)
 - `ruf=mailto:dmarc@vrikaan.com` — forensic reports for every failure
 - `aspf=r` / `adkim=r` — relaxed alignment (allows subdomains)
 - `sp=none` — subdomain policy (start lax)
@@ -132,7 +132,7 @@ v=DMARC1; p=reject; pct=100; rua=mailto:dmarc@vrikaan.com; ruf=mailto:dmarc@vrik
 DMARC reports are noisy XML files. Either:
 
 ### Option A (free) — alias to existing inbox + parser
-1. GoDaddy → Email → Forwards → add `dmarc@vrikaan.com → hello@vrikaan.com`
+1. GoDaddy → Email → Forwards → add `dmarc@vrikaan.com → hello.vrikaan@gmail.com`
 2. Sign up for **Postmark's free DMARC monitor**: https://dmarc.postmarkapp.com
 3. They give you an email like `xyzabc@inbound.dmarc.postmarkapp.com` — put THAT in the `rua=` field instead
 4. Login at dmarc.postmarkapp.com weekly — readable dashboard

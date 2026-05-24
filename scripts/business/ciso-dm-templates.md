@@ -109,7 +109,7 @@ Would a 20-min walkthrough of how we close common RBI audit findings be useful?
 
 Sahil Anil Nikam
 Founder · VRIKAAN · Nashik
-hello@vrikaan.com · +91 8329935878
+hello.vrikaan@gmail.com · +91 8329935878
 ```
 
 ---

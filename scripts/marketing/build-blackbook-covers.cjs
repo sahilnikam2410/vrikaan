@@ -284,7 +284,7 @@ const backPage = [
   center("📦  github.com/sahilnikam2410/vrikaan", { size: 18, run: { color: "475569" } }),
   blank(80),
   center("𝕏 @vrikaan   ·   in vrikaan-ai-cybersecurity", { size: 16, run: { color: "475569" } }),
-  center("ig @vrikaan_official   ·   contact: hello@vrikaan.com", { size: 16, run: { color: "475569" } }),
+  center("ig @vrikaan_official   ·   contact: hello.vrikaan@gmail.com", { size: 16, run: { color: "475569" } }),
 
   blank(280),
 

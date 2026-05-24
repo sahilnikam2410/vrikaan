@@ -81,13 +81,13 @@ export default function ResponsibleDisclosure() {
           border: `1px solid ${T.cyan}55`, textAlign: "center",
         }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 14px" }}>
-            📧 Report at <span style={{ color: T.cyan }}>hello@vrikaan.com</span>
+            📧 Report at <span style={{ color: T.cyan }}>hello.vrikaan@gmail.com</span>
           </h2>
           <p style={{ color: T.muted, fontSize: 13, margin: "0 0 18px", lineHeight: 1.6 }}>
             Subject prefix: <code style={{ background: "rgba(2,6,23,0.6)", padding: "2px 8px", borderRadius: 6, color: T.cyan, fontFamily: "ui-monospace, Menlo, monospace" }}>[SECURITY]</code>
             <br />Include: vuln type, impact, reproduction steps, affected URL, your name/handle (for Hall of Fame credit).
           </p>
-          <a href="mailto:hello@vrikaan.com?subject=%5BSECURITY%5D%20Vulnerability%20Report&body=Vuln%20type%3A%0AAffected%20URL%3A%0AImpact%3A%0AReproduction%20steps%3A%0A%0AMy%20name%2Fhandle%3A%0APreferred%20bounty%20payment%20method%3A%20(UPI%20%2F%20IMPS%20%2F%20PayPal)"
+          <a href="mailto:hello.vrikaan@gmail.com?subject=%5BSECURITY%5D%20Vulnerability%20Report&body=Vuln%20type%3A%0AAffected%20URL%3A%0AImpact%3A%0AReproduction%20steps%3A%0A%0AMy%20name%2Fhandle%3A%0APreferred%20bounty%20payment%20method%3A%20(UPI%20%2F%20IMPS%20%2F%20PayPal)"
              style={{
                display: "inline-block",
                padding: "12px 28px", borderRadius: 10,

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "VRIKAAN Desktop — native cyber defense for Windows / macOS / Linux. Real disk scan, USB watcher, download monitor.",
   "main": "main.js",
-  "author": "Sahil Anil Nikam & Khushi Ishwar Raigade <hello@vrikaan.com>",
+  "author": "Sahil Anil Nikam & Khushi Ishwar Raigade <hello.vrikaan@gmail.com>",
   "homepage": "https://vrikaan.com",
   "license": "UNLICENSED",
   "private": true,
