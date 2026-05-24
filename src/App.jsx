@@ -113,6 +113,7 @@ const Learn = lazy(() => import("./assets/pages/Learn.jsx"));
 const Founder = lazy(() => import("./assets/pages/Founder.jsx"));
 const Pricing = lazy(() => import("./assets/pages/Pricing.jsx"));
 const Team = lazy(() => import("./assets/pages/Team.jsx"));
+const FamilyDashboard = lazy(() => import("./assets/pages/FamilyDashboard.jsx"));
 const ScamCheck = lazy(() => import("./assets/pages/ScamCheck.jsx"));
 const DeepfakeAudio = lazy(() => import("./assets/pages/DeepfakeAudio.jsx"));
 const VulnerabilityScan = lazy(() => import("./assets/pages/VulnerabilityScan.jsx"));
@@ -199,6 +200,9 @@ function AppRoutes() {
             <Route path="/founder" element={<Founder />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/team" element={<ProtectedRoute><Team /></ProtectedRoute>} />
+            <Route path="/family" element={<ProtectedRoute><FamilyDashboard /></ProtectedRoute>} />
+            <Route path="/family-dashboard" element={<ProtectedRoute><FamilyDashboard /></ProtectedRoute>} />
+            <Route path="/parent-dashboard" element={<ProtectedRoute><FamilyDashboard /></ProtectedRoute>} />
             <Route path="/scam-check" element={<ScamCheck />} />
             <Route path="/deepfake-audio" element={<DeepfakeAudio />} />
             <Route path="/vulnerability-scan" element={<VulnerabilityScan />} />

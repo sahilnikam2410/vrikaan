@@ -31,6 +31,14 @@ const ACTION_TIERS = {
   "team-invite":         "enterprise",
   "team-accept-invite":  "enterprise",
   "team-remove-member":  "enterprise",
+  // Family — gated inside handlers (some actions need Family plan, others are
+  // open to invited members on any plan).
+  "family-create":         "free",
+  "family-invite":         "free",
+  "family-accept-invite":  "free",
+  "family-remove-member":  "free",
+  "family-set-mode":       "free",
+  "family-info":           "free",
   "webhook-set":         "enterprise",
   "webhook-clear":       "enterprise",
   "webhook-test":        "enterprise",
@@ -1139,6 +1147,233 @@ async function handleTeamRemoveMember(req, res) {
   return res.status(200).json({ success: true });
 }
 
+// ─── FAMILY PLAN (multi-seat, kid/senior modes) ─────────────────────
+// Shared model: families/{id} doc holds owner + member map + per-member modes.
+// Invites use familyInvites/{id} (same shape as teamInvites). Server-side
+// plan-check on create/invite — must be on Family plan and respect seatLimit.
+
+async function _getFamilyByOwner(fs, uid) {
+  const snap = await fs.collection("families").where("ownerUid", "==", uid).limit(1).get();
+  return snap.empty ? null : snap.docs[0];
+}
+
+async function _userPlan(fs, uid) {
+  const u = await fs.collection("users").doc(uid).get();
+  return u.exists ? (u.data().plan || "free") : "free";
+}
+
+// Create a family doc for the caller (must be on Family plan).
+// Idempotent — returns existing family if already created.
+async function handleFamilyCreate(req, res) {
+  const me = await verifyIdTokenFromHeader(req);
+  if (!me) return res.status(401).json({ error: "Sign-in required" });
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "FIREBASE_SERVICE_ACCOUNT not set" });
+
+  const plan = await _userPlan(fs, me.uid);
+  if (plan !== "family") return res.status(403).json({ error: "Family plan required" });
+
+  const existing = await _getFamilyByOwner(fs, me.uid);
+  if (existing) return res.status(200).json({ success: true, familyId: existing.id, existed: true });
+
+  const ref = await fs.collection("families").add({
+    ownerUid: me.uid,
+    ownerEmail: me.email,
+    seatLimit: 5,                  // default; bump via add-on purchase
+    members: { [me.uid]: "owner" },
+    memberEmails: [me.email],
+    modes: { [me.uid]: { kidMode: false, seniorMode: false } },
+    billingPlan: "family",
+    createdAt: new Date(),
+  });
+  await fs.collection("users").doc(me.uid).set({ currentFamilyId: ref.id }, { merge: true });
+  return res.status(200).json({ success: true, familyId: ref.id });
+}
+
+// Invite a member by email + role. Owner only. Respects seatLimit.
+async function handleFamilyInvite(req, res) {
+  const me = await verifyIdTokenFromHeader(req);
+  if (!me) return res.status(401).json({ error: "Sign-in required" });
+  const { familyId, email, role } = req.body || {};
+  if (!familyId || !email) return res.status(400).json({ error: "familyId and email required" });
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return res.status(400).json({ error: "Invalid email" });
+  const validRole = ["member", "kid", "senior"].includes(role) ? role : "member";
+
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "FIREBASE_SERVICE_ACCOUNT not set" });
+
+  const famSnap = await fs.collection("families").doc(familyId).get();
+  if (!famSnap.exists) return res.status(404).json({ error: "Family not found" });
+  const fam = famSnap.data();
+  if (fam.ownerUid !== me.uid) return res.status(403).json({ error: "Only the owner can invite" });
+  if (fam.memberEmails?.includes(email)) return res.status(400).json({ error: "Already a member" });
+  const seatsUsed = Object.keys(fam.members || {}).length;
+  if (seatsUsed >= (fam.seatLimit || 5)) {
+    return res.status(400).json({ error: `Seat limit reached (${fam.seatLimit}). Buy extra seats at ₹49/mo each.` });
+  }
+
+  // Idempotent — return existing pending invite if any
+  const existing = await fs.collection("familyInvites")
+    .where("familyId", "==", familyId).where("email", "==", email).where("status", "==", "pending").limit(1).get();
+  if (!existing.empty) {
+    return res.status(200).json({ success: true, inviteId: existing.docs[0].id, alreadyInvited: true });
+  }
+  const inv = await fs.collection("familyInvites").add({
+    familyId, email, role: validRole, invitedBy: me.uid, invitedByEmail: me.email,
+    ownerEmail: fam.ownerEmail, status: "pending", createdAt: new Date(),
+  });
+  return res.status(200).json({ success: true, inviteId: inv.id });
+}
+
+// Accept invite. Caller email must match invite.email. Re-checks seatLimit.
+async function handleFamilyAcceptInvite(req, res) {
+  const me = await verifyIdTokenFromHeader(req);
+  if (!me) return res.status(401).json({ error: "Sign-in required" });
+  const { inviteId } = req.body || {};
+  if (!inviteId) return res.status(400).json({ error: "inviteId required" });
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "FIREBASE_SERVICE_ACCOUNT not set" });
+
+  const invSnap = await fs.collection("familyInvites").doc(inviteId).get();
+  if (!invSnap.exists) return res.status(404).json({ error: "Invite not found" });
+  const inv = invSnap.data();
+  if (inv.status !== "pending") return res.status(400).json({ error: "Invite already used" });
+  if ((inv.email || "").toLowerCase() !== (me.email || "").toLowerCase()) {
+    return res.status(403).json({ error: "Invite is for a different email" });
+  }
+
+  const famSnap = await fs.collection("families").doc(inv.familyId).get();
+  if (!famSnap.exists) return res.status(404).json({ error: "Family no longer exists" });
+  const fam = famSnap.data();
+  const seatsUsed = Object.keys(fam.members || {}).length;
+  if (seatsUsed >= (fam.seatLimit || 5)) {
+    return res.status(400).json({ error: "Family is full — owner must free a seat or buy add-on." });
+  }
+
+  const FieldValue = (await import("firebase-admin/firestore")).FieldValue;
+  await famSnap.ref.update({
+    [`members.${me.uid}`]: inv.role || "member",
+    [`modes.${me.uid}`]: {
+      kidMode: inv.role === "kid",
+      seniorMode: inv.role === "senior",
+    },
+    memberEmails: FieldValue.arrayUnion(me.email),
+  });
+  await invSnap.ref.update({ status: "accepted", acceptedAt: new Date(), acceptedBy: me.uid });
+  await fs.collection("users").doc(me.uid).set({
+    currentFamilyId: inv.familyId,
+    familyRole: inv.role || "member",
+  }, { merge: true });
+  return res.status(200).json({ success: true, familyId: inv.familyId, role: inv.role });
+}
+
+// Remove member. Owner only. Cannot remove self.
+async function handleFamilyRemoveMember(req, res) {
+  const me = await verifyIdTokenFromHeader(req);
+  if (!me) return res.status(401).json({ error: "Sign-in required" });
+  const { familyId, uid } = req.body || {};
+  if (!familyId || !uid) return res.status(400).json({ error: "familyId and uid required" });
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "FIREBASE_SERVICE_ACCOUNT not set" });
+
+  const famSnap = await fs.collection("families").doc(familyId).get();
+  if (!famSnap.exists) return res.status(404).json({ error: "Family not found" });
+  const fam = famSnap.data();
+  if (fam.ownerUid !== me.uid) return res.status(403).json({ error: "Only the owner can remove members" });
+  if (uid === fam.ownerUid) return res.status(400).json({ error: "Cannot remove owner" });
+
+  const memberSnap = await fs.collection("users").doc(uid).get();
+  const memberEmail = memberSnap.data()?.email;
+  const FieldValue = (await import("firebase-admin/firestore")).FieldValue;
+  await famSnap.ref.update({
+    [`members.${uid}`]: FieldValue.delete(),
+    [`modes.${uid}`]: FieldValue.delete(),
+    memberEmails: FieldValue.arrayRemove(memberEmail),
+  });
+  if (memberSnap.data()?.currentFamilyId === familyId) {
+    await fs.collection("users").doc(uid).update({ currentFamilyId: null, familyRole: null });
+  }
+  return res.status(200).json({ success: true });
+}
+
+// Owner-only: toggle kid/senior mode for a member.
+async function handleFamilySetMode(req, res) {
+  const me = await verifyIdTokenFromHeader(req);
+  if (!me) return res.status(401).json({ error: "Sign-in required" });
+  const { familyId, uid, kidMode, seniorMode } = req.body || {};
+  if (!familyId || !uid) return res.status(400).json({ error: "familyId and uid required" });
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "FIREBASE_SERVICE_ACCOUNT not set" });
+  const famSnap = await fs.collection("families").doc(familyId).get();
+  if (!famSnap.exists) return res.status(404).json({ error: "Family not found" });
+  const fam = famSnap.data();
+  if (fam.ownerUid !== me.uid) return res.status(403).json({ error: "Only the owner can change modes" });
+  if (!fam.members?.[uid]) return res.status(404).json({ error: "Member not in family" });
+  await famSnap.ref.update({
+    [`modes.${uid}`]: { kidMode: !!kidMode, seniorMode: !!seniorMode },
+  });
+  return res.status(200).json({ success: true });
+}
+
+// Get family info — caller must be a member or owner.
+async function handleFamilyInfo(req, res) {
+  const me = await verifyIdTokenFromHeader(req);
+  if (!me) return res.status(401).json({ error: "Sign-in required" });
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "FIREBASE_SERVICE_ACCOUNT not set" });
+
+  let { familyId } = req.body || {};
+  if (!familyId) {
+    const u = await fs.collection("users").doc(me.uid).get();
+    familyId = u.data()?.currentFamilyId;
+  }
+  if (!familyId) return res.status(404).json({ error: "Not in any family" });
+  const famSnap = await fs.collection("families").doc(familyId).get();
+  if (!famSnap.exists) return res.status(404).json({ error: "Family not found" });
+  const fam = famSnap.data();
+  if (!fam.members?.[me.uid]) return res.status(403).json({ error: "Not a member of this family" });
+
+  // Enrich members w/ emails from users collection
+  const memberUids = Object.keys(fam.members);
+  const memberDocs = await Promise.all(memberUids.map(u => fs.collection("users").doc(u).get()));
+  const memberDetails = memberDocs.map((d, i) => ({
+    uid: memberUids[i],
+    role: fam.members[memberUids[i]],
+    email: d.data()?.email || null,
+    displayName: d.data()?.displayName || null,
+    kidMode: fam.modes?.[memberUids[i]]?.kidMode || false,
+    seniorMode: fam.modes?.[memberUids[i]]?.seniorMode || false,
+  }));
+
+  // Pending invites (owner only sees these)
+  let pendingInvites = [];
+  if (fam.ownerUid === me.uid) {
+    const invs = await fs.collection("familyInvites")
+      .where("familyId", "==", familyId).where("status", "==", "pending").get();
+    pendingInvites = invs.docs.map(d => ({ id: d.id, ...d.data() }));
+  }
+
+  return res.status(200).json({
+    success: true,
+    family: {
+      id: familyId,
+      ownerUid: fam.ownerUid,
+      ownerEmail: fam.ownerEmail,
+      seatLimit: fam.seatLimit || 5,
+      seatsUsed: memberUids.length,
+      members: memberDetails,
+      pendingInvites,
+      isOwner: fam.ownerUid === me.uid,
+    },
+  });
+}
+
 // ─── OUTBOUND WEBHOOKS ──────────────────────────────────────────────
 
 import crypto from "node:crypto";
@@ -2016,6 +2251,12 @@ const HANDLERS = {
   "team-invite": handleTeamInvite,
   "team-accept-invite": handleTeamAcceptInvite,
   "team-remove-member": handleTeamRemoveMember,
+  "family-create": handleFamilyCreate,
+  "family-invite": handleFamilyInvite,
+  "family-accept-invite": handleFamilyAcceptInvite,
+  "family-remove-member": handleFamilyRemoveMember,
+  "family-set-mode": handleFamilySetMode,
+  "family-info": handleFamilyInfo,
   "scam-check": handleScamCheck,
   "headers-fix": handleHeadersFix,
   "deepfake-audio": handleDeepfakeAudio,

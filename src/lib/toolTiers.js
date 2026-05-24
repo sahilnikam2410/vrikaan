@@ -117,6 +117,9 @@ export const TOOL_TIERS = {
   "/status":               { tier: "free", name: "Status" },
   "/dashboard":            { tier: "free", name: "Dashboard" },
   "/user-dashboard":       { tier: "free", name: "Profile" },
+  "/family":               { tier: "free", name: "Family Dashboard" },
+  "/family-dashboard":     { tier: "free", name: "Family Dashboard" },
+  "/parent-dashboard":     { tier: "free", name: "Family Dashboard" },
 
   // ── PRO TIER (AI-heavy, data-heavy, deeper protection) ──
   "/fraud-analyzer":         { tier: "pro", name: "Fraud Analyzer" },
