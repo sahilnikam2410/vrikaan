@@ -1224,7 +1224,96 @@ async function handleFamilyInvite(req, res) {
     familyId, email, role: validRole, invitedBy: me.uid, invitedByEmail: me.email,
     ownerEmail: fam.ownerEmail, status: "pending", createdAt: new Date(),
   });
+
+  // Fire-and-forget Brevo transactional email. Don't block invite creation on
+  // mail failure — invite still works via in-app banner on accept page.
+  _sendFamilyInviteEmail({
+    toEmail: email,
+    ownerName: me.displayName || fam.ownerEmail.split("@")[0],
+    ownerEmail: fam.ownerEmail,
+    role: validRole,
+    inviteId: inv.id,
+    appUrl: (req.headers["origin"] || "https://vrikaan.com").replace(/\/$/, ""),
+  }).catch(err => console.warn("family-invite mail send failed:", err.message));
+
   return res.status(200).json({ success: true, inviteId: inv.id });
+}
+
+// Send Brevo transactional invite email. Inline HTML — no template ID needed.
+// Uses BREVO_API_KEY env var. Silently no-ops if key missing.
+async function _sendFamilyInviteEmail({ toEmail, ownerName, ownerEmail, role, inviteId, appUrl }) {
+  const brevoKey = process.env.BREVO_API_KEY;
+  if (!brevoKey) return;
+
+  const roleCopy = role === "kid" ? "as a kid (scam-block + safe browsing)"
+    : role === "senior" ? "as a senior (UPI guard + voice alerts)"
+    : "as an adult member";
+  const acceptUrl = `${appUrl}/family?invite=${encodeURIComponent(inviteId)}`;
+
+  const html = `<!doctype html>
+<html><body style="margin:0;padding:0;background:#030712;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#f1f5f9">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#030712">
+    <tr><td align="center" style="padding:32px 16px">
+      <table role="presentation" width="100%" style="max-width:560px;background:#0f172a;border:1px solid rgba(148,163,184,0.12);border-radius:18px;overflow:hidden">
+        <tr><td style="padding:36px 36px 0">
+          <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#ec4899;margin-bottom:14px">VRIKAAN · Family Invite</div>
+          <h1 style="font-size:24px;font-weight:700;color:#fff;margin:0 0 14px;line-height:1.3">
+            ${escapeHtml(ownerName)} added you to their VRIKAAN Family
+          </h1>
+          <p style="font-size:15px;color:#94a3b8;line-height:1.7;margin:0 0 22px">
+            You've been invited ${roleCopy} on the VRIKAAN Family plan — India's AI cyber defense for individuals, families and seniors.
+          </p>
+        </td></tr>
+        <tr><td align="center" style="padding:0 36px 28px">
+          <a href="${acceptUrl}" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#ec4899,#6366f1);color:#fff;text-decoration:none;font-size:14px;font-weight:700;border-radius:10px;letter-spacing:0.3px">
+            Accept invite →
+          </a>
+        </td></tr>
+        <tr><td style="padding:0 36px 28px">
+          <div style="padding:14px 18px;background:rgba(20,227,197,0.06);border:1px solid rgba(20,227,197,0.18);border-radius:10px;font-size:12px;color:#cbd5e1;line-height:1.6">
+            <strong style="color:#14e3c5">What you get:</strong> real-time scam detection · dark-web monitoring · family scam-alert broadcast · shared safe-word vault · ${role === "kid" ? "safe browsing" : role === "senior" ? "UPI scam guard" : "identity monitoring"}.
+          </div>
+        </td></tr>
+        <tr><td style="padding:0 36px 32px;border-top:1px solid rgba(148,163,184,0.08)">
+          <p style="font-size:11px;color:#64748b;margin:18px 0 6px;line-height:1.6">
+            Invited by <a href="mailto:${escapeHtml(ownerEmail)}" style="color:#94a3b8;text-decoration:none">${escapeHtml(ownerEmail)}</a> · If you don't recognise them, ignore this email.
+          </p>
+          <p style="font-size:11px;color:#64748b;margin:0;line-height:1.6">
+            VRIKAAN — India's AI cyber defense. <a href="${appUrl}" style="color:#14e3c5;text-decoration:none">vrikaan.com</a>
+          </p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body></html>`;
+
+  const textFallback = `${ownerName} added you to their VRIKAAN Family plan ${roleCopy}.\n\nAccept the invite: ${acceptUrl}\n\nIf you don't recognise them, ignore this email.\n\n— VRIKAAN`;
+
+  const resp = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "api-key": brevoKey,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      sender: { name: "VRIKAAN", email: "noreply@vrikaan.com" },
+      to: [{ email: toEmail }],
+      replyTo: { email: ownerEmail, name: ownerName },
+      subject: `${ownerName} invited you to their VRIKAAN Family`,
+      htmlContent: html,
+      textContent: textFallback,
+      tags: ["family-invite"],
+    }),
+  });
+  if (!resp.ok) {
+    const t = await resp.text().catch(() => "");
+    throw new Error(`Brevo ${resp.status}: ${t.slice(0, 200)}`);
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
 // Accept invite. Caller email must match invite.email. Re-checks seatLimit.

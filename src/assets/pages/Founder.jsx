@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
+import { FOUNDERS } from "../../components/EmailRouting";
 
 const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
@@ -67,6 +68,26 @@ export default function Founder() {
               SOC analyst and cybersecurity researcher. Leads VRIKAAN's threat-intelligence pipeline,
               MITRE ATT&amp;CK rule engineering, SIEM tuning and incident-response playbooks.
             </p>
+          </div>
+        </div>
+
+        {/* Direct founder email — paid / press / partnerships only */}
+        <div style={{ marginBottom: 56, background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(20,227,197,0.04))", border: `1px solid ${T.border}`, borderRadius: 18, padding: "28px 32px" }}>
+          <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: T.cyan, marginBottom: 12 }}>Direct line</div>
+          <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 700, margin: "0 0 8px" }}>Reach a founder personally</h3>
+          <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.7, margin: "0 0 18px" }}>
+            For press, paid partnerships, investor outreach, or anything that needs a founder's eyes.
+            For everything else use the routed inboxes on the <Link to="/contact" style={{ color: T.cyan }}>Contact</Link> page — much faster reply.
+          </p>
+          <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
+            {FOUNDERS.map(f => (
+              <a key={f.email} href={`mailto:${f.email}?subject=${encodeURIComponent(`Direct — ${f.name}`)}`}
+                style={{ display: "block", padding: "14px 18px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, textDecoration: "none", transition: "border-color 0.15s" }}>
+                <div style={{ fontSize: 13, fontWeight: 700, color: T.white, marginBottom: 2 }}>{f.name}</div>
+                <div style={{ fontSize: 11, color: T.mutedDark, marginBottom: 8 }}>{f.role}</div>
+                <div style={{ fontSize: 13, color: T.cyan, fontFamily: "ui-monospace, Menlo, monospace", wordBreak: "break-all" }}>{f.email}</div>
+              </a>
+            ))}
           </div>
         </div>
 

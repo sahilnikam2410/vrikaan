@@ -95,10 +95,35 @@ export default function FamilyDashboard() {
   }, [user]);
 
   useEffect(() => {
-    if (!user) { navigate("/login?next=/family"); return; }
+    if (!user) {
+      // Preserve invite query param across login redirect so user lands back here
+      const next = `/family${window.location.search}`;
+      navigate(`/login?next=${encodeURIComponent(next)}`);
+      return;
+    }
     loadFamily();
     loadPendingInvitesForMe();
   }, [user, navigate, loadFamily, loadPendingInvitesForMe]);
+
+  // Auto-accept invite when arriving from email link: /family?invite=<id>
+  useEffect(() => {
+    if (!user?.uid) return;
+    const params = new URLSearchParams(window.location.search);
+    const inviteId = params.get("invite");
+    if (!inviteId) return;
+    (async () => {
+      try {
+        const r = await apiCall("family-accept-invite", { inviteId });
+        flash(`✓ Joined family as ${r.role || "member"}`, "ok");
+        // Strip query param so refresh doesn't re-attempt
+        window.history.replaceState({}, "", "/family");
+        await loadFamily();
+        await loadPendingInvitesForMe();
+      } catch (e) {
+        flash(`Invite link: ${e.message}`, "err");
+      }
+    })();
+  }, [user, apiCall, loadFamily, loadPendingInvitesForMe]);
 
   const createFamily = async () => {
     setBusy(true);
