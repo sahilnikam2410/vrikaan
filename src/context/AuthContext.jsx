@@ -25,10 +25,12 @@ import { setUser as setReporterUser } from "../services/errorReporter";
 
 const AuthContext = createContext(null);
 
-const DEMO_USERS = [
+// Dev-only test accounts. Empty array in production builds so credentials
+// can't be reverse-engineered from the JS bundle.
+const DEMO_USERS = import.meta.env.DEV ? [
   { id: 1, email: "admin@vrikaan.com", password: "admin123", name: "Sahil Nikam", role: "admin", avatar: null, plan: "enterprise" },
   { id: 2, email: "user@vrikaan.com", password: "user123", name: "Demo User", role: "user", avatar: null, plan: "pro" },
-];
+] : [];
 
 // Admin emails — these users get admin role automatically
 const ADMIN_EMAILS = ["sahilnikam133@gmail.com", "sahilnikam1212@gmail.com", "khushiraygade76666@gmail.com", "founder.vrikaan@gmail.com", "cofounder.vrikaan@gmail.com"];
@@ -106,13 +108,21 @@ export function AuthProvider({ children }) {
           setUser(merged);
           setReporterUser(merged);
 
-          // Check subscription expiry — warn if within 3 days
+          // Check subscription expiry — warn if within 3 days.
+          // Normalise Firestore Timestamp / Date / ISO-string / millis to a
+          // real Date — previous Object - number arithmetic produced NaN and
+          // the warning never fired.
           if (profile?.subscriptionExpiresAt && profile.plan !== "free") {
-            const expires = profile.subscriptionExpiresAt?.toDate ? profile.subscriptionExpiresAt.toDate() : new Date(profile.subscriptionExpiresAt);
-            const daysLeft = (expires - Date.now()) / 86400000;
+            const raw = profile.subscriptionExpiresAt;
+            const expires = raw?.toMillis ? new Date(raw.toMillis())
+              : raw?.toDate ? raw.toDate()
+              : raw instanceof Date ? raw
+              : new Date(raw);
+            const expiresMs = expires.getTime();
+            const daysLeft = isFinite(expiresMs) ? (expiresMs - Date.now()) / 86400000 : NaN;
             const lastWarning = localStorage.getItem(`vrikaan_expiry_warned_${firebaseUser.uid}`);
             const today = new Date().toISOString().split("T")[0];
-            if (daysLeft > 0 && daysLeft <= 3 && lastWarning !== today) {
+            if (isFinite(daysLeft) && daysLeft > 0 && daysLeft <= 3 && lastWarning !== today) {
               sendExpiryWarning(merged.name || merged.email, merged.email, profile.plan, expires);
               localStorage.setItem(`vrikaan_expiry_warned_${firebaseUser.uid}`, today);
             }

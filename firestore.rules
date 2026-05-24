@@ -149,6 +149,31 @@ service cloud.firestore {
       allow create, update, delete: if false;
     }
 
+    // ─── familyInvites ───────────────────────────────────────────
+    // Same model as teamInvites: invitee reads their own, family owner
+    // reads invites they created. All writes go through server handlers
+    // (family-invite, family-accept-invite).
+    match /familyInvites/{inviteId} {
+      allow get, list: if isSignedIn() && (
+        resource.data.email == request.auth.token.email ||
+        resource.data.invitedBy == request.auth.uid
+      );
+      allow create, update, delete: if false;
+    }
+
+    // ─── families ────────────────────────────────────────────────
+    // Members can read their own family doc; writes are server-only.
+    // Members map is stored as `members: { [uid]: role }` so we check
+    // membership via dot-notation field existence.
+    match /families/{familyId} {
+      allow get: if isSignedIn() && (
+        resource.data.ownerUid == request.auth.uid ||
+        request.auth.uid in resource.data.members
+      );
+      allow list: if false;
+      allow create, update, delete: if false;
+    }
+
     // ─── coupons ─────────────────────────────────────────────────
     // Promo codes the Checkout page validates client-side.
     // Public single-doc read (by exact code) so checkout can lookup;

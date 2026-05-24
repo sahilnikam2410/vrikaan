@@ -206,7 +206,7 @@ function AppRoutes() {
             <Route path="/scam-check" element={<ScamCheck />} />
             <Route path="/deepfake-audio" element={<DeepfakeAudio />} />
             <Route path="/vulnerability-scan" element={<VulnerabilityScan />} />
-            <Route path="/admin/soc" element={<ProtectedRoute><SocDashboard /></ProtectedRoute>} />
+            <Route path="/admin/soc" element={<ProtectedRoute adminOnly><SocDashboard /></ProtectedRoute>} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />

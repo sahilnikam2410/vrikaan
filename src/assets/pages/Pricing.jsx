@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -193,6 +193,19 @@ export default function Pricing() {
       setTrialMsg(r.error || "Could not start trial");
     }
   };
+
+  // Deep-link auto-trial: /pricing?trial=pro from UpgradeWall fires the trial
+  // immediately for eligible users (was previously broken — query param read
+  // missing entirely, user had to hunt for the button).
+  const autoTrialFired = useRef(false);
+  useEffect(() => {
+    if (autoTrialFired.current) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("trial") === "pro" && eligibleForTrial && !trialBusy) {
+      autoTrialFired.current = true;
+      handleStartTrial();
+    }
+  }, [eligibleForTrial, trialBusy]); // handleStartTrial intentionally omitted — captured via closure, stable for this case
   const [hoveredPlan, setHoveredPlan] = useState(null);
   const [openFaq, setOpenFaq] = useState(null);
 

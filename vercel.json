@@ -57,7 +57,7 @@
     { "source": "/((?!api|assets|favicon|manifest|sitemap|robots|sw|og-|google|\\.well-known).*)", "destination": "/index.html" }
   ],
   "crons": [
-    { "path": "/api/cron-digest", "schedule": "30 3 * * *" }
+    { "path": "/api/cron-digest", "schedule": "30 3 * * 1" }
   ],
   "trailingSlash": false
 }

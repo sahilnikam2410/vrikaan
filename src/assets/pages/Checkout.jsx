@@ -12,7 +12,7 @@ import SEO from "../../components/SEO";
 
 const T = {
   bg: "#030712", surface: "#111827", card: "rgba(17,24,39,0.8)",
-  accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444",
+  accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", orange: "#f97316",
   white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)",
 };
 
@@ -200,7 +200,13 @@ export default function Checkout() {
       if (!snap.exists()) { setCouponError("Invalid code"); return; }
       const c = snap.data();
       if (!c.active) { setCouponError("Code disabled"); return; }
-      if (c.expiresAt?.toDate && c.expiresAt.toDate() < new Date()) { setCouponError("Code expired"); return; }
+      // Handle Firestore Timestamp / millis / ISO string equally — old impl
+      // only checked .toDate() and silently let string-stored expiries pass.
+      const exp = c.expiresAt?.toMillis ? new Date(c.expiresAt.toMillis())
+        : c.expiresAt?.toDate ? c.expiresAt.toDate()
+        : c.expiresAt ? new Date(c.expiresAt)
+        : null;
+      if (exp && exp < new Date()) { setCouponError("Code expired"); return; }
       if (c.plans && !c.plans.includes(normalizedPlanKey)) { setCouponError("Not valid for this plan"); return; }
       setCoupon({ code, ...c });
     } catch (e) {
@@ -214,9 +220,14 @@ export default function Checkout() {
   const price = applyCoupon(studentPrice, coupon);
   const savings = billing === "annual" ? (plan.price * 12 - plan.annual) : 0;
 
-  const merchantUpiId = localStorage.getItem("vrikaan_upi_id") || "vrikaan@upi";
-  const btcAddress = localStorage.getItem("vrikaan_btc_address") || "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
-  const ethAddress = localStorage.getItem("vrikaan_eth_address") || "0x71C7656EC7ab88b098defB751B7401B5f6d8976F";
+  // Manual payout addresses — only present if admin set them via the hidden
+  // Cashfree Admin drawer. Defaults removed (were placeholder/test addresses
+  // — Vitalik's wallet, fake UPI handle — would route real funds to nowhere).
+  const merchantUpiId = localStorage.getItem("vrikaan_upi_id") || "";
+  const btcAddress = localStorage.getItem("vrikaan_btc_address") || "";
+  const ethAddress = localStorage.getItem("vrikaan_eth_address") || "";
+  const upiConfigured = !!merchantUpiId;
+  const cryptoConfigured = !!(btcAddress || ethAddress);
 
   // Check if user already has this plan active
   useEffect(() => {
@@ -330,6 +341,8 @@ export default function Checkout() {
   // Cashfree Checkout handler — accepts optional method filter to pre-select payment type
   // method: "upi" | "card" | "nb" | "wallet" | undefined (all)
   const handleCashfreeCheckout = async (filterMethod) => {
+    // Guard against onClick passing SyntheticEvent as filterMethod.
+    if (filterMethod && typeof filterMethod !== "string") filterMethod = undefined;
     // Email-verify gate: don't let unverified users start a payment to
     // prevent fraud, chargebacks, and stuck Firestore writes.
     if (user && user.providerData?.[0]?.providerId === "password" && user.emailVerified === false) {
@@ -664,9 +677,15 @@ export default function Checkout() {
               )}
             </div>
 
-            {/* Payment Method Tabs */}
+            {/* Payment Method Tabs — UPI/Crypto tiles hidden when admin
+                hasn't configured payout addresses (avoids routing real funds
+                into placeholder addresses). */}
             <div style={{ display: "flex", gap: 6, marginBottom: 28, flexWrap: "wrap" }}>
-              {paymentMethods.map((m) => (
+              {paymentMethods
+                .filter(m => m.id === "cashfree"
+                  || (m.id === "upi" && upiConfigured)
+                  || (m.id === "crypto" && cryptoConfigured))
+                .map((m) => (
                 <button
                   type="button"
                   key={m.id}
@@ -776,7 +795,7 @@ export default function Checkout() {
                   </div>
                 )}
 
-                <button onClick={handleCashfreeCheckout} disabled={processing || hasActivePlan} style={{
+                <button onClick={() => handleCashfreeCheckout()} disabled={processing || hasActivePlan} style={{
                   width: "100%", padding: "16px", border: "none", borderRadius: 10,
                   background: processing ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                   color: "#fff", fontSize: 16, fontWeight: 700, cursor: processing ? "wait" : "pointer",
@@ -793,7 +812,7 @@ export default function Checkout() {
             )}
 
             {/* ---- UPI DIRECT METHOD ---- */}
-            {method === "upi" && (
+            {method === "upi" && upiConfigured && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, backdropFilter: "blur(10px)" }}>
                 <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Space Grotesk', sans-serif" }}>
                   UPI Direct Payment
@@ -864,7 +883,7 @@ export default function Checkout() {
             )}
 
             {/* ---- CRYPTO METHOD ---- */}
-            {method === "crypto" && (
+            {method === "crypto" && cryptoConfigured && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, backdropFilter: "blur(10px)" }}>
                 <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Space Grotesk', sans-serif" }}>
                   Cryptocurrency Payment

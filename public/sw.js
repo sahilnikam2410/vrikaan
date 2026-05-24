@@ -1,7 +1,11 @@
-const CACHE_NAME = "vrikaan-v16";
-const STATIC_CACHE = "vrikaan-static-v16";
-const API_CACHE = "vrikaan-api-v16";
-const PRECACHE_URLS = ["/", "/index.html", "/favicon.svg", "/manifest.json", "/offline.html", "/wolf-mark.png", "/wolf-icon.png"];
+const CACHE_NAME = "vrikaan-v17";
+const STATIC_CACHE = "vrikaan-static-v17";
+const API_CACHE = "vrikaan-api-v17";
+// "/" left in for offline-first first-paint; "/index.html" removed because
+// the precache version of it pinned old chunk hashes → ChunkLoadError after
+// deploy. The fetch handler's network-first HTML strategy refreshes "/" on
+// every visit anyway.
+const PRECACHE_URLS = ["/", "/favicon.svg", "/manifest.json", "/offline.html", "/wolf-mark.png", "/wolf-icon.png"];
 
 // Idempotent /api/tools queries safe to cache (GET-only, public-data tools).
 // Anything not in this set bypasses the runtime cache.

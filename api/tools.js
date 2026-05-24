@@ -31,13 +31,13 @@ const ACTION_TIERS = {
   "team-invite":         "enterprise",
   "team-accept-invite":  "enterprise",
   "team-remove-member":  "enterprise",
-  // Family — gated inside handlers (some actions need Family plan, others are
-  // open to invited members on any plan).
-  "family-create":         "free",
-  "family-invite":         "free",
+  // Family — accept/info/set-mode open to any plan (invited members may be
+  // free-tier). create/invite/remove are owner-only and require Family plan.
+  "family-create":         "family",
+  "family-invite":         "family",
+  "family-remove-member":  "family",
+  "family-set-mode":       "family",
   "family-accept-invite":  "free",
-  "family-remove-member":  "free",
-  "family-set-mode":       "free",
   "family-info":           "free",
   "webhook-set":         "enterprise",
   "webhook-clear":       "enterprise",
@@ -49,7 +49,9 @@ const ACTION_TIERS = {
   "totp-disable":        "free",
 };
 
-const TIER_LEVEL = { free: 0, pro: 1, enterprise: 2 };
+// family = same Pro-tool access + family-specific features. Mirror of
+// src/lib/toolTiers.js TIER_LEVEL — drift here = silent UI/backend mismatch.
+const TIER_LEVEL = { free: 0, starter: 0, pro: 1, family: 1, enterprise: 2 };
 function planMeetsTier(plan, required) {
   return (TIER_LEVEL[plan || "free"] ?? 0) >= (TIER_LEVEL[required || "free"] ?? 0);
 }
@@ -1378,11 +1380,13 @@ async function handleFamilyRemoveMember(req, res) {
   const memberSnap = await fs.collection("users").doc(uid).get();
   const memberEmail = memberSnap.data()?.email;
   const FieldValue = (await import("firebase-admin/firestore")).FieldValue;
-  await famSnap.ref.update({
+  const updatePayload = {
     [`members.${uid}`]: FieldValue.delete(),
     [`modes.${uid}`]: FieldValue.delete(),
-    memberEmails: FieldValue.arrayRemove(memberEmail),
-  });
+  };
+  // arrayRemove(undefined) throws — only include when email actually known.
+  if (memberEmail) updatePayload.memberEmails = FieldValue.arrayRemove(memberEmail);
+  await famSnap.ref.update(updatePayload);
   if (memberSnap.data()?.currentFamilyId === familyId) {
     await fs.collection("users").doc(uid).update({ currentFamilyId: null, familyRole: null });
   }
@@ -1683,13 +1687,19 @@ async function handleRefund(req, res) {
     uid = decoded.uid;
     const fs = getAdminFirestore();
 
-    // Confirm this user owns the payment + it's eligible for refund
+    // Confirm this user owns the payment + it's eligible for refund.
+    // Checkout writes the docs with field `transactionId` (not `orderId`) and
+    // `createdAt` (not `date`) — query/age-check must match those names.
     const payDoc = await fs.collection("users").doc(uid)
-      .collection("payments").where("orderId", "==", orderId).limit(1).get();
+      .collection("payments").where("transactionId", "==", orderId).limit(1).get();
     if (payDoc.empty) return res.status(404).json({ error: "Payment not found" });
     const pay = payDoc.docs[0].data();
-    const ageMs = Date.now() - (pay.date?.toMillis ? pay.date.toMillis() : 0);
+    const paidAt = pay.createdAt?.toMillis ? pay.createdAt.toMillis()
+      : pay.date?.toMillis ? pay.date.toMillis()
+      : 0;
+    const ageMs = Date.now() - paidAt;
     const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
+    if (!paidAt) return res.status(400).json({ error: "Payment timestamp missing — contact support" });
     if (ageMs > SEVEN_DAYS) return res.status(400).json({ error: "Refund window (7 days) elapsed" });
     if (pay.refunded) return res.status(400).json({ error: "Already refunded" });
 
