@@ -189,7 +189,9 @@ export default function Checkout() {
   const [couponError, setCouponError] = useState("");
   const [couponChecking, setCouponChecking] = useState(false);
 
-  const applyCoupon = async () => {
+  // Renamed from `applyCoupon` — old name shadowed the imported pure util
+  // (utils/billing.js → applyCoupon) and produced `price = Promise → ₹[object Promise]`.
+  const handleApplyCoupon = async () => {
     const code = couponInput.trim().toUpperCase();
     if (!code) return;
     setCouponChecking(true); setCouponError(""); setCoupon(null);
@@ -642,7 +644,7 @@ export default function Checkout() {
                   disabled={!!coupon}
                 />
                 {!coupon ? (
-                  <button onClick={applyCoupon} disabled={!couponInput || couponChecking} style={{
+                  <button onClick={handleApplyCoupon} disabled={!couponInput || couponChecking} style={{
                     padding: "10px 18px", borderRadius: 8, border: "none", fontSize: 13, fontWeight: 600,
                     background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`, color: "#fff",
                     cursor: !couponInput || couponChecking ? "not-allowed" : "pointer", opacity: !couponInput || couponChecking ? 0.6 : 1,
