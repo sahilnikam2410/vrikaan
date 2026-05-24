@@ -7,6 +7,7 @@ const CASHFREE_API_BASE = process.env.CASHFREE_ENV === "production"
 const PLAN_MAP = {
   starter: "starter", standard: "starter",
   pro: "pro", advanced: "pro",
+  family: "family",
   enterprise: "enterprise",
 };
 

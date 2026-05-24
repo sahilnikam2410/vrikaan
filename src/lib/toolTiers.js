@@ -14,8 +14,9 @@
  *   - Navbar Tools dropdown (future) — same logic
  */
 
-export const TIERS = ["free", "pro", "enterprise"];
-const TIER_LEVEL = { free: 0, pro: 1, enterprise: 2 };
+export const TIERS = ["free", "pro", "family", "enterprise"];
+// family = same access level as pro (all Pro tools) plus family-specific features.
+const TIER_LEVEL = { free: 0, starter: 0, pro: 1, family: 1, enterprise: 2 };
 
 /**
  * Check if a user's plan satisfies the required tier.
@@ -29,14 +30,18 @@ export function userMeetsTier(userPlan, requiredTier) {
 
 /** Human-friendly tier label */
 export function tierLabel(tier) {
-  return tier === "pro" ? "PRO" : tier === "enterprise" ? "ENTERPRISE" : "FREE";
+  if (tier === "pro") return "PRO";
+  if (tier === "family") return "FAMILY";
+  if (tier === "enterprise") return "ENTERPRISE";
+  return "FREE";
 }
 
-/** Tier brand color (cyan free, indigo pro, gold enterprise) */
+/** Tier brand color (cyan free, indigo pro, pink family, gold enterprise) */
 export function tierColor(tier) {
-  return tier === "pro" ? "#6366F1"
-    : tier === "enterprise" ? "#EAB308"
-    : "#14E3C5";
+  if (tier === "pro") return "#6366F1";
+  if (tier === "family") return "#EC4899";
+  if (tier === "enterprise") return "#EAB308";
+  return "#14E3C5";
 }
 
 // ── Tool registry ────────────────────────────────────────────────────

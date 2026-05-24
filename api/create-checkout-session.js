@@ -13,6 +13,8 @@ const PRICES = {
   advanced_monthly: { amount: 99, name: "Advanced Monthly" },
   pro_annual: { amount: 990, name: "Advanced Annual" },
   advanced_annual: { amount: 990, name: "Advanced Annual" },
+  family_monthly: { amount: 149, name: "Family Monthly" },
+  family_annual: { amount: 1490, name: "Family Annual" },
   enterprise_monthly: { amount: 199, name: "Enterprise Monthly" },
   enterprise_annual: { amount: 1990, name: "Enterprise Annual" },
 };

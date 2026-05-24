@@ -19,8 +19,9 @@ const T = {
 const plans = {
   starter: { name: "Standard", price: 49, annual: 490, features: ["200 AI credits/day", "Real-time threat detection", "5 devices", "Email protection", "Phishing alerts", "Priority response"] },
   standard: { name: "Standard", price: 49, annual: 490, features: ["200 AI credits/day", "Real-time threat detection", "5 devices", "Email protection", "Phishing alerts", "Priority response"] },
-  pro: { name: "Advanced", price: 99, annual: 990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"] },
-  advanced: { name: "Advanced", price: 99, annual: 990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Family/team protection", "Incident recovery ops", "Dedicated analyst"] },
+  family: { name: "Family", price: 149, annual: 1490, features: ["500 AI credits/day shared", "Everything in Standard", "5 family members", "Parent dashboard", "Kids mode (scam-block + safe browsing)", "Senior mode (UPI guard + voice alerts)", "Family scam-alert broadcast", "Shared safe-word vault"] },
+  pro: { name: "Advanced", price: 99, annual: 990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Incident recovery ops", "Dedicated analyst", "Priority response queue"] },
+  advanced: { name: "Advanced", price: 99, annual: 990, features: ["1000 AI credits", "Everything in Standard", "Identity monitoring", "Dark web surveillance", "Incident recovery ops", "Dedicated analyst", "Priority response queue"] },
   enterprise: { name: "Enterprise", price: 199, annual: 1990, features: ["Unlimited AI credits", "Everything in Advanced", "Unlimited devices & users", "Custom API integrations", "24/7 dedicated SOC team", "Compliance reporting", "SLA-backed guarantee", "White-label options"] },
 };
 
@@ -222,14 +223,14 @@ export default function Checkout() {
     }
   }, [user]);
 
-  const PLAN_MAP = { starter: "starter", standard: "starter", pro: "pro", advanced: "pro", enterprise: "enterprise" };
+  const PLAN_MAP = { starter: "starter", standard: "starter", pro: "pro", advanced: "pro", family: "family", enterprise: "enterprise" };
   const normalizedPlanKey = PLAN_MAP[planKey] || "pro";
   const hasActivePlan = activePlan && activePlan === normalizedPlanKey;
 
   const handlePaymentSuccess = useCallback((verifiedPlan, amount, txnId) => {
     updatePlan(verifiedPlan || planKey);
     const creditData = JSON.parse(localStorage.getItem("vrikaan_ai_credits") || "{}");
-    creditData.plan = verifiedPlan === "pro" ? "pro" : verifiedPlan === "enterprise" ? "unlimited" : "starter";
+    creditData.plan = verifiedPlan === "pro" ? "pro" : verifiedPlan === "enterprise" ? "unlimited" : verifiedPlan === "family" ? "family" : "starter";
     creditData.used = 0;
     localStorage.setItem("vrikaan_ai_credits", JSON.stringify(creditData));
     // Send payment confirmation email

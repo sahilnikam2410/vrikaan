@@ -51,18 +51,38 @@ const plans = [
     accentColor: T.cyan,
   },
   {
+    key: "family",
+    name: "Family",
+    monthlyPrice: 149,
+    desc: "One plan. Whole family safe — kids, parents, grandparents",
+    features: [
+      "Everything in Standard",
+      "5 family members included",
+      "Parent dashboard + activity view",
+      "Kids mode (scam-block + safe browsing)",
+      "Senior mode (UPI guard + voice alerts)",
+      "Family scam-alert broadcast",
+      "Shared safe-word vault",
+      "Add-ons: ₹49/mo per extra seat",
+    ],
+    cta: "Protect Family",
+    highlight: false,
+    accentColor: "#ec4899",
+    badge: "Best Value",
+  },
+  {
     key: "pro",
     name: "Advanced",
     monthlyPrice: 99,
-    desc: "For families & power users who need maximum security",
+    desc: "For power users who need maximum personal security",
     features: [
       "Everything in Standard",
       "Identity monitoring",
       "Dark web surveillance",
-      "Family/team protection (10 users)",
       "Incident recovery ops",
       "Dedicated analyst",
       "Advanced analytics",
+      "Priority response queue",
     ],
     cta: "Go Advanced",
     highlight: false,
@@ -105,6 +125,10 @@ const faqs = [
   {
     q: "Is my payment information secure?",
     a: "Absolutely. All payments are processed through Stripe with PCI DSS Level 1 compliance. We never store your card details on our servers — only a tokenized reference is kept for subscription management.",
+  },
+  {
+    q: "How does the Family plan work?",
+    a: "Family covers 5 members on a single bill. As primary holder you get a parent dashboard to see scam alerts, manage kids' safe-browsing rules, and enable senior mode (extra UPI scam guards) for older relatives. Need more than 5? Add seats at ₹49/mo each. All members get their own login and private vault — you only see aggregate safety alerts, not personal data.",
   },
   {
     q: "Does the Enterprise plan support custom integrations?",
@@ -408,6 +432,20 @@ export default function Pricing() {
                   </div>
                 )}
 
+                {/* Custom badge (e.g. Best Value on Family) */}
+                {!plan.highlight && plan.badge && (
+                  <div style={{
+                    position: "absolute", top: -13, left: "50%", transform: "translateX(-50%)",
+                    padding: "4px 14px",
+                    background: `linear-gradient(135deg, ${plan.accentColor}, ${plan.accentColor}cc)`,
+                    borderRadius: 100, fontSize: 11, fontWeight: 700, color: "#fff",
+                    whiteSpace: "nowrap", letterSpacing: 0.3,
+                    boxShadow: `0 4px 16px ${plan.accentColor}55`,
+                  }}>
+                    {plan.badge}
+                  </div>
+                )}
+
                 {/* Plan header */}
                 <div style={{ marginBottom: 24 }}>
                   <h3 style={{
@@ -427,7 +465,7 @@ export default function Pricing() {
                     <span style={{
                       fontFamily: "'Space Grotesk', sans-serif",
                       fontSize: 46, fontWeight: 800, letterSpacing: "-0.04em",
-                      color: plan.highlight ? T.cyan : T.white,
+                      color: plan.highlight ? T.cyan : (plan.badge ? plan.accentColor : T.white),
                       lineHeight: 1,
                     }}>
                       {price === 0 ? "Free" : `₹${price}`}
