@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useEffect, useState, Suspense, lazy } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "./context/AuthContext";
@@ -223,6 +223,10 @@ function AppRoutes() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/about" element={<About />} />
             <Route path="/press" element={<Press />} />
+            {/* Friendly shorturl aliases for press / share links → blog post */}
+            <Route path="/threat-report-2026" element={<Navigate to="/blog/vrikaan-india-threat-report-2026" replace />} />
+            <Route path="/threat-report" element={<Navigate to="/blog/vrikaan-india-threat-report-2026" replace />} />
+            <Route path="/india-threat-report" element={<Navigate to="/blog/vrikaan-india-threat-report-2026" replace />} />
             <Route path="/careers" element={<Careers />} />
             <Route path="/jobs" element={<Careers />} />
             <Route path="/internship" element={<Careers />} />
