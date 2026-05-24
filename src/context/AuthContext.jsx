@@ -60,6 +60,8 @@ function mergeUserData(firebaseUser, profile) {
     onTrial: !!profile?.onTrial && trialActive,
     trialExpiresAt: trialExpires,
     trialPlan: profile?.trialPlan || null,
+    currentFamilyId: profile?.currentFamilyId || null,
+    familyRole: profile?.familyRole || null,
     emailVerified: !!firebaseUser.emailVerified,
     providerData: firebaseUser.providerData || [],
     mfaEnabled: !!profile?.mfa?.enabled,

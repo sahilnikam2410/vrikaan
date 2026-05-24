@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { getToolTier, userMeetsTier, tierLabel, tierColor } from "../lib/toolTiers";
+import { getToolTier, userMeetsTier, tierLabel, tierColor, isKidBlocked } from "../lib/toolTiers";
 
 /**
  * ProtectedRoute — requires login. Optional `adminOnly` for admin gating.
@@ -35,6 +35,12 @@ export function ProtectedRoute({ children, adminOnly = false, tier: tierOverride
     return <Navigate to={`/login?next=${encodeURIComponent(location.pathname)}`} replace />;
   }
   if (adminOnly && user.role !== "admin") return <Navigate to="/dashboard" replace />;
+
+  // Kid-mode gate — Family-plan members tagged role=kid can't access scary /
+  // adult / dark-web tools. Soft-redirect to dashboard with note query param.
+  if (user.familyRole === "kid" && isKidBlocked(location.pathname)) {
+    return <Navigate to="/dashboard?blocked=kid" replace />;
+  }
 
   // Tier check — explicit override OR derived from path.
   // Free Pro tools get a daily quota (handled in-page via useToolQuota +

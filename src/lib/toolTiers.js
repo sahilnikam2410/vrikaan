@@ -145,6 +145,25 @@ export const TOOL_TIERS = {
   "/admin":                { tier: "enterprise", name: "Admin Dashboard" },
 };
 
+// Routes blocked for Family-plan "kid" role members. These surface
+// scary / adult / dark-web content that's inappropriate for children.
+// Parent dashboard sets the kid flag — enforcement in ProtectedRoute.
+export const KID_BLOCKED_PATHS = new Set([
+  "/dark-web-monitor",
+  "/identity-xray",
+  "/deepfake-audio",
+  "/scam-database",
+  "/threats",
+  "/threat-map",
+  "/cyber-news",
+]);
+
+export function isKidBlocked(path) {
+  if (!path) return false;
+  const clean = path.split("?")[0].split("#")[0].toLowerCase();
+  return KID_BLOCKED_PATHS.has(clean);
+}
+
 /**
  * Look up tier metadata for an arbitrary path.
  * Falls back to "free" when no entry exists (safer default for public pages).

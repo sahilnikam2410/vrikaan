@@ -15,6 +15,7 @@ const ACTION_TIERS = {
   "weekly-digest":     "free", // cron auth handled separately inside handler
   "leak-check":        "free",
   "newsletter-subscribe": "free",
+  "coupon-validate": "free",
 
   // PRO tier (AI, data-heavy, paid value)
   "scam-check":         "pro",
@@ -37,6 +38,7 @@ const ACTION_TIERS = {
   "family-invite":         "family",
   "family-remove-member":  "family",
   "family-set-mode":       "family",
+  "family-add-seat":       "family",
   "family-accept-invite":  "free",
   "family-info":           "free",
   "webhook-set":         "enterprise",
@@ -1413,6 +1415,56 @@ async function handleFamilySetMode(req, res) {
   return res.status(200).json({ success: true });
 }
 
+// Family owner buys an extra seat (₹49/mo). Caller supplies a Cashfree
+// orderId for plan=family_addon_*. Endpoint verifies w/ Cashfree, bumps
+// seatLimit by 1. Idempotent — records processed orderId on the family doc
+// so the same purchase can't add multiple seats on retry.
+async function handleFamilyAddSeat(req, res) {
+  const me = await verifyIdTokenFromHeader(req);
+  if (!me) return res.status(401).json({ error: "Sign-in required" });
+  const { familyId, orderId } = req.body || {};
+  if (!familyId || !orderId) return res.status(400).json({ error: "familyId and orderId required" });
+
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "FIREBASE_SERVICE_ACCOUNT not set" });
+
+  const famSnap = await fs.collection("families").doc(familyId).get();
+  if (!famSnap.exists) return res.status(404).json({ error: "Family not found" });
+  const fam = famSnap.data();
+  if (fam.ownerUid !== me.uid) return res.status(403).json({ error: "Only the owner can buy seats" });
+  if ((fam.seatAddonOrderIds || []).includes(orderId)) {
+    return res.status(200).json({ success: true, alreadyApplied: true, seatLimit: fam.seatLimit });
+  }
+
+  // Verify w/ Cashfree
+  const CF_API = process.env.CASHFREE_ENV === "production"
+    ? "https://api.cashfree.com/pg/orders" : "https://sandbox.cashfree.com/pg/orders";
+  const cfResp = await fetch(`${CF_API}/${orderId}`, {
+    headers: {
+      "x-api-version": "2023-08-01",
+      "x-client-id": process.env.CASHFREE_APP_ID,
+      "x-client-secret": process.env.CASHFREE_SECRET_KEY,
+    },
+  });
+  const cfData = await cfResp.json();
+  if (!cfResp.ok) return res.status(400).json({ error: "Cashfree verify failed" });
+  if (cfData.order_status !== "PAID") return res.status(400).json({ error: "Payment not completed" });
+  const cfPlan = cfData.order_tags?.plan || "";
+  if (!cfPlan.startsWith("family_addon")) {
+    return res.status(400).json({ error: "Order is not a family seat add-on" });
+  }
+
+  const FieldValue = (await import("firebase-admin/firestore")).FieldValue;
+  await famSnap.ref.update({
+    seatLimit: FieldValue.increment(1),
+    seatAddonOrderIds: FieldValue.arrayUnion(orderId),
+    seatAddonUpdatedAt: new Date(),
+  });
+
+  return res.status(200).json({ success: true, seatLimit: (fam.seatLimit || 5) + 1 });
+}
+
 // Get family info — caller must be a member or owner.
 async function handleFamilyInfo(req, res) {
   const me = await verifyIdTokenFromHeader(req);
@@ -2327,9 +2379,52 @@ async function handleNewsletterSubscribe(req, res) {
   }
 }
 
+// ─── COUPON VALIDATE ────────────────────────────────────────────────
+// Server-side coupon lookup. Replaces client-side getDoc(coupons/CODE) which
+// let any anonymous user enumerate/probe coupon catalogue via Firestore SDK.
+// Now /coupons/* read should be locked behind admin-only rules.
+async function handleCouponValidate(req, res) {
+  const { code, plan } = req.body || {};
+  if (!code || typeof code !== "string") {
+    return res.status(400).json({ error: "code required" });
+  }
+  const cleanCode = code.trim().toUpperCase().slice(0, 32);
+  if (!/^[A-Z0-9_-]{2,32}$/.test(cleanCode)) {
+    return res.status(400).json({ error: "Invalid code format" });
+  }
+  try {
+    const adminMod = await import("./_firebaseAdmin.js");
+    const fs = adminMod.getAdminFirestore();
+    if (!fs) return res.status(500).json({ error: "Server config missing" });
+    const snap = await fs.collection("coupons").doc(cleanCode).get();
+    if (!snap.exists) return res.status(404).json({ error: "Invalid code" });
+    const c = snap.data();
+    if (!c.active) return res.status(400).json({ error: "Code disabled" });
+    const exp = c.expiresAt?.toMillis ? c.expiresAt.toMillis()
+      : c.expiresAt?.toDate ? c.expiresAt.toDate().getTime()
+      : c.expiresAt ? new Date(c.expiresAt).getTime()
+      : 0;
+    if (exp && exp < Date.now()) return res.status(400).json({ error: "Code expired" });
+    if (c.plans && plan && !c.plans.includes(plan)) {
+      return res.status(400).json({ error: "Not valid for this plan" });
+    }
+    return res.status(200).json({
+      valid: true,
+      code: cleanCode,
+      percentOff: c.percentOff || 0,
+      flatOff: c.flatOff || 0,
+      plans: c.plans || null,
+    });
+  } catch (e) {
+    console.error("coupon-validate error:", e.message);
+    return res.status(500).json({ error: "Validation failed" });
+  }
+}
+
 const HANDLERS = {
   whois: handleWhois,
   "newsletter-subscribe": handleNewsletterSubscribe,
+  "coupon-validate": handleCouponValidate,
   "security-headers": handleSecurityHeaders,
   "file-hash-check": handleFileHashCheck,
   "ai-explain": handleGeminiExplain,
@@ -2355,6 +2450,7 @@ const HANDLERS = {
   "family-accept-invite": handleFamilyAcceptInvite,
   "family-remove-member": handleFamilyRemoveMember,
   "family-set-mode": handleFamilySetMode,
+  "family-add-seat": handleFamilyAddSeat,
   "family-info": handleFamilyInfo,
   "scam-check": handleScamCheck,
   "headers-fix": handleHeadersFix,

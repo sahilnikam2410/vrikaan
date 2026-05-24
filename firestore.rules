@@ -175,13 +175,11 @@ service cloud.firestore {
     }
 
     // ─── coupons ─────────────────────────────────────────────────
-    // Promo codes the Checkout page validates client-side.
-    // Public single-doc read (by exact code) so checkout can lookup;
-    // listing blocked so attackers can't enumerate all codes.
-    // Only admin writes new codes.
+    // Server-only access — Checkout now validates via /api/tools?tool=
+    // coupon-validate (uses admin SDK). Client-side reads blocked so anon
+    // users can't probe individual codes.
     match /coupons/{code} {
-      allow get: if true;
-      allow list: if isAdmin();
+      allow get, list: if isAdmin();
       allow create, update, delete: if isAdmin();
     }
 

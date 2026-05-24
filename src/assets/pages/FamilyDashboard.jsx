@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { auth as firebaseAuth } from "../../firebase/config";
@@ -105,6 +105,31 @@ export default function FamilyDashboard() {
     loadPendingInvitesForMe();
   }, [user, navigate, loadFamily, loadPendingInvitesForMe]);
 
+  // Auto-create family doc for fresh Family-plan purchasers — closes the
+  // pay → use loop with zero friction. Runs once after load when:
+  // (a) user is on family plan, (b) no family exists yet, (c) not still
+  // loading, (d) no pending invite in URL (handled by next effect).
+  const autoCreateAttempted = useRef(false);
+  useEffect(() => {
+    if (autoCreateAttempted.current) return;
+    if (loading) return;
+    if (!user?.uid) return;
+    if (user.plan !== "family") return;
+    if (family) return;
+    if (new URLSearchParams(window.location.search).get("invite")) return;
+    autoCreateAttempted.current = true;
+    (async () => {
+      try {
+        await apiCall("family-create", {});
+        flash("Family created — invite members below", "ok");
+        await loadFamily();
+      } catch (e) {
+        // Show button fallback if auto-create fails
+        if (!/already/i.test(e.message)) flash(e.message, "err");
+      }
+    })();
+  }, [user, family, loading, apiCall, loadFamily]);
+
   // Auto-accept invite when arriving from email link: /family?invite=<id>
   useEffect(() => {
     if (!user?.uid) return;
@@ -134,6 +159,66 @@ export default function FamilyDashboard() {
     } catch (e) { flash(e.message, "err"); }
     finally { setBusy(false); }
   };
+
+  // Owner buys an extra seat (₹49/mo). Creates a Cashfree session for the
+  // family_addon_monthly plan, opens checkout. On Cashfree redirect back to
+  // /family?seat_order=<orderId>, the seat-apply effect calls family-add-seat
+  // and the seat appears.
+  const buyExtraSeat = async () => {
+    if (!family) return;
+    setBusy(true);
+    try {
+      const r = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          planKey: "family_addon",
+          billing: "monthly",
+          email: user.email,
+          name: user.displayName || user.email,
+          phone: user.phoneNumber || "",
+          returnPath: `/family?seat_order={order_id}&familyId=${family.id}`,
+        }),
+      });
+      const data = await r.json();
+      const sessionId = data.paymentSessionId || data.payment_session_id;
+      if (!r.ok || !sessionId) {
+        throw new Error(data.error || "Could not start checkout");
+      }
+      // Load Cashfree SDK + open checkout
+      if (!window.Cashfree) {
+        await new Promise((resolve, reject) => {
+          const s = document.createElement("script");
+          s.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
+          s.onload = resolve; s.onerror = reject;
+          document.head.appendChild(s);
+        });
+      }
+      const cashfree = window.Cashfree({ mode: data.mode || "sandbox" });
+      cashfree.checkout({
+        paymentSessionId: sessionId,
+        redirectTarget: "_self",
+      });
+    } catch (e) {
+      flash(e.message, "err"); setBusy(false);
+    }
+  };
+
+  // After Cashfree returns to /family?seat_order=<id>, apply the seat bump.
+  useEffect(() => {
+    if (!family || !apiCall) return;
+    const params = new URLSearchParams(window.location.search);
+    const seatOrder = params.get("seat_order");
+    if (!seatOrder) return;
+    (async () => {
+      try {
+        const r = await apiCall("family-add-seat", { familyId: family.id, orderId: seatOrder });
+        flash(r.alreadyApplied ? "Seat already added" : `✓ Extra seat added — limit now ${r.seatLimit}`, "ok");
+        window.history.replaceState({}, "", "/family");
+        await loadFamily();
+      } catch (e) { flash(`Seat add: ${e.message}`, "err"); }
+    })();
+  }, [family, apiCall, loadFamily]);
 
   const sendInvite = async () => {
     if (!inviteEmail.trim() || !family) return;
@@ -400,9 +485,23 @@ export default function FamilyDashboard() {
               <div style={{
                 padding: 14, borderRadius: 10, background: "rgba(251,191,36,0.08)",
                 border: `1px solid ${T.yellow}44`, marginBottom: 28,
-                fontSize: 13, color: T.yellow,
+                fontSize: 13, color: T.yellow, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap",
               }}>
-                Family is full. Need more? Add extra seats at ₹49/mo each — <a href="/contact?intent=family-addon" style={{ color: T.yellow, fontWeight: 700 }}>contact us</a>.
+                <span style={{ flex: 1, minWidth: 200 }}>
+                  Family is full. Add extra seats — <strong>₹49/mo each</strong>.
+                </span>
+                <button
+                  onClick={buyExtraSeat}
+                  disabled={busy}
+                  style={{
+                    padding: "8px 16px", borderRadius: 8, border: "none",
+                    background: T.yellow, color: "#000",
+                    fontSize: 12, fontWeight: 700, cursor: busy ? "wait" : "pointer",
+                    fontFamily: "'Space Grotesk', sans-serif",
+                  }}
+                >
+                  {busy ? "Opening Cashfree…" : "+ Add seat (₹49/mo)"}
+                </button>
               </div>
             )}
 

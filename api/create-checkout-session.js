@@ -15,6 +15,8 @@ const PRICES = {
   advanced_annual: { amount: 990, name: "Advanced Annual" },
   family_monthly: { amount: 149, name: "Family Monthly" },
   family_annual: { amount: 1490, name: "Family Annual" },
+  family_addon_monthly: { amount: 49, name: "Family Extra Seat — Monthly" },
+  family_addon_annual: { amount: 490, name: "Family Extra Seat — Annual" },
   enterprise_monthly: { amount: 199, name: "Enterprise Monthly" },
   enterprise_annual: { amount: 1990, name: "Enterprise Annual" },
 };
@@ -32,7 +34,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { planKey, billing, email, phone, name } = req.body;
+    const { planKey, billing, email, phone, name, returnPath } = req.body;
 
     const priceKey = `${planKey}_${billing}`;
     const priceConfig = PRICES[priceKey];
@@ -43,6 +45,12 @@ export default async function handler(req, res) {
 
     const orderId = `VRIKAAN_${planKey}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const origin = req.headers.origin || "https://vrikaan.com";
+
+    // Caller may pass a custom returnPath w/ `{order_id}` placeholder
+    // (e.g. /family?seat_order={order_id}). Default = standard checkout return.
+    const safeReturnPath = typeof returnPath === "string" && returnPath.startsWith("/")
+      ? returnPath.replace(/\{order_id\}/g, orderId)
+      : `/checkout?plan=${planKey}&order_id=${orderId}`;
 
     const orderPayload = {
       order_id: orderId,
@@ -56,7 +64,7 @@ export default async function handler(req, res) {
         customer_name: name || "VRIKAAN User",
       },
       order_meta: {
-        return_url: `${origin}/checkout?plan=${planKey}&order_id=${orderId}`,
+        return_url: `${origin}${safeReturnPath}`,
         notify_url: `${origin}/api/cashfree-webhook`,
       },
       order_tags: {

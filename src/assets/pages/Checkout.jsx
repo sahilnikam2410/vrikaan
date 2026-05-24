@@ -196,19 +196,16 @@ export default function Checkout() {
     if (!code) return;
     setCouponChecking(true); setCouponError(""); setCoupon(null);
     try {
-      const snap = await getDoc(doc(db, "coupons", code));
-      if (!snap.exists()) { setCouponError("Invalid code"); return; }
-      const c = snap.data();
-      if (!c.active) { setCouponError("Code disabled"); return; }
-      // Handle Firestore Timestamp / millis / ISO string equally — old impl
-      // only checked .toDate() and silently let string-stored expiries pass.
-      const exp = c.expiresAt?.toMillis ? new Date(c.expiresAt.toMillis())
-        : c.expiresAt?.toDate ? c.expiresAt.toDate()
-        : c.expiresAt ? new Date(c.expiresAt)
-        : null;
-      if (exp && exp < new Date()) { setCouponError("Code expired"); return; }
-      if (c.plans && !c.plans.includes(normalizedPlanKey)) { setCouponError("Not valid for this plan"); return; }
-      setCoupon({ code, ...c });
+      // Server-side validation. Previously client read /coupons/{code}
+      // directly via Firestore SDK, letting anon users enumerate codes.
+      const r = await fetch("/api/tools?tool=coupon-validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code, plan: normalizedPlanKey }),
+      });
+      const data = await r.json();
+      if (!r.ok || !data.valid) { setCouponError(data.error || "Invalid code"); return; }
+      setCoupon({ code: data.code, percentOff: data.percentOff, flatOff: data.flatOff, plans: data.plans, active: true });
     } catch (e) {
       setCouponError("Could not validate code");
     } finally {
@@ -410,11 +407,29 @@ export default function Checkout() {
     }, 1500);
   };
 
-  // Admin config save
+  // Admin config save — validates UPI VPA / BTC / ETH formats so admin can't
+  // accidentally persist a stray string and route real funds to nothing.
   const saveAdminConfig = () => {
-    if (adminConfig.upiId) localStorage.setItem("vrikaan_upi_id", adminConfig.upiId);
-    if (adminConfig.btcAddress) localStorage.setItem("vrikaan_btc_address", adminConfig.btcAddress);
-    if (adminConfig.ethAddress) localStorage.setItem("vrikaan_eth_address", adminConfig.ethAddress);
+    const errs = {};
+    const upi = (adminConfig.upiId || "").trim();
+    const btc = (adminConfig.btcAddress || "").trim();
+    const eth = (adminConfig.ethAddress || "").trim();
+    // UPI VPA: <handle>@<psp>, alphanumeric + . _ - in handle
+    if (upi && !/^[a-zA-Z0-9._-]{2,}@[a-zA-Z]{2,}$/.test(upi)) {
+      errs.upiId = "Invalid UPI VPA (expected name@psp e.g. brand@hdfcbank)";
+    }
+    // BTC: legacy 1.../3..., segwit bc1... — basic length + alphabet check
+    if (btc && !/^(bc1[a-z0-9]{25,90}|[13][a-km-zA-HJ-NP-Z1-9]{25,34})$/.test(btc)) {
+      errs.btcAddress = "Invalid BTC address";
+    }
+    // ETH: 0x + 40 hex
+    if (eth && !/^0x[a-fA-F0-9]{40}$/.test(eth)) {
+      errs.ethAddress = "Invalid ETH address (0x + 40 hex chars)";
+    }
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    if (upi) localStorage.setItem("vrikaan_upi_id", upi);
+    if (btc) localStorage.setItem("vrikaan_btc_address", btc);
+    if (eth) localStorage.setItem("vrikaan_eth_address", eth);
     setErrors({ adminSaved: true });
     setTimeout(() => setErrors({}), 2000);
   };

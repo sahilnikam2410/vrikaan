@@ -538,6 +538,17 @@ const Navbar = () => {
                 {(user.displayName || user.email || "U")[0].toUpperCase()}
               </Link>
 
+              {user.plan === "family" && (
+                <Link to="/family" style={{
+                  padding: "8px 14px", border: "1px solid rgba(236,72,153,0.35)",
+                  background: "rgba(236,72,153,0.08)",
+                  borderRadius: 8, color: "#ec4899", textDecoration: "none", fontSize: 13,
+                  fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif",
+                  display: "inline-flex", alignItems: "center", gap: 6,
+                }} title="Family Dashboard — manage members, invites, kid/senior modes">
+                  <span style={{ fontSize: 14 }}>👪</span> Family
+                </Link>
+              )}
               <Link to="/dashboard" style={{
                 padding: "8px 20px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
                 borderRadius: 8, color: "#fff", textDecoration: "none", fontSize: 13,
