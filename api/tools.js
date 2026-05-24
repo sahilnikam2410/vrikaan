@@ -2657,6 +2657,17 @@ export default async function handler(req, res) {
         upgradeUrl: "/contact?intent=enterprise",
       });
     }
+    if (required === "family") {
+      return res.status(402).json({
+        error: "Family plan required",
+        code: "TIER_FAMILY_REQUIRED",
+        requiredTier: "family",
+        callerPlan: caller.plan,
+        upgradeUrl: "/family-plan",
+        // Diagnostic — surfaces when admin SDK fails token verify silently.
+        hint: caller.source === "anon" ? "Server could not verify your sign-in. Check that FIREBASE_SERVICE_ACCOUNT env var is set in Vercel." : undefined,
+      });
+    }
     // required === "pro" → check daily free quota
     const scope = caller.uid || (req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "ip-unknown").split(",")[0].trim();
     const q = getFreeQuota(scope, tool);
