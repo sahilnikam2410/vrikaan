@@ -1219,11 +1219,22 @@ async function handleFamilyInvite(req, res) {
     return res.status(400).json({ error: `Seat limit reached (${fam.seatLimit}). Buy extra seats at ₹49/mo each.` });
   }
 
-  // Idempotent — return existing pending invite if any
+  // Idempotent — return existing pending invite if any. Also RESEND the
+  // email so a first-attempt Brevo failure can be recovered by clicking
+  // "Send invite" again (previously the resend silently no-op'd).
   const existing = await fs.collection("familyInvites")
     .where("familyId", "==", familyId).where("email", "==", email).where("status", "==", "pending").limit(1).get();
   if (!existing.empty) {
-    return res.status(200).json({ success: true, inviteId: existing.docs[0].id, alreadyInvited: true });
+    const existingInv = existing.docs[0];
+    _sendFamilyInviteEmail({
+      toEmail: email,
+      ownerName: me.displayName || fam.ownerEmail.split("@")[0],
+      ownerEmail: fam.ownerEmail,
+      role: existingInv.data().role || validRole,
+      inviteId: existingInv.id,
+      appUrl: (req.headers["origin"] || "https://vrikaan.com").replace(/\/$/, ""),
+    }).catch(err => console.warn("family-invite mail resend failed:", err.message));
+    return res.status(200).json({ success: true, inviteId: existingInv.id, alreadyInvited: true, resent: true });
   }
   const inv = await fs.collection("familyInvites").add({
     familyId, email, role: validRole, invitedBy: me.uid, invitedByEmail: me.email,
