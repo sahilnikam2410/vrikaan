@@ -68,14 +68,11 @@ export default async function handler(req, res) {
     const rawBody = await readRawBody(req);
     const timestamp = req.headers["x-webhook-timestamp"];
     const signature = req.headers["x-webhook-signature"];
-    // Cashfree signs webhooks with a SEPARATE secret configured in the
-    // Cashfree dashboard's Webhooks section — NOT the API client secret.
-    // Falls back to CASHFREE_SECRET_KEY only for backwards-compat during
-    // migration; should be removed once CASHFREE_WEBHOOK_SECRET is set.
+    // Cashfree's v3 webhook (PG dashboard → Developers → Webhooks) signs
+    // payloads with the API Client Secret — there is NO separate webhook
+    // secret in their model. CASHFREE_WEBHOOK_SECRET is supported as an
+    // override only if you've configured a custom signing key out-of-band.
     const secret = process.env.CASHFREE_WEBHOOK_SECRET || process.env.CASHFREE_SECRET_KEY;
-    if (!process.env.CASHFREE_WEBHOOK_SECRET) {
-      console.warn("Cashfree webhook: CASHFREE_WEBHOOK_SECRET not set, falling back to CASHFREE_SECRET_KEY (incorrect — fix in Vercel env)");
-    }
 
     if (!verifySignature(rawBody, timestamp, signature, secret)) {
       console.warn("Cashfree webhook: invalid signature", { timestamp });
