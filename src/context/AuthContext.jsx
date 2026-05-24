@@ -5,6 +5,8 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signInWithPhoneNumber,
   sendPasswordResetEmail,
   sendEmailVerification,
@@ -71,6 +73,18 @@ function mergeUserData(firebaseUser, profile) {
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Drain pending redirect-based social-login result on app load. Fires
+  // once after browser navigates back from Google/Github/Facebook OAuth
+  // page. onAuthStateChanged also fires after this, so we don't need to
+  // setUser here — just surface errors.
+  useEffect(() => {
+    getRedirectResult(auth).catch((err) => {
+      if (err?.code && err.code !== "auth/no-auth-event") {
+        console.warn("getRedirectResult error:", err.code, err.message);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
@@ -270,32 +284,38 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const loginWithGoogle = useCallback(async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      return { success: true, user: result.user };
-    } catch (error) {
-      return { success: false, error: error.message || "Google sign-in failed" };
-    }
-  }, []);
+  // Popup auth fails on: mobile Safari (always), popup-blocker browsers,
+  // 3rd-party-cookie-disabled browsers, accidental popup close. Catch
+  // those classes of errors and silently fall back to redirect-based auth.
+  // Result lands via getRedirectResult on next AuthContext mount.
+  const POPUP_FALLBACK_CODES = new Set([
+    "auth/popup-closed-by-user",
+    "auth/popup-blocked",
+    "auth/cancelled-popup-request",
+    "auth/operation-not-supported-in-this-environment",
+  ]);
 
-  const loginWithGithub = useCallback(async () => {
+  const _socialLogin = async (provider, label) => {
     try {
-      const result = await signInWithPopup(auth, githubProvider);
+      const result = await signInWithPopup(auth, provider);
       return { success: true, user: result.user };
     } catch (error) {
-      return { success: false, error: error.message || "GitHub sign-in failed" };
+      if (POPUP_FALLBACK_CODES.has(error.code)) {
+        try {
+          await signInWithRedirect(auth, provider);
+          // Browser will navigate away — return success placeholder
+          return { success: true, redirecting: true };
+        } catch (redirErr) {
+          return { success: false, error: redirErr.message || `${label} sign-in failed (redirect)` };
+        }
+      }
+      return { success: false, error: error.message || `${label} sign-in failed` };
     }
-  }, []);
+  };
 
-  const loginWithFacebook = useCallback(async () => {
-    try {
-      const result = await signInWithPopup(auth, facebookProvider);
-      return { success: true, user: result.user };
-    } catch (error) {
-      return { success: false, error: error.message || "Facebook sign-in failed" };
-    }
-  }, []);
+  const loginWithGoogle = useCallback(() => _socialLogin(googleProvider, "Google"), []);
+  const loginWithGithub = useCallback(() => _socialLogin(githubProvider, "GitHub"), []);
+  const loginWithFacebook = useCallback(() => _socialLogin(facebookProvider, "Facebook"), []);
 
   const loginWithPhone = useCallback(async (phoneNumber, recaptchaVerifier) => {
     try {
