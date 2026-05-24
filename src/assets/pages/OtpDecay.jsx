@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
+import SeniorModeBanner from "../../components/SeniorModeBanner";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { BANKS, UNIVERSAL, searchBanks } from "../../lib/bankHelplines";
@@ -60,6 +61,7 @@ export default function OtpDecay() {
         keywords="shared otp scammer, block card now, otp fraud india, instant bank block, upi fraud minutes count"
       />
       <Navbar />
+      <div style={{ maxWidth: 980, margin: '0 auto', padding: '0 24px' }}><SeniorModeBanner /></div>
 
       <main style={{ maxWidth: 900, margin: "0 auto", padding: "100px 24px 80px" }}>
         {/* Hero */}

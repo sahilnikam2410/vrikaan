@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Navbar from "../../components/Navbar";
+import SeniorModeBanner from "../../components/SeniorModeBanner";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import QuotaBanner from "../../components/QuotaBanner";
@@ -66,6 +67,7 @@ export default function ScamCheck() {
     <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
       <SEO title="Scam SMS / Email Checker — VRIKAAN" description="Paste any suspicious SMS, email, or WhatsApp message. AI tells you if it's a scam in 5 seconds. Built for India." path="/scam-check" />
       <Navbar />
+      <div style={{ maxWidth: 980, margin: '0 auto', padding: '0 24px' }}><SeniorModeBanner /></div>
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "120px 20px 80px" }}>
         <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, margin: 0, marginBottom: 8, fontFamily: "'Space Grotesk', sans-serif" }}>
           Scam Message Checker

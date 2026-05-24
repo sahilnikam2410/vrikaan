@@ -860,6 +860,42 @@ export default function UserDashboard() {
           </div>
         ))}
       </div>
+      {/* Family widget — surfaces family status for family-plan owners +
+          invited members. Pink themed to match /family and Family-plan brand. */}
+      {(user?.plan === "family" || user?.currentFamilyId) && (
+        <a href="/family" style={{
+          display: "block", textDecoration: "none",
+          marginBottom: 16, padding: "16px 20px", borderRadius: 14,
+          background: "linear-gradient(135deg, rgba(236,72,153,0.10), rgba(99,102,241,0.06))",
+          border: "1px solid rgba(236,72,153,0.28)",
+          animation: "fadeInUp 0.4s ease both",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            <div style={{ fontSize: 26, flexShrink: 0 }}>👨‍👩‍👧‍👦</div>
+            <div style={{ flex: 1, minWidth: 200 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1.5, color: "#ec4899", marginBottom: 4, textTransform: "uppercase" }}>
+                Family
+              </div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: "#fff" }}>
+                {user.familyRole === "kid" ? "You're a kid member — safe tools only"
+                  : user.familyRole === "senior" ? "Senior mode active — extra UPI guards on"
+                  : user.familyRole === "member" ? "You're a family member"
+                  : "Manage your family plan"}
+              </div>
+              <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 2 }}>
+                {user.plan === "family" ? "Add members, manage modes, buy extra seats →" : "View your family dashboard →"}
+              </div>
+            </div>
+            <span style={{
+              padding: "8px 14px", borderRadius: 8,
+              background: "rgba(236,72,153,0.18)", color: "#ec4899",
+              fontSize: 12, fontWeight: 700,
+              fontFamily: "'Space Grotesk', sans-serif", flexShrink: 0,
+            }}>Open →</span>
+          </div>
+        </a>
+      )}
+
       {/* Trial banner */}
       {user?.onTrial && user?.trialExpiresAt && (() => {
         const ms = user.trialExpiresAt.getTime() - Date.now();

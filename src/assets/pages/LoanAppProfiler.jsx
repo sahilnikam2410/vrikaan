@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
+import SeniorModeBanner from "../../components/SeniorModeBanner";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { profileLoanApp, RED_FLAG_PERMISSIONS, RBI_REGISTERED } from "../../lib/loanAppProfiler";
@@ -51,6 +52,7 @@ export default function LoanAppProfiler() {
         keywords="loan app safety check, rbi registered loan apps, predatory loan india, chinese loan app ban, instant loan harassment"
       />
       <Navbar />
+      <div style={{ maxWidth: 980, margin: '0 auto', padding: '0 24px' }}><SeniorModeBanner /></div>
 
       <main style={{ maxWidth: 950, margin: "0 auto", padding: "100px 24px 80px" }}>
         <header style={{ textAlign: "center", marginBottom: 32 }}>

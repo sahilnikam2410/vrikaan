@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
+import SeniorModeBanner from "../../components/SeniorModeBanner";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
@@ -140,6 +141,7 @@ export default function UpiHoneypot() {
         keywords="upi scam check, fake upi id india, upi fraud lookup, check upi before pay"
       />
       <Navbar />
+      <div style={{ maxWidth: 980, margin: '0 auto', padding: '0 24px' }}><SeniorModeBanner /></div>
 
       <main style={{ maxWidth: 900, margin: "0 auto", padding: "100px 24px 80px" }}>
         <header style={{ textAlign: "center", marginBottom: 32 }}>

@@ -16,6 +16,7 @@ const ACTION_TIERS = {
   "leak-check":        "free",
   "newsletter-subscribe": "free",
   "coupon-validate": "free",
+  "whatsapp-inbound": "free",  // Twilio webhook — no user auth, rate-limited by phone
 
   // PRO tier (AI, data-heavy, paid value)
   "scam-check":         "pro",
@@ -2379,6 +2380,141 @@ async function handleNewsletterSubscribe(req, res) {
   }
 }
 
+// ─── WHATSAPP BOT (Twilio webhook) ──────────────────────────────────
+// Inbound: Twilio POSTs form-encoded WhatsApp messages to
+// /api/tools?tool=whatsapp-inbound. We parse intent, call relevant tool,
+// reply via Twilio REST. Returns empty TwiML (we send the reply ourselves
+// via REST API for richer formatting + delivery tracking).
+
+const WA_INTENTS = {
+  "scam check": "scam-check",
+  "scam:":      "scam-check",
+  "breach":     "breach-check",
+  "breach:":    "breach-check",
+  "leak":       "leak-check",
+  "leak:":      "leak-check",
+  "ip":         "ip",
+  "whois":      "whois",
+  "help":       "help",
+  "menu":       "help",
+  "start":      "help",
+};
+
+const WA_HELP = `🛡 *VRIKAAN Cyber Defence Bot*
+
+Send me any of:
+
+📩 *scam check: <message>* — AI scam analysis
+🔓 *breach: your@email* — breach lookup
+🌐 *whois example.com* — domain lookup
+📍 *ip 8.8.8.8* — IP geo + threat
+🩸 *leak: phone-or-email* — dark-web search
+
+*menu* — show this again.
+Full tools + Family Plan (₹149/mo) at vrikaan.com`;
+
+function _waParseIntent(body) {
+  const text = (body || "").trim().toLowerCase();
+  if (!text) return { intent: "help" };
+  for (const [trigger, action] of Object.entries(WA_INTENTS)) {
+    if (text.startsWith(trigger)) {
+      return { intent: action, payload: text.slice(trigger.length).replace(/^[:\s]+/, "").trim() };
+    }
+  }
+  return { intent: "scam-check", payload: body }; // free-form = scam check
+}
+
+async function _waCallTool(action, payload, origin) {
+  switch (action) {
+    case "scam-check":   return _fetchToolJson(origin, "scam-check", { message: payload });
+    case "breach-check": return _fetchToolJson(origin, "breach-check", { email: payload });
+    case "leak-check":   return _fetchToolJson(origin, "leak-check", { query: payload });
+    case "whois":        return _fetchToolJson(origin, "whois", { domain: payload });
+    case "ip": {
+      const r = await fetch(`${origin}/api/tools?tool=ip&ip=${encodeURIComponent(payload)}`);
+      return r.json();
+    }
+    default: return { error: "Unknown intent" };
+  }
+}
+
+async function _fetchToolJson(origin, tool, body) {
+  const r = await fetch(`${origin}/api/tools?tool=${tool}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  return r.json();
+}
+
+function _waFormat(action, data) {
+  if (data?.error) return `❌ ${data.error}`;
+  switch (action) {
+    case "scam-check": {
+      const emoji = data.verdict === "scam" ? "🚨" : data.verdict === "suspicious" ? "⚠️" : "✅";
+      return `${emoji} *${(data.verdict || "unknown").toUpperCase()}*  (${Math.round((data.confidence || 0) * 100)}% confidence)\n\n${data.reason || data.explanation || ""}${data.risk ? `\n\nRisk: *${String(data.risk).toUpperCase()}*` : ""}`;
+    }
+    case "breach-check":
+      return data.found
+        ? `🚨 Found in *${data.breaches}* breaches:\n${(data.sources || []).slice(0, 5).map(s => `• ${s}`).join("\n")}\n\nChange passwords where this email is used.`
+        : `✅ Not found in known breaches.`;
+    case "leak-check":
+      return data.hits > 0
+        ? `🩸 Found *${data.hits}* hits:\n${(data.sources || []).slice(0, 5).map(s => `• ${s}`).join("\n")}`
+        : `✅ Clean — not found in dark-web sources.`;
+    case "whois":
+      return `🌐 *${data.domain}*\nRegistrar: ${data.registrar || "—"}\nCreated: ${data.created || "—"}\nExpires: ${data.expires || "—"}`;
+    case "ip":
+      return `📍 *${data.ip}*\n${data.country || "?"} · ${data.isp || "?"}\nASN: ${data.asn || "?"}\nThreat: ${data.threatScore != null ? data.threatScore : "?"}`;
+    case "help": return WA_HELP;
+    default: return JSON.stringify(data).slice(0, 800);
+  }
+}
+
+async function _waSendReply(to, body) {
+  const sid = process.env.TWILIO_ACCOUNT_SID;
+  const token = process.env.TWILIO_AUTH_TOKEN;
+  const from = process.env.TWILIO_WHATSAPP_FROM;
+  if (!sid || !token || !from) {
+    console.warn("WA: Twilio creds missing");
+    return;
+  }
+  const params = new URLSearchParams({ From: from, To: to, Body: body });
+  const resp = await fetch(`https://api.twilio.com/2010-04-01/Accounts/${sid}/Messages.json`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Basic ${Buffer.from(`${sid}:${token}`).toString("base64")}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: params.toString(),
+  });
+  if (!resp.ok) console.error("WA Twilio send failed:", resp.status, (await resp.text().catch(() => "")).slice(0, 200));
+}
+
+async function handleWhatsappInbound(req, res) {
+  // Twilio posts URL-encoded form. Vercel parses based on Content-Type;
+  // handle both shapes defensively.
+  const body = typeof req.body === "object" && !Array.isArray(req.body)
+    ? req.body
+    : Object.fromEntries(new URLSearchParams(req.body || ""));
+  const messageBody = body.Body || body.body || "";
+  const from = body.From || body.from || "";
+  if (!from) {
+    res.setHeader("Content-Type", "text/xml");
+    return res.status(200).send(`<?xml version="1.0" encoding="UTF-8"?><Response></Response>`);
+  }
+  try {
+    const { intent, payload } = _waParseIntent(messageBody);
+    const origin = `https://${req.headers.host}`;
+    const reply = intent === "help" ? WA_HELP : _waFormat(intent, await _waCallTool(intent, payload, origin));
+    await _waSendReply(from, reply);
+  } catch (e) {
+    console.error("whatsapp-inbound error:", e.message);
+  }
+  res.setHeader("Content-Type", "text/xml");
+  return res.status(200).send(`<?xml version="1.0" encoding="UTF-8"?><Response></Response>`);
+}
+
 // ─── COUPON VALIDATE ────────────────────────────────────────────────
 // Server-side coupon lookup. Replaces client-side getDoc(coupons/CODE) which
 // let any anonymous user enumerate/probe coupon catalogue via Firestore SDK.
@@ -2425,6 +2561,7 @@ const HANDLERS = {
   whois: handleWhois,
   "newsletter-subscribe": handleNewsletterSubscribe,
   "coupon-validate": handleCouponValidate,
+  "whatsapp-inbound": handleWhatsappInbound,
   "security-headers": handleSecurityHeaders,
   "file-hash-check": handleFileHashCheck,
   "ai-explain": handleGeminiExplain,

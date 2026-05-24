@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
+import SeniorModeBanner from "../../components/SeniorModeBanner";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { SCAM_TYPES, HELPLINES, buildRecoveryPlan, buildComplaintText } from "../../lib/scamRecovery";
@@ -79,6 +80,7 @@ export default function ScamRecovery() {
         keywords="scam recovery india, upi fraud help, hacked what to do, cybercrime helpline 1930, file fir cybercrime, lost money to scammer"
       />
       <Navbar />
+      <div style={{ maxWidth: 980, margin: '0 auto', padding: '0 24px' }}><SeniorModeBanner /></div>
 
       <main style={{ maxWidth: 1000, margin: "0 auto", padding: "100px 24px 80px" }}>
         {/* Hero */}
