@@ -179,6 +179,65 @@ export default function About() {
           </p>
         </div>
 
+        {/* ── Manifesto ── Why we exist (sharp, no-fluff) ── */}
+        <RevealSection style={sectionGap}>
+          <div style={{
+            position: "relative",
+            padding: "44px 40px",
+            background: "linear-gradient(135deg, rgba(20,227,197,0.06), rgba(99,102,241,0.04))",
+            border: `1px solid rgba(20,227,197,0.18)`,
+            borderRadius: 22,
+            overflow: "hidden",
+          }}>
+            <div style={{ position: "absolute", top: -60, right: -60, width: 200, height: 200, borderRadius: "50%", background: `radial-gradient(circle, ${T.cyan}10, transparent)` }} />
+            <div style={{ position: "relative", maxWidth: 760 }}>
+              <span style={{ ...badge(T.cyan), marginBottom: 18 }}>Why we exist</span>
+              <h2 style={{ ...heading(34), margin: "0 0 22px", letterSpacing: "-0.02em" }}>
+                India's families can't afford enterprise cyber prices.<br/>
+                <span style={gradientText}>We rebuilt the stack.</span>
+              </h2>
+              <div style={{ fontSize: 16, color: T.muted, lineHeight: 1.85, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <p style={{ margin: "0 0 18px" }}>
+                  Indian families lose <strong style={{ color: T.cyan }}>₹13,500 crore a year</strong> to cyber scams. The incumbent solution? Pay an Indian SOC services company ₹2-10 lakh per month for a Splunk dashboard, a 6-person team, and a 4-hour SLA that triggers after the money's already gone.
+                </p>
+                <p style={{ margin: "0 0 18px" }}>
+                  We watched legacy "cybersecurity consultants" laugh at this category for a decade. While they sold ₹50 lakh-a-year quarterly reports to BSE-listed companies, an entire generation of Indian parents, kids and seniors was getting drained by ₹4 lakh "digital arrest" calls. Nobody built for them. Because nobody could build it cheap enough.
+                </p>
+                <p style={{ margin: "0 0 18px" }}>
+                  So we did. <strong style={{ color: T.white }}>VRIKAAN is an AI-native cyber defense stack rebuilt from scratch for the 99% of India</strong> — Free, Family Plan ₹149/mo, Enterprise from ₹199/mo. Same threat detection coverage as ₹10L/mo SOC contracts. Different cost base. Different century.
+                </p>
+                <p style={{ margin: "0 0 18px" }}>
+                  We're not here to sell quarterly reports. We're here to block the scam call before grandma transfers the money.
+                </p>
+                <p style={{ margin: 0, fontWeight: 600, color: T.white }}>
+                  If you're building security software for people, not procurement committees — we're hiring. If you're the procurement committee — there are better vendors for you.
+                </p>
+              </div>
+              <div style={{ display: "flex", gap: 12, marginTop: 28, flexWrap: "wrap" }}>
+                <Link to="/family-plan" style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "12px 22px",
+                  background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`,
+                  color: "#020617", borderRadius: 10, textDecoration: "none",
+                  fontSize: 13, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif",
+                }}>
+                  See the Family Plan →
+                </Link>
+                <Link to="/threat-report-2026" style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "12px 22px",
+                  background: "transparent",
+                  border: `1px solid ${T.cyan}40`,
+                  color: T.cyan, borderRadius: 10, textDecoration: "none",
+                  fontSize: 13, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif",
+                }}>
+                  Read the Threat Report
+                </Link>
+              </div>
+            </div>
+          </div>
+        </RevealSection>
+
         {/* ── Mission & Vision ── */}
         <RevealSection style={sectionGap}>
           <div className="about-grid-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>

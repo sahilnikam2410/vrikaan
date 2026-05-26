@@ -95,6 +95,67 @@ export default function Press() {
           </div>
         </section>
 
+        {/* Featured story — Threat Report 2026 */}
+        <section style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 48px" }}>
+          <Link to="/threat-report-2026" style={{
+            display: "block", textDecoration: "none",
+            padding: "32px 36px",
+            background: `linear-gradient(135deg, ${T.accent}10, ${T.cyan}06)`,
+            border: `1px solid ${T.cyan}30`,
+            borderRadius: 18,
+            transition: "transform 0.18s, border-color 0.18s",
+          }} onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.borderColor = T.cyan + "60"; }}
+             onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.borderColor = T.cyan + "30"; }}>
+            <div style={{ display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap" }}>
+              <div style={{ flex: 1, minWidth: 240 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, color: T.cyan, marginBottom: 10, textTransform: "uppercase" }}>
+                  Featured Story · Embargoed available
+                </div>
+                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 800, color: T.white, margin: "0 0 12px", letterSpacing: "-0.02em" }}>
+                  VRIKAAN India Threat Report 2026
+                </h3>
+                <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.7, margin: "0 0 14px" }}>
+                  Analysis of 2.84M threat events. ₹13,500cr in losses. UPI fraud dominates. AI deepfake voice attacks up 17×. Children under 14 now a measurable victim class. <strong style={{ color: T.white }}>3,500-word report, CC-BY 4.0 — republish freely.</strong>
+                </p>
+                <span style={{ color: T.cyan, fontSize: 13, fontWeight: 700 }}>Read full report →</span>
+              </div>
+              <div style={{ width: 96, height: 96, borderRadius: 18, background: `linear-gradient(135deg, ${T.cyan}22, ${T.accent}18)`, border: `1px solid ${T.cyan}40`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 42, flexShrink: 0 }}>
+                📊
+              </div>
+            </div>
+          </Link>
+        </section>
+
+        {/* Quotable stats — pre-written for journalists */}
+        <section style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 48px" }}>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Space Grotesk', sans-serif" }}>Quotable Stats</h2>
+          <p style={{ fontSize: 13, color: T.muted, marginBottom: 20 }}>
+            Drop-in lines for your article. Attribution: <code style={{ background: "rgba(148,163,184,0.08)", padding: "2px 6px", borderRadius: 4, fontSize: 12 }}>VRIKAAN India Threat Report 2026</code>
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 12 }}>
+            {[
+              { stat: "₹13,500 crore", line: "lost to cybercrime by Indian citizens in FY25-26 (up 38% YoY)" },
+              { stat: "17×", line: "increase in AI deepfake voice attacks against Indian families since Jan 2025" },
+              { stat: "73%", line: "of 'Digital Arrest' scam victims were highly educated professionals — not the elderly stereotype" },
+              { stat: "₹14,200", line: "median loss per UPI fraud incident (median victim age: 47)" },
+              { stat: "8%", line: "of scam-recovery requests in Q1 2026 named a minor under 14 as the direct victim — a new victim class" },
+              { stat: "₹4.7 lakh", line: "median loss per 'Digital Arrest' scam victim; max single loss ₹6.8 crore (Mumbai, Mar 2026)" },
+            ].map((q, i) => (
+              <div key={i} style={{
+                padding: "18px 20px",
+                background: "rgba(148,163,184,0.04)",
+                border: `1px solid ${T.border}`,
+                borderRadius: 12,
+              }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 800, color: T.cyan, marginBottom: 6, letterSpacing: "-0.02em" }}>
+                  {q.stat}
+                </div>
+                <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.6 }}>{q.line}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Fact sheet */}
         <section style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 48px" }}>
           <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 20, fontFamily: "'Space Grotesk', sans-serif" }}>Fact Sheet</h2>
