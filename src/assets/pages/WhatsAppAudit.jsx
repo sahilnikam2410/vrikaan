@@ -272,7 +272,7 @@ export default function WhatsAppAudit() {
           🔒 .txt file parsed entirely in your browser. No upload. Findings based on
           aggregated patterns observed in 2024-26 Indian WhatsApp investment-fraud cases.
           <br />
-          🇮🇳 Built by SOC analysts in Nashik · Free forever
+          🇮🇳 Built by SOC analysts in Pune · Free forever
         </p>
       </main>
 

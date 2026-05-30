@@ -76,12 +76,20 @@ const MILESTONES = [
 
 function AnimatedStat({ val, label, color }) {
   const ref = useRef(null);
-  const [display, setDisplay] = useState("0");
+  // Start display at the final value so SSR / no-IntersectionObserver fallback
+  // never shows the broken "0" state. Animation re-targets to 0 → val on
+  // intersection (or immediately if intersection-observer already missed).
+  const [display, setDisplay] = useState(val);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    // Fire-and-disconnect — also short-circuit if already in view.
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setVisible(true); return;
+    }
     const obs = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) { setVisible(true); obs.disconnect(); }
     }, { threshold: 0.3 });
@@ -91,6 +99,7 @@ function AnimatedStat({ val, label, color }) {
 
   useEffect(() => {
     if (!visible) return;
+    setDisplay("0");
     const num = parseFloat(val.replace(/[^0-9.]/g, ""));
     const suffix = val.replace(/[0-9.]/g, "");
     if (isNaN(num)) { setDisplay(val); return; }

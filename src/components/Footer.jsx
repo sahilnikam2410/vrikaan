@@ -162,7 +162,7 @@ const Footer = () => (
       <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 20, marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
         <div style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark }}>&copy; 2026 VRIKAAN. All rights reserved.</div>
         <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(100,116,139,0.6)" }}>
-          Founded by Sahil Anil Nikam &amp; Khushi Ishwar Raigade | SOC Analysts &amp; Cybersecurity Researchers | Nashik, India
+          Founded by Sahil Anil Nikam &amp; Khushi Ishwar Raigade | SOC Analysts &amp; Cybersecurity Researchers | Pune, India
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@ const T = {
 const STORAGE_KEY = "vrk_voiceprint_v1";
 
 const PROMPTS = [
-  "Hello, this is [your name]. The weather in Nashik today is calm. My family safe word is [say it].",
+  "Hello, this is [your name]. The weather in Pune today is calm. My family safe word is [say it].",
   "Today is [day, date]. I'm recording my voice sample for VRIKAAN voiceprint vault.",
   "Three things I'd never say in a scam call: I forgot my safe word · send me OTP · transfer money urgently.",
   "Read aloud: 'monsoon, jalebi, panipuri, mehndi, biryani, kulfi, rangoli.'",
@@ -305,7 +305,7 @@ export default function VoiceprintVault() {
         }}>
           🔒 All recordings encoded as base64 in your browser's localStorage. Never uploaded. Clear browser data → samples gone.
           Recommendation: download local backup ZIP every 6 months.<br/>
-          🇮🇳 Built in Nashik · Free forever
+          🇮🇳 Built in Pune · Free forever
         </p>
       </main>
 

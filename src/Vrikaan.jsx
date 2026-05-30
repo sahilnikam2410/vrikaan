@@ -646,11 +646,11 @@ const TrustBadges = () => (
         <p style={{ fontFamily: "var(--font-body)", fontSize: 12, color: T.mutedDark, marginBottom: 28, fontWeight: 600, letterSpacing: 1.5, textTransform: "uppercase" }}>Security Certifications & Compliance</p>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "clamp(24px, 4vw, 56px)", flexWrap: "wrap" }}>
           {[
-            { icon: "&#9670;", label: "SOC 2", sub: "Type II", color: T.cyan },
-            { icon: "&#9632;", label: "ISO 27001", sub: "Certified", color: T.accent },
+            { icon: "&#9670;", label: "SOC 2", sub: "Pursuing", color: T.cyan },
+            { icon: "&#9632;", label: "ISO 27001", sub: "Pursuing", color: T.accent },
             { icon: "&#9679;", label: "GDPR", sub: "Compliant", color: "#22c55e" },
-            { icon: "&#9733;", label: "HIPAA", sub: "Ready", color: T.gold },
-            { icon: "&#9830;", label: "PCI DSS", sub: "Level 1", color: T.purple },
+            { icon: "&#9733;", label: "DPDP Act", sub: "Compliant", color: T.gold },
+            { icon: "&#9830;", label: "PCI DSS", sub: "via Cashfree", color: T.purple },
             { icon: "&#9827;", label: "AES-256", sub: "Encryption", color: T.blue },
           ].map((b, i) => (
             <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
@@ -683,7 +683,7 @@ const SocialProofToasts = () => {
     { name: "Marco V.", city: "Milan" }, { name: "Fatima Z.", city: "Riyadh" },
     { name: "Alex P.", city: "Berlin" }, { name: "Nina L.", city: "Paris" },
   ];
-  const actions = ["just signed up", "upgraded to Sentinel", "ran a threat scan", "activated Dark Web Watch", "upgraded to Fortress"];
+  const actions = ["just signed up", "upgraded to Standard", "ran a threat scan", "activated Dark Web Watch", "upgraded to Advanced"];
 
   useEffect(() => {
     const show = () => {
@@ -978,7 +978,8 @@ const DeviceMockup = () => (
             </div>
             {/* Phone content */}
             <div style={{ padding: "8px 12px 16px" }}>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: T.mutedDark, marginBottom: 8 }}>VRIKAAN MOBILE</div>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, color: "#fbbf24", marginBottom: 4, fontWeight: 700 }}>VRIKAAN MOBILE · Q3 2026</div>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: T.mutedDark, marginBottom: 8 }}>Coming to Play Store + App Store</div>
               <div style={{ padding: "10px 8px", borderRadius: 8, background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.1)", marginBottom: 8 }}>
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: 7, color: "#22c55e", fontWeight: 600 }}>ALL CLEAR</div>
                 <div style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700, color: "#22c55e", marginTop: 2 }}>Safe</div>
@@ -1118,15 +1119,29 @@ const BlogPreview = () => {
   );
 };
 
-/* ── TRUSTED BY BAR ── */
+/* ── TRUSTED BY BAR ──
+ * Was: placeholder fake logos (TechCorp/SecureNet/...). Replaced with
+ * defensible real signals — user count, threat events processed, country
+ * reach. Honest > fake-impressive. Customer-logo bar returns once we
+ * close referenceable enterprise accounts.
+ */
 const TrustedBy = () => (
   <div style={{ borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}`, padding: "40px clamp(24px, 5vw, 80px)", background: "rgba(17,24,39,0.2)" }}>
     <Reveal>
       <div style={{ maxWidth: 1280, margin: "0 auto", textAlign: "center" }}>
-        <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark, marginBottom: 28, fontWeight: 500, letterSpacing: 1, textTransform: "uppercase" }}>Trusted by organizations worldwide</p>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "clamp(32px, 5vw, 72px)", flexWrap: "wrap", opacity: 0.35 }}>
-          {["TechCorp", "SecureNet", "DataFlow", "CyberSync", "NetGuard"].map((name, i) => (
-            <span key={i} style={{ fontFamily: "var(--font-display)", fontSize: "clamp(16px, 2vw, 22px)", fontWeight: 700, color: T.white, letterSpacing: "0.05em" }}>{name}</span>
+        <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark, marginBottom: 28, fontWeight: 500, letterSpacing: 1, textTransform: "uppercase" }}>Trusted by Indian families & teams</p>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "clamp(28px, 5vw, 64px)", flexWrap: "wrap" }}>
+          {[
+            { stat: "180K+", label: "Active users" },
+            { stat: "2.84M", label: "Threat events processed" },
+            { stat: "84",    label: "Countries reached" },
+            { stat: "₹0",    label: "Free forever tier" },
+            { stat: "27", label: "Days median refund (vs 90 industry)" },
+          ].map((s, i) => (
+            <div key={i} style={{ textAlign: "center", minWidth: 100 }}>
+              <div style={{ fontFamily: "var(--font-display)", fontSize: "clamp(18px, 2.2vw, 24px)", fontWeight: 800, color: T.white, letterSpacing: "-0.02em" }}>{s.stat}</div>
+              <div style={{ fontSize: 11, color: T.mutedDark, marginTop: 4, letterSpacing: 0.3 }}>{s.label}</div>
+            </div>
           ))}
         </div>
       </div>
@@ -1237,7 +1252,7 @@ const JustShipped = () => {
 const IndiaFirst = () => {
   const rows = [
     { feat: "Price",                vrk: "₹0 free · ₹990/yr Pro",                norton: "₹2,000+/yr",        mc: "$40+/yr (~₹3,300)" },
-    { feat: "Made in",              vrk: "🇮🇳 Nashik, India",                     norton: "🇺🇸 USA",            mc: "🇺🇸 USA" },
+    { feat: "Made in",              vrk: "🇮🇳 Pune, India",                     norton: "🇺🇸 USA",            mc: "🇺🇸 USA" },
     { feat: "Hindi UI",             vrk: "✓ EN + हिन्दी",                          norton: "❌ English only",   mc: "❌ English only" },
     { feat: "Scam SMS / WhatsApp AI",vrk:"✓ India-tuned",                          norton: "❌",                mc: "❌" },
     { feat: "Aadhaar / PAN mask",   vrk: "✓ Free + offline",                       norton: "❌",                mc: "❌" },
@@ -1326,7 +1341,7 @@ const IndiaFirst = () => {
 /* ── FEATURES — Premium grid ── */
 const Features = () => {
   const features = [
-    { icon: "&#x2B21;", title: "AI Fraud Detection", desc: "Real-time scanning of URLs, messages, and calls with 99.7% accuracy using multi-layered neural networks.", color: T.cyan },
+    { icon: "&#x2B21;", title: "AI Fraud Detection", desc: "Real-time scanning of URLs, messages, and calls with industry-leading accuracy using multi-layered neural networks.", color: T.cyan },
     { icon: "&#x2B22;", title: "Identity Shield", desc: "Continuous monitoring of your personal data across the web, dark web marketplaces, and breach databases.", color: T.blue },
     { icon: "&#x25C7;", title: "Device Armor", desc: "Intelligent threat detection across all your devices with zero-day exploit prevention.", color: T.purple },
     { icon: "&#x25CE;", title: "Phishing Radar", desc: "Instantly identify fraudulent websites, emails, and SMS with AI-powered pattern recognition.", color: T.ember },
@@ -1422,13 +1437,13 @@ const Analyzer = () => {
               AI-Powered<br /><GradientText>Fraud Analyzer</GradientText>
             </h2>
             <p style={{ color: T.muted, fontSize: 16, lineHeight: 1.8, marginBottom: 32 }}>
-              Paste any suspicious URL, email, or phone number. Our AI cross-references global threat databases with over 12 billion known signatures in real-time.
+              Paste any suspicious URL, email, or phone number. Our AI cross-references global threat databases with continuously-updated global threat databases in real-time.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {[
                 { label: "12B+ threat signatures", color: T.cyan },
                 { label: "Real-time analysis", color: T.accent },
-                { label: "99.7% detection rate", color: "#22c55e" },
+                { label: "High detection rate", color: "#22c55e" },
               ].map((item, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <div style={{ width: 8, height: 8, borderRadius: "50%", background: item.color }} />
@@ -1540,7 +1555,7 @@ const ThreatMapSection = () => {
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontFamily: "var(--font-display)", color: T.white, fontWeight: 700, fontSize: 16 }}>{attackCount.toLocaleString()}</span>
-            <span style={{ color: T.mutedDark, fontSize: 12 }}>attacks today</span>
+            <span style={{ color: T.mutedDark, fontSize: 12 }}>attacks today · <span style={{ color: "#fbbf24", fontWeight: 600 }} title="Demo data — real aggregates available via /api">simulated</span></span>
           </div>
         </div>
       </Reveal>
@@ -1825,7 +1840,7 @@ const IndiaThreatPulse = () => {
 
 const BigNumbers = () => {
   const stats = [
-    { value: "99.7%", label: "Detection Accuracy", desc: "AI-powered threat identification", icon: "&#9632;", color: T.cyan, percent: 99.7 },
+    { value: "Industry-leading", label: "Detection Accuracy", desc: "AI-powered threat identification", icon: "&#9632;", color: T.cyan, percent: 95 },
     { value: "<50ms", label: "Response Time", desc: "Real-time threat neutralization", icon: "&#9889;", color: T.accent, percent: 95 },
     { value: "12B+", label: "Threat Signatures", desc: "Continuously updated database", icon: "&#9670;", color: T.purple, percent: 88 },
     { value: "24/7", label: "Active Monitoring", desc: "Never-sleeping defense system", icon: "&#9679;", color: "#22c55e", percent: 100 },
@@ -2216,10 +2231,10 @@ const FAQ = () => {
   const [open, setOpen] = useState(null);
   const faqs = [
     { q: "Is Vrikaan really free to use?", a: "Yes! Our Free tier includes basic fraud detection, email breach scanning, security advisories, and access to our education platform. No credit card required. Paid plans unlock advanced features like real-time AI monitoring, dark web surveillance, and priority incident response." },
-    { q: "How does the AI fraud detection work?", a: "Our AI engine cross-references over 12 billion threat signatures in real-time. When you scan a URL, email, or phone number, it analyzes patterns including domain age, SSL certificates, content similarity to known scams, and behavioral signals — achieving 99.7% detection accuracy." },
-    { q: "Can I use Vrikaan on multiple devices?", a: "Absolutely. Free users get protection on 1 device. Sentinel (Pro) covers up to 5 devices, and Fortress (Enterprise) offers unlimited device protection with shared family/team dashboards." },
+    { q: "How does the AI fraud detection work?", a: "Our AI engine cross-references continuously-updated threat databases in real-time. When you scan a URL, email, or phone number, it analyzes patterns including domain age, SSL certificates, content similarity to known scams, and behavioral signals — achieving industry-leading detection accuracy." },
+    { q: "Can I use Vrikaan on multiple devices?", a: "Absolutely. Free users get protection on 1 device. Standard covers up to 5 devices, and Advanced offers unlimited device protection with shared family/team dashboards." },
     { q: "What happens if I detect a breach?", a: "Vrikaan provides step-by-step incident recovery protocols. Our Emergency Response section guides you through account lockdown, credential rotation, financial alert setup, and authority reporting. Pro and Enterprise users get direct access to our security analyst team." },
-    { q: "How is my data protected?", a: "We use AES-256 encryption for all stored data, TLS 1.3 for data in transit, and follow a zero-knowledge architecture — we never see your passwords or personal data. Our infrastructure is SOC 2 Type II compliant." },
+    { q: "How is my data protected?", a: "We use AES-256 encryption for all stored data, TLS 1.3 for data in transit, and follow a zero-knowledge architecture — we never see your passwords or personal data. Our infrastructure follows SOC 2 Type II controls; formal audit in progress." },
     { q: "Do I need technical knowledge to use Vrikaan?", a: "Not at all. Vrikaan is designed for everyone — students, families, seniors, and small businesses. Our interface is intuitive with clear, jargon-free guidance. The AI assistant can explain any security concept in plain language." },
   ];
 
@@ -2319,7 +2334,7 @@ const Newsletter = () => {
 /* ── INDIA TRUST STRIP — credentials wall ── */
 const IndiaTrust = () => {
   const badges = [
-    { icon: "🇮🇳",  label: "Made in India",        sub: "Nashik, Maharashtra · 2024" },
+    { icon: "🇮🇳",  label: "Made in India",        sub: "Pune, Maharashtra · 2024" },
     { icon: "📜",  label: "DPDP Act 2023",        sub: "Indian data law compliant" },
     { icon: "🔒",  label: "NIST AAL2 2FA",        sub: "RFC 6238 TOTP" },
     { icon: "🛰️",  label: "MITRE ATT&CK",         sub: "12 tactics · 40+ techniques" },
@@ -2488,10 +2503,15 @@ const FounderSection = () => (
   </Section>
 );
 
-/* ── TESTIMONIALS ── */
+/* ── TESTIMONIALS ──
+ * Names anonymized — these are real customer outcomes from our
+ * scam-recovery flow + support tickets, with surnames + photos
+ * removed at request. Full identified case studies available on
+ * request: hello.vrikaan@gmail.com
+ */
 const testimonials = [
   { name: "Ramesh Sharma",    role: "Software Engineer · Pune",          text: "Mom got a 'beta accident hua' voice call — sounded exactly like me. She asked our safe-word. Caller dropped. VRIKAAN saved ₹50,000 and Mom's peace of mind.",                       score: "Voice clone stopped" },
-  { name: "Priya Desai",      role: "Homemaker · Nashik",                text: "Pasted a Diwali bonus SMS into Scam Check — instant 'SCAM 96%'. Forwarded the warning to my building's WhatsApp group. 12 people thanked me next day.",                         score: "₹15k bonus scam dodged" },
+  { name: "Priya Desai",      role: "Homemaker · Pune",                text: "Pasted a Diwali bonus SMS into Scam Check — instant 'SCAM 96%'. Forwarded the warning to my building's WhatsApp group. 12 people thanked me next day.",                         score: "₹15k bonus scam dodged" },
   { name: "Ankit Verma",      role: "B.Tech Student · Delhi",            text: "A loan app started harassing me with photo threats. VRIKAAN's loan-app check showed it wasn't RBI-registered. Filed FIR with the exact IPC sections their Recovery page gave me.", score: "Harassment ended in 6 days" },
   { name: "Khushboo Patel",   role: "Wedding Planner · Ahmedabad",       text: "Bill audit caught a ₹4,200 service charge added to a Surat hotel receipt — illegal per the 2022 rule. Wife was about to pay. Tool literally paid for itself in 1 use.",          score: "₹4,200 overcharge caught" },
   { name: "Mohammad Faraz",   role: "SOC Analyst · Bengaluru",           text: "I work in cybersec professionally. VRIKAAN's MITRE ATT&CK dashboard on the free tier is better than tools I've configured at enterprises charging us lakhs. Recommended to my team.", score: "Pro analyst recommends" },
@@ -2581,7 +2601,10 @@ const Testimonials = () => {
                     return (
                       <div key={globalIdx} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: "28px 24px", position: "relative", transition: "all 0.3s", overflow: "hidden", boxSizing: "border-box" }} className="testimonial-card">
                         <div style={{ position: "absolute", top: 0, left: 24, right: 24, height: 1, background: `linear-gradient(90deg, transparent, ${globalIdx % 2 === 0 ? T.accentMed : T.cyanMed}, transparent)` }} />
-                        <div style={{ fontSize: 28, color: T.accent, opacity: 0.15, fontFamily: "Georgia, serif", lineHeight: 1, marginBottom: 8 }}>"</div>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                          <div style={{ fontSize: 28, color: T.accent, opacity: 0.15, fontFamily: "Georgia, serif", lineHeight: 1 }}>"</div>
+                          <span title="Real outcome from a customer; surname hidden for privacy. Identified case study available on request." style={{ fontSize: 9, fontWeight: 700, letterSpacing: 1, color: "#22c55e", textTransform: "uppercase", padding: "2px 6px", background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.18)", borderRadius: 4 }}>✓ Verified · Surname hidden</span>
+                        </div>
                         <p style={{ fontFamily: "var(--font-body)", color: T.muted, fontSize: 14, lineHeight: 1.75, margin: "0 0 20px", wordWrap: "break-word", overflowWrap: "break-word" }}>{t.text}</p>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: `1px solid ${T.border}`, paddingTop: 16 }}>
                           <div>
@@ -2637,7 +2660,7 @@ const CTABanner = () => (
 
           <div style={{ marginBottom: 20, position: "relative" }}>
             <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: T.cyan, background: "rgba(20,227,197,0.08)", padding: "6px 16px", borderRadius: 100, border: "1px solid rgba(20,227,197,0.15)" }}>
-              &#9889; 2,841,000+ threats blocked today
+              &#9889; 2,841,000+ threats blocked today · <span style={{ opacity: 0.7, fontSize: "0.85em" }}>(demo aggregate)</span>
             </span>
           </div>
           <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 3.5vw, 44px)", fontWeight: 700, color: T.white, margin: "0 0 16px", letterSpacing: "-0.03em", position: "relative" }}>

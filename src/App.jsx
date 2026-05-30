@@ -318,6 +318,8 @@ function AppRoutes() {
 
             {/* Protected — Learn, News (login required) */}
             <Route path="/learn" element={<ProtectedRoute><Learn /></ProtectedRoute>} />
+            <Route path="/education" element={<ProtectedRoute><Learn /></ProtectedRoute>} />
+            <Route path="/academy" element={<ProtectedRoute><Learn /></ProtectedRoute>} />
             <Route path="/cyber-news" element={<ProtectedRoute><CyberNews /></ProtectedRoute>} />
 
             {/* Welcome page after signup/login */}

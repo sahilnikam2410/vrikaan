@@ -284,7 +284,7 @@ export default function Welcome() {
   };
 
   const handleShareTwitter = () => {
-    const text = `🛡 Just joined @vrikaan — India's free AI cyber defense platform.\n\n60+ tools for scam detection, deepfake AI, MITRE ATT&CK SOC. EN+हिन्दी. Built in Nashik.\n\nCheck it out:`;
+    const text = `🛡 Just joined @vrikaan — India's free AI cyber defense platform.\n\n60+ tools for scam detection, deepfake AI, MITRE ATT&CK SOC. EN+हिन्दी. Built in Pune.\n\nCheck it out:`;
     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=https://vrikaan.com`, "_blank");
   };
 
@@ -497,7 +497,7 @@ export default function Welcome() {
               display: "flex", justifyContent: "center", gap: 26, flexWrap: "wrap",
               marginBottom: 32, fontSize: 12, color: T.muted,
             }}>
-              <span>🇮🇳 Built in Nashik</span>
+              <span>🇮🇳 Built in Pune</span>
               <span>🔒 NIST AAL2 2FA</span>
               <span>📜 DPDP-compliant</span>
               <span>💸 INR · Cashfree</span>
