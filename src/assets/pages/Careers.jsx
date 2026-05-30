@@ -20,7 +20,7 @@ const OPENINGS = [
     team: "Security",
     type: "Internship",
     location: "Remote · India",
-    duration: "3 months · stipend ₹5,000–₹15,000 / month + perf bonus",
+    duration: "3 months · stipend ₹5k–₹15k/mo + ESOP + PPO path",
     seniority: "Student / Fresher",
     badge: "Hot",
     badgeColor: "#ef4444",
@@ -50,7 +50,7 @@ const OPENINGS = [
     team: "Engineering",
     type: "Internship",
     location: "Remote · India",
-    duration: "3 months · stipend ₹8,000–₹20,000 / month + perf bonus",
+    duration: "3 months · stipend ₹8k–₹20k/mo + ESOP + PPO path",
     seniority: "Student / Fresher",
     summary: "Ship features end-to-end on the VRIKAAN platform. React 19 + Vercel serverless + Firestore + Gemini AI.",
     responsibilities: [
@@ -78,7 +78,7 @@ const OPENINGS = [
     team: "Engineering",
     type: "Internship",
     location: "Remote · India",
-    duration: "3 months · stipend ₹10,000–₹20,000 / month + perf bonus",
+    duration: "3 months · stipend ₹10k–₹20k/mo + ESOP + PPO path",
     seniority: "Student / Fresher",
     summary: "Push our scam-detection, deepfake audio, and vulnerability-explanation pipelines further. Prompt engineering + lightweight fine-tuning.",
     responsibilities: [
@@ -104,7 +104,7 @@ const OPENINGS = [
     team: "Marketing",
     type: "Internship",
     location: "Remote · India",
-    duration: "3 months · stipend ₹5,000–₹12,000 / month + perf bonus",
+    duration: "3 months · stipend ₹5k–₹12k/mo + ESOP + PPO path",
     seniority: "Student / Fresher",
     summary: "Run VRIKAAN's content engine — LinkedIn carousels, X threads, Reels scripts, scam-pattern explainers, weekly digest emails.",
     responsibilities: [
@@ -160,7 +160,7 @@ const TYPES = ["All", "Internship", "Full-Time", "Contract"];
 const SITE_URL = "https://vrikaan.com";
 
 // Parse min/max + unit (MONTH for stipend, YEAR for LPA) out of duration strings like:
-//   "3 months · stipend ₹5,000–₹15,000 / month + perf bonus"
+//   "3 months · stipend ₹5k–₹15k/mo + ESOP + PPO path"
 //   "Full-time · ₹4–8 LPA + ESOPs"
 function parseSalary(duration = "") {
   // Match LPA pattern first (annual)
@@ -168,10 +168,13 @@ function parseSalary(duration = "") {
   if (lpa) {
     return { min: Number(lpa[1]) * 100000, max: Number(lpa[2]) * 100000, unit: "YEAR" };
   }
-  // Match monthly stipend like ₹5,000–₹15,000 / month
-  const mon = duration.match(/₹\s*([\d,]+)\s*[–-]\s*₹?\s*([\d,]+)/);
+  // Match monthly stipend in either format:
+  //   ₹5,000–₹15,000   (full digits)
+  //   ₹5k–₹15k         (k-suffixed)
+  const mon = duration.match(/₹\s*([\d,]+)\s*(k)?\s*[–-]\s*₹?\s*([\d,]+)\s*(k)?/i);
   if (mon) {
-    return { min: Number(mon[1].replace(/,/g, "")), max: Number(mon[2].replace(/,/g, "")), unit: "MONTH" };
+    const expand = (n, k) => Number(n.replace(/,/g, "")) * (k ? 1000 : 1);
+    return { min: expand(mon[1], mon[2]), max: expand(mon[3], mon[4]), unit: "MONTH" };
   }
   return null;
 }
@@ -367,7 +370,7 @@ export default function Careers() {
               { icon: "🧠", title: "Modern stack", body: "React 19, Vite 7, Firebase, Gemini 2.5 Flash, Vercel serverless, Sentry. No legacy debt." },
               { icon: "🇮🇳", title: "Built in India", body: "Founded in Nashik. India-first product. Hindi + English, INR-native payments, DPDP-aware." },
               { icon: "📈", title: "Learn fast", body: "Direct mentorship from both founders — both SOC analysts and cybersecurity researchers." },
-              { icon: "💸", title: "Pay + ESOPs", body: "Interns get a real stipend. Full-time roles include ESOPs. No 'exposure'-only offers." },
+              { icon: "💸", title: "Pay + ESOPs", body: "Interns get stipend + ESOPs + a real pre-placement offer (PPO) path. We're early-stage and honest about it: cash is lean, equity upside is real, and top interns convert to full-time. No 'exposure'-only offers." },
               { icon: "🏠", title: "Remote by default", body: "Work from anywhere in India. Occasional Nashik visits welcome but not required." },
             ].map(p => (
               <div key={p.title} style={{
