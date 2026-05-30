@@ -302,32 +302,35 @@ const Navbar = () => {
                 )}
               </div>
 
-              {/* Regular links (Learn, News, Blog, Careers) */}
-              {mainLinks.filter(l => l.to !== "/pricing").map(l => (
-                <Link key={l.to} to={l.to} style={{
-                  color: isActive(l.to) ? T.accent : T.muted,
-                  textDecoration: "none", fontSize: 14, fontWeight: 500,
-                  padding: "8px 14px", borderRadius: 8, transition: "all 0.2s",
-                  background: isActive(l.to) ? "rgba(99,102,241,0.08)" : "transparent",
-                  display: "inline-flex", alignItems: "center", gap: 6,
-                }}
-                  onMouseEnter={e => { if (!isActive(l.to)) e.currentTarget.style.color = T.white; }}
-                  onMouseLeave={e => { if (!isActive(l.to)) e.currentTarget.style.color = T.muted; }}
-                >
-                  {l.label}
-                  {l.badge && (
-                    <span style={{
-                      fontSize: 9, fontWeight: 700, letterSpacing: 0.5,
-                      padding: "2px 6px", borderRadius: 999,
-                      background: "rgba(20,227,197,0.18)", color: "#14E3C5",
-                      border: "1px solid rgba(20,227,197,0.4)",
-                      textTransform: "uppercase",
-                    }}>{l.badge}</span>
-                  )}
-                </Link>
-              ))}
             </>
           )}
+
+          {/* Core marketing links — visible to EVERYONE (logged-in + out).
+              Previously these sat inside the {user && ...} block, so logged-out
+              visitors on subpages only saw Pricing + Careers (audit #11). */}
+          {mainLinks.filter(l => l.to !== "/pricing").map(l => (
+            <Link key={l.to} to={l.to} style={{
+              color: isActive(l.to) ? T.accent : T.muted,
+              textDecoration: "none", fontSize: 14, fontWeight: 500,
+              padding: "8px 14px", borderRadius: 8, transition: "all 0.2s",
+              background: isActive(l.to) ? "rgba(99,102,241,0.08)" : "transparent",
+              display: "inline-flex", alignItems: "center", gap: 6,
+            }}
+              onMouseEnter={e => { if (!isActive(l.to)) e.currentTarget.style.color = T.white; }}
+              onMouseLeave={e => { if (!isActive(l.to)) e.currentTarget.style.color = T.muted; }}
+            >
+              {l.label}
+              {l.badge && (
+                <span style={{
+                  fontSize: 9, fontWeight: 700, letterSpacing: 0.5,
+                  padding: "2px 6px", borderRadius: 999,
+                  background: "rgba(20,227,197,0.18)", color: "#14E3C5",
+                  border: "1px solid rgba(20,227,197,0.4)",
+                  textTransform: "uppercase",
+                }}>{l.badge}</span>
+              )}
+            </Link>
+          ))}
 
           {/* Pricing — always visible */}
           <Link to="/pricing" style={{
