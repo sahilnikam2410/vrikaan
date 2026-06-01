@@ -28,9 +28,10 @@ export default defineConfig({
         manualChunks: {
           'vendor-react': ['react', 'react-dom', 'react-router-dom'],
           'vendor-firebase': ['firebase/app', 'firebase/auth', 'firebase/firestore'],
-          // 'vendor-three' removed — CyberGlobe is now pure Canvas2D, nothing
-          // imports three/@react-three. Naming them here force-created a dead
-          // 177KB chunk; dropping the line lets Rollup tree-shake them away.
+          // three lives in its own chunk, loaded ONLY when Globe3D is
+          // dynamically imported (after the Canvas2D placeholder paints) —
+          // so it never blocks first paint.
+          'vendor-three': ['three'],
           'vendor-charts': ['recharts'],
           'vendor-icons': ['react-icons'],
           'vendor-pdf': ['jspdf'],

@@ -1,14 +1,19 @@
-import { useRef, useEffect, memo } from "react";
+import { useRef, useState, useEffect, useCallback, memo, Suspense, lazy } from "react";
 
 /*
-  CyberGlobe — animated Canvas2D threat globe (zero dependencies).
+  CyberGlobe — real-threat globe.
 
-  Previously this shipped a full Three.js WebGL globe (~649KB) with this
-  Canvas2D version as a fallback. For a decorative homepage element the
-  canvas version is indistinguishable in feel, so we dropped Three.js
-  entirely — saving ~640KB off the bundle and removing two texture image
-  loads. Renders identically on every device, no WebGL required.
+  Loads in two stages so the heavy Three.js chunk never blocks first paint:
+    1. Canvas2D globe renders INSTANTLY (zero deps).
+    2. If WebGL is available, ./Globe3D (Three.js) is dynamically imported in
+       the background and swapped in over the canvas.
+
+  Real threats: fetches /api/threats (URLhaus malware + Feodo botnet C&C,
+  free abuse.ch feeds) and feeds the live source-countries into the 3D arcs
+  via threatsRef. A small overlay shows the latest real threat.
 */
+
+const Globe3D = lazy(() => import("./Globe3D"));
 
 const FB_NODES = [
   { x: 0.24, y: 0.37, label: "NYC" }, { x: 0.47, y: 0.27, label: "LON" },
@@ -18,7 +23,7 @@ const FB_NODES = [
   { x: 0.87, y: 0.73, label: "SYD" }, { x: 0.61, y: 0.42, label: "DXB" },
 ];
 
-function CanvasGlobe({ size }) {
+function FallbackGlobe({ size }) {
   const canvasRef = useRef(null);
   useEffect(() => {
     const c = canvasRef.current;
@@ -29,7 +34,6 @@ function CanvasGlobe({ size }) {
     const attacks = [];
     let lastAttack = 0, scanAngle = 0;
     const colors = ["#ef4444", "#fbbf24", "#ff7a45", "#a78bfa", "#38bdf8"];
-
     const resize = () => {
       const rect = c.parentElement.getBoundingClientRect();
       c.width = rect.width * dpr; c.height = rect.height * dpr;
@@ -37,7 +41,6 @@ function CanvasGlobe({ size }) {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize(); window.addEventListener("resize", resize);
-
     const draw = () => {
       const w = c.width / dpr, h = c.height / dpr, now = Date.now(), t = now * 0.001;
       const cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.36;
@@ -93,7 +96,6 @@ function CanvasGlobe({ size }) {
     draw();
     return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
   }, [size]);
-
   return (
     <div style={{ width: "100%", height: size, background: "#030712", position: "relative" }}>
       <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} />
@@ -102,5 +104,84 @@ function CanvasGlobe({ size }) {
 }
 
 export default memo(function CyberGlobe({ size = 520 }) {
-  return <CanvasGlobe size={size} />;
+  // WebGL support → upgrade to 3D. No WebGL → stay on Canvas2D.
+  const [webgl] = useState(() => {
+    try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); }
+    catch { return false; }
+  });
+  const [use3D, setUse3D] = useState(false);
+  const threatsRef = useRef([]);      // live threat origins for the 3D arcs
+  const [latest, setLatest] = useState(null); // latest real threat for overlay
+  const handleContextLost = useCallback(() => setUse3D(false), []);
+
+  // Upgrade to 3D shortly after mount so the Canvas2D placeholder paints first.
+  useEffect(() => {
+    if (!webgl) return;
+    const id = setTimeout(() => setUse3D(true), 300);
+    return () => clearTimeout(id);
+  }, [webgl]);
+
+  // Fetch real threat intel (free abuse.ch feeds via our /api/threats).
+  useEffect(() => {
+    let alive = true;
+    const load = async () => {
+      try {
+        const r = await fetch("/api/threats");
+        if (!r.ok) return;
+        const d = await r.json();
+        const mapped = [
+          ...(d.recentMalware || []).map((m) => ({ country: m.country, threat: m.threat || "malware", kind: "malware" })),
+          ...(d.recentBotnets || []).map((b) => ({ country: b.country || b.Country, threat: "botnet C&C", kind: "botnet" })),
+        ].filter((x) => x.country && x.country !== "Unknown");
+        if (alive && mapped.length) {
+          threatsRef.current = mapped;
+          setLatest(mapped[0]);
+        }
+      } catch { /* keep simulated arcs */ }
+    };
+    load();
+    const iv = setInterval(load, 120000); // refresh every 2 min
+    return () => { alive = false; clearInterval(iv); };
+  }, []);
+
+  // Rotate the overlay label through real threats.
+  useEffect(() => {
+    if (!threatsRef.current.length) return;
+    const iv = setInterval(() => {
+      const arr = threatsRef.current;
+      if (arr.length) setLatest(arr[Math.floor(Math.random() * arr.length)]);
+    }, 2600);
+    return () => clearInterval(iv);
+  }, [latest]);
+
+  return (
+    <div style={{ position: "relative", width: "100%", height: size }}>
+      {use3D && webgl ? (
+        <Suspense fallback={<FallbackGlobe size={size} />}>
+          <Globe3D size={size} threatsRef={threatsRef} onContextLost={handleContextLost} />
+        </Suspense>
+      ) : (
+        <FallbackGlobe size={size} />
+      )}
+
+      {/* Live real-threat label (only when feed returned data) */}
+      {latest && (
+        <div style={{
+          position: "absolute", left: 12, bottom: 12, zIndex: 2,
+          display: "flex", alignItems: "center", gap: 8,
+          padding: "6px 10px", borderRadius: 8,
+          background: "rgba(2,6,23,0.72)", border: "1px solid rgba(20,227,197,0.18)",
+          backdropFilter: "blur(6px)", fontFamily: "ui-monospace, Menlo, monospace",
+          fontSize: 10, color: "#cbd5e1", pointerEvents: "none", maxWidth: "85%",
+        }}>
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: latest.kind === "botnet" ? "#a855f7" : "#ef4444", boxShadow: `0 0 6px ${latest.kind === "botnet" ? "#a855f7" : "#ef4444"}`, flexShrink: 0 }} />
+          <span style={{ color: "#64748b" }}>LIVE</span>
+          <span style={{ color: latest.kind === "botnet" ? "#c4b5fd" : "#fca5a5", fontWeight: 600 }}>{latest.threat}</span>
+          <span style={{ color: "#64748b" }}>·</span>
+          <span style={{ color: "#94a3b8" }}>{latest.country}</span>
+          <span style={{ color: "#475569", fontSize: 9 }}>abuse.ch</span>
+        </div>
+      )}
+    </div>
+  );
 });
