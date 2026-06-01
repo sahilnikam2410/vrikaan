@@ -543,7 +543,10 @@ Format as markdown with short bullet points. Do not repeat the raw JSON. Do not 
 // Model cascade — try primary first, fall back to older models on overload
 // (503) or rate-limit (429). Gemini 2.5 Flash frequently returns "high demand"
 // 503s; 2.0 / 1.5 Flash absorb the spillover. Each is a separate quota pool.
-const GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"];
+// All must be valid v1beta generateContent models. gemini-1.5-flash was
+// removed from v1beta (404). gemini-flash-latest is a stable alias that
+// always points at a live Flash model — safest tail of the cascade.
+const GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-latest"];
 
 async function _geminiOnce(model, apiKey, body) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
