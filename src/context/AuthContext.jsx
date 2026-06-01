@@ -298,21 +298,33 @@ export function AuthProvider({ children }) {
     "auth/operation-not-supported-in-this-environment",
   ]);
 
+  // Config errors that no retry fixes — surface a clear, actionable message
+  // instead of Firebase's cryptic default. Almost always means the live
+  // domain isn't in Firebase Auth → Settings → Authorized domains.
+  const CONFIG_ERROR_MSG = {
+    "auth/unauthorized-domain": "This domain isn't authorized for sign-in yet. Add it in Firebase Console → Authentication → Settings → Authorized domains.",
+    "auth/operation-not-allowed": "Google sign-in isn't enabled. Enable it in Firebase Console → Authentication → Sign-in method.",
+    "auth/internal-error": "Sign-in service error — please retry. If it persists, check Firebase configuration.",
+  };
+
   const _socialLogin = async (provider, label) => {
     try {
       const result = await signInWithPopup(auth, provider);
       return { success: true, user: result.user };
     } catch (error) {
+      // Log the exact code so the real cause is visible in the console.
+      console.warn(`${label} sign-in error:`, error.code, error.message);
       if (POPUP_FALLBACK_CODES.has(error.code)) {
         try {
           await signInWithRedirect(auth, provider);
           // Browser will navigate away — return success placeholder
           return { success: true, redirecting: true };
         } catch (redirErr) {
-          return { success: false, error: redirErr.message || `${label} sign-in failed (redirect)` };
+          console.warn(`${label} redirect error:`, redirErr.code, redirErr.message);
+          return { success: false, error: CONFIG_ERROR_MSG[redirErr.code] || redirErr.message || `${label} sign-in failed (redirect)` };
         }
       }
-      return { success: false, error: error.message || `${label} sign-in failed` };
+      return { success: false, error: CONFIG_ERROR_MSG[error.code] || error.message || `${label} sign-in failed` };
     }
   };
 
