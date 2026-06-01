@@ -428,6 +428,36 @@ const courses = [
   },
 ];
 
+// ─── Learning Paths ── ordered course bundles that grant a Path Certificate
+// once every course in the path is completed. Guided progression vs a loose
+// catalog — the Unacademy "track" feel.
+const PATHS = [
+  {
+    id: "family-protector",
+    title: "Family Protector Path",
+    desc: "Become the cyber-defender your whole family relies on. Master every scam targeting Indian households + how to protect kids and elders.",
+    icon: "🛡",
+    color: "#ec4899",
+    courseIds: ["scam-defense-families", "senior-online-safety", "kids-online-safety"],
+  },
+  {
+    id: "upi-defender",
+    title: "UPI & Money Defender Path",
+    desc: "Lock down digital payments end-to-end. Spot every UPI fraud, secure your accounts, and recover fast if hit.",
+    icon: "₹",
+    color: "#f97316",
+    courseIds: ["upi-payment-safety", "scam-defense-families"],
+  },
+  {
+    id: "security-pro",
+    title: "Security Professional Path",
+    desc: "Go from aware to expert. Fundamentals, ethical hacking, network defense and forensics — the technical career track.",
+    icon: "🎯",
+    color: "#6366f1",
+    courseIds: ["cyber-fundamentals", "ethical-hacking", "network-defense", "digital-forensics"],
+  },
+];
+
 // ─── Knowledge Base (original modules) ───
 const kbModules = [
   { id: 1, tag: "ESSENTIAL", color: T.red, title: "How to Spot Phishing Emails", time: "5 min", content: "Phishing is the #1 cyber threat. Red flags:\n\n1. Urgency tactics — 'Your account will be locked in 24 hours'\n2. Suspicious sender addresses — check for misspellings (amaz0n.com)\n3. Generic greetings — 'Dear Customer' instead of your name\n4. Hover over links — if the URL doesn't match, it's phishing\n5. Unexpected attachments — never open .exe, .zip from unknowns\n6. Grammar and spelling errors — legitimate companies proofread\n\nIf in doubt, go directly to the website by typing the URL yourself." },
@@ -1043,6 +1073,7 @@ export default function Learn() {
       <div style={{ display: "flex", justifyContent: "center", gap: 4, marginBottom: 32 }}>
         {[
           { label: "Courses", v: "catalog" },
+          { label: "Learning Paths", v: "paths" },
           { label: "Knowledge Base", v: "knowledge" },
           { label: "My Certificates", v: "mycerts" },
         ].map(tab => (
@@ -1464,6 +1495,7 @@ export default function Learn() {
         <div style={{ display: "flex", justifyContent: "center", gap: 4, marginBottom: 24 }}>
           {[
             { label: "Courses", v: "catalog" },
+            { label: "Learning Paths", v: "paths" },
             { label: "Knowledge Base", v: "knowledge" },
             { label: "My Certificates", v: "mycerts" },
           ].map(tab => (
@@ -1505,9 +1537,99 @@ export default function Learn() {
   };
 
   // ─── Render ───
+  // Path progress = completed courses / total courses in the path.
+  const pathProgress = (path) => {
+    const done = path.courseIds.filter(id => getCourseProgress(id) === 100).length;
+    return { done, total: path.courseIds.length, pct: Math.round((done / path.courseIds.length) * 100) };
+  };
+
+  const renderPaths = () => (
+    <>
+      <div style={{ display: "flex", justifyContent: "center", gap: 4, marginBottom: 32 }}>
+        {[
+          { label: "Courses", v: "catalog" },
+          { label: "Learning Paths", v: "paths" },
+          { label: "Knowledge Base", v: "knowledge" },
+          { label: "My Certificates", v: "mycerts" },
+        ].map(tab => (
+          <button key={tab.v} onClick={() => setView(tab.v)} style={{
+            padding: "10px 24px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Plus Jakarta Sans'",
+            background: view === tab.v ? `${T.accent}15` : "transparent",
+            border: `1px solid ${view === tab.v ? T.accent + "30" : T.border}`,
+            color: view === tab.v ? T.accent : T.muted,
+          }}>{tab.label}</button>
+        ))}
+      </div>
+
+      <div style={{ textAlign: "center", marginBottom: 32 }}>
+        <h2 style={{ fontFamily: "'Space Grotesk'", fontSize: 26, fontWeight: 700, marginBottom: 8 }}>Learning Paths</h2>
+        <p style={{ color: T.muted, fontSize: 14, maxWidth: 520, margin: "0 auto" }}>
+          Guided tracks — finish every course in a path to earn a Path Certificate and master the whole domain.
+        </p>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 18, maxWidth: 820, margin: "0 auto" }}>
+        {PATHS.map(p => {
+          const pr = pathProgress(p);
+          const complete = pr.pct === 100;
+          return (
+            <div key={p.id} style={{
+              ...sty.card, position: "relative", overflow: "hidden",
+              border: `1px solid ${complete ? p.color + "55" : T.border}`,
+              background: `linear-gradient(135deg, ${p.color}0c, ${T.card})`,
+            }}>
+              <div style={{ position: "absolute", top: 0, left: 0, width: `${pr.pct}%`, height: 3, background: `linear-gradient(90deg, ${p.color}, ${T.cyan})` }} />
+              <div style={{ display: "flex", gap: 16, alignItems: "flex-start", flexWrap: "wrap" }}>
+                <div style={{ width: 56, height: 56, borderRadius: 16, flexShrink: 0, background: `${p.color}1a`, border: `1px solid ${p.color}44`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26 }}>{p.icon}</div>
+                <div style={{ flex: 1, minWidth: 240 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4, flexWrap: "wrap" }}>
+                    <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 18, fontWeight: 700, color: T.white, margin: 0 }}>{p.title}</h3>
+                    {complete && <Badge color={T.green}>✓ Complete</Badge>}
+                  </div>
+                  <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.6, marginBottom: 12 }}>{p.desc}</p>
+
+                  {/* Course steps */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 }}>
+                    {p.courseIds.map((cid, i) => {
+                      const c = courses.find(x => x.id === cid);
+                      if (!c) return null;
+                      const cdone = getCourseProgress(cid) === 100;
+                      const cpct = getCourseProgress(cid);
+                      return (
+                        <button key={cid} onClick={() => openCourse(c)} style={{
+                          display: "flex", alignItems: "center", gap: 10, textAlign: "left", cursor: "pointer",
+                          padding: "8px 12px", borderRadius: 8, border: `1px solid ${T.border}`,
+                          background: cdone ? `${T.green}10` : "rgba(2,6,23,0.3)",
+                        }}>
+                          <span style={{ width: 22, height: 22, borderRadius: "50%", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 700, background: cdone ? T.green : "rgba(148,163,184,0.12)", color: cdone ? "#02131a" : T.muted }}>{cdone ? "✓" : i + 1}</span>
+                          <span style={{ flex: 1, fontSize: 13, color: T.white }}>{c.icon} {c.title}</span>
+                          <span style={{ fontSize: 11, color: T.mutedDark }}>{cpct}%</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: complete ? T.green : T.cyan }}>{pr.done}/{pr.total} courses · {pr.pct}%</span>
+                    {complete && (
+                      <button onClick={() => { setCertName(""); setView("certificate"); setActiveCourse({ ...p, title: p.title + " (Path)", id: "path-" + p.id, isPath: true }); }} style={{ ...sty.btn(p.color, "#fff"), fontSize: 12, padding: "7px 16px" }}>
+                        Claim Path Certificate →
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+
   const renderView = () => {
     switch (view) {
       case "catalog": return renderCatalog();
+      case "paths": return renderPaths();
       case "course": return renderCourse();
       case "quiz": return renderQuiz();
       case "certificate": return renderCertificate();
