@@ -622,7 +622,52 @@ function tryParseJson(text) {
   const first = s.indexOf("{");
   const last = s.lastIndexOf("}");
   if (first >= 0 && last > first) s = s.slice(first, last + 1);
-  try { return JSON.parse(s); } catch { return null; }
+  try { return JSON.parse(s); } catch { /* fall through to repair */ }
+
+  // Repair pass: token-truncated responses often cut off mid-array/object.
+  // Walk from the start, track string/brace/bracket depth, and close any
+  // open structures at the last safe point. Salvages a partial-but-valid
+  // object instead of returning null on a near-complete response.
+  try {
+    let body = s.slice(s.indexOf("{"));
+    if (!body.startsWith("{")) return null;
+    const stack = [];
+    let inStr = false, esc = false, lastSafe = -1;
+    for (let i = 0; i < body.length; i++) {
+      const c = body[i];
+      if (inStr) {
+        if (esc) esc = false;
+        else if (c === "\\") esc = true;
+        else if (c === '"') inStr = false;
+        continue;
+      }
+      if (c === '"') inStr = true;
+      else if (c === "{" || c === "[") stack.push(c === "{" ? "}" : "]");
+      else if (c === "}" || c === "]") stack.pop();
+      // A comma or closing brace at depth 1 marks a boundary between
+      // complete top-level key/value pairs — safe to truncate here.
+      if (!inStr && stack.length === 1 && (c === "," )) lastSafe = i;
+      if (!inStr && stack.length === 0) lastSafe = i; // full object already closed
+    }
+    if (lastSafe < 0) return null;
+    let repaired = body.slice(0, lastSafe).replace(/,\s*$/, "");
+    // Close whatever is still open, innermost first.
+    // Recompute depth on the trimmed string.
+    const open = [];
+    let inS = false, es = false;
+    for (let i = 0; i < repaired.length; i++) {
+      const c = repaired[i];
+      if (inS) { if (es) es = false; else if (c === "\\") es = true; else if (c === '"') inS = false; continue; }
+      if (c === '"') inS = true;
+      else if (c === "{") open.push("}");
+      else if (c === "[") open.push("]");
+      else if (c === "}" || c === "]") open.pop();
+    }
+    while (open.length) repaired += open.pop();
+    return JSON.parse(repaired);
+  } catch {
+    return null;
+  }
 }
 
 // ─── #20 SCAM ANALYZER ──────────────────────────────────────────────
@@ -703,8 +748,8 @@ Return a JSON object with these exact keys:
 - "quickWins": array of 3 to 5 objects, each {"action": short imperative, "tool": a VRIKAAN tool path like "/password-vault" or null, "effortMins": integer}
 - "proPitch": one sentence naming the VRIKAAN Pro or Family feature that would most reduce this user's risk
 
-Keep all strings short. Output only the JSON object.`;
-  const r = await callGemini(prompt, { temperature: 0.3, maxOutputTokens: 3000, json: true });
+Keep every string under 90 characters. topRisks and quickWins must each have at most 4 items. Output only compact minified JSON on a single line with no extra whitespace, no newlines, no indentation.`;
+  const r = await callGemini(prompt, { temperature: 0.3, maxOutputTokens: 4096, json: true });
   if (!r.ok) return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
   const parsed = tryParseJson(r.text);
   if (!parsed || typeof parsed.score === "undefined") {
