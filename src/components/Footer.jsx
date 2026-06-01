@@ -1,8 +1,35 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import PageJump from "./PageJump";
 import ScrollProgress from "./ScrollProgress";
 import EmailRouting from "./EmailRouting";
 import SmartToolLink from "./SmartToolLink";
+import { getToolTier } from "../lib/toolTiers";
+
+// Paths where the footer's big tool/resource columns are HIDDEN. When a user
+// is actively inside a tool, the long tool list is clutter — collapse the
+// footer to brand + company + legal so the tool keeps focus.
+// A page counts as a "tool page" if it's a registered Pro/Enterprise tool
+// OR a free tool/resource the footer links to (but NOT marketing/content
+// pages like /about, /pricing, /blog, /, /learn).
+const FOOTER_TOOL_PATHS = new Set([
+  "/scam-recovery","/safe-word","/whatsapp-audit","/receipt-audit","/otp-decay",
+  "/stolen-phone","/upi-lookup","/loan-app-check","/voiceprint","/device-scan",
+  "/aadhaar-mask","/festival-fraud","/threat-map","/fraud-analyzer",
+  "/vulnerability-scanner","/dark-web-monitor","/password-vault","/email-analyzer",
+  "/ip-lookup","/qr-scanner","/identity-xray","/password-checker","/whois-lookup",
+  "/security-headers","/file-hash-scanner","/security-audit","/security-score",
+  "/scam-check","/deepfake-audio","/risk-score","/security-checklist",
+  "/phishing-trainer","/browser-fingerprint","/dns-leak-test","/bulk-scanner",
+]);
+
+function isToolPage(pathname) {
+  if (!pathname) return false;
+  const clean = pathname.split("?")[0].split("#")[0].toLowerCase().replace(/\/+$/, "") || "/";
+  if (FOOTER_TOOL_PATHS.has(clean)) return true;
+  // Any Pro/Enterprise-tier registered tool also counts as a tool page.
+  const { tier } = getToolTier(clean);
+  return tier === "pro" || tier === "enterprise";
+}
 
 const T = {
   bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b",
@@ -26,11 +53,16 @@ const FooterTool = ({ to, children }) => (
   </li>
 );
 
-const Footer = () => (
-  <footer style={{ borderTop: `1px solid ${T.border}`, padding: "64px clamp(24px, 5vw, 80px) 40px", background: T.bg }}>
+const Footer = () => {
+  const { pathname } = useLocation();
+  const onTool = isToolPage(pathname);
+  // 5 columns normally; on a tool page drop the 2 tool columns -> 3 columns.
+  const gridCols = onTool ? "1.5fr 1fr 1fr" : "1.5fr repeat(4, 1fr)";
+  return (
+  <footer data-footer style={{ borderTop: `1px solid ${T.border}`, padding: "64px clamp(24px, 5vw, 80px) 40px", background: T.bg }}>
     <div style={{ maxWidth: 1280, margin: "0 auto" }}>
       {/* Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "1.5fr repeat(4, 1fr)", gap: "clamp(32px, 4vw, 60px)", alignItems: "start", marginBottom: 48 }}>
+      <div style={{ display: "grid", gridTemplateColumns: gridCols, gap: "clamp(32px, 4vw, 60px)", alignItems: "start", marginBottom: 48 }}>
         {/* Brand */}
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
@@ -69,7 +101,8 @@ const Footer = () => (
           </div>
         </div>
 
-        {/* Security Tools */}
+        {/* Security Tools — hidden while inside a tool page (keeps focus) */}
+        {!onTool && (
         <div>
           <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Security Tools</h4>
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
@@ -104,8 +137,10 @@ const Footer = () => (
             <FooterTool to="/security-audit">Security Audit</FooterTool>
           </ul>
         </div>
+        )}
 
-        {/* Resources */}
+        {/* Resources — also hidden inside a tool page */}
+        {!onTool && (
         <div>
           <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Resources</h4>
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
@@ -124,6 +159,7 @@ const Footer = () => (
             <FooterTool to="/referral">Refer & Earn</FooterTool>
           </ul>
         </div>
+        )}
 
         {/* Company */}
         <div>
@@ -179,6 +215,7 @@ const Footer = () => (
     <PageJump />
     <ScrollProgress />
   </footer>
-);
+  );
+};
 
 export default Footer;
