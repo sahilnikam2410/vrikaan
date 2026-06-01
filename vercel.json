@@ -54,7 +54,7 @@
     { "source": "/apply", "destination": "https://forms.gle/ff3vA9kDC9vZaEzm9", "permanent": false }
   ],
   "rewrites": [
-    { "source": "/((?!api|assets|favicon|manifest|sitemap|robots|sw|og-|google|\\.well-known).*)", "destination": "/index.html" }
+    { "source": "/((?!api|assets|favicon|manifest|sitemap|robots|sw|og-|google|threat-report-2026\\.html|.*\\.html|\\.well-known).*)", "destination": "/index.html" }
   ],
   "crons": [
     { "path": "/api/cron-digest", "schedule": "30 3 * * 1" }

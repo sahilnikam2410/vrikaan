@@ -117,7 +117,13 @@ export default function Press() {
                 <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.7, margin: "0 0 14px" }}>
                   Analysis of 2.84M threat events. ₹13,500cr in losses. UPI fraud dominates. AI deepfake voice attacks up 17×. Children under 14 now a measurable victim class. <strong style={{ color: T.white }}>3,500-word report, CC-BY 4.0 — republish freely.</strong>
                 </p>
-                <span style={{ color: T.cyan, fontSize: 13, fontWeight: 700 }}>Read full report →</span>
+                <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+                  <span style={{ color: T.cyan, fontSize: 13, fontWeight: 700 }}>Read full report →</span>
+                  <a href="/threat-report-2026.html?print=1" target="_blank" rel="noopener" onClick={(e) => e.stopPropagation()}
+                    style={{ color: T.gold, fontSize: 13, fontWeight: 700, textDecoration: "none", padding: "4px 12px", borderRadius: 8, border: `1px solid ${T.gold}40`, background: `${T.gold}10` }}>
+                    ⬇ Download PDF
+                  </a>
+                </div>
               </div>
               <div style={{ width: 96, height: 96, borderRadius: 18, background: `linear-gradient(135deg, ${T.cyan}22, ${T.accent}18)`, border: `1px solid ${T.cyan}40`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 42, flexShrink: 0 }}>
                 📊
