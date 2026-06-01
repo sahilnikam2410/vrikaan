@@ -17,7 +17,233 @@ const Badge = ({ children, color }) => (
 );
 
 // ─── Course Data ───
+// ── India-first practical tracks (VRIKAAN Academy originals) ──────────
+// Text-based lessons + hands-on practice on real VRIKAAN tools. These are
+// the courses our actual users need — scam defense for families, seniors,
+// kids and UPI — not generic Western pentest theory.
+const indiaCourses = [
+  {
+    id: "scam-defense-families",
+    title: "Scam Defense for Indian Families",
+    desc: "The exact scams draining Indian families today — UPI fraud, digital arrest, deepfake voice calls, loan-app traps — and how to stop each one.",
+    level: "Beginner",
+    duration: "1h 20m",
+    lessons: 6,
+    color: "#ec4899",
+    icon: "👨‍👩‍👧‍👦",
+    category: "India · Family Safety",
+    instructor: "VRIKAAN Academy",
+    rating: 4.9,
+    students: 0,
+    chapters: [
+      {
+        title: "The 'Digital Arrest' Scam", duration: "12 min read",
+        desc: "How fake CBI/RBI officers extract lakhs over WhatsApp video — and the one rule that defeats it.",
+        body: "A uniformed 'officer' video-calls on WhatsApp. They claim a parcel in your name held drugs, or your Aadhaar is linked to money laundering. They keep you on a continuous call for hours — sometimes days — forbidding you to tell family, demanding you transfer all your money to a 'safe RBI account for verification'.\n\nThis is the single highest-loss scam in India. Median loss: ₹4.7 lakh. 73% of victims are highly educated — doctors, lawyers, retired officials. Being smart does not protect you; the scam attacks emotion, not intelligence.\n\nThe one rule that defeats it completely: NO Indian law-enforcement agency — CBI, RBI, ED, NCB, police — EVER arrests anyone over a video call, and NEVER asks you to transfer money for 'verification'. The moment money is requested, it is 100% a scam. Hang up. Call 1930 (cybercrime helpline). Tell your family immediately — secrecy is the scammer's weapon.",
+        practiceTool: { label: "Get emergency help if scammed", path: "/scam-recovery" },
+      },
+      {
+        title: "UPI Collection-Request Fraud", duration: "8 min read",
+        desc: "Why you tapped 'Approve' and lost money you thought you were receiving.",
+        body: "Someone says they'll send you money — for a product you sold on OLX, a refund, a 'prize'. You get a UPI notification. You tap Approve. Money leaves YOUR account.\n\nThis works because a UPI 'collect request' (someone asking you to PAY) looks almost identical to receiving money. The Approve button is in the same place, same colour. In a distracted moment, you confirm a payment thinking you're accepting one.\n\nThe rule: To RECEIVE money, you NEVER enter your UPI PIN. If any screen asks for your PIN, you are SENDING money, not receiving it. Read every UPI screen twice — look for the words 'Pay' vs 'Requesting'. If you never use collect requests, disable them in GPay/PhonePe settings entirely.",
+        practiceTool: { label: "Check a UPI ID against our scam registry", path: "/upi-lookup" },
+      },
+      {
+        title: "Deepfake Voice — The Fake Family Emergency", duration: "10 min read",
+        desc: "Your son's voice, crying, asking for money. Except it isn't your son.",
+        body: "The phone rings. It's your child / grandchild, voice breaking: 'I've had an accident', 'I'm in police custody', 'I need money right now, don't tell anyone'. The voice is unmistakably theirs.\n\nIt is cloned. Scammers scrape 6-10 seconds of audio from Instagram Reels or WhatsApp status and generate a perfect voice clone for under ₹5. Deepfake-voice attacks against Indian families rose 17× in one year. 84% of victims are 50+.\n\nThe defence is a FAMILY SAFE-WORD: one secret word every family member knows, never shared online. When a distressed 'relative' calls asking for money, ask the safe-word. A deepfake cannot answer. Also: always hang up and call the person back on their saved number — the clone can't intercept that.",
+        practiceTool: { label: "Set up your Family Safe-Word now", path: "/safe-word" },
+      },
+      {
+        title: "Predatory Loan Apps", duration: "9 min read",
+        desc: "₹5,000 borrowed becomes ₹50,000 owed — plus harassment of everyone you know.",
+        body: "A quick-loan app offers instant cash, no paperwork. You borrow ₹5,000. Hidden charges balloon it. When you can't pay, recovery agents — who got your entire contact list via a permission you granted on install — call your family, boss and friends. Worse, they morph photos of your female relatives and threaten to circulate them.\n\n17 known victims in our data died by suicide this year from this harassment. It is widely under-reported.\n\nThe rules: (1) NEVER grant a loan app access to Contacts, Photos or SMS. (2) Borrow only from apps registered as RBI NBFCs — check the app's listing. (3) If harassed, it's a crime: report at cybercrime.gov.in, file an FIR, and contact the NCW for any image-based abuse. You are the victim, not the criminal.",
+        practiceTool: { label: "Check if a loan app is RBI-registered", path: "/loan-app-check" },
+      },
+      {
+        title: "OTP & KYC Phishing", duration: "7 min read",
+        desc: "The 'your account will be blocked' SMS — and why no real bank sends it.",
+        body: "'Your KYC expires today. Update now or your account is blocked.' '₹X has been debited — if not you, click here.' These SMS/WhatsApp messages create panic and push you to a fake link or to share an OTP.\n\nThe absolute rule: Your bank NEVER asks for your OTP, PIN, CVV or full card number — not by call, SMS, email or link. An OTP is the LAST step a scammer needs. Sharing it hands them your account.\n\nNever click links in such messages. Open your bank's official app directly. When unsure, paste the message into a scam-checker before acting.",
+        practiceTool: { label: "Paste a suspicious message into Scam Check", path: "/scam-check" },
+      },
+      {
+        title: "Building Your Family's Defense Plan", duration: "8 min read",
+        desc: "Turn everything above into a 20-minute family routine that actually sticks.",
+        body: "Knowledge fails without a plan. This weekend, do these with your family:\n\n1. Set ONE family safe-word. Tell every member — parents, kids, grandparents. Never write it online.\n2. Enable 2FA on everyone's main email + banking app.\n3. Turn off UPI collect-requests for anyone who doesn't use them.\n4. Add every elder's bank-fraud helpline + 1930 to their phone speed-dial.\n5. Agree one rule out loud: 'No money moves on an urgent call until we verify in person or via safe-word.'\n6. Put VRIKAAN on each family member's phone — kids on kid-mode, elders on senior-mode.\n\nThe families that survive scams aren't the smartest — they're the ones who agreed the rules BEFORE the call came.",
+        practiceTool: { label: "Set up your Family Plan (5 members)", path: "/family-plan" },
+      },
+    ],
+    quiz: [
+      { q: "A 'CBI officer' video-calls saying you must transfer money to a 'safe account' for verification. What is this?", opts: ["A real legal process", "Always a scam — hang up", "Only a scam if they're rude", "Legitimate if they show ID"], ans: 1 },
+      { q: "When RECEIVING money on UPI, do you ever enter your UPI PIN?", opts: ["Yes, always", "No — PIN means you're SENDING", "Only for large amounts", "Only on GPay"], ans: 1 },
+      { q: "What best defeats a deepfake voice 'family emergency' call?", opts: ["Hanging up rudely", "A pre-agreed family safe-word", "Recording the call", "Paying quickly to be safe"], ans: 1 },
+      { q: "A loan app asks for access to your Contacts. You should:", opts: ["Allow it — it's normal", "Deny it — never grant this", "Allow only once", "Ask the app why"], ans: 1 },
+      { q: "Your bank will ask you for your OTP when:", opts: ["During KYC update", "When your account is at risk", "Never — banks never ask for OTP", "Only over a verified call"], ans: 2 },
+    ],
+  },
+  {
+    id: "senior-online-safety",
+    title: "Online Safety for Seniors",
+    desc: "A calm, plain-language guide for parents and grandparents — the scams that target elders, and simple habits that stop them.",
+    level: "Beginner",
+    duration: "55 min",
+    lessons: 5,
+    color: "#fbbf24",
+    icon: "👴",
+    category: "India · Senior Safety",
+    instructor: "VRIKAAN Academy",
+    rating: 4.9,
+    students: 0,
+    chapters: [
+      {
+        title: "Why Scammers Target Seniors", duration: "8 min read",
+        desc: "It isn't about being 'not tech-savvy'. It's about trust, politeness and isolation.",
+        body: "Scammers target elders not because they're foolish, but because they were raised to trust authority and be polite — and many live somewhat isolated, so a friendly caller fills a gap. Scammers exploit exactly these good qualities.\n\nThe most important mindset shift: It is OK to be 'rude' to a stranger on the phone. Hanging up on a scammer is not impolite — it is self-defence. You owe an unknown caller nothing. Real officials and real banks will never mind you calling back on an official number to verify.",
+        practiceTool: { label: "Run a free 2-minute risk check", path: "/risk-score" },
+      },
+      {
+        title: "Phone & WhatsApp Call Scams", duration: "10 min read",
+        desc: "Fake bank officer, fake government officer, fake relative — the three calls to fear.",
+        body: "Three calls cause most senior losses:\n\n1. 'Bank officer' — says your card is blocked / KYC pending, asks for OTP or card details. REAL banks never ask these.\n2. 'Government / police officer' — threatens arrest over a parcel or case, demands money. REAL agencies never arrest by phone or take payment.\n3. 'Relative in trouble' — a cloned or panicked voice asking for urgent money. Always hang up and call them back on their saved number.\n\nThe universal rule for all three: Money + Urgency + Secrecy = Scam. Any call combining those three is a scam, every time. Hang up and ask a family member.",
+        practiceTool: { label: "Check a suspicious caller's message", path: "/scam-check" },
+      },
+      {
+        title: "Safe UPI & Banking for Elders", duration: "12 min read",
+        desc: "Simple settings that make digital payments far safer.",
+        body: "Digital payments are convenient but need guardrails for peace of mind:\n\n1. Set a daily UPI transaction limit (low — e.g. ₹5,000). Most banks allow this in the app.\n2. Turn on SMS/app alerts for EVERY transaction, any amount.\n3. Never enter your UPI PIN to RECEIVE money — PIN is only for paying.\n4. Keep a trusted family member as a 'second check' for any payment above your limit.\n5. Never share PIN, OTP or card number with anyone — not even someone claiming to be from your bank.\n\nWith VRIKAAN's senior mode, you get an extra confirmation step and a voice alert before any UPI action.",
+        practiceTool: { label: "Verify a UPI ID before paying", path: "/upi-lookup" },
+      },
+      {
+        title: "The Family Safe-Word", duration: "6 min read",
+        desc: "One secret word that protects you from fake-relative calls forever.",
+        body: "Because scammers can now fake a relative's exact voice, agree a secret family safe-word — one word only your family knows, never posted online.\n\nIf anyone calls claiming to be family and asking for money or help urgently, ask: 'What's our safe-word?' A real family member knows it. A scammer — even with a perfect voice clone — does not. This single habit defeats the most frightening scam of all.",
+        practiceTool: { label: "Set up the Family Safe-Word", path: "/safe-word" },
+      },
+      {
+        title: "What To Do If Something Goes Wrong", duration: "7 min read",
+        desc: "Acting in the first hour can get your money back. Here's the exact order.",
+        body: "If you've shared details or sent money, act fast — speed matters most:\n\n1. Call 1930 (national cybercrime helpline) immediately. The sooner you report, the better the chance of freezing the money.\n2. Call your bank's fraud number, block the card/account.\n3. Report at cybercrime.gov.in.\n4. Tell your family — do NOT hide it out of embarrassment. Shame is what scammers count on; speaking up is what stops them.\n\nYou are not foolish for being targeted. Millions are. What matters is acting quickly and telling someone.",
+        practiceTool: { label: "Open the Scam Recovery guide", path: "/scam-recovery" },
+      },
+    ],
+    quiz: [
+      { q: "Is it OK to hang up on a stranger who calls claiming to be a bank officer?", opts: ["No, that's rude", "Yes — hanging up is self-defence", "Only if they're aggressive", "Only after taking their name"], ans: 1 },
+      { q: "The universal sign of a phone scam is the combination of:", opts: ["Money + Urgency + Secrecy", "A foreign accent", "A long phone number", "Calling at night"], ans: 0 },
+      { q: "To receive money on UPI you should enter your PIN:", opts: ["Always", "Never — PIN is only for paying", "Only small amounts", "Only with family"], ans: 1 },
+      { q: "A 'grandchild' calls in tears asking for urgent money. You:", opts: ["Send it immediately", "Ask the family safe-word + call back on saved number", "Ask which grandchild", "Keep them talking"], ans: 1 },
+      { q: "First thing to do after being scammed:", opts: ["Hide it from family", "Call 1930 immediately", "Wait and watch", "Delete the app"], ans: 1 },
+    ],
+  },
+  {
+    id: "kids-online-safety",
+    title: "Keeping Kids Safe Online",
+    desc: "For parents: the real risks your child faces online today — gaming scams, predators, cyberbullying, privacy — and how to protect without spying.",
+    level: "Beginner",
+    duration: "1h",
+    lessons: 5,
+    color: "#a855f7",
+    icon: "🧒",
+    category: "India · Kids Safety",
+    instructor: "VRIKAAN Academy",
+    rating: 4.8,
+    students: 0,
+    chapters: [
+      {
+        title: "The Risks Kids Actually Face", duration: "9 min read",
+        desc: "It's not what most parents think. The real dangers in 2026.",
+        body: "Children under 14 became a measurable scam-victim group for the first time in 2026. The real risks:\n\n1. In-game currency scams — 'free V-Bucks / UC / Robux' links that steal accounts or payment details.\n2. Fake giveaway / influencer scams on Instagram and YouTube.\n3. Grooming — adults posing as peers in game chats and DMs.\n4. Cyberbullying — often from people they know.\n5. Oversharing — kids posting school name, location, routine.\n\nThe goal isn't to scare or to spy — it's to build your child's judgement so they come to YOU when something feels wrong.",
+        practiceTool: { label: "Set up Family Plan with Kid Mode", path: "/family-plan" },
+      },
+      {
+        title: "Gaming & In-App Scams", duration: "10 min read",
+        desc: "Free in-game currency is the #1 hook for kids. Teach the red flags.",
+        body: "Every 'free V-Bucks / free UC / free skins' offer is a scam. They lead to phishing pages that steal the game account (and any saved parent card), or trick kids into 'verifying' by entering an OTP from YOUR phone.\n\nTeach your child three rules:\n1. Nothing in games is ever free in exchange for your login or an OTP.\n2. Never enter a code/OTP that arrives on a parent's phone — that's the parent's money.\n3. If a website outside the game asks for your game password, it's fake.\n\nKeep payment methods off kids' devices, or use VRIKAAN kid-mode which blocks known scam-game domains.",
+        practiceTool: { label: "Check a game-offer link for scams", path: "/scam-check" },
+      },
+      {
+        title: "Strangers, Chats & Grooming", duration: "11 min read",
+        desc: "How predators operate in game chats — and the conversations to have.",
+        body: "Predators meet kids in game voice/text chat and Discord, posing as a same-age friend. They build trust over weeks, move to private chat, then ask for photos or a meeting.\n\nWhat protects kids isn't surveillance — it's an open relationship. Have these talks calmly:\n1. 'A real friend never asks you to keep secrets from me.'\n2. 'Anyone who asks for photos or to meet in person — tell me, you won't be in trouble.'\n3. 'People online can pretend to be anyone.'\n\nMake it safe for your child to report a creepy message without fear of losing their device — punishment teaches them to hide, not to tell.",
+        practiceTool: { label: "Learn the warning signs", path: "/learn" },
+      },
+      {
+        title: "Privacy & Digital Footprint", duration: "8 min read",
+        desc: "What kids overshare, and the simple settings that lock it down.",
+        body: "Kids reveal more than they realise: school uniform in photos, location tags, daily routine, full name. This is a map for a stranger.\n\nDo together with your child:\n1. Set all social accounts to private.\n2. Turn OFF location tagging on photos.\n3. Review who can DM them — friends only.\n4. Agree: no posting school name, address, or live location.\n5. Explain that anything posted can be screenshotted and is permanent.\n\nFrame it as 'street smarts for the internet', not punishment.",
+        practiceTool: { label: "Run a family risk check", path: "/risk-score" },
+      },
+      {
+        title: "Setting Up Protection Without Spying", duration: "9 min read",
+        desc: "Tools and trust, balanced. Protect young kids, coach teens.",
+        body: "Protection should match age:\n\nYounger kids (under 12): VRIKAAN kid-mode blocks scam-game domains, adult content and dark-web tools automatically. Keep devices in shared family spaces. No payment methods on their device.\n\nTeens: heavy-handed spying breaks trust and pushes them to secret accounts. Instead, use VRIKAAN's scam-alert broadcast (the whole family learns when one member hits a scam) and coach judgement. Agree screen-time and app rules together, not imposed.\n\nThe aim: a kid who, when something feels wrong, immediately tells you — because they trust you won't overreact.",
+        practiceTool: { label: "Enable Kid Mode in Family Plan", path: "/family-plan" },
+      },
+    ],
+    quiz: [
+      { q: "An offer of 'free in-game currency' is:", opts: ["A nice bonus", "Always a scam", "Fine if from a YouTuber", "Safe in small amounts"], ans: 1 },
+      { q: "Your child should enter an OTP from YOUR phone into a game site:", opts: ["Yes, to verify", "Never — that's your money", "Only for big games", "If a friend says so"], ans: 1 },
+      { q: "Best protection against online grooming is:", opts: ["Banning all games", "An open relationship where kids can report safely", "Reading every message secretly", "No internet at all"], ans: 1 },
+      { q: "For teens, heavy secret spying tends to:", opts: ["Build trust", "Break trust and push them to hidden accounts", "Stop all risk", "Improve grades"], ans: 1 },
+      { q: "A safe rule for kids' social media:", opts: ["Public so you can see it", "Private + no school name or location", "Share location with friends", "Use real full name everywhere"], ans: 1 },
+    ],
+  },
+  {
+    id: "upi-payment-safety",
+    title: "UPI & Digital Payment Safety",
+    desc: "Master safe digital payments — how UPI fraud works, the settings that protect you, and how to verify before you pay.",
+    level: "Beginner",
+    duration: "50 min",
+    lessons: 5,
+    color: "#f97316",
+    icon: "₹",
+    category: "India · Money Safety",
+    instructor: "VRIKAAN Academy",
+    rating: 4.9,
+    students: 0,
+    chapters: [
+      {
+        title: "How UPI Fraud Actually Works", duration: "9 min read",
+        desc: "41% of India's scam losses run on UPI. Understand the rails to beat them.",
+        body: "UPI is brilliant but fast and irreversible — perfect for scammers. The core trick across all UPI fraud is making YOU authorise a payment you think is something else: receiving money, a refund, a reward, a 'verification'.\n\nThe one fact that protects you above all: You NEVER enter your UPI PIN to receive money. Entering your PIN ALWAYS means money is LEAVING your account. If anything — anyone — asks for your PIN to 'receive' or 'verify', it's fraud.",
+        practiceTool: { label: "Look up a UPI ID's scam history", path: "/upi-lookup" },
+      },
+      {
+        title: "Collect-Request & QR Scams", duration: "10 min read",
+        desc: "Two scams that turn 'receiving' into 'paying'.",
+        body: "Collect-request scam: A buyer/refunder sends a UPI 'request' that you approve thinking you're getting paid — money leaves you. Fix: read the screen; 'Requesting' means they want YOUR money. Disable collect-requests if unused.\n\nQR scam: 'Scan this QR to RECEIVE your refund/prize.' Scanning a QR and entering your PIN PAYS money — QR codes are for paying, never for receiving. Never scan a QR to get money.\n\nBoth exploit the same confusion. Anchor on the PIN rule: PIN = paying, always.",
+        practiceTool: { label: "Scan a suspicious QR safely first", path: "/qr-scanner" },
+      },
+      {
+        title: "Lock Down Your UPI Settings", duration: "8 min read",
+        desc: "Five settings that dramatically cut your risk in 10 minutes.",
+        body: "Open your UPI app (GPay/PhonePe/Paytm/BHIM) and do these now:\n\n1. Set a daily transaction limit you're comfortable with.\n2. Enable transaction alerts for every amount.\n3. Disable collect/request payments if you never use them.\n4. Turn on app lock (PIN/biometric) for the UPI app itself.\n5. Register only ONE bank account you actively monitor.\n\nTen minutes here saves you from the most common loss scenarios.",
+        practiceTool: { label: "Check your overall risk score", path: "/risk-score" },
+      },
+      {
+        title: "Verify Before You Pay", duration: "8 min read",
+        desc: "Simple checks before sending money to someone new.",
+        body: "Before paying a new person or merchant:\n\n1. Confirm the receiver NAME that UPI shows matches who you expect — scammers use look-alike names.\n2. For sellers (OLX, Instagram shops), be wary of any who insist on advance payment or push urgency.\n3. Check the UPI ID against a scam registry if unsure.\n4. Start with a tiny test amount (₹1) for large first-time payments.\n5. Never pay 'to receive' anything — refunds, prizes, cashback never need YOU to pay first.",
+        practiceTool: { label: "Verify the VPA in UPI Lookup", path: "/upi-lookup" },
+      },
+      {
+        title: "If You've Been Defrauded", duration: "7 min read",
+        desc: "The golden-hour playbook to recover UPI money.",
+        body: "UPI fraud recovery depends on speed:\n\n1. Within minutes: call 1930 and report. Early reports can freeze the money mid-transfer.\n2. Call your bank, report the fraudulent transaction, ask to flag the beneficiary.\n3. File at cybercrime.gov.in with the transaction ID.\n4. Raise a dispute in your UPI app.\n5. Keep screenshots of everything.\n\nThe RBI's framework can reverse fraud if reported fast enough — every minute counts.",
+        practiceTool: { label: "Open the recovery guide + FIR helper", path: "/scam-recovery" },
+      },
+    ],
+    quiz: [
+      { q: "Entering your UPI PIN always means:", opts: ["Receiving money", "Money is LEAVING your account", "Verifying identity", "Nothing important"], ans: 1 },
+      { q: "Scanning a QR code and entering your PIN does what?", opts: ["Receives money", "Pays money out", "Verifies the sender", "Nothing"], ans: 1 },
+      { q: "A 'collect request' you approve will:", opts: ["Send you money", "Take money from you", "Just verify", "Cancel a payment"], ans: 1 },
+      { q: "For a large first-time payment, a smart move is:", opts: ["Pay full immediately", "Send a ₹1 test first", "Skip verification", "Use a QR to receive"], ans: 1 },
+      { q: "Fastest action after UPI fraud:", opts: ["Wait a day", "Call 1930 within minutes", "Only tell family", "Change UPI PIN only"], ans: 1 },
+    ],
+  },
+];
+
 const courses = [
+  ...indiaCourses,
   {
     id: "cyber-fundamentals",
     title: "Cybersecurity Fundamentals",
@@ -763,8 +989,8 @@ export default function Learn() {
               <p style={{ fontSize: 14, color: T.muted, maxWidth: 600 }}>{c.desc}</p>
             </div>
             <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: 12, color: T.muted }}>{c.students.toLocaleString()} students</div>
               <div style={{ fontSize: 12, color: T.muted }}>{c.lessons} lessons · {c.duration}</div>
+              <div style={{ fontSize: 12, color: T.muted }}>Self-paced · Free</div>
               {allDone && (
                 <button onClick={startQuiz} style={{ ...sty.btn(T.green, "#fff"), marginTop: 10 }}>
                   Take Final Quiz →
@@ -784,11 +1010,15 @@ export default function Learn() {
         <div className="course-layout" style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 24 }}>
           {/* Video & Content */}
           <div>
-            <div style={{ ...sty.card, padding: 0, overflow: "hidden", marginBottom: 20 }}>
-              <div style={{ position: "relative", paddingBottom: "56.25%", background: "#000" }}>
-                <VideoPlayer title={ch.title} lessonDesc={ch.desc} duration={ch.duration} />
+            {/* India-first text lessons (have `body`) show a reading pane;
+                legacy video courses keep the VideoPlayer hero. */}
+            {!ch.body && (
+              <div style={{ ...sty.card, padding: 0, overflow: "hidden", marginBottom: 20 }}>
+                <div style={{ position: "relative", paddingBottom: "56.25%", background: "#000" }}>
+                  <VideoPlayer title={ch.title} lessonDesc={ch.desc} duration={ch.duration} />
+                </div>
               </div>
-            </div>
+            )}
             <div style={sty.card}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
                 <div>
@@ -797,7 +1027,29 @@ export default function Learn() {
                 </div>
                 <span style={{ fontSize: 12, color: T.mutedDark }}>{ch.duration}</span>
               </div>
-              <p style={{ fontSize: 14, color: T.muted, lineHeight: 1.7, marginBottom: 20 }}>{ch.desc}</p>
+              <p style={{ fontSize: 14, color: T.muted, lineHeight: 1.7, marginBottom: ch.body ? 18 : 20 }}>{ch.desc}</p>
+
+              {/* Rich lesson body (India courses) */}
+              {ch.body && (
+                <div style={{ marginBottom: 20 }}>
+                  {ch.body.split("\n").filter(Boolean).map((para, pi) => (
+                    <p key={pi} style={{ fontSize: 14.5, color: T.white, lineHeight: 1.8, marginBottom: 12, opacity: 0.92 }}>{para}</p>
+                  ))}
+                </div>
+              )}
+
+              {/* Hands-on practice on a real VRIKAAN tool */}
+              {ch.practiceTool && (
+                <Link to={ch.practiceTool.path} style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "11px 20px", marginBottom: 20, textDecoration: "none",
+                  background: `linear-gradient(135deg, ${c.color}, ${T.accent})`,
+                  color: "#fff", borderRadius: 10, fontSize: 13, fontWeight: 700,
+                  fontFamily: "'Space Grotesk'",
+                }}>
+                  🔧 Practice: {ch.practiceTool.label} →
+                </Link>
+              )}
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                 {!isLessonDone(c.id, activeLesson) ? (
                   <button onClick={() => markLessonComplete(c.id, activeLesson)} style={sty.btn(T.accent)}>
