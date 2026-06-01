@@ -315,27 +315,29 @@ export function AuthProvider({ children }) {
     "auth/internal-error": "Sign-in service error — please retry. If it persists, check Firebase configuration.",
   };
 
-  // Redirect-FIRST social login. Popup auth is fragile in the real world:
-  // 3rd-party-cookie blocking, browser extensions hijacking the popup, and
-  // COOP/window.closed quirks cause the popup to complete on Google's side
-  // but never hand the credential back — the account picker then loops.
-  // signInWithRedirect navigates the whole page to Google and back, so none
-  // of those failure modes apply. getRedirectResult (in the mount effect)
-  // completes the sign-in when the user returns.
+  // Popup-FIRST social login. The earlier popup loop was caused by the COEP
+  // header blocking Google's auth iframe (now removed). Popup keeps the
+  // session on THIS origin, avoiding the cross-domain storage-partitioning
+  // bug that makes signInWithRedirect return an empty result when authDomain
+  // (secuvion.firebaseapp.com) differs from the app domain (vrikaan.com).
+  // Redirect is the fallback only when popup genuinely can't open (mobile
+  // Safari, hard popup-block).
   const _socialLogin = async (provider, label) => {
     try {
-      await signInWithRedirect(auth, provider);
-      return { success: true, redirecting: true }; // page navigates away
+      const result = await signInWithPopup(auth, provider);
+      return { success: true, user: result.user };
     } catch (error) {
-      console.warn(`${label} redirect sign-in error:`, error.code, error.message);
-      // Last-ditch fallback: if redirect itself fails, try popup.
-      try {
-        const result = await signInWithPopup(auth, provider);
-        return { success: true, user: result.user };
-      } catch (popupErr) {
-        console.warn(`${label} popup fallback error:`, popupErr.code, popupErr.message);
-        return { success: false, error: CONFIG_ERROR_MSG[popupErr.code] || CONFIG_ERROR_MSG[error.code] || error.message || `${label} sign-in failed` };
+      console.warn(`${label} popup sign-in error:`, error.code, error.message);
+      if (POPUP_FALLBACK_CODES.has(error.code)) {
+        try {
+          await signInWithRedirect(auth, provider);
+          return { success: true, redirecting: true };
+        } catch (redirErr) {
+          console.warn(`${label} redirect fallback error:`, redirErr.code, redirErr.message);
+          return { success: false, error: CONFIG_ERROR_MSG[redirErr.code] || redirErr.message || `${label} sign-in failed` };
+        }
       }
+      return { success: false, error: CONFIG_ERROR_MSG[error.code] || error.message || `${label} sign-in failed` };
     }
   };
 
