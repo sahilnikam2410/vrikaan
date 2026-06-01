@@ -463,6 +463,69 @@ function saveCertificate(cert) {
   }
 }
 
+// ─── Gamification: XP, levels, streaks, badges ──────────────────────
+const today = () => new Date().toISOString().slice(0, 10);
+
+// Daily streak — bumps when the learner is active on a new day. Resets if
+// a day was skipped. Returns { count, best, last }.
+function touchStreak() {
+  let s;
+  try { s = JSON.parse(localStorage.getItem("vrikaan_academy_streak")); } catch { s = null; }
+  s = s || { count: 0, best: 0, last: null };
+  const t = today();
+  if (s.last === t) return s; // already counted today
+  const yest = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  s.count = s.last === yest ? s.count + 1 : 1; // continued vs reset
+  s.best = Math.max(s.best || 0, s.count);
+  s.last = t;
+  localStorage.setItem("vrikaan_academy_streak", JSON.stringify(s));
+  return s;
+}
+function getStreak() {
+  try { return JSON.parse(localStorage.getItem("vrikaan_academy_streak")) || { count: 0, best: 0, last: null }; }
+  catch { return { count: 0, best: 0, last: null }; }
+}
+
+// XP: 10 per lesson + 25 per completed course + 50 per certificate.
+function computeStats(progress, certs, allCourses) {
+  let lessons = 0, completedCourses = 0;
+  for (const c of allCourses) {
+    const done = (progress[c.id] || []).length;
+    lessons += done;
+    if (done >= c.chapters.length && c.chapters.length > 0) completedCourses++;
+  }
+  const certCount = (certs || []).length;
+  const xp = lessons * 10 + completedCourses * 25 + certCount * 50;
+  // Level curve: each level needs progressively more XP.
+  let level = 1, need = 100, acc = 0;
+  while (xp >= acc + need) { acc += need; level++; need = Math.round(need * 1.35); }
+  const intoLevel = xp - acc;
+  return { lessons, completedCourses, certCount, xp, level, intoLevel, levelNeed: need };
+}
+
+const LEVEL_TITLES = ["Novice", "Aware", "Guarded", "Defender", "Sentinel", "Guardian", "Cyber Shield", "Threat Hunter", "Master Defender", "Cyber Sensei"];
+const levelTitle = (lvl) => LEVEL_TITLES[Math.min(lvl - 1, LEVEL_TITLES.length - 1)] || "Cyber Sensei";
+
+// Achievement badges — derived from progress, no extra storage needed.
+function computeBadges(progress, certs, stats, allCourses) {
+  const streak = getStreak();
+  const indiaIds = ["scam-defense-families", "senior-online-safety", "kids-online-safety", "upi-payment-safety"];
+  const indiaDone = indiaIds.filter(id => {
+    const c = allCourses.find(x => x.id === id);
+    return c && (progress[id] || []).length >= c.chapters.length;
+  }).length;
+  return [
+    { id: "first-step", icon: "🌱", name: "First Step", desc: "Complete your first lesson", earned: stats.lessons >= 1 },
+    { id: "quiz-master", icon: "🎓", name: "Certified", desc: "Earn your first certificate", earned: stats.certCount >= 1 },
+    { id: "streak-3", icon: "🔥", name: "On Fire", desc: "3-day learning streak", earned: streak.count >= 3 || streak.best >= 3 },
+    { id: "streak-7", icon: "⚡", name: "Unstoppable", desc: "7-day learning streak", earned: streak.best >= 7 },
+    { id: "family-protector", icon: "👨‍👩‍👧‍👦", name: "Family Protector", desc: "Finish all 4 India courses", earned: indiaDone >= 4 },
+    { id: "scholar", icon: "📚", name: "Scholar", desc: "Complete 25 lessons", earned: stats.lessons >= 25 },
+    { id: "level-5", icon: "🛡", name: "Sentinel", desc: "Reach Level 5", earned: stats.level >= 5 },
+    { id: "completionist", icon: "🏆", name: "Completionist", desc: "Finish 5 full courses", earned: stats.completedCourses >= 5 },
+  ];
+}
+
 // ─── Certificate Generator ───
 function loadImg(src) {
   return new Promise((resolve) => {
@@ -796,6 +859,21 @@ export default function Learn() {
   const [kbActive, setKbActive] = useState(null);
   const [kbFilter, setKbFilter] = useState("ALL");
   const certRef = useRef(null);
+  const [streak, setStreak] = useState(getStreak);
+
+  // Bump the daily learning streak once per session/day.
+  useEffect(() => { setStreak(touchStreak()); }, []);
+
+  // Live gamification stats + badges, recomputed as progress changes.
+  const certs = getCertificates();
+  const stats = computeStats(progress, certs, courses);
+  const badges = computeBadges(progress, certs, stats, courses);
+
+  // Continue-learning: most recent course with partial progress.
+  const inProgressCourse = courses.find(c => {
+    const done = (progress[c.id] || []).length;
+    return done > 0 && done < c.chapters.length;
+  });
 
   const categories = ["All", ...new Set(courses.map(c => c.category))];
   const kbTags = ["ALL", "ESSENTIAL", "FUNDAMENTALS", "FINANCE", "EMERGENCY", "PRIVACY"];
@@ -874,23 +952,91 @@ export default function Learn() {
           Learn Cybersecurity. <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Get Certified.</span>
         </h1>
         <p style={{ color: T.muted, fontSize: 16, maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
-          Professional cybersecurity courses with video lessons, hands-on quizzes, and verifiable certificates upon completion.
+          India-first scam-defense courses + technical security tracks. Learn the threat, practice on real VRIKAAN tools, earn a certificate.
         </p>
       </div>
 
-      {/* Stats bar */}
-      <div style={{ display: "flex", justifyContent: "center", gap: 40, marginBottom: 40, flexWrap: "wrap" }}>
-        {[
-          { label: "Courses", value: courses.length },
-          { label: "Video Lessons", value: courses.reduce((a, c) => a + c.chapters.length, 0) },
-          { label: "Students Enrolled", value: "45K+" },
-          { label: "Certificates Issued", value: getCertificates().length || "∞" },
-        ].map(s => (
-          <div key={s.label} style={{ textAlign: "center" }}>
-            <div style={{ fontSize: 24, fontWeight: 800, color: T.cyan, fontFamily: "'Space Grotesk'" }}>{s.value}</div>
-            <div style={{ fontSize: 12, color: T.muted }}>{s.label}</div>
+      {/* ── Learner Dashboard (XP · level · streak · continue · badges) ── */}
+      <div style={{
+        background: "linear-gradient(135deg, rgba(99,102,241,0.10), rgba(20,227,197,0.05))",
+        border: `1px solid ${T.accent}22`, borderRadius: 20, padding: "26px 28px", marginBottom: 36,
+      }}>
+        {/* Top row: level + XP bar + streak */}
+        <div style={{ display: "flex", alignItems: "center", gap: 20, flexWrap: "wrap", marginBottom: 20 }}>
+          <div style={{
+            width: 64, height: 64, borderRadius: 18, flexShrink: 0,
+            background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+            color: "#02131a", fontFamily: "'Space Grotesk'",
+          }}>
+            <span style={{ fontSize: 10, fontWeight: 700, opacity: 0.7, lineHeight: 1 }}>LVL</span>
+            <span style={{ fontSize: 26, fontWeight: 800, lineHeight: 1 }}>{stats.level}</span>
           </div>
-        ))}
+          <div style={{ flex: 1, minWidth: 200 }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 6 }}>
+              <span style={{ fontFamily: "'Space Grotesk'", fontSize: 18, fontWeight: 800, color: T.white }}>{levelTitle(stats.level)}</span>
+              <span style={{ fontSize: 12, color: T.cyan, fontWeight: 700 }}>{stats.xp.toLocaleString()} XP</span>
+            </div>
+            <div style={{ height: 8, borderRadius: 4, background: "rgba(148,163,184,0.12)", overflow: "hidden" }}>
+              <div style={{ height: "100%", width: `${Math.min(100, Math.round((stats.intoLevel / stats.levelNeed) * 100))}%`, background: `linear-gradient(90deg, ${T.accent}, ${T.cyan})`, borderRadius: 4, transition: "width 0.6s" }} />
+            </div>
+            <div style={{ fontSize: 11, color: T.mutedDark, marginTop: 4 }}>{stats.levelNeed - stats.intoLevel} XP to Level {stats.level + 1}</div>
+          </div>
+          <div style={{ textAlign: "center", flexShrink: 0, padding: "0 8px" }}>
+            <div style={{ fontSize: 26, fontWeight: 800, color: streak.count > 0 ? "#f97316" : T.mutedDark, fontFamily: "'Space Grotesk'" }}>
+              {streak.count > 0 ? "🔥" : "·"} {streak.count}
+            </div>
+            <div style={{ fontSize: 11, color: T.muted }}>day streak{streak.best > streak.count ? ` · best ${streak.best}` : ""}</div>
+          </div>
+        </div>
+
+        {/* Quick stats */}
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: inProgressCourse || badges.some(b => b.earned) ? 20 : 0 }}>
+          {[
+            { v: stats.lessons, l: "Lessons done" },
+            { v: stats.completedCourses, l: "Courses finished" },
+            { v: stats.certCount, l: "Certificates" },
+            { v: badges.filter(b => b.earned).length + "/" + badges.length, l: "Badges" },
+          ].map(s => (
+            <div key={s.l} style={{ flex: "1 1 120px", textAlign: "center", padding: "12px 8px", background: "rgba(2,6,23,0.3)", border: `1px solid ${T.border}`, borderRadius: 12 }}>
+              <div style={{ fontSize: 22, fontWeight: 800, color: T.cyan, fontFamily: "'Space Grotesk'" }}>{s.v}</div>
+              <div style={{ fontSize: 11, color: T.muted }}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Continue learning */}
+        {inProgressCourse && (
+          <button onClick={() => openCourse(inProgressCourse)} style={{
+            width: "100%", display: "flex", alignItems: "center", gap: 14, textAlign: "left",
+            padding: "14px 18px", marginBottom: 18, cursor: "pointer",
+            background: `linear-gradient(135deg, ${inProgressCourse.color}18, transparent)`,
+            border: `1px solid ${inProgressCourse.color}33`, borderRadius: 14,
+          }}>
+            <span style={{ fontSize: 28, flexShrink: 0 }}>{inProgressCourse.icon}</span>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 11, color: T.cyan, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase" }}>Continue learning</div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: T.white }}>{inProgressCourse.title}</div>
+              <div style={{ fontSize: 12, color: T.muted }}>{(progress[inProgressCourse.id] || []).length}/{inProgressCourse.chapters.length} lessons · {getCourseProgress(inProgressCourse.id)}%</div>
+            </div>
+            <span style={{ color: T.white, fontWeight: 800, fontSize: 18, flexShrink: 0 }}>→</span>
+          </button>
+        )}
+
+        {/* Badges */}
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          {badges.map(b => (
+            <div key={b.id} title={`${b.name} — ${b.desc}`} style={{
+              display: "flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 999,
+              background: b.earned ? "rgba(20,227,197,0.10)" : "rgba(148,163,184,0.04)",
+              border: `1px solid ${b.earned ? T.cyan + "44" : T.border}`,
+              opacity: b.earned ? 1 : 0.45, filter: b.earned ? "none" : "grayscale(1)",
+            }}>
+              <span style={{ fontSize: 15 }}>{b.icon}</span>
+              <span style={{ fontSize: 11, fontWeight: 700, color: b.earned ? T.white : T.mutedDark }}>{b.name}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Tabs: Courses / Knowledge Base / My Certificates */}
