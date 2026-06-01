@@ -383,7 +383,7 @@ export default function Signup() {
         }}>
           <span style={{ fontSize: 16 }}>{"\u{1F6E1}\uFE0F"}</span>
           <span style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500 }}>
-            Join <span style={{ color: "#14e3c5", fontWeight: 700 }}>1.2M+</span> users protecting their digital life
+            <span style={{ color: "#14e3c5", fontWeight: 700 }}>Free forever</span> · protect your whole family
           </span>
         </div>
 

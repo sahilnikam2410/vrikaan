@@ -7,7 +7,7 @@ const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 
 export default function Protection() {
   const layers = [
-    { icon: "\uD83E\uDD16", title: "AI Threat Engine", desc: "Neural networks trained on 12B+ threat signatures analyze every URL, email, and message in real-time. Detects zero-day threats before they're catalogued.", color: T.cyan, status: "Active" },
+    { icon: "\uD83E\uDD16", title: "AI Threat Engine", desc: "Neural networks trained on continuously-updated threat data analyze every URL, email, and message in real-time. Detects zero-day threats before they're catalogued.", color: T.cyan, status: "Active" },
     { icon: "\uD83D\uDD25", title: "Firewall Shield", desc: "Intelligent network firewall monitors incoming and outgoing traffic, blocking malicious connections and preventing data exfiltration.", color: T.ember, status: "Active" },
     { icon: "\uD83D\uDCE7", title: "Email Guardian", desc: "Scans every incoming email for phishing links, malicious attachments, and social engineering patterns. Quarantines threats automatically.", color: T.blue, status: "Active" },
     { icon: "\uD83D\uDD76\uFE0F", title: "Dark Web Scanner", desc: "Continuously monitors underground forums, paste sites, and dark web marketplaces for your leaked credentials and personal data.", color: T.red, status: "Active" },
@@ -57,7 +57,7 @@ export default function Protection() {
 
         {/* Stats */}
         <div className="resp-grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 64 }}>
-          {[{ val: "99.7%", label: "Detection Rate", color: T.cyan }, { val: "<50ms", label: "Response Time", color: T.accent }, { val: "24/7", label: "Monitoring", color: "#22c55e" }, { val: "12B+", label: "Signatures", color: T.ember }].map((s, i) => (
+          {[{ val: "AI", label: "Powered Detection", color: T.cyan }, { val: "<2s", label: "Scan Time", color: T.accent }, { val: "24/7", label: "Always-on", color: "#22c55e" }, { val: "EN+हिं", label: "Bilingual", color: T.ember }].map((s, i) => (
             <div key={i} style={{ textAlign: "center", padding: "28px 16px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 14 }}>
               <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 800, color: s.color }}>{s.val}</div>
               <div style={{ fontSize: 12, color: T.mutedDark, marginTop: 4 }}>{s.label}</div>

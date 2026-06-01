@@ -388,11 +388,11 @@ const SectionHeader = ({ badge, title, subtitle, align = "center" }) => (
 /* ══════════════════════════════════════════════════
    HERO SECTION — Professional split layout
    ══════════════════════════════════════════════════ */
-const HeroCounter = ({ end, label, color, suffix = "" }) => {
+const HeroCounter = ({ end, label, color, suffix = "", prefix = "", noComma = false }) => {
   const [ref, val] = useCounter(end, 2200);
   return (
     <div ref={ref}>
-      <div style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 700, color, letterSpacing: "-0.02em" }}>{val.toLocaleString()}{suffix}</div>
+      <div style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 700, color, letterSpacing: "-0.02em" }}>{prefix}{noComma ? val : val.toLocaleString()}{suffix}</div>
       <div style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark, marginTop: 4 }}>{label}</div>
     </div>
   );
@@ -482,11 +482,14 @@ const Hero = () => {
           </Reveal>
 
           <Reveal delay={0.4}>
+            {/* Honest, defensible stats only — no fabricated user/threat counts.
+                Tools = countable. ₹13,500cr = sourced (our Threat Report / I4C).
+                Free tier + India focus = facts. */}
             <div className="hero-stats" style={{ display: "flex", gap: 36, flexWrap: "wrap" }}>
-              <HeroCounter end={60} label="Tools" color={T.cyan} suffix="+" />
-              <HeroCounter end={2841029} label="Threats Blocked" color={T.accent} />
-              <HeroCounter end={1200000} label="Users Protected" color={T.ember} suffix="+" />
-              <HeroCounter end={84} label="Countries" color={T.cyan} />
+              <HeroCounter end={60} label="Security Tools" color={T.cyan} suffix="+" />
+              <HeroCounter end={12} label="AI API Endpoints" color={T.accent} />
+              <HeroCounter end={13500} label="Crore Lost in India / Year" color={T.ember} prefix="₹" />
+              <HeroCounter end={2024} label="Founded · Made in India" color={T.cyan} noComma />
             </div>
           </Reveal>
         </div>
@@ -839,7 +842,7 @@ const ProductDemo = () => {
 /* ── BEFORE vs AFTER ── */
 const BeforeAfter = () => (
   <Section>
-    <Reveal><SectionHeader badge="The Difference" title={<>Life Without vs With <GradientText>Vrikaan</GradientText></>} subtitle="See why 1.2M+ users made the switch to proactive security." /></Reveal>
+    <Reveal><SectionHeader badge="The Difference" title={<>Life Without vs With <GradientText>Vrikaan</GradientText></>} subtitle="Why everyday Indians are switching from reactive antivirus to proactive AI defense." /></Reveal>
     <div style={{ display: "grid", gridTemplateColumns: "1fr 60px 1fr", gap: 0, maxWidth: 960, margin: "0 auto", alignItems: "stretch" }} className="ba-grid">
       {/* BEFORE */}
       <Reveal>
@@ -1129,14 +1132,14 @@ const TrustedBy = () => (
   <div style={{ borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}`, padding: "40px clamp(24px, 5vw, 80px)", background: "rgba(17,24,39,0.2)" }}>
     <Reveal>
       <div style={{ maxWidth: 1280, margin: "0 auto", textAlign: "center" }}>
-        <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark, marginBottom: 28, fontWeight: 500, letterSpacing: 1, textTransform: "uppercase" }}>Trusted by Indian families & teams</p>
+        <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.mutedDark, marginBottom: 28, fontWeight: 500, letterSpacing: 1, textTransform: "uppercase" }}>Built for everyday India</p>
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "clamp(28px, 5vw, 64px)", flexWrap: "wrap" }}>
           {[
-            { stat: "180K+", label: "Active users" },
-            { stat: "2.84M", label: "Threat events processed" },
-            { stat: "84",    label: "Countries reached" },
-            { stat: "₹0",    label: "Free forever tier" },
-            { stat: "27", label: "Days median refund (vs 90 industry)" },
+            { stat: "60+", label: "Security tools" },
+            { stat: "12", label: "AI API endpoints" },
+            { stat: "EN + हिं", label: "Bilingual" },
+            { stat: "₹0", label: "Free forever tier" },
+            { stat: "30-day", label: "Money-back guarantee" },
           ].map((s, i) => (
             <div key={i} style={{ textAlign: "center", minWidth: 100 }}>
               <div style={{ fontFamily: "var(--font-display)", fontSize: "clamp(18px, 2.2vw, 24px)", fontWeight: 800, color: T.white, letterSpacing: "-0.02em" }}>{s.stat}</div>
@@ -1158,7 +1161,7 @@ const HeroTools = () => {
     {
       to: "/scam-check", icon: "🧠", title: "AI Scam Check",
       tag: "MOST USED", color: T.cyan,
-      what: "Paste any SMS, WhatsApp forward, or link. Our classifier — trained on 1.2M Indian-language scam messages — returns a verdict + plain-English reason in under 2 seconds.",
+      what: "Paste any SMS, WhatsApp forward, or link. Our AI classifier — tuned on Indian-language scam patterns — returns a verdict + plain-English reason in under 2 seconds.",
       proof: "96% precision on Indian scam patterns",
     },
     {
@@ -1453,7 +1456,7 @@ const Features = () => {
 const HowItWorks = () => {
   const steps = [
     { n: "01", title: "Detect", desc: "Our AI sensors continuously scan your digital interactions — links, messages, and emails — for anomalies and known threat signatures.", color: T.cyan },
-    { n: "02", title: "Analyze", desc: "Machine learning models cross-reference billions of threat patterns in real-time, assessing risk level with over 99% accuracy.", color: T.accent },
+    { n: "02", title: "Analyze", desc: "Machine learning models cross-reference live threat intelligence in real-time, assessing risk in plain English.", color: T.accent },
     { n: "03", title: "Protect", desc: "Instant alerts with clear, actionable guidance. Threats are automatically neutralized before they can cause damage.", color: "#22c55e" },
   ];
 
@@ -1523,7 +1526,7 @@ const Analyzer = () => {
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               {[
-                { label: "12B+ threat signatures", color: T.cyan },
+                { label: "continuously-updated threat data", color: T.cyan },
                 { label: "Real-time analysis", color: T.accent },
                 { label: "High detection rate", color: "#22c55e" },
               ].map((item, i) => (
@@ -1626,7 +1629,7 @@ const ThreatMapSection = () => {
 
   return (
     <Section id="threats" style={{ maxWidth: 1440 }}>
-      <Reveal><SectionHeader badge="Live Intelligence" title={<>Global Threat <GradientText>Intelligence</GradientText></>} subtitle="Real-time visualization of cyber operations detected across 84 countries." /></Reveal>
+      <Reveal><SectionHeader badge="Live Intelligence" title={<>Global Threat <GradientText>Intelligence</GradientText></>} subtitle="Real-time visualization of cyber operations mapped from public threat intelligence." /></Reveal>
 
       {/* Threat level bar */}
       <Reveal delay={0.1}>
@@ -1636,8 +1639,8 @@ const ThreatMapSection = () => {
             <span style={{ fontFamily: "var(--font-body)", color: T.red, fontWeight: 600, fontSize: 13 }}>Threat Level: Elevated</span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontFamily: "var(--font-display)", color: T.white, fontWeight: 700, fontSize: 16 }}>{attackCount.toLocaleString()}</span>
-            <span style={{ color: T.mutedDark, fontSize: 12 }}>attacks today · <span style={{ color: "#fbbf24", fontWeight: 600 }} title="Demo data — real aggregates available via /api">simulated</span></span>
+            <span style={{ fontFamily: "var(--font-display)", color: T.white, fontWeight: 700, fontSize: 16 }}>₹13,500 Cr</span>
+            <span style={{ color: T.mutedDark, fontSize: 12 }}>lost to scams in India / yr <span style={{ color: "#64748b" }}>· source: I4C / our 2026 report</span></span>
           </div>
         </div>
       </Reveal>
@@ -1907,7 +1910,7 @@ const IndiaThreatPulse = () => {
           background: "rgba(2,6,23,0.4)", border: `1px solid ${T.border}`,
           textAlign: "center", color: T.muted, fontSize: 11, lineHeight: 1.6,
         }}>
-          ⚠ Live-feel ticker · figures shown are aggregated estimates for demonstration · real partnership w/ I4C / RBI Sachet planned Q3 2026
+          Threat feed illustrates real, documented India scam patterns from our 2026 Threat Report. Individual events are representative examples, not live user data.
         </div>
       </Reveal>
 
@@ -1924,7 +1927,7 @@ const BigNumbers = () => {
   const stats = [
     { value: "Industry-leading", label: "Detection Accuracy", desc: "AI-powered threat identification", icon: "&#9632;", color: T.cyan, percent: 95 },
     { value: "<50ms", label: "Response Time", desc: "Real-time threat neutralization", icon: "&#9889;", color: T.accent, percent: 95 },
-    { value: "12B+", label: "Threat Signatures", desc: "Continuously updated database", icon: "&#9670;", color: T.purple, percent: 88 },
+    { value: "60+", label: "Security Tools", desc: "Free + Pro, India-first", icon: "&#9670;", color: T.purple, percent: 88 },
     { value: "24/7", label: "Active Monitoring", desc: "Never-sleeping defense system", icon: "&#9679;", color: "#22c55e", percent: 100 },
   ];
   return (
@@ -2471,7 +2474,7 @@ const IndiaTrust = () => {
         </div>
       </Reveal>
 
-      {/* As-seen-on placeholder strip */}
+      {/* Open-source / transparency strip — only real, linkable proof. */}
       <Reveal>
         <div style={{
           marginTop: 28, padding: "18px 24px", borderRadius: 14,
@@ -2481,13 +2484,11 @@ const IndiaTrust = () => {
           <span style={{
             fontSize: 10, fontWeight: 800, letterSpacing: 2, color: T.muted,
             textTransform: "uppercase", whiteSpace: "nowrap",
-          }}>Listed in</span>
+          }}>Built in the open</span>
           {[
-            { name: "Product Hunt",  status: "soon" },
-            { name: "Hacker News",   status: "soon" },
-            { name: "Crunchbase",    status: "soon" },
             { name: "GitHub",        status: "live", url: "https://github.com/sahilnikam2410/vrikaan" },
-            { name: "RBI Sachet",    status: "research" },
+            { name: "Threat Report 2026", status: "live", url: "/threat-report-2026" },
+            { name: "Public API",    status: "live", url: "/api" },
           ].map(s => (
             s.url ? (
               <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" style={{
@@ -2742,14 +2743,14 @@ const CTABanner = () => (
 
           <div style={{ marginBottom: 20, position: "relative" }}>
             <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: T.cyan, background: "rgba(20,227,197,0.08)", padding: "6px 16px", borderRadius: 100, border: "1px solid rgba(20,227,197,0.15)" }}>
-              &#9889; 2,841,000+ threats blocked today · <span style={{ opacity: 0.7, fontSize: "0.85em" }}>(demo aggregate)</span>
+              &#9889; 60+ AI security tools · free forever tier
             </span>
           </div>
           <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 3.5vw, 44px)", fontWeight: 700, color: T.white, margin: "0 0 16px", letterSpacing: "-0.03em", position: "relative" }}>
             Ready to Secure Your <GradientText>Digital Life</GradientText>?
           </h2>
           <p style={{ fontFamily: "var(--font-body)", color: T.muted, fontSize: 16, lineHeight: 1.7, maxWidth: 500, margin: "0 auto 36px", position: "relative" }}>
-            Join over 1.2 million users who trust Vrikaan to protect their digital presence. Start free, upgrade anytime.
+            Start protecting yourself and your family today — free, no credit card. Start free, upgrade anytime.
           </p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", position: "relative" }}>
             <Btn primary to="/signup" icon="&#9889;">Start Free Protection</Btn>

@@ -35,9 +35,9 @@ const badge = (color) => ({
 });
 
 const STATS = [
-  { val: "2.8M+", label: "Threats Blocked", color: T.cyan },
-  { val: "50K+", label: "Users Protected", color: T.accent },
-  { val: "99.7%", label: "Detection Rate", color: T.green },
+  { val: "60+", label: "Security Tools", color: T.cyan },
+  { val: "12", label: "AI API Endpoints", color: T.accent },
+  { val: "EN + हिं", label: "Bilingual", color: T.green },
   { val: "24/7", label: "Monitoring", color: "#f97316" },
 ];
 
@@ -62,7 +62,7 @@ const VALUES = [
 
 const TECH = [
   { name: "React", icon: "\u269B\uFE0F", desc: "Modern component-driven UI with blazing-fast rendering and seamless single-page navigation for our dashboard and tools.", color: "#61dafb" },
-  { name: "AI / ML", icon: "\uD83E\uDDE0", desc: "Neural networks trained on billions of threat signatures power our real-time detection engine, achieving 99.7% accuracy across known and zero-day threats.", color: T.accent },
+  { name: "AI / ML", icon: "\uD83E\uDDE0", desc: "AI models tuned on Indian-language fraud patterns power real-time detection across known and zero-day threats.", color: T.accent },
   { name: "Real-time Monitoring", icon: "\uD83D\uDCE1", desc: "WebSocket-driven telemetry streams and event-sourced architecture ensure threats are identified and neutralized within milliseconds of detection.", color: T.cyan },
   { name: "Cloud Security", icon: "\u2601\uFE0F", desc: "Distributed across multiple availability zones with end-to-end encryption at rest and in transit, ensuring high availability and data sovereignty compliance.", color: T.green },
 ];

@@ -611,7 +611,7 @@ export default function Login() {
             fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.3,
           }}>
             <span style={{ fontSize: 14 }}>{"\u2713"}</span>
-            Trusted by 1.2M+ users worldwide
+            Built in India · Free tier forever
           </span>
         </div>
 

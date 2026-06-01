@@ -11,10 +11,10 @@ export default function FeaturesPage() {
   const { user } = useAuth();
   const [activeFeature, setActiveFeature] = useState(0);
   const features = [
-    { icon: "\uD83E\uDD16", title: "AI Fraud Detection", desc: "Real-time scanning of URLs, messages, emails, and phone calls using multi-layered neural networks. Our AI analyzes behavioral patterns, domain reputation, and content signatures to detect threats with 99.7% accuracy.", color: T.cyan, stats: "99.7% accuracy" },
+    { icon: "\uD83E\uDD16", title: "AI Fraud Detection", desc: "Real-time scanning of URLs, messages, emails, and phone calls using multi-layered neural networks. Our AI analyzes behavioral patterns, domain reputation, and content signatures to detect threats with industry-leading accuracy.", color: T.cyan, stats: "industry-leading accuracy" },
     { icon: "\uD83D\uDEE1\uFE0F", title: "Identity Shield", desc: "Continuous monitoring of your personal data across the web, dark web marketplaces, paste sites, and breach databases. Get instant alerts when your credentials, financial info, or personal data appears in a new leak.", color: T.blue, stats: "24/7 monitoring" },
     { icon: "\uD83D\uDCBB", title: "Device Armor", desc: "Intelligent endpoint protection across all your devices — laptops, phones, tablets. Detects zero-day exploits, suspicious processes, and unauthorized access attempts in real-time.", color: T.purple, stats: "5 devices per plan" },
-    { icon: "\uD83C\uDFA3", title: "Phishing Radar", desc: "Instantly identify fraudulent websites, emails, and SMS using AI-powered pattern recognition. Our system checks domain age, SSL certificates, content similarity, and known phishing signatures.", color: T.ember, stats: "12B+ signatures" },
+    { icon: "\uD83C\uDFA3", title: "Phishing Radar", desc: "Instantly identify fraudulent websites, emails, and SMS using AI-powered pattern recognition. Our system checks domain age, SSL certificates, content similarity, and known phishing signatures.", color: T.ember, stats: "live threat data" },
     { icon: "\uD83D\uDD76\uFE0F", title: "Dark Web Watch", desc: "Automated scanning of hidden networks, underground forums, and dark web marketplaces for leaked credentials, stolen financial data, and exposed personal information tied to your accounts.", color: T.red, stats: "500K+ sources" },
     { icon: "\uD83D\uDD10", title: "Privacy Guard", desc: "Control your digital footprint. Monitor who has your data, manage exposure levels, and enforce privacy policies. Get recommendations for reducing your online visibility and attack surface.", color: T.gold, stats: "Full control" },
   ];
@@ -24,7 +24,7 @@ export default function FeaturesPage() {
     { title: "Email Breach Scanner", desc: "Check if your email has been compromised in any known data breach.", link: "/security-score" },
     { title: "Security Score", desc: "Assess your overall cybersecurity posture with our interactive questionnaire.", link: "/security-score" },
     { title: "Scam Database", desc: "Browse and search our community-driven database of known scams and fraud attempts.", link: "/scam-database" },
-    { title: "Threat Map", desc: "Live global visualization of cyber attacks detected across 84 countries.", link: "/threat-map" },
+    { title: "Threat Map", desc: "Live global visualization of cyber attacks mapped from public threat intelligence.", link: "/threat-map" },
     { title: "Emergency Help", desc: "Step-by-step incident response guides for fraud, hacking, and identity theft.", link: "/emergency-help" },
   ];
 

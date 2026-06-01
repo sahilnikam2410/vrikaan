@@ -360,7 +360,7 @@ export default function Contact() {
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accentSoft, marginBottom: 16, letterSpacing: 0.5, textTransform: "uppercase" }}>Global Reach</span>
           <h2 style={{ ...heading("clamp(24px, 3vw, 32px)"), marginBottom: 10 }}>Serving Users Worldwide</h2>
-          <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.7 }}>Headquartered in Pune, India — protecting users across 84 countries.</p>
+          <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.7 }}>Headquartered in Pune, India — protecting users for everyday Indians.</p>
         </div>
         <div className="contact-presence-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
           {[

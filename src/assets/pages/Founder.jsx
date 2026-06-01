@@ -96,8 +96,8 @@ export default function Founder() {
           {[
             { title: "The Problem", text: "Billions of internet users are vulnerable to phishing attacks, online fraud, and identity theft every day. Most cybersecurity companies focus exclusively on protecting large corporations, leaving normal users — students, families, seniors — completely exposed." },
             { title: "The Vision", text: "Vrikaan was created with the vision of protecting everyday people from cybercrime. The goal is to build a global cyber defense platform that makes enterprise-grade security accessible and affordable for everyone, regardless of their technical knowledge." },
-            { title: "The Approach", text: "Using AI-powered threat detection trained on billions of signatures, Vrikaan identifies and neutralizes threats in real-time. The platform is designed to be simple — users don't need to understand cybersecurity to be protected by it." },
-            { title: "The Impact", text: "Today, Vrikaan protects users across 84 countries with a 99.7% threat detection rate. From students in India to families in Europe to small businesses in the Americas — we're building a defense network that spans the globe." },
+            { title: "The Approach", text: "Using AI-powered threat detection tuned on Indian fraud patterns, Vrikaan identifies and neutralizes threats in real-time. The platform is designed to be simple — users don't need to understand cybersecurity to be protected by it." },
+            { title: "The Impact", text: "Today, Vrikaan protects users for everyday Indians with a industry-leading detection. From students in India to families in Europe to small businesses in the Americas — we're building a defense network that spans the globe." },
           ].map((s, i) => (
             <div key={i} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: "32px 36px" }}>
               <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, margin: "0 0 12px", color: T.cyan }}>{s.title}</h3>
