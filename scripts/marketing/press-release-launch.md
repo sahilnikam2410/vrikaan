@@ -49,7 +49,7 @@ Coinciding with launch, VRIKAAN has opened applications for SOC Analyst, Full-St
 VRIKAAN is an AI-powered cyber defense platform headquartered in Nashik, India. Founded in 2024 by SOC analysts and cybersecurity researchers Sahil Anil Nikam and Khushi Ishwar Raigade, VRIKAAN offers 50+ security tools — including scam detection, deepfake audio analysis, MITRE ATT&CK-mapped SOC dashboard, vulnerability scanning, password vault, and dark-web monitoring — through a single bilingual (English + Hindi) platform. Built on Google Gemini 2.5 Flash with INR-native Cashfree payments and NIST AAL2 two-factor authentication, VRIKAAN is the only Indian-built consumer + SMB cybersecurity SaaS to combine threat intelligence, fraud prevention, and SOC-grade tooling under one free-tier login.
 
 ### MEDIA CONTACT
-**Email:** hello.vrikaan@gmail.com
+**Email:** hello@vrikaan.com
 **Phone:** +91 8329935878
 **Press kit + downloadable assets:** [vrikaan.com/press](https://vrikaan.com/press)
 **Founders bio + quotes:** [vrikaan.com/founder](https://vrikaan.com/founder)
@@ -127,7 +127,7 @@ Would [day] work for a 20-min call?
 
 Best,
 [Your name]
-hello.vrikaan@gmail.com  ·  +91 8329935878
+hello@vrikaan.com  ·  +91 8329935878
 vrikaan.com
 ```
 
@@ -155,7 +155,7 @@ The "two SOC analysts in Nashik build the SaaS Norton should have built" angle w
 Founders available [day] for a 25-min Zoom. Press kit + logos + founder bios at vrikaan.com/press.
 
 [Your name]
-hello.vrikaan@gmail.com
+hello@vrikaan.com
 ```
 
 ---
@@ -182,7 +182,7 @@ Open to writing a guest post or doing a deep-dive interview with founder Sahil (
 
 Best,
 [Your name]
-hello.vrikaan@gmail.com
+hello@vrikaan.com
 ```
 
 ---
@@ -245,7 +245,7 @@ Use **Google Alerts** (free) for:
 - `"Sahil Anil Nikam"`
 - `"Khushi Ishwar Raigade"`
 
-Alerts → email digest daily. Forward any coverage to hello.vrikaan@gmail.com, repost on social w/ thank-you tag to the journalist. Builds a relationship for the next launch.
+Alerts → email digest daily. Forward any coverage to hello@vrikaan.com, repost on social w/ thank-you tag to the journalist. Builds a relationship for the next launch.
 
 ---
 

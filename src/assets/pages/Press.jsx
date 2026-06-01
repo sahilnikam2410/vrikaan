@@ -79,7 +79,7 @@ export default function Press() {
             Everything you need to write about VRIKAAN — brand assets, founder bio, fact sheet, and quotable lines. Free to use, attribution appreciated.
           </p>
           <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-            <a href="mailto:hello.vrikaan@gmail.com?subject=Press%20inquiry%20—%20VRIKAAN" style={{
+            <a href="mailto:hello@vrikaan.com?subject=Press%20inquiry%20—%20VRIKAAN" style={{
               padding: "12px 24px", borderRadius: 10,
               background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
               color: "#fff", fontSize: 14, fontWeight: 700, textDecoration: "none",
@@ -330,11 +330,11 @@ export default function Press() {
               Custom screenshots, founder interview, embargoed coverage — happy to help.
             </p>
             <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
-              <a href="mailto:hello.vrikaan@gmail.com" style={{
+              <a href="mailto:hello@vrikaan.com" style={{
                 padding: "10px 20px", borderRadius: 10,
                 background: T.cyan, color: "#030712",
                 fontSize: 13, fontWeight: 700, textDecoration: "none",
-              }}>hello.vrikaan@gmail.com</a>
+              }}>hello@vrikaan.com</a>
               <Link to="/contact" style={{
                 padding: "10px 20px", borderRadius: 10,
                 background: "rgba(148,163,184,0.06)", border: `1px solid ${T.border}`,

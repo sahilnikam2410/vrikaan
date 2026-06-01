@@ -35,6 +35,9 @@ const DEMO_USERS = import.meta.env.DEV ? [
 ] : [];
 
 // Admin emails — these users get admin role automatically
+// NOTE: these are Firebase Auth LOGIN identities (Google OAuth gmails), NOT
+// the @vrikaan.com forward aliases. Do not swap to @vrikaan.com — those are
+// ImprovMX forwards and cannot be sign-in accounts. Must match firestore.rules.
 const ADMIN_EMAILS = ["sahilnikam133@gmail.com", "sahilnikam1212@gmail.com", "khushiraygade76666@gmail.com", "founder.vrikaan@gmail.com", "cofounder.vrikaan@gmail.com"];
 
 /**

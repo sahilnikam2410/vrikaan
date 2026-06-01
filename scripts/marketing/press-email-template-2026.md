@@ -1,6 +1,6 @@
 # Press Outreach — Threat Report 2026
 
-**Send from:** hello.vrikaan@gmail.com  ·  **Best time:** Mon-Wed 9-11 AM IST  ·  **Follow up:** once after 5 days
+**Send from:** hello@vrikaan.com  ·  **Best time:** Mon-Wed 9-11 AM IST  ·  **Follow up:** once after 5 days
 
 ---
 
@@ -73,7 +73,7 @@ Press kit (logos, founder photos, screenshots): https://vrikaan.com/press
 Cheers,
 Sahil Anil Nikam
 Co-founder & CEO, VRIKAAN
-hello.vrikaan@gmail.com · founder.vrikaan@gmail.com
+hello@vrikaan.com · founder@vrikaan.com
 vrikaan.com
 ```
 

@@ -3,17 +3,17 @@
 Three inboxes, three canned auto-replies. Fires immediately on every incoming email so applicants / users / press know we received it. Reduces "did you get my email?" follow-ups.
 
 Free Gmail tier supports:
-- **Vacation responder** — one canned message per account, fires on *every* incoming. Best for `hr.vrikaan@gmail.com` + `vrikaan.ai@gmail.com` (single-purpose inboxes).
-- **Filters → canned response templates** — multiple per account, conditional on subject/body. Best for `hello.vrikaan@gmail.com` (multi-intent — careers, press, billing, support).
+- **Vacation responder** — one canned message per account, fires on *every* incoming. Best for `hr@vrikaan.com` + `ai@vrikaan.com` (single-purpose inboxes).
+- **Filters → canned response templates** — multiple per account, conditional on subject/body. Best for `hello@vrikaan.com` (multi-intent — careers, press, billing, support).
 
 Below: exact setup steps + templates ready to paste.
 
 ---
 
-## INBOX 1 — `hr.vrikaan@gmail.com`
+## INBOX 1 — `hr@vrikaan.com`
 
 ### Setup (5 minutes)
-1. Sign in at **mail.google.com** as `hr.vrikaan@gmail.com`
+1. Sign in at **mail.google.com** as `hr@vrikaan.com`
 2. ⚙️ Settings → **See all settings** → **General** tab
 3. Scroll to **Vacation responder** → toggle **ON**
 4. **First day:** today  ·  **Last day:** leave blank (perpetual)
@@ -27,7 +27,7 @@ Below: exact setup steps + templates ready to paste.
 ```
 Hi,
 
-Thanks for writing to hr.vrikaan@gmail.com — your message landed safely.
+Thanks for writing to hr@vrikaan.com — your message landed safely.
 
 What happens next:
 • We read every application within 7 days.
@@ -43,8 +43,8 @@ While you wait:
 • What we ship      → https://x.com/vrikaan
 
 For non-careers questions, route to the right inbox:
-• AI / Product / Dev    → vrikaan.ai@gmail.com
-• General / Press / Help → hello.vrikaan@gmail.com
+• AI / Product / Dev    → ai@vrikaan.com
+• General / Press / Help → hello@vrikaan.com
 
 — VRIKAAN HR
 Nashik, India
@@ -54,10 +54,10 @@ Gmail sends this AT MOST ONCE every 4 days per sender, so a candidate emailing t
 
 ---
 
-## INBOX 2 — `vrikaan.ai@gmail.com`
+## INBOX 2 — `ai@vrikaan.com`
 
 ### Setup (5 minutes)
-1. Sign in as `vrikaan.ai@gmail.com`
+1. Sign in as `ai@vrikaan.com`
 2. Settings → General → **Vacation responder** ON (same flow as above)
 3. **Subject:** `Got it — VRIKAAN AI / Product team`
 4. **Message:** paste template below
@@ -68,7 +68,7 @@ Gmail sends this AT MOST ONCE every 4 days per sender, so a candidate emailing t
 ```
 Hi,
 
-Thanks for writing to vrikaan.ai@gmail.com — message received.
+Thanks for writing to ai@vrikaan.com — message received.
 
 We read every email within 3 business days. If you sent a bug report, please also include:
 • Browser + OS
@@ -86,8 +86,8 @@ GitHub:    https://github.com/sahilnikam2410/vrikaan
 Live SOC:  https://vrikaan.com/admin/soc  (login required)
 
 For non-AI questions, route to the right inbox:
-• Careers / Internships  → hr.vrikaan@gmail.com
-• General / Press / Help → hello.vrikaan@gmail.com
+• Careers / Internships  → hr@vrikaan.com
+• General / Press / Help → hello@vrikaan.com
 
 — VRIKAAN AI / Product
 Sahil & Khushi · Nashik, India
@@ -95,7 +95,7 @@ Sahil & Khushi · Nashik, India
 
 ---
 
-## INBOX 3 — `hello.vrikaan@gmail.com`  (multi-intent — use filters, not vacation responder)
+## INBOX 3 — `hello@vrikaan.com`  (multi-intent — use filters, not vacation responder)
 
 Vacation responder would block your real outbound replies too, so for this main inbox use **filters with canned templates**.
 
@@ -116,7 +116,7 @@ Settings → **Filters and Blocked Addresses** → **Create a new filter**
 
 | # | Filter "Has the words" | Apply template | Action |
 |---|---|---|---|
-| 1 | `subject:(careers OR application OR resume OR intern OR job OR hiring) OR from:(hr.vrikaan)` | Careers redirect | Star · Apply label **Misrouted-Careers** · Send template · Forward to `hr.vrikaan@gmail.com` |
+| 1 | `subject:(careers OR application OR resume OR intern OR job OR hiring) OR from:(hr.vrikaan)` | Careers redirect | Star · Apply label **Misrouted-Careers** · Send template · Forward to `hr@vrikaan.com` |
 | 2 | `subject:(press OR media OR journalist OR interview OR article) OR from:(*.com OR *.in)` + body has `press` | Press auto-reply | Apply label **Press** · Send template |
 | 3 | `subject:(refund OR cancel OR billing OR invoice OR payment OR cashfree)` | Billing auto-reply | Star · Apply label **Billing** · Send template |
 | 4 | `(everything else, default catch-all)` | General auto-reply | Apply label **General** · Send template |
@@ -131,11 +131,11 @@ Settings → **Filters and Blocked Addresses** → **Create a new filter**
 ```
 Hi,
 
-Looks like you wrote to hello.vrikaan@gmail.com about a careers / job / internship matter. I've forwarded your email to our HR inbox — hr.vrikaan@gmail.com — and they'll take it from here.
+Looks like you wrote to hello@vrikaan.com about a careers / job / internship matter. I've forwarded your email to our HR inbox — hr@vrikaan.com — and they'll take it from here.
 
 For future applications, please use:
 • Application form: https://vrikaan.com/apply
-• Direct email:     hr.vrikaan@gmail.com
+• Direct email:     hr@vrikaan.com
 • Roles page:       https://vrikaan.com/careers
 
 You'll hear back within 7 days.
@@ -192,7 +192,7 @@ Pricing:       https://vrikaan.com/pricing
 Resolution SLA: within 3 business days for refunds, immediate for invoice resends.
 
 — VRIKAAN Support
-hello.vrikaan@gmail.com
+hello@vrikaan.com
 ```
 
 ---
@@ -203,12 +203,12 @@ hello.vrikaan@gmail.com
 ```
 Hi,
 
-Got your email at hello.vrikaan@gmail.com — landed safely. We read every message within 24 hours on business days.
+Got your email at hello@vrikaan.com — landed safely. We read every message within 24 hours on business days.
 
 If your question is one of these, the right inbox replies faster:
 
-• Careers / internships  → hr.vrikaan@gmail.com  · https://vrikaan.com/apply
-• AI / product / bugs    → vrikaan.ai@gmail.com
+• Careers / internships  → hr@vrikaan.com  · https://vrikaan.com/apply
+• AI / product / bugs    → ai@vrikaan.com
 • Press / media          → reply to this email, attach outlet + angle
 • Billing / refunds      → reply to this email, include order ID
 • Anything else          → reply to this email, we'll handle it
@@ -227,7 +227,7 @@ https://vrikaan.com
 Gmail filters can't directly auto-send a template. Workaround = one Apps Script that runs every 5 min, finds new threads w/ a specific label, sends the matching template, removes the label.
 
 ### Setup
-1. Open **script.google.com** while signed in as `hello.vrikaan@gmail.com`
+1. Open **script.google.com** while signed in as `hello@vrikaan.com`
 2. **New project** → name it `Vrikaan Auto-Reply`
 3. Paste the code below
 4. Run once manually (will prompt for permissions — grant Gmail access)
@@ -245,7 +245,7 @@ const TEMPLATES = {
     subject: "Got your message — routing to VRIKAAN HR",
     body: `Hi,
 
-Looks like you wrote about a careers / job / internship matter. We've routed your email to our HR inbox — hr.vrikaan@gmail.com — they'll take it from here.
+Looks like you wrote about a careers / job / internship matter. We've routed your email to our HR inbox — hr@vrikaan.com — they'll take it from here.
 
 Apply form:  https://vrikaan.com/apply
 Roles page:  https://vrikaan.com/careers
@@ -282,11 +282,11 @@ Refund policy: https://vrikaan.com/refund-policy
     subject: "Message received — VRIKAAN",
     body: `Hi,
 
-Got your message at hello.vrikaan@gmail.com. We read every email within 24 hours on business days.
+Got your message at hello@vrikaan.com. We read every email within 24 hours on business days.
 
 Right inbox for faster reply:
-• Careers   → hr.vrikaan@gmail.com  (https://vrikaan.com/apply)
-• AI / Dev  → vrikaan.ai@gmail.com
+• Careers   → hr@vrikaan.com  (https://vrikaan.com/apply)
+• AI / Dev  → ai@vrikaan.com
 • Else      → reply to this email
 
 — VRIKAAN`,
@@ -331,7 +331,7 @@ After setup:
 2. Within ≤5 min (general/AI/HR have instant vacation responder) you should receive the canned reply
 3. Check the subject lines / template bodies match the intent
 
-If `hello.vrikaan@gmail.com` doesn't auto-reply, check:
+If `hello@vrikaan.com` doesn't auto-reply, check:
 - ☑️ Apps Script trigger is enabled (`script.google.com` → Triggers tab)
 - ☑️ Filter actually applies the `auto:<intent>` label (right-click new email → check labels)
 - ☑️ Permissions granted to the script

@@ -90,7 +90,7 @@ We're a 2-founder, bootstrapped cybersecurity SaaS in Nashik, hiring our first b
 ✅ Remote-by-default. Paid stipends. ESOPs for full-time. No "exposure only" offers.
 
 🔗 vrikaan.com/careers (or vrikaan.com/apply for the form)
-📧 hr.vrikaan@gmail.com
+📧 hr@vrikaan.com
 
 We reply within 7 days to every application — no ghosting policy.
 

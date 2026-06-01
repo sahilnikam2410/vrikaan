@@ -548,7 +548,7 @@ const card = (s, x, y, w, h, color) => {
     { icon: "in", label: "linkedin.com/company/vrikaan-ai-...", handle: "VRIKAAN AI Cybersecurity" },
     { icon: "ig", label: "instagram.com/vrikaan_official",      handle: "@vrikaan_official" },
     { icon: "gh", label: "github.com/sahilnikam2410/vrikaan",   handle: "Open source" },
-    { icon: "✉",  label: "hello.vrikaan@gmail.com",                   handle: "Contact us" },
+    { icon: "✉",  label: "hello@vrikaan.com",                   handle: "Contact us" },
   ];
   socials.forEach((soc, i) => {
     const col = i % 2, row = Math.floor(i / 2);

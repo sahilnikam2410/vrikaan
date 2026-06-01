@@ -418,7 +418,7 @@ export default function Careers() {
               padding: 32, textAlign: "center", color: T.muted,
               background: T.card, border: `1px dashed ${T.border}`, borderRadius: 16,
             }}>
-              No matching roles. Reset filters or send a speculative pitch to <a style={{ color: T.cyan }} href="mailto:hr.vrikaan@gmail.com?cc=hello.vrikaan@gmail.com">hr.vrikaan@gmail.com</a>.
+              No matching roles. Reset filters or send a speculative pitch to <a style={{ color: T.cyan }} href="mailto:hr@vrikaan.com?cc=hello@vrikaan.com">hr@vrikaan.com</a>.
             </div>
           )}
 
@@ -476,7 +476,7 @@ export default function Careers() {
                       border: `1px solid ${T.border}`,
                     }}>
                       <a
-                        href={`mailto:hr.vrikaan@gmail.com?cc=hello.vrikaan@gmail.com&subject=${encodeURIComponent(`Application — ${job.title} — ${job.id}`)}&body=${encodeURIComponent(applyTemplate(job))}`}
+                        href={`mailto:hr@vrikaan.com?cc=hello@vrikaan.com&subject=${encodeURIComponent(`Application — ${job.title} — ${job.id}`)}&body=${encodeURIComponent(applyTemplate(job))}`}
                         style={primaryBtn(typeColor)}
                       >Apply via email →</a>
                       <a
@@ -507,11 +507,11 @@ export default function Careers() {
           }}>Don't see your role?</h2>
           <p style={{ color: T.muted, maxWidth: 620, margin: "0 auto 22px", lineHeight: 1.6 }}>
             We hire opportunistically. Send a 5-line pitch + portfolio/GitHub/LinkedIn to{" "}
-            <a href="mailto:hello.vrikaan@gmail.com" style={{ color: T.cyan }}>hello.vrikaan@gmail.com</a>.
+            <a href="mailto:hello@vrikaan.com" style={{ color: T.cyan }}>hello@vrikaan.com</a>.
             If your work is interesting, we will respond within 7 days.
           </p>
           <a
-            href="mailto:hr.vrikaan@gmail.com?cc=hello.vrikaan@gmail.com&subject=Speculative%20pitch%20%E2%80%94%20VRIKAAN"
+            href="mailto:hr@vrikaan.com?cc=hello@vrikaan.com&subject=Speculative%20pitch%20%E2%80%94%20VRIKAAN"
             style={primaryBtn(T.cyan)}
           >Send a pitch →</a>
         </section>
@@ -519,7 +519,7 @@ export default function Careers() {
         {/* Contact channels */}
         <EmailRouting highlight="hr" />
         <p style={{ color: T.muted, fontSize: 12, marginTop: -40, marginBottom: 60, textAlign: "center" }}>
-          Tip: applying for a role? Use <strong style={{ color: T.cyan }}>hr.vrikaan@gmail.com</strong> — the Apply buttons above auto-CC <strong style={{ color: T.white }}>hello.vrikaan@gmail.com</strong> for tracking.
+          Tip: applying for a role? Use <strong style={{ color: T.cyan }}>hr@vrikaan.com</strong> — the Apply buttons above auto-CC <strong style={{ color: T.white }}>hello@vrikaan.com</strong> for tracking.
         </p>
 
         {/* Process */}

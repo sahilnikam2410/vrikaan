@@ -34,7 +34,7 @@ export default function Terms() {
           { title: "8. Disclaimer of Warranties", content: "While we strive for maximum protection, no cybersecurity solution can guarantee 100% security. Vrikaan does not warrant that our services will be uninterrupted, error-free, or capable of preventing all cyber threats. Users should maintain their own security hygiene practices alongside our platform." },
           { title: "9. Modifications to Terms", content: "We reserve the right to modify these terms at any time. Material changes will be communicated via email or in-platform notification at least 30 days before taking effect. Continued use after changes constitutes acceptance. If you disagree with modifications, you should discontinue use." },
           { title: "10. Governing Law", content: "These Terms shall be governed by and construed in accordance with the laws of India, without regard to conflict of law provisions. Any disputes arising under these terms shall be resolved through binding arbitration in Maharashtra, India." },
-          { title: "11. Contact", content: "For questions about these Terms of Service, contact us at hello.vrikaan@gmail.com or call +91 8329935878." },
+          { title: "11. Contact", content: "For questions about these Terms of Service, contact us at hello@vrikaan.com or call +91 8329935878." },
         ].map((s, i) => (
           <div key={i} style={{ marginBottom: 36 }}>
             <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, color: T.white, margin: "0 0 12px" }}>{s.title}</h2>

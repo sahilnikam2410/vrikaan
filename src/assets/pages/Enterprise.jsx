@@ -484,7 +484,7 @@ export default function Enterprise() {
           display: "flex", gap: 22, justifyContent: "center", flexWrap: "wrap",
           color: T.muted, fontSize: 13,
         }}>
-          <a href="mailto:hello.vrikaan@gmail.com" style={{ color: T.cyan, textDecoration: "none" }}>📧 hello.vrikaan@gmail.com</a>
+          <a href="mailto:hello@vrikaan.com" style={{ color: T.cyan, textDecoration: "none" }}>📧 hello@vrikaan.com</a>
           <a href="tel:+918329935878" style={{ color: T.cyan, textDecoration: "none" }}>📞 +91 8329935878</a>
           <Link to="/admin/soc" style={{ color: T.cyan, textDecoration: "none" }}>🛰 Preview SOC dashboard</Link>
           <a href="https://github.com/sahilnikam2410/vrikaan" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan, textDecoration: "none" }}>📂 Source on GitHub</a>

@@ -13,7 +13,7 @@ const BRAND = {
   tagline: "Empowering Defenders for a Safer Digital Future",
   legal: "Vrikaan Cybersecurity",
   address: "India",
-  email: "hello.vrikaan@gmail.com",
+  email: "hello@vrikaan.com",
   website: "https://www.vrikaan.com",
 };
 

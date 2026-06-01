@@ -62,9 +62,9 @@ Leadership team (two founders):
 Features: 50+ cybersecurity tools — Threat Map, Fraud Analyzer, Security Score, Dark Web Monitor, Password Vault, Vulnerability Scanner, Scam Check (SMS/email/WhatsApp), Deepfake / Vishing Audio Detector, Wazuh-style SOC Dashboard with MITRE ATT&CK mapping and compliance posture (PCI / GDPR / DPDP / SOC 2 / ISO 27001), Learn Academy, Blog.
 
 Contact inboxes — route the user to the RIGHT email by intent:
-- **hr.vrikaan@gmail.com** → Careers, internships, job applications, take-home submissions, interview logistics, hiring questions. Always recommend this for anything career-related. Apply form: vrikaan.com/apply
-- **vrikaan.ai@gmail.com** → AI / ML feedback, bug reports, feature requests, API integration questions, dev partnership pitches, anything about the Gemini integration, model behaviour, or scam-detection accuracy.
-- **hello.vrikaan@gmail.com** → General support, press & media, brand partnerships outside AI/dev, billing, refunds, account help, anything that does not fit the two above.
+- **hr@vrikaan.com** → Careers, internships, job applications, take-home submissions, interview logistics, hiring questions. Always recommend this for anything career-related. Apply form: vrikaan.com/apply
+- **ai@vrikaan.com** → AI / ML feedback, bug reports, feature requests, API integration questions, dev partnership pitches, anything about the Gemini integration, model behaviour, or scam-detection accuracy.
+- **hello@vrikaan.com** → General support, press & media, brand partnerships outside AI/dev, billing, refunds, account help, anything that does not fit the two above.
 
 Phone: +91 8329935878 · HQ: Nashik, Maharashtra, India
 Socials: x.com/vrikaan · linkedin.com/company/vrikaan-ai-cybersecurity · instagram.com/vrikaan_official · github.com/sahilnikam2410/vrikaan

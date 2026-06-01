@@ -204,7 +204,7 @@ PH allows subtitle in parentheses if needed — skip it, brand stands alone.
 | Twitter / X | https://x.com/vrikaan |
 | Instagram | https://www.instagram.com/vrikaan_official/ |
 | LinkedIn | https://www.linkedin.com/company/vrikaan-ai-cybersecurity |
-| Email | hello.vrikaan@gmail.com |
+| Email | hello@vrikaan.com |
 
 ---
 
@@ -274,7 +274,7 @@ Would you be open to hunting us? We're targeting a Tuesday launch. We've got a c
 Happy to give you first look at the metrics / press kit / founder Zoom if useful.
 
 Cheers,
-Sahil  ·  hello.vrikaan@gmail.com
+Sahil  ·  hello@vrikaan.com
 ```
 
 ### Template H2 — DM to PH community hunters w/ tech focus

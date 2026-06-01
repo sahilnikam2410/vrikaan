@@ -27,7 +27,7 @@ export default function ShippingPolicy() {
           { title: "5. Subscription Plans", content: "We offer multiple subscription tiers: Free, Sentinel, Fortress, and Citadel. Each plan provides different levels of access to our cybersecurity tools and features. Plan details and pricing are available on our Pricing page." },
           { title: "6. No Physical Shipping", content: "Since VRIKAAN is a Software-as-a-Service (SaaS) platform, we do not ship any physical goods. All tools, reports, and features are accessible through your web browser after login. No downloads or installations are required." },
           { title: "7. International Access", content: "Our services are accessible globally. Regardless of your location, you can access VRIKAAN's tools and features through any modern web browser with an internet connection. There are no geographical restrictions on our digital services." },
-          { title: "8. Contact Us", content: "If you have any questions about our delivery process or face any issues accessing your subscription, please contact us at hello.vrikaan@gmail.com or call +91 8329935878. Our support team is available 24/7." },
+          { title: "8. Contact Us", content: "If you have any questions about our delivery process or face any issues accessing your subscription, please contact us at hello@vrikaan.com or call +91 8329935878. Our support team is available 24/7." },
         ].map((s, i) => (
           <div key={i} style={{ marginBottom: 36 }}>
             <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 10, fontFamily: "'Space Grotesk', sans-serif" }}>{s.title}</h2>

@@ -252,7 +252,7 @@ Events are de-identified at ingestion, aggregated by pattern, and signature-matc
 
 **Citation:** _VRIKAAN India Threat Report 2026. Pune: VRIKAAN AI Cyber Defense, May 2026._
 
-**Contact:** hello.vrikaan@gmail.com · press: hello.vrikaan@gmail.com · API access: vrikaan.com/api
+**Contact:** hello@vrikaan.com · press: hello@vrikaan.com · API access: vrikaan.com/api
 
 ---
 

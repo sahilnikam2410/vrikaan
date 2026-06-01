@@ -19,7 +19,7 @@ Per-template **Subject** + **From Name** + **Reply To** settings are listed firs
 **Subject:** `Welcome to VRIKAAN, {{to_name}}!`
 **From Name:** `VRIKAAN`
 **From Email:** Use Default Email Address ✓
-**Reply To:** `hello.vrikaan@gmail.com`
+**Reply To:** `hello@vrikaan.com`
 **To Email:** `{{to_email}}`
 
 ### HTML body
@@ -98,9 +98,9 @@ Per-template **Subject** + **From Name** + **Reply To** settings are listed firs
             <td style="padding:24px 36px;">
               <p style="margin:0 0 14px;color:#94a3b8;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;">Reach us</p>
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size:13px;color:#cbd5e1;">
-                <tr><td style="padding:4px 0;">💼 <a href="mailto:hr.vrikaan@gmail.com" style="color:#14E3C5;text-decoration:none;">hr.vrikaan@gmail.com</a> — careers</td></tr>
-                <tr><td style="padding:4px 0;">🤖 <a href="mailto:vrikaan.ai@gmail.com" style="color:#6366F1;text-decoration:none;">vrikaan.ai@gmail.com</a> — AI / product / bugs</td></tr>
-                <tr><td style="padding:4px 0;">✉️ <a href="mailto:hello.vrikaan@gmail.com" style="color:#22C55E;text-decoration:none;">hello.vrikaan@gmail.com</a> — general / press / support</td></tr>
+                <tr><td style="padding:4px 0;">💼 <a href="mailto:hr@vrikaan.com" style="color:#14E3C5;text-decoration:none;">hr@vrikaan.com</a> — careers</td></tr>
+                <tr><td style="padding:4px 0;">🤖 <a href="mailto:ai@vrikaan.com" style="color:#6366F1;text-decoration:none;">ai@vrikaan.com</a> — AI / product / bugs</td></tr>
+                <tr><td style="padding:4px 0;">✉️ <a href="mailto:hello@vrikaan.com" style="color:#22C55E;text-decoration:none;">hello@vrikaan.com</a> — general / press / support</td></tr>
               </table>
             </td>
           </tr>
@@ -133,7 +133,7 @@ Per-template **Subject** + **From Name** + **Reply To** settings are listed firs
 
 **Subject:** `Payment Confirmed — VRIKAAN {{plan}} Plan`
 **From Name:** `VRIKAAN`
-**Reply To:** `hello.vrikaan@gmail.com`
+**Reply To:** `hello@vrikaan.com`
 **To Email:** `{{to_email}}`
 
 ### HTML body
@@ -200,7 +200,7 @@ Per-template **Subject** + **From Name** + **Reply To** settings are listed firs
         </td></tr>
 
         <tr><td style="padding:20px 36px 32px;background:#030712;border-top:1px solid rgba(148,163,184,0.1);text-align:center;">
-          <p style="margin:0 0 6px;color:#94a3b8;font-size:12px;">© 2026 VRIKAAN · Nashik, India · <a href="mailto:hello.vrikaan@gmail.com" style="color:#14E3C5;text-decoration:none;">hello.vrikaan@gmail.com</a></p>
+          <p style="margin:0 0 6px;color:#94a3b8;font-size:12px;">© 2026 VRIKAAN · Nashik, India · <a href="mailto:hello@vrikaan.com" style="color:#14E3C5;text-decoration:none;">hello@vrikaan.com</a></p>
           <p style="margin:0;color:#64748b;font-size:11px;">AI-powered cyber defense · Sahil Anil Nikam &amp; Khushi Ishwar Raigade</p>
         </td></tr>
 
@@ -217,7 +217,7 @@ Per-template **Subject** + **From Name** + **Reply To** settings are listed firs
 
 **Subject:** `Password reset — VRIKAAN`
 **From Name:** `VRIKAAN Security`
-**Reply To:** `hello.vrikaan@gmail.com`
+**Reply To:** `hello@vrikaan.com`
 **To Email:** `{{to_email}}`
 
 ### HTML body
@@ -250,7 +250,7 @@ Per-template **Subject** + **From Name** + **Reply To** settings are listed firs
         </td></tr>
 
         <tr><td style="padding:18px 36px 28px;background:#030712;border-top:1px solid rgba(148,163,184,0.1);text-align:center;">
-          <p style="margin:0;color:#64748b;font-size:11px;">© 2026 VRIKAAN · Nashik, India · Questions: <a href="mailto:hello.vrikaan@gmail.com" style="color:#94a3b8;">hello.vrikaan@gmail.com</a></p>
+          <p style="margin:0;color:#64748b;font-size:11px;">© 2026 VRIKAAN · Nashik, India · Questions: <a href="mailto:hello@vrikaan.com" style="color:#94a3b8;">hello@vrikaan.com</a></p>
         </td></tr>
 
       </table>
@@ -268,7 +268,7 @@ Generic template — receives `{{subject}}` + `{{message}}` from code, so the sa
 
 **Subject:** `{{subject}}`
 **From Name:** `VRIKAAN`
-**Reply To:** `hello.vrikaan@gmail.com`
+**Reply To:** `hello@vrikaan.com`
 **To Email:** `{{to_email}}`
 
 ### HTML body
@@ -300,9 +300,9 @@ Generic template — receives `{{subject}}` + `{{message}}` from code, so the sa
         <tr><td style="padding:20px 36px;">
           <p style="margin:0 0 10px;color:#94a3b8;font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;">Reach us</p>
           <p style="margin:0;color:#cbd5e1;font-size:12px;line-height:1.8;">
-            💼 <a href="mailto:hr.vrikaan@gmail.com" style="color:#14E3C5;text-decoration:none;">hr.vrikaan@gmail.com</a> — careers ·
-            🤖 <a href="mailto:vrikaan.ai@gmail.com" style="color:#6366F1;text-decoration:none;">vrikaan.ai@gmail.com</a> — AI / product ·
-            ✉️ <a href="mailto:hello.vrikaan@gmail.com" style="color:#22C55E;text-decoration:none;">hello.vrikaan@gmail.com</a> — general
+            💼 <a href="mailto:hr@vrikaan.com" style="color:#14E3C5;text-decoration:none;">hr@vrikaan.com</a> — careers ·
+            🤖 <a href="mailto:ai@vrikaan.com" style="color:#6366F1;text-decoration:none;">ai@vrikaan.com</a> — AI / product ·
+            ✉️ <a href="mailto:hello@vrikaan.com" style="color:#22C55E;text-decoration:none;">hello@vrikaan.com</a> — general
           </p>
         </td></tr>
 
@@ -326,7 +326,7 @@ After saving all 4 templates:
 
 1. **Test it** — Each template page has a **Test It** button (top-right). Send a test to your own Gmail. Check on phone too (Gmail mobile renders strict).
 2. **Confirm From Name = VRIKAAN** on every template (not SECUVION, not blank).
-3. **Confirm Reply To = hello.vrikaan@gmail.com** (or `hr.vrikaan@gmail.com` if it's a careers-specific template).
+3. **Confirm Reply To = hello@vrikaan.com** (or `hr@vrikaan.com` if it's a careers-specific template).
 4. **Remove the "S" avatar block** — your screenshot showed an "S" badge. The HTML above replaces it with a **"V"** badge using inline DIV (no image, so no CDN to update).
 5. **Set From Email to a verified domain** for higher inbox-rate. Default "Use Default Email Address" works but goes via `noreply@emailjs.com` which can land in Promotions tab. Verify `noreply@vrikaan.com` in EmailJS → Account → Domain Verification for best deliverability.
 6. **Variable check** — make sure the **Content** body uses `{{to_name}}`, `{{to_email}}`, `{{subject}}`, `{{message}}`, `{{plan}}`, `{{amount}}`, `{{billing}}` exactly (double curly braces, lowercase). EmailJS is case-sensitive.

@@ -145,7 +145,7 @@ This Master Services Agreement ("**Agreement**") is entered into as of the **Eff
 
 12.4 **Assignment.** Neither party may assign without the other's prior written consent, except in connection with a merger, acquisition, or sale of substantially all assets.
 
-12.5 **Notices.** Notices must be in writing to the addresses in the Order Form (with copy by email to hello.vrikaan@gmail.com for VRIKAAN).
+12.5 **Notices.** Notices must be in writing to the addresses in the Order Form (with copy by email to hello@vrikaan.com for VRIKAAN).
 
 12.6 **Entire agreement.** This Agreement, together with the Order Form, constitutes the entire agreement and supersedes all prior agreements on the subject matter.
 

@@ -2589,7 +2589,7 @@ const FounderSection = () => (
  * Names anonymized — these are real customer outcomes from our
  * scam-recovery flow + support tickets, with surnames + photos
  * removed at request. Full identified case studies available on
- * request: hello.vrikaan@gmail.com
+ * request: hello@vrikaan.com
  */
 const testimonials = [
   { name: "Ramesh Sharma",    role: "Software Engineer · Pune",          text: "Mom got a 'beta accident hua' voice call — sounded exactly like me. She asked our safe-word. Caller dropped. VRIKAAN saved ₹50,000 and Mom's peace of mind.",                       score: "Voice clone stopped" },
