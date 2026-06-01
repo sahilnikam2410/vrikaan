@@ -584,23 +584,35 @@ async function callGemini(prompt, { temperature = 0.4, maxOutputTokens = 1500, p
     ],
   };
 
-  let last = { ok: false, status: 502, detail: "no model attempted" };
-  for (const model of GEMINI_MODELS) {
-    try {
-      const res = await _geminiOnce(model, apiKey, body);
-      if (res.ok) return res;
-      last = res;
-      // Only cascade on transient capacity errors. Hard errors (400 bad
-      // request, 403 key) won't improve on another model — bail immediately.
-      const transient = res.status === 503 || res.status === 429
-        || /high demand|overloaded|unavailable|exhausted/i.test(res.detail || "");
-      if (!transient) return res;
-    } catch (err) {
-      last = { ok: false, status: 502, detail: err.name === "TimeoutError" ? "timeout" : err.message };
-      // timeout → try next model too
+  const isTransient = (res) => res.status === 503 || res.status === 429
+    || /high demand|overloaded|unavailable|exhausted/i.test(res.detail || "");
+
+  // Run the full model cascade once. Returns first OK, or the last error.
+  const runCascade = async () => {
+    let last = { ok: false, status: 502, detail: "no model attempted" };
+    for (const model of GEMINI_MODELS) {
+      try {
+        const res = await _geminiOnce(model, apiKey, body);
+        if (res.ok) return res;
+        last = res;
+        // Hard errors (400 bad request, 403 key) won't improve on another
+        // model — bail immediately. Only keep cascading on transient capacity.
+        if (!isTransient(res)) return res;
+      } catch (err) {
+        last = { ok: false, status: 502, detail: err.name === "TimeoutError" ? "timeout" : err.message };
+      }
     }
+    return last;
+  };
+
+  // First pass. If every model was transiently overloaded (free-tier capacity
+  // spikes are usually <2s), wait briefly and run the cascade one more time.
+  let result = await runCascade();
+  if (!result.ok && isTransient(result)) {
+    await new Promise((r) => setTimeout(r, 1200));
+    result = await runCascade();
   }
-  return last;
+  return result;
 }
 
 // Tries to coerce Gemini's text into a JSON object — strips ```json fences.
