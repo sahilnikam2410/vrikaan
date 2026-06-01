@@ -20,6 +20,7 @@ const ACTION_TIERS = {
 
   // PRO tier (AI, data-heavy, paid value)
   "scam-check":         "pro",
+  "risk-score":         "free",  // lead-gen — free to drive signups + upgrade intent
   "headers-fix":        "pro",
   "deepfake-audio":     "pro",
   "security-headers":   "pro",
@@ -626,6 +627,62 @@ Reply ONLY with a strict JSON object — no markdown fences, no commentary — m
     redFlags: Array.isArray(parsed.redFlags) ? parsed.redFlags.slice(0, 6) : [],
     reasoning: parsed.reasoning || "",
     advice: Array.isArray(parsed.advice) ? parsed.advice.slice(0, 4) : [],
+    model: "gemini-2.5-flash",
+  });
+}
+
+// ─── PERSONALIZED CYBER RISK SCORE ──────────────────────────────────
+// Takes a lightweight self-assessment signal set (breach hits, tools used,
+// habits) and returns an AI-generated 0-100 risk score + prioritized
+// action plan. Drives upgrade intent (high risk → "fix with Pro tools").
+async function handleRiskScore(req, res) {
+  const { signals } = req.body || {};
+  if (!signals || typeof signals !== "object") {
+    return res.status(400).json({ error: "signals object required" });
+  }
+  // Whitelist + clamp the inputs we accept (never trust client blindly).
+  const s = {
+    breachCount: Math.max(0, Math.min(50, Number(signals.breachCount) || 0)),
+    reusesPasswords: !!signals.reusesPasswords,
+    has2FA: !!signals.has2FA,
+    usesVPN: !!signals.usesVPN,
+    clickedScamRecently: !!signals.clickedScamRecently,
+    sharesOTP: !!signals.sharesOTP,
+    oldDevices: !!signals.oldDevices,
+    publicWifi: !!signals.publicWifi,
+    familyExposed: !!signals.familyExposed,
+    upiHeavy: !!signals.upiHeavy,
+    ageBand: ["under25", "25-40", "40-60", "60plus"].includes(signals.ageBand) ? signals.ageBand : "25-40",
+  };
+  const prompt = `You are an Indian cybersecurity analyst. Given this user's self-reported security posture, compute a personalized cyber RISK score (0-100, higher = more at risk) and a prioritized action plan. Weight India-specific threats: UPI fraud, OTP-sharing, deepfake voice scams targeting families, public-wifi MITM, password reuse.
+
+User signals (JSON):
+${JSON.stringify(s)}
+
+Reply ONLY with strict JSON — no markdown fences:
+{
+  "score": 0-100,
+  "band": "low" | "moderate" | "high" | "critical",
+  "headline": "one punchy sentence summarizing their risk in plain English",
+  "topRisks": [ { "risk": "short name", "why": "1 line", "severity": "low|medium|high" }, ... ],  // 3-5 items, sorted worst first
+  "quickWins": [ { "action": "short imperative", "tool": "VRIKAAN tool path e.g. /password-vault or null", "effortMins": number }, ... ],  // 3-5 items
+  "proPitch": "one sentence: which VRIKAAN Pro/Family feature would most reduce this user's risk"
+}`;
+  const r = await callGemini(prompt, { temperature: 0.3, maxOutputTokens: 1800, json: true });
+  if (!r.ok) return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
+  const parsed = tryParseJson(r.text);
+  if (!parsed || typeof parsed.score === "undefined") {
+    console.error("risk-score parse failed. raw:", r.text?.slice(0, 600));
+    return res.status(502).json({ error: "AI returned malformed result" });
+  }
+  res.setHeader("Cache-Control", "no-store");
+  return res.status(200).json({
+    score: Math.max(0, Math.min(100, Number(parsed.score) || 0)),
+    band: parsed.band || "moderate",
+    headline: parsed.headline || "",
+    topRisks: Array.isArray(parsed.topRisks) ? parsed.topRisks.slice(0, 5) : [],
+    quickWins: Array.isArray(parsed.quickWins) ? parsed.quickWins.slice(0, 5) : [],
+    proPitch: parsed.proPitch || "",
     model: "gemini-2.5-flash",
   });
 }
@@ -2601,6 +2658,7 @@ const HANDLERS = {
   "family-add-seat": handleFamilyAddSeat,
   "family-info": handleFamilyInfo,
   "scam-check": handleScamCheck,
+  "risk-score": handleRiskScore,
   "headers-fix": handleHeadersFix,
   "deepfake-audio": handleDeepfakeAudio,
   "vuln-scan": handleVulnScan,
