@@ -343,21 +343,8 @@
       </div>
     </div>
     <script type="module" src="/src/main.jsx"></script>
-    <script>
-      // Splash shows for exactly 5 seconds, then fades out — gives users
-      // time to register the brand mark + tagline on every page load.
-      // (If React is ready before 5s, it renders behind the splash silently;
-      //  if React takes longer than 5s, splash still hides and app continues
-      //  to mount in the background.)
-      const SPLASH_MS = 5000;
-      setTimeout(() => {
-        const splash = document.getElementById('splash');
-        if (splash) {
-          splash.style.transition = 'opacity 0.5s ease';
-          splash.style.opacity = '0';
-          setTimeout(() => splash.remove(), 500);
-        }
-      }, SPLASH_MS);
-    </script>
+    <!-- Splash-hide logic externalized to /splash.js so the page has no
+         inline executable script — lets the CSP drop script-src 'unsafe-inline'. -->
+    <script src="/splash.js"></script>
   </body>
 </html>
