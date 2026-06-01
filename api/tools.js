@@ -540,42 +540,64 @@ Format as markdown with short bullet points. Do not repeat the raw JSON. Do not 
 // Used by all AI features below. Returns { ok, text, status, detail }.
 // Pass json:true to force application/json response (no markdown fences,
 // no prose) — required for any handler that does JSON.parse on the result.
+// Model cascade — try primary first, fall back to older models on overload
+// (503) or rate-limit (429). Gemini 2.5 Flash frequently returns "high demand"
+// 503s; 2.0 / 1.5 Flash absorb the spillover. Each is a separate quota pool.
+const GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"];
+
+async function _geminiOnce(model, apiKey, body) {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(30000),
+  });
+  if (!r.ok) {
+    const text = await r.text().catch(() => "");
+    let detail = "";
+    try { detail = (JSON.parse(text)?.error?.message) || ""; } catch { detail = text.slice(0, 200); }
+    return { ok: false, status: r.status, detail };
+  }
+  const data = await r.json();
+  const out = data?.candidates?.[0]?.content?.parts?.map((p) => p.text).join("").trim();
+  return out ? { ok: true, text: out, model } : { ok: false, status: 502, detail: "empty response" };
+}
+
 async function callGemini(prompt, { temperature = 0.4, maxOutputTokens = 1500, parts, json = false } = {}) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return { ok: false, status: 503, detail: "AI not configured" };
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-  // parts overrides prompt — used for multimodal (audio + text) calls
   const reqParts = parts || [{ text: prompt }];
   const generationConfig = { temperature, maxOutputTokens };
   if (json) generationConfig.responseMimeType = "application/json";
-  try {
-    const r = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ role: "user", parts: reqParts }],
-        generationConfig,
-        safetySettings: [
-          { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
-          { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
-          { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_ONLY_HIGH" },
-          { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_ONLY_HIGH" },
-        ],
-      }),
-      signal: AbortSignal.timeout(30000),
-    });
-    if (!r.ok) {
-      const text = await r.text().catch(() => "");
-      let detail = "";
-      try { detail = (JSON.parse(text)?.error?.message) || ""; } catch { detail = text.slice(0, 200); }
-      return { ok: false, status: r.status, detail };
+  const body = {
+    contents: [{ role: "user", parts: reqParts }],
+    generationConfig,
+    safetySettings: [
+      { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_ONLY_HIGH" },
+      { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_ONLY_HIGH" },
+      { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_ONLY_HIGH" },
+      { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_ONLY_HIGH" },
+    ],
+  };
+
+  let last = { ok: false, status: 502, detail: "no model attempted" };
+  for (const model of GEMINI_MODELS) {
+    try {
+      const res = await _geminiOnce(model, apiKey, body);
+      if (res.ok) return res;
+      last = res;
+      // Only cascade on transient capacity errors. Hard errors (400 bad
+      // request, 403 key) won't improve on another model — bail immediately.
+      const transient = res.status === 503 || res.status === 429
+        || /high demand|overloaded|unavailable|exhausted/i.test(res.detail || "");
+      if (!transient) return res;
+    } catch (err) {
+      last = { ok: false, status: 502, detail: err.name === "TimeoutError" ? "timeout" : err.message };
+      // timeout → try next model too
     }
-    const data = await r.json();
-    const out = data?.candidates?.[0]?.content?.parts?.map((p) => p.text).join("").trim();
-    return out ? { ok: true, text: out } : { ok: false, status: 502, detail: "empty response" };
-  } catch (err) {
-    return { ok: false, status: 502, detail: err.name === "TimeoutError" ? "timeout" : err.message };
   }
+  return last;
 }
 
 // Tries to coerce Gemini's text into a JSON object — strips ```json fences.
