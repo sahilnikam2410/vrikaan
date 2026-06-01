@@ -85,6 +85,14 @@ export function AuthProvider({ children }) {
     getRedirectResult(auth).catch((err) => {
       if (err?.code && err.code !== "auth/no-auth-event") {
         console.warn("getRedirectResult error:", err.code, err.message);
+        // Surface the real reason instead of silently bouncing to /login.
+        // auth/unauthorized-domain here = vrikaan.com not in Firebase
+        // Authorized Domains, which is the usual "returns to login" cause.
+        const msg = err.code === "auth/unauthorized-domain"
+          ? "Sign-in blocked: this domain isn't authorized in Firebase (Authentication → Settings → Authorized domains)."
+          : `Sign-in could not complete: ${err.code}`;
+        try { sessionStorage.setItem("vrikaan_auth_redirect_error", msg); } catch {}
+        if (typeof window !== "undefined") window.__vrikaanAuthError = msg;
       }
     });
   }, []);
