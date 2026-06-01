@@ -693,24 +693,23 @@ async function handleRiskScore(req, res) {
   };
   const prompt = `You are an Indian cybersecurity analyst. Given this user's self-reported security posture, compute a personalized cyber RISK score (0-100, higher = more at risk) and a prioritized action plan. Weight India-specific threats: UPI fraud, OTP-sharing, deepfake voice scams targeting families, public-wifi MITM, password reuse.
 
-User signals (JSON):
-${JSON.stringify(s)}
+User signals (JSON): ${JSON.stringify(s)}
 
-Reply ONLY with strict JSON — no markdown fences:
-{
-  "score": 0-100,
-  "band": "low" | "moderate" | "high" | "critical",
-  "headline": "one punchy sentence summarizing their risk in plain English",
-  "topRisks": [ { "risk": "short name", "why": "1 line", "severity": "low|medium|high" }, ... ],  // 3-5 items, sorted worst first
-  "quickWins": [ { "action": "short imperative", "tool": "VRIKAAN tool path e.g. /password-vault or null", "effortMins": number }, ... ],  // 3-5 items
-  "proPitch": "one sentence: which VRIKAAN Pro/Family feature would most reduce this user's risk"
-}`;
-  const r = await callGemini(prompt, { temperature: 0.3, maxOutputTokens: 1800, json: true });
+Return a JSON object with these exact keys:
+- "score": integer 0-100 (higher = more at risk)
+- "band": one of "low", "moderate", "high", "critical"
+- "headline": one punchy plain-English sentence summarizing their risk
+- "topRisks": array of 3 to 5 objects, worst first, each {"risk": short name, "why": one line, "severity": "low" | "medium" | "high"}
+- "quickWins": array of 3 to 5 objects, each {"action": short imperative, "tool": a VRIKAAN tool path like "/password-vault" or null, "effortMins": integer}
+- "proPitch": one sentence naming the VRIKAAN Pro or Family feature that would most reduce this user's risk
+
+Keep all strings short. Output only the JSON object.`;
+  const r = await callGemini(prompt, { temperature: 0.3, maxOutputTokens: 3000, json: true });
   if (!r.ok) return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
   const parsed = tryParseJson(r.text);
   if (!parsed || typeof parsed.score === "undefined") {
-    console.error("risk-score parse failed. raw:", r.text?.slice(0, 600));
-    return res.status(502).json({ error: "AI returned malformed result" });
+    console.error("risk-score parse failed. raw:", (r.text || "").slice(0, 800));
+    return res.status(502).json({ error: "AI returned malformed result", raw: (r.text || "").slice(0, 300) });
   }
   res.setHeader("Cache-Control", "no-store");
   return res.status(200).json({
