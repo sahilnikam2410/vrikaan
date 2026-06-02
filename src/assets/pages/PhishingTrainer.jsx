@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
+import ToolIcon from "../../lib/toolIcons.jsx";
 
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
@@ -99,7 +100,7 @@ export default function PhishingTrainer() {
         {/* START */}
         {screen === "start" && (
           <div style={{ textAlign: "center", padding: "40px 0" }}>
-            <div style={{ fontSize: 60, marginBottom: 16 }}>&#x1F3A3;</div>
+            <div style={{ marginBottom: 16 }}><ToolIcon to="/phishing-trainer" size={34} color="#14b8a6" /></div>
             <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans',sans-serif", marginBottom: 10 }}>Phishing URL Trainer</h1>
             <p style={{ color: T.muted, fontSize: 15, marginBottom: 8, maxWidth: 480, margin: "0 auto 8px" }}>Can you spot the difference between real and phishing URLs?</p>
             <p style={{ color: T.muted, fontSize: 13, marginBottom: 32 }}>{ROUNDS} rounds | 15 seconds each | +10 pts correct, +5 streak bonus</p>

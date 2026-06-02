@@ -10,6 +10,7 @@ import {
   LuKey, LuRadar, LuGift, LuBookOpen, LuPenLine, LuNewspaper, LuCreditCard,
   LuInfo, LuPhone, LuSparkles, LuLayoutDashboard, LuUser, LuActivity, LuLock,
   LuDatabase, LuTriangleAlert, LuMegaphone, LuBriefcase, LuUserRound,
+  LuAudioLines, LuLayers,
 } from "react-icons/lu";
 
 // route → icon component
@@ -57,6 +58,10 @@ export const TOOL_ICONS = {
   "/scam-database": LuDatabase,
   "/threats": LuTriangleAlert,
   "/emergency-help": LuSiren,
+  "/deepfake-audio": LuAudioLines,
+  "/vulnerability-scan": LuShieldAlert,
+  "/bulk-scanner": LuLayers,
+  "/protection": LuShield,
   // Pages
   "/learn": LuBookOpen,
   "/blog": LuPenLine,
