@@ -567,9 +567,10 @@ async function _geminiOnce(model, apiKey, body) {
   return out ? { ok: true, text: out, model } : { ok: false, status: 502, detail: "empty response" };
 }
 
-async function callGemini(prompt, { temperature = 0.4, maxOutputTokens = 1500, parts, json = false } = {}) {
+async function callGemini(prompt, { temperature = 0.4, maxOutputTokens = 1500, parts, json = false, models } = {}) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return { ok: false, status: 503, detail: "AI not configured" };
+  const modelList = Array.isArray(models) && models.length ? models : GEMINI_MODELS;
   const reqParts = parts || [{ text: prompt }];
   const generationConfig = { temperature, maxOutputTokens };
   if (json) generationConfig.responseMimeType = "application/json";
@@ -590,7 +591,7 @@ async function callGemini(prompt, { temperature = 0.4, maxOutputTokens = 1500, p
   // Run the full model cascade once. Returns first OK, or the last error.
   const runCascade = async () => {
     let last = { ok: false, status: 502, detail: "no model attempted" };
-    for (const model of GEMINI_MODELS) {
+    for (const model of modelList) {
       try {
         const res = await _geminiOnce(model, apiKey, body);
         if (res.ok) return res;
@@ -605,11 +606,14 @@ async function callGemini(prompt, { temperature = 0.4, maxOutputTokens = 1500, p
     return last;
   };
 
-  // First pass. If every model was transiently overloaded (free-tier capacity
-  // spikes are usually <2s), wait briefly and run the cascade one more time.
+  // First pass, then up to 2 more passes with growing backoff. Free-tier
+  // capacity spikes ("high demand" 503) usually clear within a few seconds;
+  // retrying the whole cascade with backoff absorbs most of them.
   let result = await runCascade();
-  if (!result.ok && isTransient(result)) {
-    await new Promise((r) => setTimeout(r, 1200));
+  const backoffs = [1200, 3000];
+  for (const wait of backoffs) {
+    if (result.ok || !isTransient(result)) break;
+    await new Promise((r) => setTimeout(r, wait));
     result = await runCascade();
   }
   return result;
@@ -834,8 +838,23 @@ Reply ONLY with a strict JSON object — no markdown fences:
     { inlineData: { mimeType, data: audioBase64 } },
     { text: prompt },
   ];
-  const r = await callGemini("", { temperature: 0.2, maxOutputTokens: 2500, parts, json: true });
-  if (!r.ok) return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
+  // Audio is heaviest on gemini-2.5-flash (most-demanded pool). Try the
+  // less-congested 2.0-flash first, then 2.5, then the stable alias.
+  const r = await callGemini("", {
+    temperature: 0.2, maxOutputTokens: 2500, parts, json: true,
+    models: ["gemini-2.0-flash", "gemini-2.5-flash", "gemini-flash-latest"],
+  });
+  if (!r.ok) {
+    const transient = r.status === 503 || r.status === 429
+      || /high demand|overloaded|unavailable|exhausted|timeout/i.test(r.detail || "");
+    if (transient) {
+      return res.status(503).json({
+        error: "Our AI is briefly overloaded with requests. Please tap Analyze again in a few seconds.",
+        retryable: true,
+      });
+    }
+    return res.status(r.status || 502).json({ error: r.detail || "AI unavailable" });
+  }
   const parsed = tryParseJson(r.text);
   if (!parsed || typeof parsed.verdict !== "string") {
     console.error("deepfake-audio parse failed. raw:", r.text?.slice(0, 600));
