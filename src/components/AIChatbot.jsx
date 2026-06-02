@@ -403,13 +403,14 @@ export default function AIChatbot() {
 
   const confirmPurchase = () => {
     if (!selectedPlan) return;
-    // Simulate purchase (in production, integrate Razorpay/Stripe here)
-    upgradePlan(selectedPlan);
-    refreshCredits();
+    // SECURITY: never grant a plan client-side. Send the user to the real
+    // Cashfree checkout, which verifies payment server-side before upgrading.
+    // (The old code fake-granted unlimited credits with no payment.)
+    const planParam = selectedPlan === "unlimited" ? "enterprise" : selectedPlan;
     setShowPaywall(false);
     setSelectedPlan(null);
-    setView("chat");
-    setMessages(p => [...p, { role: "bot", text: `🎉 Payment successful! Upgraded to **${PLANS[selectedPlan].name}** plan. You now have **${PLANS[selectedPlan].credits === Infinity ? "Unlimited" : PLANS[selectedPlan].credits} credits**. Enjoy!`, time: new Date() }]);
+    setOpen(false);
+    navigate(`/checkout?plan=${planParam}`);
   };
 
   // ─── Format markdown-like text ───
