@@ -6,6 +6,10 @@ import { subscribe as subNotif, listNotifications, markAllRead as notifMarkAll, 
 import LanguageSwitcher from "./LanguageSwitcher";
 import { getToolTier, userMeetsTier, tierLabel, tierColor } from "../lib/toolTiers";
 import UpgradeModal from "./UpgradeModal";
+import ToolIcon from "../lib/toolIcons.jsx";
+
+// Strip a leading emoji (+ optional variation selector + space) from a label.
+const stripEmoji = (s) => s.replace(/^(?:[\u{1F000}-\u{1FAFF}\u{2190}-\u{21FF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}️⃣]+\s*)/u, "");
 
 const TD = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", accent: "#6366f1", cyan: "#14b8a6", border: "rgba(148,163,184,0.08)" };
 const TL = { bg: "#f8fafc", white: "#0f172a", muted: "#475569", accent: "#6366f1", cyan: "#0d9488", border: "rgba(15,23,42,0.08)" };
@@ -266,14 +270,21 @@ const Navbar = () => {
                               onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.08)"}
                               onMouseLeave={e => e.currentTarget.style.background = isActive(item.to) ? "rgba(99,102,241,0.1)" : "transparent"}
                             >
-                              <span style={{ fontSize: 18, lineHeight: 1 }}>{item.label.split(" ")[0]}</span>
+                              <span style={{
+                                width: 30, height: 30, borderRadius: 8, flexShrink: 0,
+                                display: "flex", alignItems: "center", justifyContent: "center",
+                                background: isActive(item.to) ? `${T.cyan}22` : "rgba(148,163,184,0.08)",
+                                color: isActive(item.to) ? T.cyan : T.muted,
+                              }}>
+                                <ToolIcon to={item.to} size={16} />
+                              </span>
                               <div style={{ flex: 1, minWidth: 0 }}>
                                 <div style={{
                                   display: "flex", alignItems: "center", gap: 6,
                                   fontSize: 13, fontWeight: 600,
                                   color: isActive(item.to) ? T.accent : T.white,
                                 }}>
-                                  <span>{item.label.split(" ").slice(1).join(" ")}</span>
+                                  <span>{stripEmoji(item.label)}</span>
                                   {tier !== "free" && (
                                     <span style={{
                                       display: "inline-flex", alignItems: "center", gap: 2,
@@ -424,7 +435,7 @@ const Navbar = () => {
                       onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.06)"}
                       onMouseLeave={e => e.currentTarget.style.background = "transparent"}
                     >
-                      <span style={{ fontSize: 18, width: 28, textAlign: "center" }}>{item.icon}</span>
+                      <span style={{ width: 28, display: "flex", alignItems: "center", justifyContent: "center", color: T.cyan }}><ToolIcon to={item.to} size={16} /></span>
                       <div style={{ flex: 1 }}>
                         <div style={{ fontSize: 13, fontWeight: 600, color: T.white }}>{item.label}</div>
                         <div style={{ fontSize: 11, color: T.muted }}>{item.cat}</div>
@@ -617,8 +628,12 @@ const Navbar = () => {
                       {group.items.map(item => (
                         <Link key={item.to} to={item.to} style={{
                           color: isActive(item.to) ? T.accent : T.muted, textDecoration: "none",
-                          fontSize: 15, fontWeight: 500, padding: "7px 24px", display: "block",
-                        }}>{item.label}</Link>
+                          fontSize: 15, fontWeight: 500, padding: "7px 24px",
+                          display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                        }}>
+                          <ToolIcon to={item.to} size={16} color={isActive(item.to) ? T.cyan : T.muted} />
+                          {stripEmoji(item.label)}
+                        </Link>
                       ))}
                     </div>
                   ))}

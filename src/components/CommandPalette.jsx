@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import ToolIcon from "../lib/toolIcons.jsx";
 
 const T = {
   bg: "rgba(3,7,18,0.92)",
@@ -238,7 +239,9 @@ export default function CommandPalette() {
                         borderLeft: isActive ? `3px solid ${T.cyan}` : "3px solid transparent",
                       }}
                     >
-                      <span style={{ fontSize: 18 }}>{c.icon || "›"}</span>
+                      <span style={{ width: 30, height: 30, borderRadius: 8, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", background: isActive ? "rgba(20, 184, 166,0.14)" : "rgba(148,163,184,0.08)", color: T.cyan }}>
+                        {c.path ? <ToolIcon to={c.path} size={16} /> : <span style={{ fontSize: 16 }}>{c.icon || "›"}</span>}
+                      </span>
                       <span style={{ flex: 1 }}>{c.label}</span>
                       {isActive && <kbd style={{
                         padding: "2px 6px", borderRadius: 4,
