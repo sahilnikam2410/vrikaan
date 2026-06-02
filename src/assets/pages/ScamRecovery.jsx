@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { LuTriangleAlert, LuPhone, LuChartColumn, LuScale, LuClipboard, LuClock, LuLink, LuFileText, LuSave, LuSmartphone } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import SeniorModeBanner from "../../components/SeniorModeBanner";
 import Footer from "../../components/Footer";
@@ -90,7 +91,7 @@ export default function ScamRecovery() {
             background: `${T.red}1a`, border: `1px solid ${T.red}55`,
             fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
             color: T.red, marginBottom: 14,
-          }}>🚨 Emergency · Free · No Signup</span>
+          }}><LuTriangleAlert size={13} style={{ verticalAlign: "-2px" }} /> Emergency · Free · No Signup</span>
           <h1 style={{
             fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
@@ -112,7 +113,7 @@ export default function ScamRecovery() {
           display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap",
           marginBottom: 28,
         }}>
-          <div style={{ fontSize: 32 }}>🚨</div>
+          <div style={{ display: "inline-flex", color: T.red }}><LuTriangleAlert size={32} /></div>
           <div style={{ flex: 1, minWidth: 200 }}>
             <div style={{ color: T.white, fontWeight: 800, fontSize: 16 }}>
               Call <a href="tel:1930" style={{ color: T.red, textDecoration: "underline" }}>1930</a> RIGHT NOW
@@ -125,7 +126,7 @@ export default function ScamRecovery() {
             padding: "12px 22px", borderRadius: 10,
             background: T.red, color: "#fff", textDecoration: "none",
             fontWeight: 800, fontSize: 15, fontFamily: "'Vrikaan Sans', sans-serif",
-          }}>📞 Call 1930</a>
+          }}><LuPhone size={15} style={{ verticalAlign: "-2px" }} /> Call 1930</a>
         </div>
 
         {/* STEP 1 — TRIAGE FORM */}
@@ -198,7 +199,7 @@ export default function ScamRecovery() {
                 fontFamily: "'Vrikaan Sans', sans-serif",
                 width: "100%", marginTop: 8,
               }}
-            >🚨 Show my recovery plan →</button>
+            ><LuTriangleAlert size={15} style={{ verticalAlign: "-2px" }} /> Show my recovery plan →</button>
           </div>
         )}
 
@@ -230,7 +231,7 @@ export default function ScamRecovery() {
                 <div style={{
                   fontSize: 10, fontWeight: 800, letterSpacing: 1.5, textTransform: "uppercase",
                   color: plan.recoveryColor, marginBottom: 6,
-                }}>📊 Recovery odds — {plan.recoveryClass.replace("_", " ")}</div>
+                }}><LuChartColumn size={13} style={{ verticalAlign: "-2px" }} /> Recovery odds — {plan.recoveryClass.replace("_", " ")}</div>
                 <div style={{ color: T.white, fontSize: 14, lineHeight: 1.6 }}>{plan.recoveryOddsText}</div>
               </div>
 
@@ -239,7 +240,7 @@ export default function ScamRecovery() {
                 background: "rgba(2,6,23,0.4)", border: `1px solid ${T.border}`,
               }}>
                 <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.5, textTransform: "uppercase", color: T.muted, marginBottom: 6 }}>
-                  ⚖️ Applicable IPC sections
+                  <LuScale size={13} style={{ verticalAlign: "-2px" }} /> Applicable IPC sections
                 </div>
                 <div style={{ color: T.cyan, fontSize: 13, fontFamily: "ui-monospace, monospace", lineHeight: 1.8 }}>
                   {plan.scam.ipc.join(" · ")}
@@ -252,7 +253,7 @@ export default function ScamRecovery() {
               <h3 style={{
                 fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 20, color: T.white,
                 margin: "0 0 14px",
-              }}>📋 Do these in order — fastest recovery path</h3>
+              }}><LuClipboard size={18} style={{ verticalAlign: "-3px" }} /> Do these in order — fastest recovery path</h3>
               <div style={{ display: "grid", gap: 12 }}>
                 {plan.steps.map((s, i) => (
                   <div key={s.id} style={{
@@ -272,7 +273,7 @@ export default function ScamRecovery() {
                         <div style={{ color: T.white, fontSize: 16, fontWeight: 700 }}>{s.title}</div>
                         {s.deadline && (
                           <div style={{ color: T.yellow, fontSize: 11, marginTop: 2, fontWeight: 600 }}>
-                            ⏱ {s.deadline}
+                            <LuClock size={12} style={{ verticalAlign: "-2px" }} /> {s.deadline}
                           </div>
                         )}
                       </div>
@@ -285,13 +286,13 @@ export default function ScamRecovery() {
                         padding: "8px 14px", borderRadius: 8,
                         background: T.cyan, color: T.bg, textDecoration: "none",
                         fontWeight: 700, fontSize: 12, fontFamily: "'Vrikaan Sans', sans-serif",
-                      }}>🔗 Open portal</a>
+                      }}><LuLink size={12} style={{ verticalAlign: "-2px" }} /> Open portal</a>
                       <div style={{ flex: 1 }} />
                       <div style={{
                         fontSize: 11, color: T.muted, padding: "4px 10px",
                         background: "rgba(2,6,23,0.5)", borderRadius: 6,
                         border: `1px solid ${T.border}`,
-                      }}>📊 {s.odds}</div>
+                      }}><LuChartColumn size={12} style={{ verticalAlign: "-2px" }} /> {s.odds}</div>
                     </div>
                   </div>
                 ))}
@@ -303,7 +304,7 @@ export default function ScamRecovery() {
               background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 20,
             }}>
               <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
-                ☎️ Helplines — call in this order
+                <LuPhone size={18} style={{ verticalAlign: "-3px" }} /> Helplines — call in this order
               </h3>
               <div style={{ display: "grid", gap: 8 }}>
                 {HELPLINES.map(h => (
@@ -331,7 +332,7 @@ export default function ScamRecovery() {
               background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 20,
             }}>
               <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 8px" }}>
-                📄 Pre-filled FIR / cybercrime complaint
+                <LuFileText size={18} style={{ verticalAlign: "-3px" }} /> Pre-filled FIR / cybercrime complaint
               </h3>
               <p style={{ color: T.muted, fontSize: 13, margin: "0 0 14px" }}>
                 Fill name/contact/details below — text auto-updates. Copy or download → submit at police station or cybercrime.gov.in.
@@ -359,13 +360,13 @@ export default function ScamRecovery() {
               }}>{complaintText}</pre>
 
               <div style={{ display: "flex", gap: 10, marginTop: 12, flexWrap: "wrap" }}>
-                <button onClick={copyComplaint} style={btnPrimary()}>📋 Copy text</button>
-                <button onClick={downloadComplaint} style={btnSecondary()}>💾 Download .txt</button>
+                <button onClick={copyComplaint} style={btnPrimary()}><LuClipboard size={13} style={{ verticalAlign: "-2px" }} /> Copy text</button>
+                <button onClick={downloadComplaint} style={btnSecondary()}><LuSave size={13} style={{ verticalAlign: "-2px" }} /> Download .txt</button>
                 <a
                   href={`https://wa.me/?text=${encodeURIComponent(`I am filing a complaint:\n\n${complaintText.slice(0, 800)}…\n\nFull version at vrikaan.com/scam-recovery`)}`}
                   target="_blank" rel="noopener noreferrer"
                   style={{ ...btnSecondary(), background: "#25D366", color: "#fff", border: 0 }}
-                >📲 Send via WhatsApp</a>
+                ><LuSmartphone size={13} style={{ verticalAlign: "-2px" }} /> Send via WhatsApp</a>
               </div>
             </div>
 
@@ -410,7 +411,7 @@ export default function ScamRecovery() {
           marginTop: 32, padding: 16, color: T.mutedDark, fontSize: 12,
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
-          ⚖️ This is informational guidance, not legal advice. For complex cases consult a lawyer.
+          <LuScale size={12} style={{ verticalAlign: "-2px" }} /> This is informational guidance, not legal advice. For complex cases consult a lawyer.
           IPC sections + recovery odds based on 2024 aggregated data from I4C, RBI, NPCI. Procedures
           may change — verify the latest at cybercrime.gov.in. <br />
           🇮🇳 Built by SOC analysts in Nashik · Free forever · Share with anyone in trouble

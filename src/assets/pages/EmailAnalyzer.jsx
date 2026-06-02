@@ -323,11 +323,11 @@ export default function EmailAnalyzer() {
                   <div style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, fontWeight: 700, color: result.assessment.color, marginBottom: 4 }}>{result.assessment.label}</div>
                   <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.6, margin: 0 }}>{result.assessment.desc}</p>
                 </div>
-                <button onClick={explainWithAI} disabled={aiLoading} style={{ padding: "8px 14px", background: "rgba(20, 184, 166,0.1)", border: "1px solid rgba(20, 184, 166,0.25)", borderRadius: 8, color: T.cyan, fontSize: 12, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", fontFamily: "'Vrikaan Sans'", flexShrink: 0, opacity: aiLoading ? 0.6 : 1 }}>{aiLoading ? "…" : "🤖 AI"}</button>
+                <button onClick={explainWithAI} disabled={aiLoading} style={{ padding: "8px 14px", background: "rgba(20, 184, 166,0.1)", border: "1px solid rgba(20, 184, 166,0.25)", borderRadius: 8, color: T.cyan, fontSize: 12, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", fontFamily: "'Vrikaan Sans'", flexShrink: 0, opacity: aiLoading ? 0.6 : 1 }}>{aiLoading ? "…" : <><LuBot size={13} style={{ verticalAlign: "-2px" }} /> AI</>}</button>
               </div>
               {(aiExplanation || aiError) && (
                 <div style={{ marginTop: 16, padding: "14px 16px", background: "rgba(20, 184, 166,0.05)", border: "1px solid rgba(20, 184, 166,0.15)", borderRadius: 10 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: T.cyan, fontFamily: "'Vrikaan Mono', monospace", letterSpacing: 0.5, marginBottom: 8 }}>🤖 AI ANALYSIS</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: T.cyan, fontFamily: "'Vrikaan Mono', monospace", letterSpacing: 0.5, marginBottom: 8 }}><LuBot size={13} style={{ verticalAlign: "-2px" }} /> AI ANALYSIS</div>
                   {aiError ? <div style={{ fontSize: 13, color: T.red }}>{aiError}</div>
                     : <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.7 }}>{renderMarkdown(aiExplanation)}</div>}
                 </div>
@@ -420,7 +420,7 @@ export default function EmailAnalyzer() {
                     <div key={i} style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
                       <div style={{ textAlign: "center", minWidth: 80 }}>
                         <div style={{ width: 32, height: 32, borderRadius: 8, background: i === 0 ? `${T.accent}15` : i === result.hops.length - 1 ? `${T.cyan}15` : "rgba(148,163,184,0.06)", border: `1px solid ${i === 0 ? T.accent : i === result.hops.length - 1 ? T.cyan : T.border}`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 6px", fontSize: 12, color: i === 0 ? T.accent : i === result.hops.length - 1 ? T.cyan : T.muted }}>
-                          {i === 0 ? "\u2709" : i === result.hops.length - 1 ? "\u2709" : "\u21C6"}
+                          {i === 0 ? <LuMail size={14} /> : i === result.hops.length - 1 ? <LuMail size={14} /> : <LuArrowLeftRight size={14} />}
                         </div>
                         <div style={{ ...mono, fontSize: 9, color: T.muted, maxWidth: 90, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{hop.by}</div>
                       </div>
@@ -437,7 +437,7 @@ export default function EmailAnalyzer() {
             {result.suspiciousFlags.length > 0 && (
               <div style={{ ...card, background: `${T.red}06`, border: `1px solid ${T.red}15` }}>
                 <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 20px", color: T.red }}>
-                  {"\u26A0"} Suspicious Indicators ({result.suspiciousFlags.length})
+                  <LuTriangleAlert size={16} style={{ verticalAlign: "-2px" }} /> Suspicious Indicators ({result.suspiciousFlags.length})
                 </h3>
                 {result.suspiciousFlags.map((flag, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 16px", background: "rgba(0,0,0,0.25)", borderRadius: 10, marginBottom: i < result.suspiciousFlags.length - 1 ? 10 : 0, border: `1px solid ${flag.severity === "high" ? T.red : flag.severity === "medium" ? T.gold : T.mutedDark}10` }}>

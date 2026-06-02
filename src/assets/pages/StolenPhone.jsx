@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
+import { LuTriangleAlert, LuPhone, LuRadio, LuLockOpen, LuClipboard, LuLock, LuPackage, LuBot, LuSmartphone } from "react-icons/lu";
 
 const T = {
   bg: "#060a14", card: "rgba(17,24,39,0.7)",
@@ -15,7 +16,7 @@ const T = {
 const OS_FLOWS = {
   android: {
     label: "Android",
-    icon: "🤖",
+    icon: LuBot,
     color: "#3DDC84",
     findTool: { label: "Find My Device", url: "https://www.google.com/android/find" },
     findInstructions: "Open google.com/android/find on ANY device → sign in with your Google account → see live location, lock screen, erase all data.",
@@ -38,7 +39,7 @@ const OS_FLOWS = {
   },
   ios: {
     label: "iPhone / iOS",
-    icon: "📱",
+    icon: LuSmartphone,
     color: "#A2AAAD",
     findTool: { label: "Find My (iCloud)", url: "https://www.icloud.com/find" },
     findInstructions: "Open icloud.com/find on ANY device → sign in with Apple ID → see live location, Mark As Lost, Erase iPhone. iOS Activation Lock prevents thief from using it.",
@@ -62,9 +63,9 @@ const OS_FLOWS = {
 };
 
 const COMMON = [
-  { num: "1930", label: "🚨 National Cyber Crime Helpline", desc: "If financial fraud already happened" },
-  { num: "112", label: "📞 Emergency / Police", desc: "Single number for all emergencies" },
-  { num: "1800-180-1551", label: "📡 TRAI consumer helpline", desc: "For telecom complaint escalation" },
+  { num: "1930", icon: LuTriangleAlert, label: "National Cyber Crime Helpline", desc: "If financial fraud already happened" },
+  { num: "112", icon: LuPhone, label: "Emergency / Police", desc: "Single number for all emergencies" },
+  { num: "1800-180-1551", icon: LuRadio, label: "TRAI consumer helpline", desc: "For telecom complaint escalation" },
 ];
 
 const KEEP_THESE = [
@@ -97,7 +98,7 @@ export default function StolenPhone() {
             background: `${T.red}1a`, border: `1px solid ${T.red}55`,
             fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
             color: T.red, marginBottom: 14,
-          }}>🚨 EMERGENCY · Free Action Plan</span>
+          }}><LuTriangleAlert size={11} style={{ verticalAlign: "-1px" }} /> EMERGENCY · Free Action Plan</span>
           <h1 style={{
             fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
@@ -121,7 +122,7 @@ export default function StolenPhone() {
                 color: "inherit", cursor: "pointer", fontFamily: "inherit",
                 transition: "all 0.15s",
               }}>
-                <div style={{ fontSize: 48, marginBottom: 12 }}>{f.icon}</div>
+                <div style={{ marginBottom: 12, color: f.color }}><f.icon size={48} /></div>
                 <div style={{ color: T.white, fontWeight: 700, fontSize: 22, marginBottom: 4 }}>{f.label}</div>
                 <div style={{ color: f.color, fontSize: 13 }}>Click to load steps →</div>
               </button>
@@ -135,7 +136,7 @@ export default function StolenPhone() {
               background: `${flow.color}1a`, border: `2px solid ${flow.color}`,
               display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap",
             }}>
-              <div style={{ fontSize: 36 }}>{flow.icon}</div>
+              <div style={{ color: flow.color }}><flow.icon size={36} /></div>
               <div style={{ flex: 1, minWidth: 200 }}>
                 <div style={{ color: T.white, fontWeight: 800, fontSize: 16 }}>
                   Step 1: open <strong style={{ color: flow.color }}>{flow.findTool.label}</strong> on ANY other device
@@ -146,7 +147,7 @@ export default function StolenPhone() {
                 padding: "13px 22px", borderRadius: 10,
                 background: flow.color, color: T.bg, textDecoration: "none",
                 fontWeight: 800, fontSize: 14, fontFamily: "'Vrikaan Sans', sans-serif",
-              }}>🔓 Open {flow.findTool.label} →</a>
+              }}><LuLockOpen size={14} style={{ verticalAlign: "-2px" }} /> Open {flow.findTool.label} →</a>
             </div>
 
             {/* Steps */}
@@ -155,7 +156,7 @@ export default function StolenPhone() {
               padding: 22, marginBottom: 18,
             }}>
               <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
-                📋 7-step recovery flow ({flow.label})
+                <LuClipboard size={20} style={{ verticalAlign: "-3px" }} /> 7-step recovery flow ({flow.label})
               </h2>
               <ol style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
                 {flow.steps.map((s, i) => (
@@ -182,7 +183,7 @@ export default function StolenPhone() {
               padding: 20, marginBottom: 18,
             }}>
               <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
-                ☎️ SIM block helplines — call BEFORE thief uses your number for OTP
+                <LuPhone size={18} style={{ verticalAlign: "-3px" }} /> SIM block helplines — call BEFORE thief uses your number for OTP
               </h3>
               <div style={{ display: "grid", gap: 8 }}>
                 {flow.sim.map(s => (
@@ -208,7 +209,7 @@ export default function StolenPhone() {
               border: `1px solid ${T.cyan}33`,
             }}>
               <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 8px" }}>
-                🔒 Permanent IMEI block — CEIR (Govt of India)
+                <LuLock size={18} style={{ verticalAlign: "-3px" }} /> Permanent IMEI block — CEIR (Govt of India)
               </h3>
               <p style={{ color: T.muted, fontSize: 13, margin: "0 0 12px", lineHeight: 1.6 }}>
                 Central Equipment Identity Register. Once your IMEI is registered as "lost" with FIR proof,
@@ -237,7 +238,7 @@ export default function StolenPhone() {
           padding: 20, marginBottom: 18,
         }}>
           <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
-            ☎️ Universal helplines
+            <LuPhone size={18} style={{ verticalAlign: "-3px" }} /> Universal helplines
           </h3>
           <div style={{ display: "grid", gap: 8 }}>
             {COMMON.map(h => (
@@ -248,7 +249,7 @@ export default function StolenPhone() {
                 color: "inherit", textDecoration: "none",
               }}>
                 <div>
-                  <div style={{ color: T.white, fontWeight: 700, fontSize: 13 }}>{h.label}</div>
+                  <div style={{ color: T.white, fontWeight: 700, fontSize: 13 }}><h.icon size={13} style={{ verticalAlign: "-2px" }} /> {h.label}</div>
                   <div style={{ color: T.muted, fontSize: 11, marginTop: 2 }}>{h.desc}</div>
                 </div>
                 <div style={{ color: T.cyan, fontSize: 16, fontWeight: 800, fontFamily: "ui-monospace, monospace" }}>{h.num}</div>
@@ -263,7 +264,7 @@ export default function StolenPhone() {
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
           <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
-            📦 Pre-loss checklist — do this NOW so you're ready
+            <LuPackage size={18} style={{ verticalAlign: "-3px" }} /> Pre-loss checklist — do this NOW so you're ready
           </h3>
           <ul style={{ margin: 0, paddingLeft: 18, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>
             {KEEP_THESE.map(k => (
@@ -285,14 +286,14 @@ export default function StolenPhone() {
             display: "inline-block", padding: "10px 22px", borderRadius: 10,
             background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 13,
             textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
-          }}>📋 Full financial recovery hotline →</Link>
+          }}><LuClipboard size={13} style={{ verticalAlign: "-2px" }} /> Full financial recovery hotline →</Link>
         </div>
 
         <p style={{
           marginTop: 32, padding: 16, color: T.mutedDark, fontSize: 12,
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
-          📞 Telecom + CEIR procedures verified Mar 2026. Verify current process at telco's official help section.<br/>
+          <LuPhone size={12} style={{ verticalAlign: "-2px" }} /> Telecom + CEIR procedures verified Mar 2026. Verify current process at telco's official help section.<br/>
           🇮🇳 Built in Nashik · Free forever
         </p>
       </main>

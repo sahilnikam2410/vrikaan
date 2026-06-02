@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { maskText, maskImage, detect, PATTERN_TYPES } from "../../lib/aadhaarMask";
+import { LuFileText, LuImage, LuLock, LuClipboard, LuIdCard, LuFolderOpen, LuSave, LuTrash2, LuTriangleAlert } from "react-icons/lu";
 
 const T = {
   bg: "#060a14", card: "rgba(17,24,39,0.7)",
@@ -127,8 +128,8 @@ export default function AadhaarMask() {
           display: "flex", justifyContent: "center", gap: 10, marginBottom: 26,
         }}>
           {[
-            { id: "text", label: "📝 Text", desc: "Paste text" },
-            { id: "image", label: "🖼️ Image", desc: "Upload ID photo" },
+            { id: "text", icon: LuFileText, label: "Text", desc: "Paste text" },
+            { id: "image", icon: LuImage, label: "Image", desc: "Upload ID photo" },
           ].map(m => (
             <button key={m.id} onClick={() => setMode(m.id)} style={{
               padding: "10px 22px", borderRadius: 999,
@@ -137,7 +138,7 @@ export default function AadhaarMask() {
               border: `1px solid ${mode === m.id ? T.cyan : T.border}`,
               fontWeight: 700, fontSize: 14, cursor: "pointer",
               fontFamily: "inherit", transition: "all 0.15s",
-            }}>{m.label}</button>
+            }}><m.icon size={14} style={{ verticalAlign: "-2px" }} /> {m.label}</button>
           ))}
         </div>
 
@@ -171,7 +172,7 @@ export default function AadhaarMask() {
                   display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap",
                 }}>
                   <span style={{ fontSize: 11, fontWeight: 700, color: T.yellow, textTransform: "uppercase", letterSpacing: 1 }}>
-                    ⚠ Detected {detected.length}
+                    <LuTriangleAlert size={11} style={{ verticalAlign: "-1px" }} /> Detected {detected.length}
                   </span>
                   {detected.map((d, i) => (
                     <span key={i} style={{
@@ -211,7 +212,7 @@ export default function AadhaarMask() {
               border: 0, borderRadius: 12, fontWeight: 800, fontSize: 15,
               cursor: text.trim() ? "pointer" : "not-allowed", opacity: text.trim() ? 1 : 0.5,
               fontFamily: "'Vrikaan Sans', sans-serif",
-            }}>🔒 Mask now</button>
+            }}><LuLock size={15} style={{ verticalAlign: "-2px" }} /> Mask now</button>
 
             {maskedResult && (
               <div style={{
@@ -232,7 +233,7 @@ export default function AadhaarMask() {
                     background: "rgba(148,163,184,0.1)", color: T.white,
                     border: `1px solid ${T.border}`, fontSize: 12, fontWeight: 600,
                     cursor: "pointer", fontFamily: "inherit",
-                  }}>📋 Copy</button>
+                  }}><LuClipboard size={12} style={{ verticalAlign: "-2px" }} /> Copy</button>
                 </div>
                 <pre style={{
                   margin: 0, padding: 14, borderRadius: 10,
@@ -258,7 +259,7 @@ export default function AadhaarMask() {
                   background: T.card, padding: "48px 24px", textAlign: "center",
                 }}
               >
-                <div style={{ fontSize: 48, marginBottom: 12 }}>🪪</div>
+                <div style={{ marginBottom: 12, color: T.cyan }}><LuIdCard size={48} /></div>
                 <div style={{ color: T.white, fontSize: 16, fontWeight: 700, marginBottom: 6 }}>
                   Drop or select Aadhaar / PAN / DL photo
                 </div>
@@ -271,7 +272,7 @@ export default function AadhaarMask() {
                   background: T.cyan, color: T.bg, border: 0,
                   fontWeight: 800, fontSize: 14, cursor: "pointer",
                   fontFamily: "'Vrikaan Sans', sans-serif",
-                }}>📁 Select image</button>
+                }}><LuFolderOpen size={14} style={{ verticalAlign: "-2px" }} /> Select image</button>
               </div>
             ) : (
               <>
@@ -308,7 +309,7 @@ export default function AadhaarMask() {
                       background: T.cyan, color: T.bg, border: 0,
                       fontWeight: 800, fontSize: 14, cursor: "pointer",
                       fontFamily: "'Vrikaan Sans', sans-serif",
-                    }}>🔒 Detect & mask</button>
+                    }}><LuLock size={14} style={{ verticalAlign: "-2px" }} /> Detect & mask</button>
                   )}
                   {progress && progress.stage !== "done" && (
                     <div style={{
@@ -333,14 +334,14 @@ export default function AadhaarMask() {
                       background: T.green, color: T.bg, border: 0,
                       fontWeight: 800, fontSize: 14, cursor: "pointer",
                       fontFamily: "'Vrikaan Sans', sans-serif",
-                    }}>💾 Download masked PNG</button>
+                    }}><LuSave size={14} style={{ verticalAlign: "-2px" }} /> Download masked PNG</button>
                   )}
                   <button onClick={() => { setImgFile(null); setImgPreview(null); setMaskedImage(null); setProgress(null); setImgError(""); }} style={{
                     padding: "13px 18px", borderRadius: 10,
                     background: "transparent", color: T.white,
                     border: `1px solid ${T.border}`, fontSize: 13, fontWeight: 600,
                     cursor: "pointer", fontFamily: "inherit",
-                  }}>🗑 Clear</button>
+                  }}><LuTrash2 size={13} style={{ verticalAlign: "-2px" }} /> Clear</button>
                 </div>
 
                 {imgError && (
@@ -399,7 +400,7 @@ export default function AadhaarMask() {
           marginTop: 28, padding: 16, color: T.mutedDark, fontSize: 12,
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
-          🔒 <strong style={{ color: T.white }}>Privacy guaranteed:</strong> all processing runs in your browser via Web Crypto + Tesseract.js OCR.
+          <LuLock size={12} style={{ verticalAlign: "-2px" }} /> <strong style={{ color: T.white }}>Privacy guaranteed:</strong> all processing runs in your browser via Web Crypto + Tesseract.js OCR.
           We never receive your text, image, or extracted IDs. Check the Network tab — no upload.<br />
           🇮🇳 Built in Nashik · Free forever · No signup · Share with your family
         </p>

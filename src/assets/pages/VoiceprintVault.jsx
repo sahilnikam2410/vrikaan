@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { LuTriangleAlert, LuMic, LuActivity, LuDownload, LuX, LuCircleAlert, LuFile, LuList, LuLock } from "react-icons/lu";
+import { LuTriangleAlert, LuMic, LuActivity, LuDownload, LuX, LuCircleAlert, LuFile, LuList, LuLock, LuCircleCheck } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
@@ -220,7 +220,7 @@ export default function VoiceprintVault() {
 
           {recordedBlob && !recording && (
             <div style={{ marginTop: 14, padding: 14, borderRadius: 10, background: "rgba(2,6,23,0.5)", border: `1px solid ${T.green}33` }}>
-              <div style={{ color: T.green, fontSize: 12, fontWeight: 700, marginBottom: 8 }}>✓ Preview ({recordedDuration}s)</div>
+              <div style={{ color: T.green, fontSize: 12, fontWeight: 700, marginBottom: 8 }}><LuCircleCheck size={13} style={{ verticalAlign: "-2px" }} /> Preview ({recordedDuration}s)</div>
               <audio src={URL.createObjectURL(recordedBlob)} controls style={{ width: "100%" }} />
               <div style={{ display: "flex", gap: 10, marginTop: 10, flexWrap: "wrap" }}>
                 <button onClick={saveMember} style={{

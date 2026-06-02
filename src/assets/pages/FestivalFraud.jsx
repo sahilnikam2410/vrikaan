@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { upcoming, formatFestivalDate, isHighAlert } from "../../lib/festivalFraud";
-import { LuCalendar, LuTriangleAlert, LuList, LuMessageSquare } from "react-icons/lu";
+import { LuCalendar, LuTriangleAlert, LuList, LuMessageSquare, LuCircleCheck } from "react-icons/lu";
 
 const T = {
   bg: "#060a14", card: "rgba(17,24,39,0.7)",
@@ -184,7 +184,7 @@ export default function FestivalFraud() {
                     <LuTriangleAlert size={13} style={{ verticalAlign: "-2px" }} /> Example: {s.pattern}
                   </div>
                   <div style={{ color: T.muted, fontSize: 13, lineHeight: 1.6 }}>
-                    <strong style={{ color: T.green }}>✓ Defense:</strong> {s.defense}
+                    <strong style={{ color: T.green }}><LuCircleCheck size={13} style={{ verticalAlign: "-2px" }} /> Defense:</strong> {s.defense}
                   </div>
                 </div>
               ))}
@@ -227,7 +227,7 @@ export default function FestivalFraud() {
                 display: "inline-flex", alignItems: "center", gap: 6,
               }}><LuMessageSquare size={14} /> Share on WhatsApp</button>
               {shared && (
-                <div style={{ color: T.green, fontSize: 12, fontWeight: 700 }}>✓ Shared</div>
+                <div style={{ color: T.green, fontSize: 12, fontWeight: 700 }}><LuCircleCheck size={13} style={{ verticalAlign: "-2px" }} /> Shared</div>
               )}
             </div>
           </div>

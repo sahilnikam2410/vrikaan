@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { LuMessageSquare, LuFolder, LuUpload, LuTrash2, LuFlag, LuUsers, LuGlobe, LuPencil, LuLock } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
@@ -95,7 +96,7 @@ export default function WhatsAppAudit() {
                 transition: "all 0.2s", marginBottom: 20,
               }}
             >
-              <div style={{ fontSize: 48, marginBottom: 12 }}>💬</div>
+              <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}><LuMessageSquare size={48} /></div>
               <div style={{ color: T.white, fontSize: 17, fontWeight: 700, marginBottom: 8 }}>
                 Drop WhatsApp chat export (.txt)
               </div>
@@ -108,7 +109,7 @@ export default function WhatsAppAudit() {
                 background: T.cyan, color: T.bg, border: 0,
                 fontWeight: 800, fontSize: 14, cursor: "pointer",
                 fontFamily: "'Vrikaan Sans', sans-serif",
-              }}>📁 Select .txt file</button>
+              }}><LuFolder size={14} style={{ verticalAlign: "-2px" }} /> Select .txt file</button>
               {error && (
                 <div style={{
                   marginTop: 16, padding: 12, borderRadius: 10,
@@ -124,7 +125,7 @@ export default function WhatsAppAudit() {
               background: "rgba(2,6,23,0.5)", border: `1px solid ${T.border}`,
             }}>
               <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
-                📤 How to export WhatsApp chat
+                <LuUpload size={18} style={{ verticalAlign: "-3px" }} /> How to export WhatsApp chat
               </h3>
               <ol style={{ margin: 0, paddingLeft: 20, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>
                 <li>Open the WhatsApp group → tap group name at top</li>
@@ -164,7 +165,7 @@ export default function WhatsAppAudit() {
                   background: "transparent", color: T.white,
                   border: `1px solid ${T.border}`, fontSize: 13, fontWeight: 600,
                   cursor: "pointer", fontFamily: "inherit",
-                }}>🗑 Scan another</button>
+                }}><LuTrash2 size={13} style={{ verticalAlign: "-2px" }} /> Scan another</button>
               </div>
             </div>
 
@@ -180,7 +181,7 @@ export default function WhatsAppAudit() {
                 <h3 style={{
                   fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 20, color: T.white,
                   margin: "0 0 14px",
-                }}>🚩 {result.findings.length} findings — review each</h3>
+                }}><LuFlag size={20} style={{ verticalAlign: "-3px" }} /> {result.findings.length} findings — review each</h3>
                 <div style={{ display: "grid", gap: 12 }}>
                   {result.findings.map((f, i) => {
                     const c = SEVERITY_COLOR[f.severity] || T.muted;
@@ -216,7 +217,7 @@ export default function WhatsAppAudit() {
               background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 20,
             }}>
               <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
-                👥 Top {Math.min(result.members.length, 30)} most-active members
+                <LuUsers size={18} style={{ verticalAlign: "-3px" }} /> Top {Math.min(result.members.length, 30)} most-active members
               </h3>
               <div style={{
                 display: "grid", gridTemplateColumns: "1fr 60px 60px 60px 60px",
@@ -233,13 +234,13 @@ export default function WhatsAppAudit() {
                   alignItems: "center", fontSize: 12,
                 }} className="member-row">
                   <div style={{ color: T.white, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                    {m.name} {m.intlNumber && <span title="Non-Indian number" style={{ color: T.orange }}>🌐</span>}
+                    {m.name} {m.intlNumber && <span title="Non-Indian number" style={{ color: T.orange }}><LuGlobe size={12} style={{ verticalAlign: "-2px" }} /></span>}
                   </div>
                   <div style={{ color: T.cyan, fontFamily: "ui-monospace, monospace" }}>{m.msgs}</div>
                   <div style={{ color: T.muted, fontFamily: "ui-monospace, monospace" }}>{m.sharePct}%</div>
                   <div style={{ color: m.urls > 0 ? T.yellow : T.muted, fontFamily: "ui-monospace, monospace" }}>{m.urls}</div>
                   <div style={{ color: m.scamHits > 2 ? T.red : m.scamHits > 0 ? T.yellow : T.muted, fontFamily: "ui-monospace, monospace" }}>
-                    {m.scamHits > 0 ? "🚩 " + m.scamHits : "—"}
+                    {m.scamHits > 0 ? <><LuFlag size={11} style={{ verticalAlign: "-1px" }} /> {m.scamHits}</> : "—"}
                   </div>
                 </div>
               ))}
@@ -259,7 +260,7 @@ export default function WhatsAppAudit() {
                 padding: "11px 22px", borderRadius: 10,
                 background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 14,
                 textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
-              }}>📝 Paste a specific message →</Link>
+              }}><LuPencil size={14} style={{ verticalAlign: "-2px" }} /> Paste a specific message →</Link>
             </div>
           </div>
         )}
@@ -269,7 +270,7 @@ export default function WhatsAppAudit() {
           marginTop: 32, padding: 16, color: T.mutedDark, fontSize: 12,
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
-          🔒 .txt file parsed entirely in your browser. No upload. Findings based on
+          <LuLock size={12} style={{ verticalAlign: "-2px" }} /> .txt file parsed entirely in your browser. No upload. Findings based on
           aggregated patterns observed in 2024-26 Indian WhatsApp investment-fraud cases.
           <br />
           🇮🇳 Built by SOC analysts in Pune · Free forever

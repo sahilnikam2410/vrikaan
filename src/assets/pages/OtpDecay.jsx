@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
+import { LuTriangleAlert, LuPhone, LuClock, LuMessageSquare, LuScale, LuLandmark, LuClipboard } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import SeniorModeBanner from "../../components/SeniorModeBanner";
 import Footer from "../../components/Footer";
@@ -71,7 +72,7 @@ export default function OtpDecay() {
             background: `${T.red}1a`, border: `1px solid ${T.red}55`,
             fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
             color: T.red, marginBottom: 14,
-          }}>🚨 EMERGENCY · Every Second Counts</span>
+          }}><LuTriangleAlert size={13} style={{ verticalAlign: "-2px" }} /> EMERGENCY · Every Second Counts</span>
           <h1 style={{
             fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
@@ -92,7 +93,7 @@ export default function OtpDecay() {
           background: `${T.red}1a`, border: `2px solid ${T.red}`,
           display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap",
         }}>
-          <div style={{ fontSize: 36 }}>🚨</div>
+          <div style={{ display: "inline-flex", color: T.red }}><LuTriangleAlert size={36} /></div>
           <div style={{ flex: 1, minWidth: 200 }}>
             <div style={{ color: T.white, fontWeight: 800, fontSize: 16 }}>
               Call <a href="tel:1930" style={{ color: T.red, textDecoration: "underline" }}>1930</a> RIGHT NOW
@@ -105,7 +106,7 @@ export default function OtpDecay() {
             padding: "14px 26px", borderRadius: 12,
             background: T.red, color: "#fff", textDecoration: "none",
             fontWeight: 800, fontSize: 17, fontFamily: "'Vrikaan Sans', sans-serif",
-          }}>📞 Call 1930</a>
+          }}><LuPhone size={17} style={{ verticalAlign: "-3px" }} /> Call 1930</a>
         </div>
 
         {/* COUNTDOWN — start it after first call */}
@@ -123,7 +124,7 @@ export default function OtpDecay() {
               background: T.cyan, color: T.bg, border: 0,
               fontWeight: 800, fontSize: 15, cursor: "pointer",
               fontFamily: "'Vrikaan Sans', sans-serif",
-            }}>⏱ Start 90-second countdown</button>
+            }}><LuClock size={15} style={{ verticalAlign: "-2px" }} /> Start 90-second countdown</button>
           </div>
         ) : (
           <div style={{
@@ -157,7 +158,7 @@ export default function OtpDecay() {
           padding: 20, marginBottom: 24,
         }}>
           <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
-            🗣 Exact words to say when bank picks up
+            <LuMessageSquare size={18} style={{ verticalAlign: "-3px" }} /> Exact words to say when bank picks up
           </h2>
           <div style={{
             padding: 16, borderRadius: 10,
@@ -171,7 +172,7 @@ export default function OtpDecay() {
             I will visit the branch within 3 working days as per RBI rules."
           </div>
           <p style={{ color: T.muted, fontSize: 12, marginTop: 12, lineHeight: 1.6 }}>
-            ⚖️ <strong style={{ color: T.white }}>RBI Zero-Liability Rule:</strong> if you report unauthorized transaction within 3 working days, you owe NOTHING. Bank legally must refund.
+            <LuScale size={13} style={{ verticalAlign: "-2px" }} /> <strong style={{ color: T.white }}>RBI Zero-Liability Rule:</strong> if you report unauthorized transaction within 3 working days, you owe NOTHING. Bank legally must refund.
           </p>
         </div>
 
@@ -181,7 +182,7 @@ export default function OtpDecay() {
           padding: 20, marginBottom: 24,
         }}>
           <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
-            🏦 Get your bank's 24×7 helpline
+            <LuLandmark size={18} style={{ verticalAlign: "-3px" }} /> Get your bank's 24×7 helpline
           </h2>
           <input
             value={bankQ}
@@ -223,7 +224,7 @@ export default function OtpDecay() {
                     padding: "10px 16px", borderRadius: 8,
                     background: T.red, color: "#fff", textDecoration: "none",
                     fontWeight: 800, fontSize: 14, fontFamily: "ui-monospace, Menlo, monospace",
-                  }}>📞 {b.blockPhone}</a>
+                  }}><LuPhone size={14} style={{ verticalAlign: "-2px" }} /> {b.blockPhone}</a>
                   <button onClick={() => removeBank(b.id)} style={{
                     background: "transparent", border: 0, color: T.mutedDark, cursor: "pointer", fontSize: 18, padding: 4,
                   }}>×</button>
@@ -239,7 +240,7 @@ export default function OtpDecay() {
           padding: 20, marginBottom: 24,
         }}>
           <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
-            ☎️ Backup helplines
+            <LuPhone size={18} style={{ verticalAlign: "-3px" }} /> Backup helplines
           </h2>
           <div style={{ display: "grid", gap: 8 }}>
             {UNIVERSAL.map(h => (
@@ -292,7 +293,7 @@ export default function OtpDecay() {
             display: "inline-block", padding: "12px 24px", borderRadius: 10,
             background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 14,
             textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
-          }}>📋 Full Recovery Hotline →</Link>
+          }}><LuClipboard size={14} style={{ verticalAlign: "-2px" }} /> Full Recovery Hotline →</Link>
         </div>
 
         {/* Footer */}
@@ -300,7 +301,7 @@ export default function OtpDecay() {
           marginTop: 32, padding: 16, color: T.mutedDark, fontSize: 12,
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
-          📞 Bank numbers verified Mar 2026. Always check the back of YOUR card for the exact number.<br/>
+          <LuPhone size={12} style={{ verticalAlign: "-2px" }} /> Bank numbers verified Mar 2026. Always check the back of YOUR card for the exact number.<br/>
           🇮🇳 Built in Nashik · Free forever · Share with anyone in trouble
         </p>
       </main>

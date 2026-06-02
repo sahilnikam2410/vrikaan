@@ -249,7 +249,7 @@ export default function UpiHoneypot() {
           }}>
             {reportSuccess ? (
               <div style={{ color: T.green, fontWeight: 700, textAlign: "center", padding: 10 }}>
-                ✓ Reported. Saved to your local database. Thanks for helping protect others.
+                <LuCircleCheck size={14} style={{ verticalAlign: "-2px" }} /> Reported. Saved to your local database. Thanks for helping protect others.
               </div>
             ) : !reporting ? (
               <div style={{ textAlign: "center" }}>

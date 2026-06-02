@@ -5,7 +5,7 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import {
   LuStar, LuTriangleAlert, LuShield, LuLock, LuEye, LuCircleCheck, LuX,
-  LuMessageSquare, LuMic, LuInfo, LuZap,
+  LuMessageSquare, LuMic, LuInfo, LuZap, LuSend, LuTarget,
 } from "react-icons/lu";
 
 const T = {
@@ -243,7 +243,7 @@ export default function SafeWordVault() {
           }}>
             <div style={{
               fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.cyan, textTransform: "uppercase", marginBottom: 12,
-            }}>✓ YOUR FAMILY SAFE-WORD</div>
+            }}><LuCircleCheck size={13} style={{ verticalAlign: "-2px" }} /> YOUR FAMILY SAFE-WORD</div>
             <div style={{
               fontSize: 48, fontWeight: 800, color: T.white,
               fontFamily: "ui-monospace, Menlo, monospace", letterSpacing: 4,
@@ -273,7 +273,7 @@ export default function SafeWordVault() {
             marginBottom: 24,
           }}>
             <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
-              📲 Send the briefing to each family member
+              <LuSend size={18} style={{ verticalAlign: "-3px" }} /> Send the briefing to each family member
             </h3>
             <p style={{ color: T.muted, fontSize: 13, margin: "0 0 14px", lineHeight: 1.6 }}>
               One-tap WhatsApp share. The message explains the safe-word concept WITHOUT revealing the actual word
@@ -295,7 +295,7 @@ export default function SafeWordVault() {
                     background: "#25D366", color: "#fff", border: 0,
                     fontWeight: 700, fontSize: 12, cursor: "pointer",
                     fontFamily: "'Vrikaan Sans', sans-serif",
-                  }}>📲 Send briefing</button>
+                  }}><LuSend size={13} style={{ verticalAlign: "-2px" }} /> Send briefing</button>
                 </div>
               ))}
             </div>
@@ -308,7 +308,7 @@ export default function SafeWordVault() {
           background: T.card, border: `1px solid ${T.border}`,
         }}>
           <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
-            🎯 How the safe-word works in a scam call
+            <LuTarget size={18} style={{ verticalAlign: "-3px" }} /> How the safe-word works in a scam call
           </h3>
           <ol style={{ margin: 0, paddingLeft: 22, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>
             <li><strong style={{ color: T.white }}>Scammer calls relative</strong> sounding exactly like you (AI voice clone). Says urgent — accident, hospital, jail, ransom — needs money NOW.</li>
@@ -325,7 +325,7 @@ export default function SafeWordVault() {
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
           <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
-            ✅ Rules of a good safe-word
+            <LuCircleCheck size={18} style={{ verticalAlign: "-3px" }} /> Rules of a good safe-word
           </h3>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }} className="rules-grid">
             <div>
@@ -365,7 +365,7 @@ export default function SafeWordVault() {
             padding: "11px 22px", borderRadius: 10,
             background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 14,
             textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
-          }}>🎙 Deepfake Audio Detector →</Link>
+          }}><LuMic size={14} style={{ verticalAlign: "-2px" }} /> Deepfake Audio Detector →</Link>
         </div>
 
         {/* Footer */}
@@ -373,7 +373,7 @@ export default function SafeWordVault() {
           marginTop: 32, padding: 16, color: T.mutedDark, fontSize: 12,
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
-          🔒 Safe-word + family list stored ONLY in your browser localStorage. Nothing uploaded to VRIKAAN servers.
+          <LuLock size={13} style={{ verticalAlign: "-2px" }} /> Safe-word + family list stored ONLY in your browser localStorage. Nothing uploaded to VRIKAAN servers.
           Clear browser data → safe-word gone. <br />
           🇮🇳 Built by SOC analysts in Nashik · Free forever · Share with every family in India
         </p>

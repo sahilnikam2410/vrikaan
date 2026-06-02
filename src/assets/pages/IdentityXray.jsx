@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import { LuMail, LuMicroscope, LuLock, LuShield, LuZap, LuChartColumn, LuLockOpen, LuGlobe, LuSwords, LuUserSearch, LuFileText, LuUpload, LuSearch, LuKey, LuTriangleAlert, LuFish, LuUser } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
@@ -11,7 +12,7 @@ const RISK_COLORS = { low: T.green, moderate: T.yellow, high: T.orange, critical
 const RISK_LABELS = { low: "Low Risk", moderate: "Moderate Risk", high: "High Risk", critical: "Critical Risk", safe: "Safe" };
 const PRIORITY_COLORS = { critical: T.red, high: T.orange, medium: T.yellow, low: T.green };
 const ATTACK_ICONS = {
-  search: "🔍", key: "🔑", unlock: "🔓", alert: "🚨", mail: "📧", phishing: "🎣", identity: "👤",
+  search: LuSearch, key: LuKey, unlock: LuLockOpen, alert: LuTriangleAlert, mail: LuMail, phishing: LuFish, identity: LuUser,
 };
 const GRADE_COLORS = { A: T.green, B: T.cyan, C: T.yellow, D: T.orange, F: T.red };
 
@@ -166,7 +167,7 @@ export default function IdentityXray() {
           {/* Input */}
           <div style={{ maxWidth: 520, margin: "0 auto", display: "flex", gap: 12, flexWrap: "wrap" }}>
             <div style={{ flex: 1, minWidth: 240, position: "relative" }}>
-              <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", fontSize: 18, opacity: 0.5 }}>📧</span>
+              <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", display: "inline-flex", opacity: 0.5 }}><LuMail size={18} /></span>
               <input
                 type="email" placeholder="Enter your email address" value={email}
                 onChange={(e) => { setEmail(e.target.value); setError(""); }}
@@ -176,15 +177,20 @@ export default function IdentityXray() {
             </div>
             <button onClick={handleScan} disabled={loading}
               style={{ ...sty.btn("linear-gradient(135deg, #6366f1, #8b5cf6)"), opacity: loading ? 0.7 : 1, animation: !loading ? "xray-pulse 2s infinite" : "none" }}>
-              {loading ? "Scanning..." : "🔬 Scan Now"}
+              {loading ? "Scanning..." : <><LuMicroscope size={15} style={{ verticalAlign: "-2px" }} /> Scan Now</>}
             </button>
           </div>
           {error && <p style={{ color: T.red, fontSize: 13, marginTop: 12 }}>{error}</p>}
 
           {/* Trust badges */}
           <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 32, flexWrap: "wrap" }}>
-            {["🔒 256-bit Encrypted", "🛡️ No Data Stored", "⚡ Real-time Analysis", "📊 10M+ Scans"].map((t) => (
-              <span key={t} style={{ fontSize: 12, color: T.mutedDark, fontWeight: 500 }}>{t}</span>
+            {[
+              { icon: LuLock, label: "256-bit Encrypted" },
+              { icon: LuShield, label: "No Data Stored" },
+              { icon: LuZap, label: "Real-time Analysis" },
+              { icon: LuChartColumn, label: "10M+ Scans" },
+            ].map((t) => (
+              <span key={t.label} style={{ fontSize: 12, color: T.mutedDark, fontWeight: 500 }}><t.icon size={13} style={{ verticalAlign: "-2px" }} /> {t.label}</span>
             ))}
           </div>
         </div>
@@ -242,8 +248,8 @@ export default function IdentityXray() {
                 </h2>
                 <p style={{ color: T.muted, fontSize: 14, margin: "0 0 16px" }}>{report.email}</p>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                  <button onClick={handleExport} style={sty.exportBtn}>📄 Export PDF</button>
-                  <button onClick={handleShare} style={{ ...sty.exportBtn, background: "rgba(20, 184, 166,0.12)", borderColor: "rgba(20, 184, 166,0.3)", color: T.cyan }}>📤 Share Score</button>
+                  <button onClick={handleExport} style={sty.exportBtn}><LuFileText size={13} style={{ verticalAlign: "-2px" }} /> Export PDF</button>
+                  <button onClick={handleShare} style={{ ...sty.exportBtn, background: "rgba(20, 184, 166,0.12)", borderColor: "rgba(20, 184, 166,0.3)", color: T.cyan }}><LuUpload size={13} style={{ verticalAlign: "-2px" }} /> Share Score</button>
                 </div>
               </div>
             </div>
@@ -268,7 +274,7 @@ export default function IdentityXray() {
           {/* ── Breach Details ── */}
           <div style={{ ...sty.card, marginBottom: 24, animation: "xray-fadeUp 0.6s ease" }}>
             <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 16px", display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ fontSize: 22 }}>🔓</span> Breach Exposure
+              <span style={{ display: "inline-flex" }}><LuLockOpen size={22} /></span> Breach Exposure
               <span style={{ marginLeft: "auto", padding: "4px 12px", borderRadius: 6, fontSize: 11, fontWeight: 700, background: `${RISK_COLORS[report.breaches.riskLevel]}18`, color: RISK_COLORS[report.breaches.riskLevel] }}>
                 {report.breaches.riskLevel.toUpperCase()}
               </span>
@@ -306,7 +312,7 @@ export default function IdentityXray() {
           {/* ── Domain Security ── */}
           <div style={{ ...sty.card, marginBottom: 24, animation: "xray-fadeUp 0.7s ease" }}>
             <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 16px", display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ fontSize: 22 }}>🌐</span> Email Domain Security
+              <span style={{ display: "inline-flex" }}><LuGlobe size={22} /></span> Email Domain Security
               <span style={{ marginLeft: "auto", fontSize: 28, fontWeight: 800, color: GRADE_COLORS[report.domainSecurity.grade], fontFamily: "'Vrikaan Sans'" }}>
                 {report.domainSecurity.grade}
               </span>
@@ -333,7 +339,7 @@ export default function IdentityXray() {
           {/* ── Hacker Attack Path ── */}
           <div style={{ ...sty.card, marginBottom: 24, animation: "xray-fadeUp 0.8s ease" }}>
             <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 20px", display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ fontSize: 22 }}>⚔️</span> Hacker Attack Path
+              <span style={{ display: "inline-flex" }}><LuSwords size={22} /></span> Hacker Attack Path
             </h3>
             <div style={{ position: "relative", paddingLeft: 32 }}>
               {/* Vertical line */}
@@ -343,7 +349,7 @@ export default function IdentityXray() {
                 <div key={i} style={{ position: "relative", marginBottom: i < report.attackPath.length - 1 ? 20 : 0, animation: `xray-fadeUp ${0.5 + i * 0.15}s ease` }}>
                   {/* Dot */}
                   <div style={{ position: "absolute", left: -25, top: 4, width: 24, height: 24, borderRadius: "50%", background: `${RISK_COLORS[step.risk]}20`, border: `2px solid ${RISK_COLORS[step.risk]}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11 }}>
-                    {ATTACK_ICONS[step.icon] || step.step}
+                    {(() => { const AttackIcon = ATTACK_ICONS[step.icon]; return AttackIcon ? <AttackIcon size={12} /> : step.step; })()}
                   </div>
                   <div style={{ padding: "14px 18px", background: "rgba(15,23,42,0.4)", borderRadius: 10, border: `1px solid ${RISK_COLORS[step.risk]}15`, marginLeft: 8 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
@@ -360,7 +366,7 @@ export default function IdentityXray() {
           {/* ── Action Plan ── */}
           <div style={{ ...sty.card, marginBottom: 24, animation: "xray-fadeUp 0.9s ease" }}>
             <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 16px", display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ fontSize: 22 }}>🛡️</span> Your Action Plan
+              <span style={{ display: "inline-flex" }}><LuShield size={22} /></span> Your Action Plan
             </h3>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {report.actionPlan.map((action, i) => (
@@ -390,7 +396,7 @@ export default function IdentityXray() {
             <h3 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 8px" }}>Share Your Score</h3>
             <p style={{ color: T.muted, fontSize: 14, margin: "0 0 20px" }}>Challenge your friends to check their digital identity</p>
             <button onClick={handleShare} style={{ ...sty.btn("linear-gradient(135deg, #6366f1, #14b8a6)"), fontSize: 14 }}>
-              📤 Share My Score ({report.riskScore}/100)
+              <LuUpload size={14} style={{ verticalAlign: "-2px" }} /> Share My Score ({report.riskScore}/100)
             </button>
           </div>
         </div>
@@ -404,15 +410,15 @@ export default function IdentityXray() {
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 16 }}>
             {[
-              { icon: "🔓", title: "Breach Databases", desc: "Checks your email against billions of leaked records from known data breaches worldwide" },
-              { icon: "🌐", title: "Domain Security", desc: "Analyzes your email provider's SPF, DMARC, and MX records for spoofing protection" },
-              { icon: "🕵️", title: "Dark Web Exposure", desc: "Scans paste sites and underground forums for your exposed credentials" },
-              { icon: "⚔️", title: "Attack Path Mapping", desc: "Maps exactly how a hacker would target you step-by-step using found data" },
-              { icon: "📊", title: "Risk Scoring", desc: "Calculates your overall digital risk score based on all discovered vulnerabilities" },
-              { icon: "🛡️", title: "Action Plan", desc: "Generates a personalized security improvement plan with direct links to tools" },
+              { icon: LuLockOpen, title: "Breach Databases", desc: "Checks your email against billions of leaked records from known data breaches worldwide" },
+              { icon: LuGlobe, title: "Domain Security", desc: "Analyzes your email provider's SPF, DMARC, and MX records for spoofing protection" },
+              { icon: LuUserSearch, title: "Dark Web Exposure", desc: "Scans paste sites and underground forums for your exposed credentials" },
+              { icon: LuSwords, title: "Attack Path Mapping", desc: "Maps exactly how a hacker would target you step-by-step using found data" },
+              { icon: LuChartColumn, title: "Risk Scoring", desc: "Calculates your overall digital risk score based on all discovered vulnerabilities" },
+              { icon: LuShield, title: "Action Plan", desc: "Generates a personalized security improvement plan with direct links to tools" },
             ].map((item, i) => (
               <div key={i} style={{ ...sty.card, display: "flex", gap: 14, alignItems: "flex-start" }}>
-                <div style={{ width: 44, height: 44, borderRadius: 10, background: `${T.accent}10`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>{item.icon}</div>
+                <div style={{ width: 44, height: 44, borderRadius: 10, background: `${T.accent}10`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><item.icon size={22} /></div>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>{item.title}</div>
                   <div style={{ fontSize: 12, color: T.muted, lineHeight: 1.5 }}>{item.desc}</div>
@@ -423,7 +429,7 @@ export default function IdentityXray() {
 
           {/* Privacy note */}
           <div style={{ ...sty.card, marginTop: 32, display: "flex", alignItems: "center", gap: 14, background: "rgba(20, 184, 166,0.04)", border: `1px solid ${T.cyan}15` }}>
-            <span style={{ fontSize: 28 }}>🔒</span>
+            <span style={{ display: "inline-flex" }}><LuLock size={28} /></span>
             <div>
               <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 2 }}>Your Privacy is Protected</div>
               <div style={{ fontSize: 12, color: T.muted, lineHeight: 1.5 }}>We never store your email or scan results. All checks are performed in real-time using encrypted connections. No account required.</div>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
+import { LuLock, LuLandmark, LuShoppingBag, LuLaptop, LuChartColumn, LuPhone, LuLightbulb, LuMail, LuSatellite, LuFolderOpen, LuShield } from "react-icons/lu";
 
 const T = {
   bg: "#060a14", card: "rgba(17,24,39,0.7)",
@@ -64,7 +65,7 @@ const COMPLIANCE_BADGES = [
   { label: "CERT-In Empaneled", status: "⏳ Application filed",    color: T.yellow },
   { label: "ISO 27001:2022",    status: "⏳ Audit Q2 2026",        color: T.yellow },
   { label: "SOC 2 Type II",     status: "⏳ Audit Q2-Q3 2026",     color: T.yellow },
-  { label: "DSCI Best Practice", status: "🔒 Member",               color: T.cyan },
+  { label: "DSCI Best Practice", status: "Member",                  color: T.cyan },
   { label: "MITRE ATT&CK v15",  status: "✓ Mapped",                color: T.green },
 ];
 
@@ -82,17 +83,17 @@ const COMPARE_ROWS = [
 
 const CASE_STUDIES = [
   {
-    sector: "Fintech · NBFC", logo: "🏦", company: "[Customer #1 — case study coming]",
+    sector: "Fintech · NBFC", logo: LuLandmark, company: "[Customer #1 — case study coming]",
     metrics: ["RBI audit gap closed in 14 days", "MTTR 8h → 35 min", "DPDP-ready 6 weeks early"],
     quote: "Once they're live + happy, replace this w/ named testimonial.",
   },
   {
-    sector: "E-commerce · D2C", logo: "🛍", company: "[Customer #2 — case study coming]",
+    sector: "E-commerce · D2C", logo: LuShoppingBag, company: "[Customer #2 — case study coming]",
     metrics: ["Stopped 12 credential-stuffing attacks in week 1", "PCI DSS quarterly scan w/ zero criticals", "₹0 fraud loss in Q4"],
     quote: "Pilot → contract in 30 days. Pricing felt fair vs Splunk.",
   },
   {
-    sector: "IT services · 1,000 endpoints", logo: "💻", company: "[Customer #3 — case study coming]",
+    sector: "IT services · 1,000 endpoints", logo: LuLaptop, company: "[Customer #3 — case study coming]",
     metrics: ["10× more visibility than previous AV-only setup", "Stopped 2 Cobalt Strike beacons", "Compliance reports auto-shipped"],
     quote: "Their MITRE coverage is genuinely better than the ₹4Cr deal we evaluated.",
   },
@@ -145,7 +146,7 @@ export default function Enterprise() {
             background: `${T.gold}15`, border: `1px solid ${T.gold}55`,
             fontSize: 12, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
             color: T.gold, marginBottom: 18,
-          }}>🏛 Enterprise · 24×7 SOC · India-Built</span>
+          }}><LuLandmark size={13} style={{ verticalAlign: "-2px" }} /> Enterprise · 24×7 SOC · India-Built</span>
           <h1 style={{
             fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(38px, 6vw, 64px)",
             fontWeight: 800, color: T.white, margin: "0 0 18px", lineHeight: 1.05,
@@ -168,13 +169,13 @@ export default function Enterprise() {
               padding: "14px 26px", borderRadius: 12,
               background: T.cyan, color: T.bg, textDecoration: "none",
               fontWeight: 800, fontSize: 15, fontFamily: "'Vrikaan Sans', sans-serif",
-            }}>📊 See pricing tiers</a>
+            }}><LuChartColumn size={15} /> See pricing tiers</a>
             <a href="#talk" style={{
               display: "inline-flex", alignItems: "center", gap: 8,
               padding: "14px 26px", borderRadius: 12,
               background: T.gold, color: T.bg, textDecoration: "none",
               fontWeight: 800, fontSize: 15, fontFamily: "'Vrikaan Sans', sans-serif",
-            }}>📞 Talk to founders</a>
+            }}><LuPhone size={15} /> Talk to founders</a>
           </div>
         </header>
 
@@ -313,7 +314,7 @@ export default function Enterprise() {
           <p style={{
             textAlign: "center", color: T.mutedDark, fontSize: 12, marginTop: 20, lineHeight: 1.6,
           }}>
-            💡 Add-ons available: Incident Response ₹50k/day · Forensics from ₹1L · Red Team ₹3-8L per engagement
+            <LuLightbulb size={13} style={{ verticalAlign: "-2px" }} /> Add-ons available: Incident Response ₹50k/day · Forensics from ₹1L · Red Team ₹3-8L per engagement
           </p>
         </section>
 
@@ -380,7 +381,7 @@ export default function Enterprise() {
                 padding: 24, borderRadius: 16,
                 background: T.card, border: `1px solid ${T.border}`,
               }}>
-                <div style={{ fontSize: 32, marginBottom: 10 }}>{cs.logo}</div>
+                <div style={{ marginBottom: 10, color: T.cyan }}><cs.logo size={32} /></div>
                 <div style={{
                   fontSize: 10, fontWeight: 800, letterSpacing: 1.5, color: T.cyan,
                   textTransform: "uppercase", marginBottom: 6,
@@ -471,7 +472,7 @@ export default function Enterprise() {
                 fontFamily: "'Vrikaan Sans', sans-serif",
               }}>Request walkthrough →</button>
               <p style={{ fontSize: 11, color: T.mutedDark, textAlign: "center", margin: "6px 0 0" }}>
-                🔒 We never sell your data. DPDP compliant. Reply within 24 hours.
+                <LuLock size={12} style={{ verticalAlign: "-2px" }} /> We never sell your data. DPDP compliant. Reply within 24 hours.
               </p>
             </form>
           )}
@@ -484,11 +485,11 @@ export default function Enterprise() {
           display: "flex", gap: 22, justifyContent: "center", flexWrap: "wrap",
           color: T.muted, fontSize: 13,
         }}>
-          <a href="mailto:hello@vrikaan.com" style={{ color: T.cyan, textDecoration: "none" }}>📧 hello@vrikaan.com</a>
-          <a href="tel:+918329935878" style={{ color: T.cyan, textDecoration: "none" }}>📞 +91 8329935878</a>
-          <Link to="/admin/soc" style={{ color: T.cyan, textDecoration: "none" }}>🛰 Preview SOC dashboard</Link>
-          <a href="https://github.com/sahilnikam2410/vrikaan" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan, textDecoration: "none" }}>📂 Source on GitHub</a>
-          <Link to="/responsible-disclosure" style={{ color: T.cyan, textDecoration: "none" }}>🛡 Bug bounty</Link>
+          <a href="mailto:hello@vrikaan.com" style={{ color: T.cyan, textDecoration: "none" }}><LuMail size={13} style={{ verticalAlign: "-2px" }} /> hello@vrikaan.com</a>
+          <a href="tel:+918329935878" style={{ color: T.cyan, textDecoration: "none" }}><LuPhone size={13} style={{ verticalAlign: "-2px" }} /> +91 8329935878</a>
+          <Link to="/admin/soc" style={{ color: T.cyan, textDecoration: "none" }}><LuSatellite size={13} style={{ verticalAlign: "-2px" }} /> Preview SOC dashboard</Link>
+          <a href="https://github.com/sahilnikam2410/vrikaan" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan, textDecoration: "none" }}><LuFolderOpen size={13} style={{ verticalAlign: "-2px" }} /> Source on GitHub</a>
+          <Link to="/responsible-disclosure" style={{ color: T.cyan, textDecoration: "none" }}><LuShield size={13} style={{ verticalAlign: "-2px" }} /> Bug bounty</Link>
         </section>
 
         <p style={{
@@ -496,7 +497,7 @@ export default function Enterprise() {
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
           🇮🇳 Built in Nashik · INR-billed via Cashfree · India data residency (AWS Mumbai)<br/>
-          🛡 Founders are practicing SOC analysts · we answer your call personally · no offshore call center
+          <LuShield size={12} style={{ verticalAlign: "-2px" }} /> Founders are practicing SOC analysts · we answer your call personally · no offshore call center
         </p>
       </main>
 
