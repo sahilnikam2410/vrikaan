@@ -73,10 +73,13 @@ const inputStyle = (hasError) => ({
   boxSizing: "border-box", fontFamily: "'Vrikaan Sans', sans-serif",
 });
 
+// Only Cashfree: it handles UPI (GPay/PhonePe/Paytm), cards, net-banking and
+// wallets, and every payment is verified server-side (order_status === PAID)
+// before any plan is granted. The old "UPI Direct" / "Crypto" manual tiles
+// self-granted the plan on a client-side timer with NO verification \u2014 a free-
+// Pro bypass \u2014 so they are removed.
 const paymentMethods = [
-  { id: "cashfree", label: "Cards / UPI (Cashfree)", icon: "\uD83D\uDCB3" },
-  { id: "upi", label: "UPI Direct", icon: "\uD83D\uDCF1" },
-  { id: "crypto", label: "Crypto", icon: "\u20BF" },
+  { id: "cashfree", label: "Cards / UPI / Net Banking / Wallets", icon: "\uD83D\uDCB3" },
 ];
 
 function loadCashfreeSDK() {
@@ -383,28 +386,15 @@ export default function Checkout() {
     }
   };
 
-  // UPI manual verification
+  // Manual UPI/crypto "I paid → instant Pro" was a free-Pro bypass (no server
+  // verification). Disabled: route all payments through Cashfree, which is
+  // verified server-side before a plan is granted. Kept as guarded no-ops so
+  // re-adding a tile can never silently restore the bypass.
   const handleUpiVerify = () => {
-    if (!upiTxnId.trim()) {
-      setErrors({ upiTxn: "Please enter your UPI Transaction ID" });
-      return;
-    }
-    setProcessing(true);
-    setTimeout(() => {
-      handlePaymentSuccess("upi_direct", upiTxnId);
-    }, 1500);
+    setErrors({ upiTxn: "Manual UPI is disabled. Please pay via the Cashfree option (UPI / cards / net banking / wallets)." });
   };
-
-  // Crypto manual verification
   const handleCryptoVerify = () => {
-    if (!cryptoTxHash.trim()) {
-      setErrors({ cryptoTx: "Please enter the transaction hash" });
-      return;
-    }
-    setProcessing(true);
-    setTimeout(() => {
-      handlePaymentSuccess(`crypto_${cryptoCoin}`, cryptoTxHash);
-    }, 1500);
+    setErrors({ cryptoTx: "Manual crypto is disabled. Please pay via the Cashfree option." });
   };
 
   // Admin config save — validates UPI VPA / BTC / ETH formats so admin can't
