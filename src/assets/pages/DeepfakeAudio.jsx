@@ -7,7 +7,7 @@ import { LuAudioLines, LuCircleCheck, LuActivity, LuTriangleAlert, LuCircleHelp 
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
 const VERDICT_META = {
-  "likely-real":     { color: T.green,  Icon: LuCircleCheck,    label: "Likely real human voice" },
+  "likely-real":     { color: T.green,  Icon: LuCircleCheck,    label: "Liveness cues present — likely real (not a guarantee)" },
   "likely-deepfake": { color: T.red,    Icon: LuActivity,       label: "Likely AI-generated / deepfake" },
   "scam-script":     { color: T.red,    Icon: LuTriangleAlert,  label: "Scam call script detected" },
   "uncertain":       { color: T.yellow, Icon: LuCircleHelp,     label: "Uncertain — be cautious" },
@@ -212,7 +212,7 @@ export default function DeepfakeAudio() {
             )}
 
             <p style={{ color: T.muted, fontSize: 11, marginTop: 18, fontStyle: "italic" }}>
-              AI verdict — for educational use. Real scam-call analysis requires forensic tools. Never share OTPs or transfer money based on phone calls. Always verify by calling the official number from your bank's website.
+              Important: acoustic deepfake detection is NOT reliable for high-quality AI voice (ElevenLabs-class TTS sounds fully natural, with breaths). A "likely real" result does not prove a human spoke. This tool is strongest at catching scam-call scripts (urgency, OTP/UPI requests, fake bank/police). Educational use only — never share OTPs or transfer money based on a call; always verify by dialing the official number from your bank's website.
             </p>
           </div>
         )}

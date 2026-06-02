@@ -821,15 +821,24 @@ async function handleDeepfakeAudio(req, res) {
   if (!allowed.some((m) => mimeType.startsWith(m.split("/")[0]) && mimeType.includes(m.split("/")[1].split(";")[0]))) {
     // be permissive — Gemini supports most audio types
   }
-  const prompt = `You are a cybersecurity analyst trained to spot AI-generated voice / vishing / scam phone calls. Analyze the attached audio. Listen for telltale indicators of synthetic voice (unnatural prosody, missing breaths, pitch artifacts, robotic intonation), social-engineering scripts (urgency, authority impersonation, OTP requests, payment demands), and India-specific vishing patterns (fake bank, fake police, fake courier, fake tax-officer scripts).
+  const prompt = `You are a cautious cybersecurity analyst screening audio for AI-generated voice (deepfake) and for vishing / scam-call scripts.
 
-${transcript ? `Provided transcript (use as context only, do not trust it absolutely):\n"""\n${transcript.slice(0, 2000)}\n"""\n` : ""}
+CRITICAL CALIBRATION — read carefully:
+- Modern text-to-speech (ElevenLabs, PlayHT, OpenAI, etc.) produces CLEAN, natural-sounding voice WITH realistic breaths, pauses and prosody. Clean, smooth, studio-quality, single-speaker narration (e.g. a documentary voiceover) is EXACTLY what high-end AI voice sounds like. Therefore "it sounds natural / no artifacts" is NOT evidence that it is a real human. Do NOT output "likely-real" just because the audio is clean.
+- Only choose "likely-real" when there is positive evidence of liveness: spontaneous unscripted speech, natural disfluencies (um/uh, false starts, stutters), overlapping speakers, irregular background/room noise, mouth/lip sounds, or call-quality phone artifacts — i.e. things current TTS rarely reproduces.
+- If the audio is clean, scripted, smooth narration with no liveness cues, you CANNOT confirm it is human — return "uncertain" (NOT "likely-real").
+- Only choose "likely-deepfake" when you hear concrete synthesis artifacts (robotic cadence, pitch glitches, unnatural splice/word boundaries, no breaths at all, metallic timbre).
+- Be honest about the limit: acoustic deepfake detection is unreliable for high-quality TTS; when unsure, say uncertain.
+
+Also detect social-engineering / vishing scripts (urgency, authority impersonation, OTP/UPI-PIN requests, payment demands, fake bank/police/courier/tax-officer). If a scam script is present, that is the dominant risk regardless of voice authenticity.
+
+${transcript ? `Provided transcript (context only, do not trust absolutely):\n"""\n${transcript.slice(0, 2000)}\n"""\n` : ""}
 
 Reply ONLY with a strict JSON object — no markdown fences:
 {
   "verdict": "likely-real" | "likely-deepfake" | "scam-script" | "uncertain",
-  "score": 0-100 (higher = higher risk),
-  "indicators": [string, ...],          // 0-6 specific things you heard
+  "score": 0-100 (risk; clean unverifiable narration = ~45-60 uncertain, NOT near 0),
+  "indicators": [string, ...],          // 0-6 specific things you heard (cite liveness cues or their ABSENCE)
   "transcript": "best-effort transcript of what the speaker says",
   "scamCategory": "vishing" | "fake-bank" | "fake-courier" | "fake-tax" | "fake-police" | "investment-scam" | "none",
   "advice": [string, ...]               // 2-4 next steps
