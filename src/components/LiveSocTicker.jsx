@@ -18,11 +18,11 @@ const EVENTS = [
   { icon: "🛡", text: "Deepfake voice detected", color: "#A855F7" },
   { icon: "🪪", text: "Aadhaar leak prevented", color: "#3B82F6" },
   { icon: "💳", text: "Card fraud stopped", color: "#EF4444" },
-  { icon: "📱", text: "Stolen phone recovered", color: "#14E3C5" },
+  { icon: "📱", text: "Stolen phone recovered", color: "#14b8a6" },
   { icon: "🕵", text: "Dark web alert", color: "#8B5CF6" },
   { icon: "🔒", text: "Loan app harassment blocked", color: "#F59E0B" },
   { icon: "✓", text: "Family safe-word verified", color: "#22C55E" },
-  { icon: "📝", text: "Scam check ran", color: "#14E3C5" },
+  { icon: "📝", text: "Scam check ran", color: "#14b8a6" },
 ];
 
 function genEvent() {
@@ -76,7 +76,7 @@ export default function LiveSocTicker() {
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 95,
         background: "rgba(2,6,23,0.85)",
         backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(20,227,197,0.18)",
+        borderBottom: "1px solid rgba(20, 184, 166,0.18)",
         height: 32, display: "flex", alignItems: "center", overflow: "hidden",
         fontFamily: "ui-monospace, Menlo, monospace",
         boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
@@ -86,7 +86,7 @@ export default function LiveSocTicker() {
           flexShrink: 0, padding: "0 14px",
           display: "flex", alignItems: "center", gap: 8,
           borderRight: "1px solid rgba(148,163,184,0.1)", height: "100%",
-          background: "linear-gradient(90deg, rgba(20,227,197,0.10), transparent)",
+          background: "linear-gradient(90deg, rgba(20, 184, 166,0.10), transparent)",
           minWidth: 230,
         }}>
           <span style={{
@@ -96,7 +96,7 @@ export default function LiveSocTicker() {
             flexShrink: 0,
           }} />
           <span style={{ fontSize: 10, color: "#94a3b8", letterSpacing: 1, textTransform: "uppercase", fontWeight: 700 }}>LIVE</span>
-          <span style={{ fontSize: 11, color: "#14E3C5", fontWeight: 700 }}>{total.toLocaleString("en-IN")}</span>
+          <span style={{ fontSize: 11, color: "#14b8a6", fontWeight: 700 }}>{total.toLocaleString("en-IN")}</span>
           <span style={{ fontSize: 10, color: "#64748b" }}>threats blocked</span>
         </div>
 
@@ -126,9 +126,9 @@ export default function LiveSocTicker() {
           display: "flex", alignItems: "center", gap: 8,
           borderLeft: "1px solid rgba(148,163,184,0.1)", height: "100%",
           fontSize: 10, color: "#94a3b8",
-          background: "linear-gradient(90deg, transparent, rgba(20,227,197,0.08))",
+          background: "linear-gradient(90deg, transparent, rgba(20, 184, 166,0.08))",
         }}>
-          <a href="/status" style={{ color: "#14E3C5", textDecoration: "none", fontWeight: 700 }}>
+          <a href="/status" style={{ color: "#14b8a6", textDecoration: "none", fontWeight: 700 }}>
             ✓ All systems operational
           </a>
         </div>

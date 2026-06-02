@@ -33,7 +33,7 @@ export default function LanguageSwitcher({ compact = false }) {
               padding: compact ? "2px 8px" : "4px 10px",
               fontSize: 12, fontWeight: 600,
               borderRadius: 6, border: "none",
-              background: active ? "linear-gradient(135deg, #6366f1, #14e3c5)" : "transparent",
+              background: active ? "linear-gradient(135deg, #6366f1, #14b8a6)" : "transparent",
               color: active ? "#fff" : "#94a3b8",
               cursor: "pointer", fontFamily: "'Vrikaan Sans', sans-serif",
               transition: "background 0.15s, color 0.15s",

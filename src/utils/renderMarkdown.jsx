@@ -25,7 +25,7 @@ function renderInline(text) {
         <code
           key={key++}
           style={{
-            background: "rgba(20,227,197,0.08)",
+            background: "rgba(20, 184, 166,0.08)",
             padding: "1px 5px",
             borderRadius: 4,
             fontFamily: "'Vrikaan Mono', monospace",

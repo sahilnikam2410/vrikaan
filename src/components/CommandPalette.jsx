@@ -10,7 +10,7 @@ const T = {
   muted: "#94a3b8",
   mutedDark: "#64748b",
   accent: "#6366f1",
-  cyan: "#14e3c5",
+  cyan: "#14b8a6",
   border: "rgba(148,163,184,0.12)",
 };
 
@@ -242,7 +242,7 @@ export default function CommandPalette() {
                       <span style={{ flex: 1 }}>{c.label}</span>
                       {isActive && <kbd style={{
                         padding: "2px 6px", borderRadius: 4,
-                        background: "rgba(20,227,197,0.12)", border: `1px solid rgba(20,227,197,0.25)`,
+                        background: "rgba(20, 184, 166,0.12)", border: `1px solid rgba(20, 184, 166,0.25)`,
                         fontSize: 10, color: T.cyan, fontFamily: "monospace",
                       }}>↵</kbd>}
                     </button>

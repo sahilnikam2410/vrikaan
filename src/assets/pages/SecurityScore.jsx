@@ -5,7 +5,7 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { saveToolResult } from "../../services/toolHistoryService";
 
-const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
+const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
 const questions = [
   { id: "pw", q: "Do you use unique passwords for every account?", w: 15 },

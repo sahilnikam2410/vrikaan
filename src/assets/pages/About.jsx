@@ -5,9 +5,9 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
 const T = {
-  bg: "#030712", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8",
+  bg: "#060a14", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8",
   mutedDark: "#64748b", accent: "#6366f1", accentSoft: "#818cf8",
-  cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", border: "rgba(148,163,184,0.08)",
+  cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", border: "rgba(148,163,184,0.08)",
   card: "rgba(17,24,39,0.6)", surface: "#111827",
 };
 
@@ -17,7 +17,7 @@ const heading = (size) => ({
 });
 
 const gradientText = {
-  background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+  background: "linear-gradient(135deg, #6366f1, #14b8a6)",
   WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
 };
 
@@ -193,8 +193,8 @@ export default function About() {
           <div style={{
             position: "relative",
             padding: "44px 40px",
-            background: "linear-gradient(135deg, rgba(20,227,197,0.06), rgba(99,102,241,0.04))",
-            border: `1px solid rgba(20,227,197,0.18)`,
+            background: "linear-gradient(135deg, rgba(20, 184, 166,0.06), rgba(99,102,241,0.04))",
+            border: `1px solid rgba(20, 184, 166,0.18)`,
             borderRadius: 22,
             overflow: "hidden",
           }}>
@@ -472,7 +472,7 @@ export default function About() {
             {/* ── Sahil ── */}
             <div style={{ ...cardBase, borderRadius: 20, padding: "32px 28px" }}>
               <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 18 }}>
-                <div style={{ width: 72, height: 72, borderRadius: 18, background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(20,227,197,0.10))", border: `1px solid ${T.accent}30`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <div style={{ width: 72, height: 72, borderRadius: 18, background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(20, 184, 166,0.10))", border: `1px solid ${T.accent}30`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <span style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 32, fontWeight: 300, color: T.white }}>S</span>
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -517,7 +517,7 @@ export default function About() {
             {/* ── Khushi ── */}
             <div style={{ ...cardBase, borderRadius: 20, padding: "32px 28px" }}>
               <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 18 }}>
-                <div style={{ width: 72, height: 72, borderRadius: 18, background: "linear-gradient(135deg, rgba(20,227,197,0.18), rgba(99,102,241,0.10))", border: `1px solid ${T.cyan}30`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <div style={{ width: 72, height: 72, borderRadius: 18, background: "linear-gradient(135deg, rgba(20, 184, 166,0.18), rgba(99,102,241,0.10))", border: `1px solid ${T.cyan}30`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <span style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 32, fontWeight: 300, color: T.white }}>K</span>
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
@@ -542,7 +542,7 @@ export default function About() {
                 <a href="https://www.linkedin.com/company/vrikaan-ai-cybersecurity" target="_blank" rel="noopener noreferrer" style={{
                   display: "inline-flex", alignItems: "center", gap: 6,
                   padding: "8px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600,
-                  background: "rgba(20,227,197,0.08)", border: `1px solid ${T.cyan}30`,
+                  background: "rgba(20, 184, 166,0.08)", border: `1px solid ${T.cyan}30`,
                   color: T.cyan, textDecoration: "none",
                 }}>
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
@@ -628,7 +628,7 @@ export default function About() {
         {/* ── Join Our Mission CTA ── */}
         <div style={{
           textAlign: "center", padding: "64px 36px", borderRadius: 24,
-          background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20,227,197,0.04))",
+          background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20, 184, 166,0.04))",
           border: `1px solid rgba(99,102,241,0.12)`, position: "relative", overflow: "hidden",
         }}>
           <div style={{ position: "absolute", top: -80, left: -80, width: 200, height: 200, borderRadius: "50%", background: `radial-gradient(circle, ${T.accent}08, transparent)` }} />

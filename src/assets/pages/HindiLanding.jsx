@@ -5,8 +5,8 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
 const T = {
-  bg: "#030712", card: "rgba(17,24,39,0.7)",
-  accent: "#6366f1", cyan: "#14e3c5",
+  bg: "#060a14", card: "rgba(17,24,39,0.7)",
+  accent: "#6366f1", cyan: "#14b8a6",
   green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", orange: "#f97316",
   white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b",
   border: "rgba(148,163,184,0.12)",
@@ -74,7 +74,7 @@ export default function HindiLanding() {
         <div style={{ position: "relative", zIndex: 1, maxWidth: 900, margin: "0 auto" }}>
           <span style={{
             display: "inline-block", padding: "6px 16px", borderRadius: 999,
-            background: "rgba(20,227,197,0.10)", border: `1px solid ${T.cyan}55`,
+            background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}55`,
             fontSize: 12, fontWeight: 800, letterSpacing: 1,
             color: T.cyan, marginBottom: 18,
           }}>🇮🇳 हिन्दी में · नाशिक से · बिल्कुल फ्री</span>

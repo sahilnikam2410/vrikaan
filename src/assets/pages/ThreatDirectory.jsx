@@ -6,11 +6,11 @@ import SEO, { breadcrumbSchema } from "../../components/SEO";
 import THREATS, { THREAT_CATEGORIES } from "../../data/threats";
 
 const T = {
-  bg: "#030712",
+  bg: "#060a14",
   card: "rgba(17,24,39,0.6)",
   border: "rgba(148,163,184,0.08)",
   accent: "#6366f1",
-  cyan: "#14e3c5",
+  cyan: "#14b8a6",
   white: "#f1f5f9",
   muted: "#94a3b8",
   mutedDark: "#64748b",
@@ -136,7 +136,7 @@ export default function ThreatDirectory() {
                   transition: "all 0.2s ease",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(20,227,197,0.3)";
+                  e.currentTarget.style.borderColor = "rgba(20, 184, 166,0.3)";
                   e.currentTarget.style.transform = "translateY(-2px)";
                 }}
                 onMouseLeave={(e) => {

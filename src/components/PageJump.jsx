@@ -176,7 +176,7 @@ export default function PageJump() {
         @media (max-width: 720px) { .vrk-pagejump, .vrk-pj-help { display: none !important; } }
         @keyframes vrk-pj-in { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes vrk-help-in { from { opacity: 0; transform: translate(-50%, -50%) scale(0.94); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
-        .vrk-pj-btn:hover { background: rgba(20,227,197,0.22) !important; border-color: rgba(20,227,197,0.5) !important; color: #14E3C5 !important; transform: translateY(-1px); }
+        .vrk-pj-btn:hover { background: rgba(20, 184, 166,0.22) !important; border-color: rgba(20, 184, 166,0.5) !important; color: #14b8a6 !important; transform: translateY(-1px); }
         .vrk-pj-dot { position: relative; }
       `}</style>
 
@@ -241,12 +241,12 @@ export default function PageJump() {
                         width: active ? 10 : 7,
                         height: active ? 10 : 7,
                         borderRadius: 999,
-                        background: active ? "#14E3C5"
-                                  : hov ? "rgba(20,227,197,0.55)"
+                        background: active ? "#14b8a6"
+                                  : hov ? "rgba(20, 184, 166,0.55)"
                                   : "rgba(148,163,184,0.35)",
                         border: 0, cursor: "pointer", padding: 0,
                         transition: "all 0.2s",
-                        boxShadow: active ? "0 0 10px rgba(20,227,197,0.6)" : "none",
+                        boxShadow: active ? "0 0 10px rgba(20, 184, 166,0.6)" : "none",
                         display: "block",
                       }}
                     />
@@ -290,7 +290,7 @@ export default function PageJump() {
               display: "flex", alignItems: "center", justifyContent: "center",
               marginTop: 2, transition: "all 0.2s",
             }}
-            onMouseEnter={e => { e.currentTarget.style.color = "#14E3C5"; e.currentTarget.style.borderColor = "rgba(20,227,197,0.5)"; }}
+            onMouseEnter={e => { e.currentTarget.style.color = "#14b8a6"; e.currentTarget.style.borderColor = "rgba(20, 184, 166,0.5)"; }}
             onMouseLeave={e => { e.currentTarget.style.color = "#94a3b8"; e.currentTarget.style.borderColor = "rgba(99,102,241,0.18)"; }}
           >?</button>
         </div>
@@ -309,9 +309,9 @@ export default function PageJump() {
             width: 280,
             padding: 18,
             background: "rgba(3,7,18,0.96)",
-            border: "1px solid rgba(20,227,197,0.35)",
+            border: "1px solid rgba(20, 184, 166,0.35)",
             borderRadius: 14,
-            boxShadow: "0 14px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(20,227,197,0.08)",
+            boxShadow: "0 14px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(20, 184, 166,0.08)",
             backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
             color: "#f1f5f9", fontFamily: "var(--font-body), sans-serif",
             pointerEvents: "none",
@@ -324,8 +324,8 @@ export default function PageJump() {
             <span style={{
               display: "inline-flex", alignItems: "center", justifyContent: "center",
               width: 26, height: 26, borderRadius: 8,
-              background: "rgba(20,227,197,0.18)", color: "#14E3C5",
-              border: "1px solid rgba(20,227,197,0.4)",
+              background: "rgba(20, 184, 166,0.18)", color: "#14b8a6",
+              border: "1px solid rgba(20, 184, 166,0.4)",
               fontSize: 12, fontWeight: 800, fontFamily: "ui-monospace, monospace",
             }}>{String(hoveredIdx + 1).padStart(2, "0")}</span>
             <span style={{
@@ -375,7 +375,7 @@ export default function PageJump() {
               width: "min(440px, 92vw)",
               padding: 28,
               background: "rgba(11,18,32,0.98)",
-              border: "1px solid rgba(20,227,197,0.3)",
+              border: "1px solid rgba(20, 184, 166,0.3)",
               borderRadius: 18,
               boxShadow: "0 30px 80px rgba(0,0,0,0.6)",
               color: "#f1f5f9", fontFamily: "var(--font-body), sans-serif",
@@ -421,9 +421,9 @@ export default function PageJump() {
                     fontFamily: "ui-monospace, Menlo, monospace",
                     fontSize: 12, fontWeight: 700,
                     padding: "4px 10px",
-                    background: "rgba(20,227,197,0.14)",
-                    color: "#14E3C5",
-                    border: "1px solid rgba(20,227,197,0.35)",
+                    background: "rgba(20, 184, 166,0.14)",
+                    color: "#14b8a6",
+                    border: "1px solid rgba(20, 184, 166,0.35)",
                     borderRadius: 6, minWidth: 64, textAlign: "center",
                   }}>{k}</kbd>
                 </div>

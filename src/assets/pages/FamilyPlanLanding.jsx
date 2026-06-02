@@ -14,9 +14,9 @@ import SEO, { faqSchema, productSchema } from "../../components/SEO";
  */
 
 const T = {
-  bg: "#030712", card: "rgba(17,24,39,0.6)", white: "#f1f5f9",
+  bg: "#060a14", card: "rgba(17,24,39,0.6)", white: "#f1f5f9",
   muted: "#94a3b8", mutedDark: "#64748b",
-  pink: "#ec4899", cyan: "#14e3c5", indigo: "#6366f1",
+  pink: "#ec4899", cyan: "#14b8a6", indigo: "#6366f1",
   border: "rgba(148,163,184,0.10)", green: "#22c55e",
 };
 

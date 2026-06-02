@@ -6,8 +6,8 @@ import SEO from "../../components/SEO";
 import { audit } from "../../lib/whatsappAudit";
 
 const T = {
-  bg: "#030712", card: "rgba(17,24,39,0.7)",
-  accent: "#6366f1", cyan: "#14e3c5",
+  bg: "#060a14", card: "rgba(17,24,39,0.7)",
+  accent: "#6366f1", cyan: "#14b8a6",
   green: "#22c55e", red: "#ef4444", orange: "#f97316", yellow: "#fbbf24",
   white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b",
   border: "rgba(148,163,184,0.12)",
@@ -90,7 +90,7 @@ export default function WhatsAppAudit() {
               style={{
                 border: `2px dashed ${dragging ? T.cyan : T.border}`,
                 borderRadius: 18,
-                background: dragging ? "rgba(20,227,197,0.06)" : T.card,
+                background: dragging ? "rgba(20, 184, 166,0.06)" : T.card,
                 padding: "48px 24px", textAlign: "center",
                 transition: "all 0.2s", marginBottom: 20,
               }}

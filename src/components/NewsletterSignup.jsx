@@ -24,7 +24,7 @@ import { useState } from "react";
 export default function NewsletterSignup({
   compact = false,
   source = "unknown",
-  accent = "#14e3c5",
+  accent = "#14b8a6",
   title = "Get launch updates",
   subtitle = "1-2 emails a month. Tips, new tools, India scam alerts. Unsubscribe in 1 click.",
   cta = "Subscribe",
@@ -99,7 +99,7 @@ export default function NewsletterSignup({
         <button type="submit" disabled={state === "submitting" || state === "success"} style={{
           padding: "11px 18px", borderRadius: 10,
           background: state === "success" ? "#22c55e" : accent,
-          color: "#030712", border: 0,
+          color: "#060a14", border: 0,
           fontWeight: 800, fontSize: 13, cursor: state === "submitting" ? "wait" : "pointer",
           fontFamily: "inherit", whiteSpace: "nowrap",
         }}>
@@ -151,7 +151,7 @@ export default function NewsletterSignup({
           />
           <button type="submit" disabled={state === "submitting"} style={{
             padding: "13px 26px", borderRadius: 12,
-            background: accent, color: "#030712", border: 0,
+            background: accent, color: "#060a14", border: 0,
             fontWeight: 800, fontSize: 14, cursor: state === "submitting" ? "wait" : "pointer",
             fontFamily: "'Vrikaan Sans', sans-serif",
           }}>

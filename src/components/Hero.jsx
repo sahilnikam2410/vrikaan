@@ -25,7 +25,7 @@ padding:"0 clamp(40px,6vw,120px)"
         >
           The Future of
           <br />
-          <span style={{ color: "#14e3c5" }}>
+          <span style={{ color: "#14b8a6" }}>
             Cyber Defense
           </span>
         </h1>

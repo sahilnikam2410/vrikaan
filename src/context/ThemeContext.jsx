@@ -21,9 +21,9 @@ export function ThemeProvider({ children }) {
   const toggleTheme = () => setMode(m => m === "dark" ? "light" : "dark");
 
   const theme = mode === "dark" ? {
-    bg: "#030712", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8",
+    bg: "#060a14", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8",
     mutedDark: "#64748b", accent: "#6366f1", accentSoft: "#818cf8",
-    cyan: "#14e3c5", green: "#22c55e", red: "#ef4444",
+    cyan: "#14b8a6", green: "#22c55e", red: "#ef4444",
     border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827",
   } : {
     bg: "#f8fafc", dark: "#e2e8f0", white: "#0f172a", muted: "#475569",

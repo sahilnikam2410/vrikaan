@@ -74,7 +74,7 @@ export default function QuotaBanner({
         to={`/pricing?from=${encodeURIComponent(path)}`}
         style={{
           padding: "9px 16px", borderRadius: 10,
-          background: color, color: "#030712",
+          background: color, color: "#060a14",
           fontWeight: 800, fontSize: 13, textDecoration: "none",
           fontFamily: "'Vrikaan Sans', sans-serif",
           flexShrink: 0, transition: "transform 0.15s",

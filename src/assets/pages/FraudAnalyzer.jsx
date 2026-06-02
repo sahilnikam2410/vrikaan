@@ -7,7 +7,7 @@ import { saveToolResult } from "../../services/toolHistoryService";
 import { exportReport } from "../../utils/exportPDF";
 import renderMarkdown from "../../utils/renderMarkdown";
 
-const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
+const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
 export default function FraudAnalyzer() {
   const [input, setInput] = useState("");
@@ -161,7 +161,7 @@ export default function FraudAnalyzer() {
         <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>Threat Analysis</span>
-          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>AI Fraud <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Analyzer</span></h1>
+          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>AI Fraud <span style={{ background: "linear-gradient(135deg, #6366f1, #14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Analyzer</span></h1>
           <p style={{ color: T.muted, fontSize: 16, maxWidth: 500, margin: "0 auto", lineHeight: 1.7 }}>Paste any suspicious URL, email, phone number, or message for instant AI-powered threat analysis.</p>
         </div>
 
@@ -197,7 +197,7 @@ export default function FraudAnalyzer() {
                 <button
                   onClick={explainWithAI}
                   disabled={aiLoading}
-                  style={{ padding: "8px 16px", background: "rgba(20,227,197,0.12)", border: "1px solid rgba(20,227,197,0.3)", borderRadius: 8, color: T.cyan, fontSize: 12, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Vrikaan Sans'", opacity: aiLoading ? 0.6 : 1 }}
+                  style={{ padding: "8px 16px", background: "rgba(20, 184, 166,0.12)", border: "1px solid rgba(20, 184, 166,0.3)", borderRadius: 8, color: T.cyan, fontSize: 12, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Vrikaan Sans'", opacity: aiLoading ? 0.6 : 1 }}
                 >
                   {aiLoading ? "Analyzing..." : "🤖 Explain with AI"}
                 </button>
@@ -245,7 +245,7 @@ export default function FraudAnalyzer() {
               </div>
 
               {(aiExplanation || aiError) && (
-                <div style={{ marginTop: 20, padding: "16px 18px", background: "rgba(20,227,197,0.05)", border: "1px solid rgba(20,227,197,0.15)", borderRadius: 12 }}>
+                <div style={{ marginTop: 20, padding: "16px 18px", background: "rgba(20, 184, 166,0.05)", border: "1px solid rgba(20, 184, 166,0.15)", borderRadius: 12 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
                     <span style={{ fontSize: 14 }}>🤖</span>
                     <span style={{ fontSize: 12, fontWeight: 700, color: T.cyan, fontFamily: "'Vrikaan Mono', monospace", letterSpacing: 0.5 }}>AI ANALYSIS</span>

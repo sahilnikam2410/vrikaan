@@ -7,7 +7,7 @@ const T = {
   white: "#f1f5f9",
   muted: "#94a3b8",
   accent: "#6366f1",
-  cyan: "#14e3c5",
+  cyan: "#14b8a6",
   border: "rgba(148,163,184,0.12)",
 };
 

@@ -5,7 +5,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
-const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", accentSoft: "#818cf8", cyan: "#14e3c5", ember: "#f97316", red: "#ef4444", gold: "#eab308", purple: "#a78bfa", blue: "#38bdf8", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
+const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", accentSoft: "#818cf8", cyan: "#14b8a6", ember: "#f97316", red: "#ef4444", gold: "#eab308", purple: "#a78bfa", blue: "#38bdf8", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
 export default function FeaturesPage() {
   const { user } = useAuth();
@@ -41,7 +41,7 @@ export default function FeaturesPage() {
         <div style={{ textAlign: "center", marginBottom: 80 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>Platform</span>
           <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 52px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 20px" }}>
-            Six Layers of <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI Protection</span>
+            Six Layers of <span style={{ background: "linear-gradient(135deg, #6366f1, #14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI Protection</span>
           </h1>
           <p style={{ color: T.muted, fontSize: 17, maxWidth: 550, margin: "0 auto", lineHeight: 1.8 }}>
             Enterprise-grade cybersecurity made simple. No technical expertise required. Just sign up and let our AI handle the rest.
@@ -108,7 +108,7 @@ export default function FeaturesPage() {
 
             <Link to={user ? "/fraud-analyzer" : "/signup"} style={{
               display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "12px 24px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+              padding: "12px 24px", background: "linear-gradient(135deg, #6366f1, #14b8a6)",
               borderRadius: 10, color: "#fff", textDecoration: "none", fontSize: 13, fontWeight: 600,
             }}>
               {user ? "Try This Feature" : "Sign Up to Access"} &rarr;
@@ -136,7 +136,7 @@ export default function FeaturesPage() {
         </div>
 
         {/* CTA */}
-        <div style={{ textAlign: "center", padding: "56px 32px", background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20,227,197,0.03))", border: `1px solid rgba(99,102,241,0.1)`, borderRadius: 20 }}>
+        <div style={{ textAlign: "center", padding: "56px 32px", background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20, 184, 166,0.03))", border: `1px solid rgba(99,102,241,0.1)`, borderRadius: 20 }}>
           <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 32, fontWeight: 700, margin: "0 0 14px" }}>Ready to Get Protected?</h2>
           <p style={{ color: T.muted, fontSize: 16, marginBottom: 28, maxWidth: 420, margin: "0 auto 28px" }}>Start with our free plan. Upgrade anytime for full protection.</p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center" }}>

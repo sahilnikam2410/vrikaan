@@ -14,7 +14,7 @@ export default function SeniorModeBanner({ tone = "warn" }) {
 
   const colors = tone === "warn"
     ? { bg: "rgba(251,191,36,0.10)", border: "#fbbf24", text: "#fbbf24" }
-    : { bg: "rgba(20,227,197,0.10)", border: "#14e3c5", text: "#14e3c5" };
+    : { bg: "rgba(20, 184, 166,0.10)", border: "#14b8a6", text: "#14b8a6" };
 
   return (
     <div role="alert" style={{

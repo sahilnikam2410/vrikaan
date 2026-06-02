@@ -181,7 +181,7 @@ export default function UpgradeModal({ open, onClose, toolName, toolPath, tier, 
               }}
               style={{
                 padding: "14px 22px", borderRadius: 12,
-                background: color, color: "#030712",
+                background: color, color: "#060a14",
                 border: 0, cursor: "pointer",
                 fontSize: 15, fontWeight: 800,
                 fontFamily: "'Vrikaan Sans', sans-serif",

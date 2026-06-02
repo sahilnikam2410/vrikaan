@@ -5,10 +5,10 @@ import SEO from "../../components/SEO";
 import { useAuth } from "../../context/AuthContext";
 
 const T = {
-  bg: "#030712", surface: "#111827", card: "rgba(17,24,39,0.7)",
+  bg: "#060a14", surface: "#111827", card: "rgba(17,24,39,0.7)",
   white: "#f1f5f9", muted: "#94a3b8", green: "#22c55e",
   red: "#ef4444", border: "rgba(148,163,184,0.1)",
-  cyan: "#14e3c5", accent: "#6366f1", orange: "#f97316",
+  cyan: "#14b8a6", accent: "#6366f1", orange: "#f97316",
 };
 
 const MAX_FREE = 5;
@@ -299,7 +299,7 @@ export default function BulkScanner() {
           {!isPro && (
             <div style={{
               padding: 20, borderRadius: 14,
-              background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(20,227,197,0.06))",
+              background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(20, 184, 166,0.06))",
               border: `1px solid ${T.accent}30`,
               textAlign: "center",
             }}>

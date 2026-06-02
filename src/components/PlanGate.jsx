@@ -34,7 +34,7 @@ export default function PlanGate({ required = "pro", feature = "This feature", c
           {feature} requires the {required} plan or higher. Upgrade to unlock.
         </p>
         <Link to="/pricing" style={{
-          marginTop: 16, padding: "10px 24px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+          marginTop: 16, padding: "10px 24px", background: "linear-gradient(135deg, #6366f1, #14b8a6)",
           borderRadius: 8, color: "#fff", textDecoration: "none", fontSize: 14, fontWeight: 600,
           fontFamily: "'Vrikaan Sans', sans-serif",
         }}>

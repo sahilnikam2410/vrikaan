@@ -12,13 +12,13 @@ const TURNSTILE_SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY || "";
 
 const styles = {
   page: {
-    minHeight: "100vh", background: "#030712", display: "flex", alignItems: "center",
+    minHeight: "100vh", background: "#060a14", display: "flex", alignItems: "center",
     justifyContent: "center", position: "relative", overflow: "hidden",
     fontFamily: "'Vrikaan Sans', sans-serif", padding: "80px 16px 40px",
   },
   gridBg: {
     position: "absolute", inset: 0,
-    backgroundImage: "linear-gradient(rgba(20,227,197,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(20,227,197,0.04) 1px, transparent 1px)",
+    backgroundImage: "linear-gradient(rgba(20, 184, 166,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 184, 166,0.04) 1px, transparent 1px)",
     backgroundSize: "60px 60px", pointerEvents: "none",
   },
   glow1: {
@@ -27,22 +27,22 @@ const styles = {
   },
   glow2: {
     position: "absolute", width: 300, height: 300, borderRadius: "50%",
-    background: "radial-gradient(circle, rgba(20,227,197,0.08) 0%, transparent 70%)", bottom: "10%", left: "10%",
+    background: "radial-gradient(circle, rgba(20, 184, 166,0.08) 0%, transparent 70%)", bottom: "10%", left: "10%",
   },
   card: {
     position: "relative", width: "100%", maxWidth: 480, padding: "40px 40px",
     background: "rgba(15,23,42,0.8)", backdropFilter: "blur(20px)",
-    border: "1px solid rgba(20,227,197,0.15)", borderRadius: 16, zIndex: 2,
+    border: "1px solid rgba(20, 184, 166,0.15)", borderRadius: 16, zIndex: 2,
   },
   logo: { textAlign: "center", marginBottom: 8 },
   logoIcon: {
     width: 48, height: 48, margin: "0 auto 12px",
-    background: "linear-gradient(135deg, #14e3c5, #6366f1)", borderRadius: 12,
+    background: "linear-gradient(135deg, #14b8a6, #6366f1)", borderRadius: 12,
     display: "flex", alignItems: "center", justifyContent: "center",
     fontSize: 22, fontWeight: 700, color: "#fff",
   },
   title: {
-    fontSize: 28, fontWeight: 700, color: "#14e3c5", marginBottom: 4,
+    fontSize: 28, fontWeight: 700, color: "#14b8a6", marginBottom: 4,
     fontFamily: "'Vrikaan Sans', sans-serif",
   },
   subtitle: { fontSize: 14, color: "#94a3b8", marginBottom: 28, textAlign: "center" },
@@ -55,7 +55,7 @@ const styles = {
     boxSizing: "border-box", fontFamily: "'Vrikaan Sans', sans-serif",
   },
   btn: {
-    width: "100%", padding: "14px", background: "linear-gradient(135deg, #14e3c5, #0ea5e9)",
+    width: "100%", padding: "14px", background: "linear-gradient(135deg, #14b8a6, #0ea5e9)",
     border: "none", borderRadius: 10, color: "#ffffff", fontSize: 15, fontWeight: 700,
     cursor: "pointer", marginTop: 4, fontFamily: "'Vrikaan Sans', sans-serif",
     letterSpacing: 0.5, transition: "opacity 0.2s, transform 0.2s",
@@ -79,7 +79,7 @@ const styles = {
     fontFamily: "'Vrikaan Sans', sans-serif",
   },
   footer: { textAlign: "center", marginTop: 24, fontSize: 14, color: "#94a3b8" },
-  link: { color: "#14e3c5", textDecoration: "none", fontWeight: 600 },
+  link: { color: "#14b8a6", textDecoration: "none", fontWeight: 600 },
   strengthBar: {
     height: 4, borderRadius: 2, transition: "all 0.3s", marginTop: -12, marginBottom: 6,
   },
@@ -88,7 +88,7 @@ const styles = {
     display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 20, marginTop: 4,
   },
   checkbox: {
-    accentColor: "#14e3c5", marginTop: 2, cursor: "pointer", flexShrink: 0,
+    accentColor: "#14b8a6", marginTop: 2, cursor: "pointer", flexShrink: 0,
   },
   checkboxLabel: { fontSize: 13, color: "#94a3b8", lineHeight: 1.5 },
   phoneRow: { display: "flex", gap: 8 },
@@ -101,7 +101,7 @@ const styles = {
   inputWrap: { position: "relative" },
   showBtn: {
     position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
-    background: "none", border: "none", color: "#14e3c5", fontSize: 12,
+    background: "none", border: "none", color: "#14b8a6", fontSize: 12,
     cursor: "pointer", fontWeight: 600,
   },
 };
@@ -223,7 +223,7 @@ export default function Signup() {
   ];
 
   const set = (key) => (e) => setForm({ ...form, [key]: e.target.value });
-  const focusStyle = (e) => (e.target.style.borderColor = "#14e3c5");
+  const focusStyle = (e) => (e.target.style.borderColor = "#14b8a6");
   const blurStyle = (e) => (e.target.style.borderColor = "rgba(148,163,184,0.2)");
 
   const validateEmail = (email) => {
@@ -368,7 +368,7 @@ export default function Signup() {
         {/* Spinning gradient border */}
         <div style={{
           position: "absolute", inset: -40, zIndex: 0,
-          background: "conic-gradient(from 0deg, #14e3c5, #6366f1, #0ea5e9, #14e3c5)",
+          background: "conic-gradient(from 0deg, #14b8a6, #6366f1, #0ea5e9, #14b8a6)",
           animation: "gradientSpin 4s linear infinite",
           opacity: 0.5,
         }} />
@@ -378,12 +378,12 @@ export default function Signup() {
         <div style={{
           display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
           marginBottom: 16, padding: "8px 16px", borderRadius: 20,
-          background: "rgba(20,227,197,0.06)", border: "1px solid rgba(20,227,197,0.15)",
+          background: "rgba(20, 184, 166,0.06)", border: "1px solid rgba(20, 184, 166,0.15)",
           width: "fit-content", margin: "0 auto 16px",
         }}>
           <span style={{ fontSize: 16 }}>{"\u{1F6E1}\uFE0F"}</span>
           <span style={{ fontSize: 12, color: "#94a3b8", fontWeight: 500 }}>
-            <span style={{ color: "#14e3c5", fontWeight: 700 }}>Free forever</span> · protect your whole family
+            <span style={{ color: "#14b8a6", fontWeight: 700 }}>Free forever</span> · protect your whole family
           </span>
         </div>
 
@@ -557,11 +557,11 @@ export default function Signup() {
             />
             <label htmlFor="terms-checkbox" style={styles.checkboxLabel}>
               I agree to the{" "}
-              <Link to="/terms" style={{ color: "#14e3c5", textDecoration: "none" }}>
+              <Link to="/terms" style={{ color: "#14b8a6", textDecoration: "none" }}>
                 Terms of Service
               </Link>{" "}
               and{" "}
-              <Link to="/privacy" style={{ color: "#14e3c5", textDecoration: "none" }}>
+              <Link to="/privacy" style={{ color: "#14b8a6", textDecoration: "none" }}>
                 Privacy Policy
               </Link>
             </label>
@@ -600,7 +600,7 @@ export default function Signup() {
           style={styles.socialBtn}
           onClick={() => handleSocialSignup("google")}
           disabled={loading}
-          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#14e3c5")}
+          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#14b8a6")}
           onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(148,163,184,0.15)")}
         >
           <svg width="18" height="18" viewBox="0 0 24 24">
@@ -617,7 +617,7 @@ export default function Signup() {
           style={styles.socialBtn}
           onClick={() => handleSocialSignup("github")}
           disabled={loading}
-          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#14e3c5")}
+          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#14b8a6")}
           onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(148,163,184,0.15)")}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="#e2e8f0">
@@ -631,7 +631,7 @@ export default function Signup() {
           style={styles.socialBtn}
           onClick={() => handleSocialSignup("facebook")}
           disabled={loading}
-          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#14e3c5")}
+          onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#14b8a6")}
           onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(148,163,184,0.15)")}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">

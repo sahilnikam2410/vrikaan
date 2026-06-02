@@ -5,9 +5,9 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { exportReport } from "../../utils/exportPDF";
 
-const T = { bg: "#030712", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
+const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
-const gradeColor = { A: "#22c55e", B: "#14e3c5", C: "#fbbf24", D: "#f97316", E: "#ef4444", F: "#ef4444" };
+const gradeColor = { A: "#22c55e", B: "#14b8a6", C: "#fbbf24", D: "#f97316", E: "#ef4444", F: "#ef4444" };
 const statusIcon = { present: "\u2705", missing: "\u274C", misconfigured: "\u26A0\uFE0F" };
 
 export default function SecurityHeaders() {
@@ -109,7 +109,7 @@ export default function SecurityHeaders() {
                 </div>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                <button onClick={generateFix} disabled={fixLoading || result.summary.missing + result.summary.misconfigured === 0} style={{ padding: "8px 16px", borderRadius: 8, border: `1px solid ${T.cyan}40`, background: "rgba(20,227,197,0.15)", color: T.cyan, fontSize: 12, fontWeight: 600, cursor: fixLoading ? "wait" : "pointer", opacity: result.summary.missing + result.summary.misconfigured === 0 ? 0.5 : 1 }}>
+                <button onClick={generateFix} disabled={fixLoading || result.summary.missing + result.summary.misconfigured === 0} style={{ padding: "8px 16px", borderRadius: 8, border: `1px solid ${T.cyan}40`, background: "rgba(20, 184, 166,0.15)", color: T.cyan, fontSize: 12, fontWeight: 600, cursor: fixLoading ? "wait" : "pointer", opacity: result.summary.missing + result.summary.misconfigured === 0 ? 0.5 : 1 }}>
                   {fixLoading ? "Generating…" : "✨ AI Auto-Fix"}
                 </button>
                 <button onClick={doExport} style={{ padding: "8px 16px", borderRadius: 8, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.muted, fontSize: 12, cursor: "pointer" }}>Export PDF</button>
@@ -119,7 +119,7 @@ export default function SecurityHeaders() {
             {/* AI auto-fix result */}
             {fixError && <div style={{ padding: 12, marginBottom: 16, background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 8, color: T.red, fontSize: 13 }}>{fixError}</div>}
             {fix && (
-              <div style={{ marginBottom: 24, padding: 18, background: "rgba(20,227,197,0.06)", border: `1px solid ${T.cyan}30`, borderRadius: 12 }}>
+              <div style={{ marginBottom: 24, padding: 18, background: "rgba(20, 184, 166,0.06)", border: `1px solid ${T.cyan}30`, borderRadius: 12 }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12, paddingBottom: 12, borderBottom: `1px solid ${T.border}` }}>
                   <div>
                     <span style={{ color: T.cyan, fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}>✨ AI Auto-Fix</span>

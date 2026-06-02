@@ -17,7 +17,7 @@ const T = {
   muted: "#94a3b8",
   mutedDark: "#64748b",
   accent: "#6366f1",
-  cyan: "#14e3c5",
+  cyan: "#14b8a6",
   red: "#ef4444",
   border: "rgba(148,163,184,0.12)",
 };
@@ -83,7 +83,7 @@ export default function NotificationBell({ size = 22 }) {
             background: T.red, color: "#fff",
             fontSize: 10, fontWeight: 700,
             display: "flex", alignItems: "center", justifyContent: "center",
-            border: "2px solid #030712",
+            border: "2px solid #060a14",
             fontFamily: "'Vrikaan Sans', sans-serif",
           }}>
             {unreadCount > 99 ? "99+" : unreadCount}

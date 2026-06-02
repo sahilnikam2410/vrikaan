@@ -179,7 +179,7 @@ export async function maskImage(file, { onProgress = () => {} } = {}) {
   }
 
   // Watermark — VRIKAAN attribution
-  ctx.fillStyle = "rgba(20, 227, 197, 0.6)";
+  ctx.fillStyle = "rgba(20, 184, 166, 0.6)";
   ctx.font = `${Math.max(14, Math.floor(canvas.width / 60))}px Inter, Arial, sans-serif`;
   const label = "Masked by VRIKAAN · vrikaan.com/aadhaar-mask";
   const padX = 12, padY = 28;

@@ -23,8 +23,8 @@ const JungleLoader = ({ width = 420, height = 160 }) => (
   <div style={{
     width, height, position: "relative", borderRadius: 14, overflow: "hidden",
     background: "#020411",
-    border: "1px solid rgba(20,227,197,0.22)",
-    boxShadow: "0 0 60px rgba(20,227,197,0.10) inset, 0 8px 32px rgba(0,0,0,0.5)",
+    border: "1px solid rgba(20, 184, 166,0.22)",
+    boxShadow: "0 0 60px rgba(20, 184, 166,0.10) inset, 0 8px 32px rgba(0,0,0,0.5)",
   }}>
     <style>{`
       /* ─── World scrolling speeds ─── */
@@ -71,8 +71,8 @@ const JungleLoader = ({ width = 420, height = 160 }) => (
 
       /* ─── Eye pulse + halo ─── */
       @keyframes cw-eye-pulse {
-        0%,100% { fill: #14e3c5; filter: drop-shadow(0 0 2px #14e3c5) }
-        50%     { fill: #fff;     filter: drop-shadow(0 0 4px #14e3c5) }
+        0%,100% { fill: #14b8a6; filter: drop-shadow(0 0 2px #14b8a6) }
+        50%     { fill: #fff;     filter: drop-shadow(0 0 4px #14b8a6) }
       }
       .cw-eye { animation: cw-eye-pulse 1.2s ease-in-out infinite; }
 
@@ -142,27 +142,27 @@ const JungleLoader = ({ width = 420, height = 160 }) => (
         </linearGradient>
         {/* Ground fog */}
         <linearGradient id="cw-fog-grad" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%"   stopColor="#14e3c5" stopOpacity="0"/>
-          <stop offset="50%"  stopColor="#14e3c5" stopOpacity="0.14"/>
+          <stop offset="0%"   stopColor="#14b8a6" stopOpacity="0"/>
+          <stop offset="50%"  stopColor="#14b8a6" stopOpacity="0.14"/>
           <stop offset="100%" stopColor="#0d1431" stopOpacity="0.6"/>
         </linearGradient>
         {/* Wolf trail gradient — fades behind wolf */}
         <linearGradient id="cw-trail-grad" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0%"   stopColor="#14e3c5" stopOpacity="0"/>
-          <stop offset="60%"  stopColor="#14e3c5" stopOpacity="0.6"/>
+          <stop offset="0%"   stopColor="#14b8a6" stopOpacity="0"/>
+          <stop offset="60%"  stopColor="#14b8a6" stopOpacity="0.6"/>
           <stop offset="100%" stopColor="#fff"    stopOpacity="0.85"/>
         </linearGradient>
         {/* Radar scan beam */}
         <linearGradient id="cw-scan-grad" x1="0" x2="1" y1="0" y2="0">
-          <stop offset="0%"   stopColor="#14e3c5" stopOpacity="0"/>
-          <stop offset="50%"  stopColor="#14e3c5" stopOpacity="0.5"/>
-          <stop offset="100%" stopColor="#14e3c5" stopOpacity="0"/>
+          <stop offset="0%"   stopColor="#14b8a6" stopOpacity="0"/>
+          <stop offset="50%"  stopColor="#14b8a6" stopOpacity="0.5"/>
+          <stop offset="100%" stopColor="#14b8a6" stopOpacity="0"/>
         </linearGradient>
         {/* Reusable cyber pine tree (tall triangle with neon tip) */}
         <symbol id="cw-pine" viewBox="0 0 24 60">
           <polygon points="12,0 22,55 2,55" fill="#040818" stroke="#1f2937" strokeWidth="0.5"/>
           <line x1="12" y1="0" x2="12" y2="55" stroke="#0f1730" strokeWidth="1"/>
-          <circle cx="12" cy="2" r="1.4" fill="#14e3c5" opacity="0.8"/>
+          <circle cx="12" cy="2" r="1.4" fill="#14b8a6" opacity="0.8"/>
         </symbol>
         <symbol id="cw-pine-far" viewBox="0 0 16 36">
           <polygon points="8,0 14,32 2,32" fill="rgba(99,102,241,0.22)"/>
@@ -264,18 +264,18 @@ const JungleLoader = ({ width = 420, height = 160 }) => (
 
       {/* ─── 6. Drifting cyan fireflies ─── */}
       <g className="cw-firefly-1">
-        <circle cx="430"  cy="50"  r="1.2" fill="#14e3c5" filter="url(#cw-glow)"/>
-        <circle cx="500"  cy="80"  r="0.9" fill="#14e3c5" filter="url(#cw-glow)" style={{ animationDelay: "1s" }}/>
+        <circle cx="430"  cy="50"  r="1.2" fill="#14b8a6" filter="url(#cw-glow)"/>
+        <circle cx="500"  cy="80"  r="0.9" fill="#14b8a6" filter="url(#cw-glow)" style={{ animationDelay: "1s" }}/>
       </g>
       <g className="cw-firefly-2">
-        <circle cx="450"  cy="70"  r="1.0" fill="#14e3c5" filter="url(#cw-glow)"/>
-        <circle cx="520"  cy="50"  r="0.8" fill="#14e3c5" filter="url(#cw-glow)" style={{ animationDelay: "2s" }}/>
-        <circle cx="560"  cy="90"  r="1.1" fill="#14e3c5" filter="url(#cw-glow)" style={{ animationDelay: "3s" }}/>
+        <circle cx="450"  cy="70"  r="1.0" fill="#14b8a6" filter="url(#cw-glow)"/>
+        <circle cx="520"  cy="50"  r="0.8" fill="#14b8a6" filter="url(#cw-glow)" style={{ animationDelay: "2s" }}/>
+        <circle cx="560"  cy="90"  r="1.1" fill="#14b8a6" filter="url(#cw-glow)" style={{ animationDelay: "3s" }}/>
       </g>
 
       {/* ─── 7. Ground line ─── */}
       <line x1="0" y1="125" x2="420" y2="125" stroke="#1f2937" strokeWidth="1"/>
-      <line x1="0" y1="126" x2="420" y2="126" stroke="rgba(20,227,197,0.3)" strokeWidth="0.5"/>
+      <line x1="0" y1="126" x2="420" y2="126" stroke="rgba(20, 184, 166,0.3)" strokeWidth="0.5"/>
 
       {/* ─── 8. Wolf trail (motion blur) ─── */}
       <g className="cw-trail" transform="translate(120,118)">
@@ -321,7 +321,7 @@ const JungleLoader = ({ width = 420, height = 160 }) => (
         <path d="M 38 -7 L 41 -7 L 41 -3 L 38 -3 Z" fill="#000" opacity="0.5"/>
 
         {/* Glowing eye */}
-        <circle className="cw-eye" cx="32" cy="-9" r="1.4" fill="#14e3c5"/>
+        <circle className="cw-eye" cx="32" cy="-9" r="1.4" fill="#14b8a6"/>
 
         {/* Legs — 4 legs with rotary gallop pattern */}
         {/* Front-left leg */}

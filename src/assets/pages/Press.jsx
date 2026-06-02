@@ -6,8 +6,8 @@ import SEO from "../../components/SEO";
 import EmailRouting from "../../components/EmailRouting";
 
 const T = {
-  bg: "#030712", surface: "#111827", card: "rgba(17,24,39,0.7)",
-  accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", gold: "#eab308",
+  bg: "#060a14", surface: "#111827", card: "rgba(17,24,39,0.7)",
+  accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", gold: "#eab308",
   white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.1)",
 };
 
@@ -265,7 +265,7 @@ export default function Press() {
               >
                 <div style={{
                   width: "100%", aspectRatio: "16 / 9",
-                  background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20,227,197,0.06))",
+                  background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20, 184, 166,0.06))",
                   borderRadius: 8, display: "flex", alignItems: "center", justifyContent: "center",
                   border: `1px solid ${T.border}`,
                 }}>
@@ -279,7 +279,7 @@ export default function Press() {
                   alignSelf: "flex-start",
                   fontSize: 11, fontWeight: 600, color: T.cyan,
                   padding: "4px 10px", borderRadius: 6,
-                  background: "rgba(20,227,197,0.08)",
+                  background: "rgba(20, 184, 166,0.08)",
                 }}>↓ Download</span>
               </a>
             ))}
@@ -296,8 +296,8 @@ export default function Press() {
           }}>
             {[
               { name: "Indigo", hex: "#6366F1", desc: "Primary accent" },
-              { name: "Cyan", hex: "#14E3C5", desc: "Secondary accent" },
-              { name: "Ink", hex: "#030712", desc: "Background" },
+              { name: "Cyan", hex: "#14b8a6", desc: "Secondary accent" },
+              { name: "Ink", hex: "#060a14", desc: "Background" },
               { name: "Slate", hex: "#94A3B8", desc: "Muted text" },
               { name: "Snow", hex: "#F1F5F9", desc: "Body text" },
               { name: "Gold", hex: "#EAB308", desc: "Highlights" },
@@ -325,7 +325,7 @@ export default function Press() {
         {/* Contact */}
         <section style={{ maxWidth: 760, margin: "0 auto", padding: "0 24px 48px", textAlign: "center" }}>
           <div style={{
-            background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(20,227,197,0.06))",
+            background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(20, 184, 166,0.06))",
             border: `1px solid ${T.accent}30`,
             borderRadius: 16, padding: 32,
           }}>
@@ -338,7 +338,7 @@ export default function Press() {
             <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
               <a href="mailto:hello@vrikaan.com" style={{
                 padding: "10px 20px", borderRadius: 10,
-                background: T.cyan, color: "#030712",
+                background: T.cyan, color: "#060a14",
                 fontSize: 13, fontWeight: 700, textDecoration: "none",
               }}>hello@vrikaan.com</a>
               <Link to="/contact" style={{

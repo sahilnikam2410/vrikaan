@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
 
-const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", red: "#ef4444", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
+const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", red: "#ef4444", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
 export default function NotFound() {
   const [glitch, setGlitch] = useState(false);
@@ -24,7 +24,7 @@ export default function NotFound() {
       <div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(rgba(99,102,241,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.03) 1px, transparent 1px)`, backgroundSize: "60px 60px", pointerEvents: "none" }} />
 
       {/* Scan line */}
-      <div style={{ position: "absolute", top: `${scanLine}%`, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, transparent, rgba(20,227,197,0.15), transparent)", pointerEvents: "none", transition: "top 0.03s linear" }} />
+      <div style={{ position: "absolute", top: `${scanLine}%`, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, transparent, rgba(20, 184, 166,0.15), transparent)", pointerEvents: "none", transition: "top 0.03s linear" }} />
 
       {/* Radial glows */}
       <div style={{ position: "absolute", top: "20%", left: "15%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(239,68,68,0.06), transparent 65%)", pointerEvents: "none" }} />
@@ -36,7 +36,7 @@ export default function NotFound() {
           <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
             <defs>
               <linearGradient id="s404g" x1="8" y1="6" x2="64" y2="66">
-                <stop stopColor="#6366f1" /><stop offset="1" stopColor="#14e3c5" />
+                <stop stopColor="#6366f1" /><stop offset="1" stopColor="#14b8a6" />
               </linearGradient>
             </defs>
             <path d="M36 6L10 16V36C10 50 21 62 36 66C51 62 62 50 62 36V16L36 6Z" fill="none" stroke="url(#s404g)" strokeWidth="2.5" strokeLinejoin="round" opacity="0.8" />
@@ -56,7 +56,7 @@ export default function NotFound() {
           fontFamily: "'Vrikaan Sans', sans-serif",
           fontSize: "clamp(100px, 18vw, 180px)",
           fontWeight: 900, lineHeight: 1, marginBottom: 8,
-          background: "linear-gradient(135deg, #6366f1, #8b5cf6, #14e3c5)",
+          background: "linear-gradient(135deg, #6366f1, #8b5cf6, #14b8a6)",
           WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
           position: "relative",
           filter: glitch ? "hue-rotate(90deg)" : "none",
@@ -88,7 +88,7 @@ export default function NotFound() {
         {/* Action buttons */}
         <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginBottom: 56 }}>
           <Link to="/" style={{
-            padding: "14px 32px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+            padding: "14px 32px", background: "linear-gradient(135deg, #6366f1, #14b8a6)",
             color: "#fff", borderRadius: 12, textDecoration: "none", fontSize: 14, fontWeight: 600,
             boxShadow: "0 8px 24px rgba(99,102,241,0.25)", transition: "all 0.3s",
             display: "inline-flex", alignItems: "center", gap: 8,

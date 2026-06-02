@@ -4,8 +4,8 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
 const T = {
-  bg: "#030712", card: "rgba(17,24,39,0.7)",
-  accent: "#6366f1", cyan: "#14e3c5",
+  bg: "#060a14", card: "rgba(17,24,39,0.7)",
+  accent: "#6366f1", cyan: "#14b8a6",
   green: "#22c55e", red: "#ef4444", yellow: "#fbbf24",
   white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b",
   border: "rgba(148,163,184,0.12)",
@@ -57,7 +57,7 @@ export default function ResponsibleDisclosure() {
         <header style={{ textAlign: "center", marginBottom: 32 }}>
           <span style={{
             display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: "rgba(20,227,197,0.10)", border: `1px solid ${T.cyan}40`,
+            background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}40`,
             fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
             color: T.cyan, marginBottom: 14,
           }}>🛡 Bug Bounty · India-First</span>

@@ -4,7 +4,7 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { FOUNDERS } from "../../components/EmailRouting";
 
-const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
+const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
 export default function Founder() {
   return (
@@ -31,7 +31,7 @@ export default function Founder() {
           {/* Sahil */}
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: 36, backdropFilter: "blur(8px)" }}>
             <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 20 }}>
-              <div style={{ width: 78, height: 78, borderRadius: 20, background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(20,227,197,0.08))", border: "1px solid rgba(99,102,241,0.25)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <div style={{ width: 78, height: 78, borderRadius: 20, background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(20, 184, 166,0.08))", border: "1px solid rgba(99,102,241,0.25)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 <span style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 36, fontWeight: 300, color: T.white }}>S</span>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -52,7 +52,7 @@ export default function Founder() {
           {/* Khushi */}
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: 36, backdropFilter: "blur(8px)" }}>
             <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 20 }}>
-              <div style={{ width: 78, height: 78, borderRadius: 20, background: "linear-gradient(135deg, rgba(20,227,197,0.18), rgba(99,102,241,0.08))", border: "1px solid rgba(20,227,197,0.25)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <div style={{ width: 78, height: 78, borderRadius: 20, background: "linear-gradient(135deg, rgba(20, 184, 166,0.18), rgba(99,102,241,0.08))", border: "1px solid rgba(20, 184, 166,0.25)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 <span style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 36, fontWeight: 300, color: T.white }}>K</span>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -72,7 +72,7 @@ export default function Founder() {
         </div>
 
         {/* Direct founder email — paid / press / partnerships only */}
-        <div style={{ marginBottom: 56, background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(20,227,197,0.04))", border: `1px solid ${T.border}`, borderRadius: 18, padding: "28px 32px" }}>
+        <div style={{ marginBottom: 56, background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(20, 184, 166,0.04))", border: `1px solid ${T.border}`, borderRadius: 18, padding: "28px 32px" }}>
           <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", color: T.cyan, marginBottom: 12 }}>Direct line</div>
           <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 20, fontWeight: 700, margin: "0 0 8px" }}>Reach a founder personally</h3>
           <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.7, margin: "0 0 18px" }}>
@@ -124,7 +124,7 @@ export default function Founder() {
         </div>
 
         {/* CTA */}
-        <div style={{ textAlign: "center", padding: "48px 32px", background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20,227,197,0.03))", border: `1px solid rgba(99,102,241,0.1)`, borderRadius: 20 }}>
+        <div style={{ textAlign: "center", padding: "48px 32px", background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20, 184, 166,0.03))", border: `1px solid rgba(99,102,241,0.1)`, borderRadius: 20 }}>
           <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 28, fontWeight: 700, margin: "0 0 12px" }}>Join the Mission</h2>
           <p style={{ color: T.muted, fontSize: 15, marginBottom: 24 }}>Help us make the internet safer for everyone.</p>
           <Link to="/signup" style={{ display: "inline-block", padding: "14px 36px", background: T.accent, color: "#fff", borderRadius: 10, textDecoration: "none", fontSize: 14, fontWeight: 600 }}>Get Started Free</Link>

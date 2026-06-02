@@ -5,7 +5,7 @@ import SEO from "../../components/SEO";
 import { exportReport } from "../../utils/exportPDF";
 import AIExplainButton from "../../components/AIExplainButton";
 
-const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", red: "#ef4444", orange: "#f97316", green: "#22c55e", yellow: "#eab308", purple: "#a78bfa", blue: "#38bdf8", pink: "#ec4899", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
+const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", red: "#ef4444", orange: "#f97316", green: "#22c55e", yellow: "#eab308", purple: "#a78bfa", blue: "#38bdf8", pink: "#ec4899", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
 const sty = {
   card: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24, backdropFilter: "blur(10px)" },
@@ -118,7 +118,7 @@ function injectKeyframes() {
     @keyframes dwm-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.3)} }
     @keyframes dwm-scan { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
     @keyframes dwm-fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes dwm-glow { 0%,100%{box-shadow:0 0 8px rgba(20,227,197,0.3)} 50%{box-shadow:0 0 24px rgba(20,227,197,0.6)} }
+    @keyframes dwm-glow { 0%,100%{box-shadow:0 0 8px rgba(20, 184, 166,0.3)} 50%{box-shadow:0 0 24px rgba(20, 184, 166,0.6)} }
     @keyframes dwm-slideIn { from{opacity:0;transform:translateX(-20px)} to{opacity:1;transform:translateX(0)} }
   `;
   document.head.appendChild(s);
@@ -197,10 +197,10 @@ export default function DarkWebMonitor() {
       {/* ── Hero ── */}
       <section style={{ padding: "120px 20px 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
         {/* Ambient glow */}
-        <div style={{ position: "absolute", top: -120, left: "50%", transform: "translateX(-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(20,227,197,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: -120, left: "50%", transform: "translateX(-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(20, 184, 166,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <div style={wrap}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 16px", borderRadius: 20, background: "rgba(20,227,197,0.08)", border: `1px solid rgba(20,227,197,0.15)`, marginBottom: 20 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 16px", borderRadius: 20, background: "rgba(20, 184, 166,0.08)", border: `1px solid rgba(20, 184, 166,0.15)`, marginBottom: 20 }}>
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: T.cyan, animation: "dwm-pulse 2s infinite" }} />
             <span style={{ fontSize: 12, fontWeight: 600, color: T.cyan }}>Dark Web Intelligence Active</span>
           </div>

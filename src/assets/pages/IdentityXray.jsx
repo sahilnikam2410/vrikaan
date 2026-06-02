@@ -5,7 +5,7 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { exportReport } from "../../utils/exportPDF";
 
-const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", accentSoft: "#818cf8", cyan: "#14e3c5", red: "#ef4444", orange: "#f97316", green: "#22c55e", yellow: "#eab308", purple: "#a78bfa", blue: "#38bdf8", pink: "#ec4899", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
+const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", accentSoft: "#818cf8", cyan: "#14b8a6", red: "#ef4444", orange: "#f97316", green: "#22c55e", yellow: "#eab308", purple: "#a78bfa", blue: "#38bdf8", pink: "#ec4899", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
 const RISK_COLORS = { low: T.green, moderate: T.yellow, high: T.orange, critical: T.red, safe: T.green };
 const RISK_LABELS = { low: "Low Risk", moderate: "Moderate Risk", high: "High Risk", critical: "Critical Risk", safe: "Safe" };
@@ -156,7 +156,7 @@ export default function IdentityXray() {
 
           <h1 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 800, lineHeight: 1.1, margin: "0 0 16px", fontFamily: "'Vrikaan Sans', sans-serif" }}>
             Digital Identity{" "}
-            <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>X-Ray</span>
+            <span style={{ background: "linear-gradient(135deg, #6366f1, #14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>X-Ray</span>
           </h1>
           <p style={{ fontSize: "clamp(15px, 2vw, 18px)", color: T.muted, maxWidth: 600, margin: "0 auto 40px", lineHeight: 1.6 }}>
             One email. 30 seconds. Complete digital identity security audit.<br />
@@ -243,7 +243,7 @@ export default function IdentityXray() {
                 <p style={{ color: T.muted, fontSize: 14, margin: "0 0 16px" }}>{report.email}</p>
                 <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                   <button onClick={handleExport} style={sty.exportBtn}>📄 Export PDF</button>
-                  <button onClick={handleShare} style={{ ...sty.exportBtn, background: "rgba(20,227,197,0.12)", borderColor: "rgba(20,227,197,0.3)", color: T.cyan }}>📤 Share Score</button>
+                  <button onClick={handleShare} style={{ ...sty.exportBtn, background: "rgba(20, 184, 166,0.12)", borderColor: "rgba(20, 184, 166,0.3)", color: T.cyan }}>📤 Share Score</button>
                 </div>
               </div>
             </div>
@@ -386,10 +386,10 @@ export default function IdentityXray() {
           </div>
 
           {/* ── Share CTA ── */}
-          <div style={{ ...sty.card, textAlign: "center", background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(20,227,197,0.05))", border: `1px solid ${T.accent}20`, animation: "xray-fadeUp 1s ease" }}>
+          <div style={{ ...sty.card, textAlign: "center", background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(20, 184, 166,0.05))", border: `1px solid ${T.accent}20`, animation: "xray-fadeUp 1s ease" }}>
             <h3 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 8px" }}>Share Your Score</h3>
             <p style={{ color: T.muted, fontSize: 14, margin: "0 0 20px" }}>Challenge your friends to check their digital identity</p>
-            <button onClick={handleShare} style={{ ...sty.btn("linear-gradient(135deg, #6366f1, #14e3c5)"), fontSize: 14 }}>
+            <button onClick={handleShare} style={{ ...sty.btn("linear-gradient(135deg, #6366f1, #14b8a6)"), fontSize: 14 }}>
               📤 Share My Score ({report.riskScore}/100)
             </button>
           </div>
@@ -422,7 +422,7 @@ export default function IdentityXray() {
           </div>
 
           {/* Privacy note */}
-          <div style={{ ...sty.card, marginTop: 32, display: "flex", alignItems: "center", gap: 14, background: "rgba(20,227,197,0.04)", border: `1px solid ${T.cyan}15` }}>
+          <div style={{ ...sty.card, marginTop: 32, display: "flex", alignItems: "center", gap: 14, background: "rgba(20, 184, 166,0.04)", border: `1px solid ${T.cyan}15` }}>
             <span style={{ fontSize: 28 }}>🔒</span>
             <div>
               <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 2 }}>Your Privacy is Protected</div>

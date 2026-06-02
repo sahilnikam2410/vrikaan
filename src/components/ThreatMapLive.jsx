@@ -3,9 +3,9 @@ import worldMapSvg from "../assets/Worldmap.svg";
 
 /* ── COLOR TOKENS ── */
 const C = {
-  black: "#030712",
+  black: "#060a14",
   deepBlack: "#010409",
-  cyan: "#06ffd0",
+  cyan: "#14b8a6",
   cyanDim: "#04b898",
   red: "#ef4444",
   gold: "#fbbf24",
@@ -138,8 +138,8 @@ export default function ThreatMapLive() {
 
       // Subtle radial glow at center
       const grd = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.55);
-      grd.addColorStop(0, "rgba(6,255,208,0.04)");
-      grd.addColorStop(0.4, "rgba(6,255,208,0.015)");
+      grd.addColorStop(0, "rgba(20, 184, 166,0.04)");
+      grd.addColorStop(0.4, "rgba(20, 184, 166,0.015)");
       grd.addColorStop(1, "transparent");
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, W, H);
@@ -160,7 +160,7 @@ export default function ThreatMapLive() {
       // Cyan tint overlay using composite
       ctx.save();
       ctx.globalCompositeOperation = "source-atop";
-      ctx.fillStyle = "rgba(6,255,208,0.12)";
+      ctx.fillStyle = "rgba(20, 184, 166,0.12)";
       ctx.fillRect(0, 0, W, H);
       ctx.globalCompositeOperation = "source-over";
       ctx.restore();
@@ -231,8 +231,8 @@ export default function ThreatMapLive() {
       // Soft trailing glow
       const grad = ctx.createLinearGradient(scanX - trailWidth, 0, scanX, 0);
       grad.addColorStop(0, "transparent");
-      grad.addColorStop(0.7, "rgba(6,255,208,0.012)");
-      grad.addColorStop(1, "rgba(6,255,208,0.025)");
+      grad.addColorStop(0.7, "rgba(20, 184, 166,0.012)");
+      grad.addColorStop(1, "rgba(20, 184, 166,0.025)");
       ctx.fillStyle = grad;
       ctx.fillRect(scanX - trailWidth, 0, trailWidth, H);
 

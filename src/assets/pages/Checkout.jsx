@@ -11,8 +11,8 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
 const T = {
-  bg: "#030712", surface: "#111827", card: "rgba(17,24,39,0.8)",
-  accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", orange: "#f97316",
+  bg: "#060a14", surface: "#111827", card: "rgba(17,24,39,0.8)",
+  accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", orange: "#f97316",
   white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)",
 };
 
@@ -1094,7 +1094,7 @@ export default function Checkout() {
               {/* Plan highlight */}
               <div style={{
                 padding: 16,
-                background: `linear-gradient(135deg, rgba(99,102,241,0.12), rgba(20,227,197,0.06))`,
+                background: `linear-gradient(135deg, rgba(99,102,241,0.12), rgba(20, 184, 166,0.06))`,
                 borderRadius: 12, border: `1px solid rgba(99,102,241,0.15)`, marginBottom: 20,
               }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>

@@ -18,7 +18,7 @@ export function ProtectedRoute({ children, adminOnly = false, tier: tierOverride
   if (loading) {
     return (
       <div style={{
-        minHeight: "100vh", background: "#030712", display: "flex",
+        minHeight: "100vh", background: "#060a14", display: "flex",
         alignItems: "center", justifyContent: "center",
       }}>
         <div style={{
@@ -89,7 +89,7 @@ function UpgradeWall({ path, requiredTier, userPlan }) {
 
   return (
     <div style={{
-      minHeight: "100vh", background: "#030712",
+      minHeight: "100vh", background: "#060a14",
       display: "flex", alignItems: "center", justifyContent: "center",
       padding: 24, fontFamily: "'Vrikaan Sans', sans-serif", color: "#f1f5f9",
     }}>
@@ -175,7 +175,7 @@ function UpgradeWall({ path, requiredTier, userPlan }) {
               href={isEnterprise ? "/contact?intent=enterprise" : `/pricing?from=${encodeURIComponent(path)}`}
               style={{
                 padding: "15px 22px", borderRadius: 12,
-                background: color, color: "#030712",
+                background: color, color: "#060a14",
                 fontSize: 16, fontWeight: 800,
                 fontFamily: "'Vrikaan Sans', sans-serif",
                 textAlign: "center", textDecoration: "none",

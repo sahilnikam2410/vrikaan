@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
-const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", ember: "#f97316", red: "#ef4444", purple: "#a78bfa", blue: "#38bdf8", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
+const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", ember: "#f97316", red: "#ef4444", purple: "#a78bfa", blue: "#38bdf8", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
 export default function Protection() {
   const layers = [
@@ -27,7 +27,7 @@ export default function Protection() {
         <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>
         <div style={{ textAlign: "center", marginBottom: 64 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.cyan}0c`, border: `1px solid ${T.cyan}20`, fontSize: 11, fontWeight: 600, color: T.cyan, marginBottom: 16, letterSpacing: 0.5 }}>Defense System</span>
-          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Multi-Layer <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Protection</span></h1>
+          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Multi-Layer <span style={{ background: "linear-gradient(135deg, #6366f1, #14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Protection</span></h1>
           <p style={{ color: T.muted, fontSize: 16, maxWidth: 500, margin: "0 auto", lineHeight: 1.7 }}>Six independent security layers working together. If one layer is bypassed, the next catches the threat.</p>
         </div>
 
@@ -65,7 +65,7 @@ export default function Protection() {
           ))}
         </div>
 
-        <div style={{ textAlign: "center", padding: "48px 32px", background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20,227,197,0.03))", border: `1px solid rgba(99,102,241,0.1)`, borderRadius: 20 }}>
+        <div style={{ textAlign: "center", padding: "48px 32px", background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20, 184, 166,0.03))", border: `1px solid rgba(99,102,241,0.1)`, borderRadius: 20 }}>
           <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 28, fontWeight: 700, margin: "0 0 12px" }}>Activate Your Shield</h2>
           <p style={{ color: T.muted, fontSize: 15, marginBottom: 24 }}>Start with free protection. Upgrade for full coverage.</p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center" }}>

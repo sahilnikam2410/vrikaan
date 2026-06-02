@@ -8,7 +8,7 @@ import { exportReport } from "../../utils/exportPDF";
 import { saveToolResult } from "../../services/toolHistoryService";
 import renderMarkdown from "../../utils/renderMarkdown";
 
-const T = { bg: "#030712", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
+const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
 const CHECKS = [
   { id: "breach", name: "Email Breach Check", description: "Check if email appears in known data breaches", api: "/api/breach" },
@@ -191,11 +191,11 @@ export default function SecurityAudit() {
               </h2>
               <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
                 <button onClick={doExport} style={{ padding: "10px 20px", borderRadius: 8, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>Export Full Report</button>
-                <button onClick={explainWithAI} disabled={aiLoading} style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid rgba(20,227,197,0.3)", background: "rgba(20,227,197,0.08)", color: T.cyan, fontSize: 14, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", opacity: aiLoading ? 0.6 : 1 }}>{aiLoading ? "Analyzing..." : "🤖 Explain with AI"}</button>
+                <button onClick={explainWithAI} disabled={aiLoading} style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid rgba(20, 184, 166,0.3)", background: "rgba(20, 184, 166,0.08)", color: T.cyan, fontSize: 14, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", opacity: aiLoading ? 0.6 : 1 }}>{aiLoading ? "Analyzing..." : "🤖 Explain with AI"}</button>
                 <button onClick={() => { setResults(null); setAiExplanation(""); setAiError(""); }} style={{ padding: "10px 20px", borderRadius: 8, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.muted, fontSize: 14, cursor: "pointer" }}>New Audit</button>
               </div>
               {(aiExplanation || aiError) && (
-                <div style={{ marginTop: 20, padding: "16px 18px", background: "rgba(20,227,197,0.05)", border: "1px solid rgba(20,227,197,0.15)", borderRadius: 12, textAlign: "left" }}>
+                <div style={{ marginTop: 20, padding: "16px 18px", background: "rgba(20, 184, 166,0.05)", border: "1px solid rgba(20, 184, 166,0.15)", borderRadius: 12, textAlign: "left" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
                     <span style={{ fontSize: 14 }}>🤖</span>
                     <span style={{ fontSize: 12, fontWeight: 700, color: T.cyan, fontFamily: "'Vrikaan Mono', monospace", letterSpacing: 0.5 }}>AI ANALYSIS</span>

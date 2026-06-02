@@ -5,11 +5,11 @@ import SEO, { faqSchema, breadcrumbSchema } from "../../components/SEO";
 import THREATS, { getThreatBySlug, getRelatedThreats } from "../../data/threats";
 
 const T = {
-  bg: "#030712",
+  bg: "#060a14",
   card: "rgba(17,24,39,0.6)",
   border: "rgba(148,163,184,0.08)",
   accent: "#6366f1",
-  cyan: "#14e3c5",
+  cyan: "#14b8a6",
   white: "#f1f5f9",
   muted: "#94a3b8",
   mutedDark: "#64748b",
@@ -161,8 +161,8 @@ export default function ThreatDetail() {
             style={{
               marginTop: 40,
               padding: "24px 28px",
-              background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(20,227,197,0.05))",
-              border: `1px solid rgba(20,227,197,0.2)`,
+              background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(20, 184, 166,0.05))",
+              border: `1px solid rgba(20, 184, 166,0.2)`,
               borderRadius: 16,
               display: "flex",
               flexWrap: "wrap",
@@ -195,7 +195,7 @@ export default function ThreatDetail() {
               style={{
                 padding: "12px 22px",
                 background: T.cyan,
-                color: "#030712",
+                color: "#060a14",
                 textDecoration: "none",
                 borderRadius: 10,
                 fontSize: 14,
@@ -236,7 +236,7 @@ export default function ThreatDetail() {
                     borderRadius: 10,
                     transition: "border-color 0.2s",
                   }}
-                  onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(20,227,197,0.3)")}
+                  onMouseEnter={(e) => (e.currentTarget.style.borderColor = "rgba(20, 184, 166,0.3)")}
                   onMouseLeave={(e) => (e.currentTarget.style.borderColor = T.border)}
                 >
                   <div style={{ fontSize: 14, fontWeight: 700, color: T.white, marginBottom: 4 }}>

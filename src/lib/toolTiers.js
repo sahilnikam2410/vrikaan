@@ -41,7 +41,7 @@ export function tierColor(tier) {
   if (tier === "pro") return "#6366F1";
   if (tier === "family") return "#EC4899";
   if (tier === "enterprise") return "#EAB308";
-  return "#14E3C5";
+  return "#14b8a6";
 }
 
 // ── Tool registry ────────────────────────────────────────────────────

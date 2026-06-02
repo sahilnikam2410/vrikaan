@@ -7,7 +7,7 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import { getToolTier, userMeetsTier, tierLabel, tierColor } from "../lib/toolTiers";
 import UpgradeModal from "./UpgradeModal";
 
-const TD = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", accent: "#6366f1", cyan: "#14e3c5", border: "rgba(148,163,184,0.08)" };
+const TD = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", accent: "#6366f1", cyan: "#14b8a6", border: "rgba(148,163,184,0.08)" };
 const TL = { bg: "#f8fafc", white: "#0f172a", muted: "#475569", accent: "#6366f1", cyan: "#0d9488", border: "rgba(15,23,42,0.08)" };
 
 const toolsMenu = [
@@ -198,7 +198,7 @@ const Navbar = () => {
               display: "block",
               flexShrink: 0,
               objectFit: "contain",
-              filter: "drop-shadow(0 0 6px rgba(20,227,197,0.4))",
+              filter: "drop-shadow(0 0 6px rgba(20, 184, 166,0.4))",
               animation: "wolfPulse 2.6s ease-in-out infinite",
             }}
           />
@@ -324,8 +324,8 @@ const Navbar = () => {
                 <span style={{
                   fontSize: 9, fontWeight: 700, letterSpacing: 0.5,
                   padding: "2px 6px", borderRadius: 999,
-                  background: "rgba(20,227,197,0.18)", color: "#14E3C5",
-                  border: "1px solid rgba(20,227,197,0.4)",
+                  background: "rgba(20, 184, 166,0.18)", color: "#14b8a6",
+                  border: "1px solid rgba(20, 184, 166,0.4)",
                   textTransform: "uppercase",
                 }}>{l.badge}</span>
               )}
@@ -360,8 +360,8 @@ const Navbar = () => {
                 <span style={{
                   fontSize: 9, fontWeight: 700, letterSpacing: 0.5,
                   padding: "2px 7px", borderRadius: 999,
-                  background: "rgba(20,227,197,0.18)", color: "#14E3C5",
-                  border: "1px solid rgba(20,227,197,0.4)",
+                  background: "rgba(20, 184, 166,0.18)", color: "#14b8a6",
+                  border: "1px solid rgba(20, 184, 166,0.4)",
                   textTransform: "uppercase",
                   animation: "pulse-dot 2.4s ease-in-out infinite",
                 }}>{l.badge}</span>
@@ -532,7 +532,7 @@ const Navbar = () => {
               {/* User avatar */}
               <Link to="/dashboard" style={{
                 width: 32, height: 32, borderRadius: 10,
-                background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+                background: "linear-gradient(135deg, #6366f1, #14b8a6)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: 13, fontWeight: 700, color: "#fff", textDecoration: "none",
                 border: "2px solid rgba(99,102,241,0.3)",
@@ -553,7 +553,7 @@ const Navbar = () => {
                 </Link>
               )}
               <Link to="/dashboard" style={{
-                padding: "8px 20px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+                padding: "8px 20px", background: "linear-gradient(135deg, #6366f1, #14b8a6)",
                 borderRadius: 8, color: "#fff", textDecoration: "none", fontSize: 13,
                 fontWeight: 600, fontFamily: "'Vrikaan Sans', sans-serif",
               }}>Dashboard</Link>
@@ -566,7 +566,7 @@ const Navbar = () => {
                 borderRadius: 8, color: T.white, textDecoration: "none", fontSize: 13, fontWeight: 500, background: "transparent",
               }}>Login</Link>
               <Link to="/signup" style={{
-                padding: "8px 18px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+                padding: "8px 18px", background: "linear-gradient(135deg, #6366f1, #14b8a6)",
                 borderRadius: 8, color: "#fff", textDecoration: "none", fontSize: 13,
                 fontWeight: 600, fontFamily: "'Vrikaan Sans', sans-serif",
               }}>Sign Up</Link>
@@ -639,8 +639,8 @@ const Navbar = () => {
                     <span style={{
                       fontSize: 10, fontWeight: 700, letterSpacing: 0.5,
                       padding: "3px 8px", borderRadius: 999,
-                      background: "rgba(20,227,197,0.18)", color: "#14E3C5",
-                      border: "1px solid rgba(20,227,197,0.4)",
+                      background: "rgba(20, 184, 166,0.18)", color: "#14b8a6",
+                      border: "1px solid rgba(20, 184, 166,0.4)",
                       textTransform: "uppercase",
                     }}>{l.badge}</span>
                   )}
@@ -671,8 +671,8 @@ const Navbar = () => {
                 <span style={{
                   fontSize: 10, fontWeight: 700, letterSpacing: 0.5,
                   padding: "3px 8px", borderRadius: 999,
-                  background: "rgba(20,227,197,0.18)", color: "#14E3C5",
-                  border: "1px solid rgba(20,227,197,0.4)",
+                  background: "rgba(20, 184, 166,0.18)", color: "#14b8a6",
+                  border: "1px solid rgba(20, 184, 166,0.4)",
                   textTransform: "uppercase",
                 }}>{l.badge}</span>
               )}
@@ -685,7 +685,7 @@ const Navbar = () => {
           <div style={{ width: 60, height: 1, background: "rgba(148,163,184,0.1)", margin: "12px 0" }} />
           {user ? (
             <Link to="/dashboard" style={{
-              padding: "12px 36px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+              padding: "12px 36px", background: "linear-gradient(135deg, #6366f1, #14b8a6)",
               borderRadius: 10, color: "#fff", textDecoration: "none", fontSize: 16,
               fontWeight: 600, fontFamily: "'Vrikaan Sans', sans-serif",
             }}>Dashboard</Link>
@@ -696,7 +696,7 @@ const Navbar = () => {
                 borderRadius: 10, color: T.white, textDecoration: "none", fontSize: 15, fontWeight: 500,
               }}>Login</Link>
               <Link to="/signup" style={{
-                padding: "12px 28px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+                padding: "12px 28px", background: "linear-gradient(135deg, #6366f1, #14b8a6)",
                 borderRadius: 10, color: "#fff", textDecoration: "none", fontSize: 15, fontWeight: 600,
               }}>Sign Up</Link>
             </div>
@@ -748,7 +748,7 @@ const Navbar = () => {
                 fontFamily: "'Vrikaan Sans', sans-serif", padding: "4px 12px",
                 transition: "color 0.2s", position: "relative",
               }}>
-                {active && <span style={{ position: "absolute", top: -6, width: 20, height: 3, borderRadius: 2, background: "linear-gradient(90deg, #6366f1, #14e3c5)" }} />}
+                {active && <span style={{ position: "absolute", top: -6, width: 20, height: 3, borderRadius: 2, background: "linear-gradient(90deg, #6366f1, #14b8a6)" }} />}
                 <span style={{ color: active ? T.accent : T.muted, transition: "color 0.2s" }}>{item.icon}</span>
                 {item.label}
               </Link>

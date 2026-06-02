@@ -44,26 +44,26 @@ function FallbackGlobe({ size }) {
     const draw = () => {
       const w = c.width / dpr, h = c.height / dpr, now = Date.now(), t = now * 0.001;
       const cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.36;
-      ctx.fillStyle = "#030712"; ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = "#060a14"; ctx.fillRect(0, 0, w, h);
       const gl = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 1.8);
-      gl.addColorStop(0, "rgba(6,255,208,0.05)"); gl.addColorStop(1, "transparent");
+      gl.addColorStop(0, "rgba(20, 184, 166,0.05)"); gl.addColorStop(1, "transparent");
       ctx.fillStyle = gl; ctx.fillRect(0, 0, w, h);
-      ctx.save(); ctx.strokeStyle = "rgba(6,255,208,0.025)"; ctx.lineWidth = 0.5;
+      ctx.save(); ctx.strokeStyle = "rgba(20, 184, 166,0.025)"; ctx.lineWidth = 0.5;
       for (let x = 80; x < w; x += 80) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
       for (let y = 80; y < h; y += 80) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
       ctx.restore();
-      ctx.save(); ctx.strokeStyle = "rgba(6,255,208,0.1)"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
+      ctx.save(); ctx.strokeStyle = "rgba(20, 184, 166,0.1)"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
       const ig = ctx.createRadialGradient(cx - R * 0.2, cy - R * 0.2, R * 0.1, cx, cy, R);
-      ig.addColorStop(0, "rgba(6,255,208,0.06)"); ig.addColorStop(1, "rgba(3,7,18,0.4)"); ctx.fillStyle = ig; ctx.fill(); ctx.restore();
+      ig.addColorStop(0, "rgba(20, 184, 166,0.06)"); ig.addColorStop(1, "rgba(3,7,18,0.4)"); ctx.fillStyle = ig; ctx.fill(); ctx.restore();
       ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
-      ctx.strokeStyle = "rgba(6,255,208,0.04)"; ctx.lineWidth = 0.6; ctx.globalAlpha = 0.06;
+      ctx.strokeStyle = "rgba(20, 184, 166,0.04)"; ctx.lineWidth = 0.6; ctx.globalAlpha = 0.06;
       for (let i = 0; i < 12; i++) { const a = (i / 12) * Math.PI + t * 0.15; ctx.beginPath(); ctx.ellipse(cx, cy, Math.abs(Math.cos(a)) * R, R, 0, 0, Math.PI * 2); ctx.stroke(); }
       ctx.globalAlpha = 0.04;
       for (let i = 1; i < 7; i++) { const ly = cy - R + (2 * R * i) / 7; const lr = Math.sqrt(Math.max(0, R * R - (ly - cy) * (ly - cy))); ctx.beginPath(); ctx.ellipse(cx, ly, lr, lr * 0.12, 0, 0, Math.PI * 2); ctx.stroke(); }
       ctx.restore();
       scanAngle += 0.008; ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.clip();
       const sg = ctx.createConicGradient(scanAngle % (Math.PI * 2), cx, cy);
-      sg.addColorStop(0, "rgba(6,255,208,0.06)"); sg.addColorStop(0.08, "rgba(6,255,208,0.02)"); sg.addColorStop(0.15, "transparent"); sg.addColorStop(1, "transparent");
+      sg.addColorStop(0, "rgba(20, 184, 166,0.06)"); sg.addColorStop(0.08, "rgba(20, 184, 166,0.02)"); sg.addColorStop(0.15, "transparent"); sg.addColorStop(1, "transparent");
       ctx.fillStyle = sg; ctx.fillRect(cx - R, cy - R, R * 2, R * 2); ctx.restore();
       if (now - lastAttack > 1100) {
         const ai = Math.floor(Math.random() * FB_NODES.length); let bi = Math.floor(Math.random() * FB_NODES.length); while (bi === ai) bi = Math.floor(Math.random() * FB_NODES.length);
@@ -81,12 +81,12 @@ function FallbackGlobe({ size }) {
       }
       for (const n of FB_NODES) {
         const nx = n.x * w, ny = n.y * h; const breathe = 0.35 + Math.sin(t * 2 + n.x * 15) * 0.2;
-        ctx.save(); ctx.globalAlpha = breathe * 0.5; ctx.fillStyle = "#06ffd0"; ctx.shadowColor = "#06ffd0"; ctx.shadowBlur = 10; ctx.beginPath(); ctx.arc(nx, ny, 4, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; ctx.restore();
-        ctx.save(); ctx.globalAlpha = 0.9; ctx.fillStyle = "#06ffd0"; ctx.beginPath(); ctx.arc(nx, ny, 2.5, 0, Math.PI * 2); ctx.fill();
+        ctx.save(); ctx.globalAlpha = breathe * 0.5; ctx.fillStyle = "#14b8a6"; ctx.shadowColor = "#14b8a6"; ctx.shadowBlur = 10; ctx.beginPath(); ctx.arc(nx, ny, 4, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; ctx.restore();
+        ctx.save(); ctx.globalAlpha = 0.9; ctx.fillStyle = "#14b8a6"; ctx.beginPath(); ctx.arc(nx, ny, 2.5, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = "#fff"; ctx.globalAlpha = 0.8; ctx.beginPath(); ctx.arc(nx, ny, 1, 0, Math.PI * 2); ctx.fill();
         ctx.globalAlpha = 0.4; ctx.fillStyle = "#8ba4be"; ctx.font = "600 7px 'Vrikaan Mono', monospace"; ctx.fillText(n.label, nx + 7, ny + 2); ctx.restore();
       }
-      ctx.save(); ctx.strokeStyle = "#06ffd0"; ctx.lineWidth = 1; ctx.globalAlpha = 0.12; const pad = 10, len = 20;
+      ctx.save(); ctx.strokeStyle = "#14b8a6"; ctx.lineWidth = 1; ctx.globalAlpha = 0.12; const pad = 10, len = 20;
       ctx.beginPath(); ctx.moveTo(pad, pad + len); ctx.lineTo(pad, pad); ctx.lineTo(pad + len, pad); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(w - pad - len, pad); ctx.lineTo(w - pad, pad); ctx.lineTo(w - pad, pad + len); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(pad, h - pad - len); ctx.lineTo(pad, h - pad); ctx.lineTo(pad + len, h - pad); ctx.stroke();
@@ -97,7 +97,7 @@ function FallbackGlobe({ size }) {
     return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
   }, [size]);
   return (
-    <div style={{ width: "100%", height: size, background: "#030712", position: "relative" }}>
+    <div style={{ width: "100%", height: size, background: "#060a14", position: "relative" }}>
       <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} />
     </div>
   );
@@ -170,7 +170,7 @@ export default memo(function CyberGlobe({ size = 520 }) {
           position: "absolute", left: 12, bottom: 12, zIndex: 2,
           display: "flex", alignItems: "center", gap: 8,
           padding: "6px 10px", borderRadius: 8,
-          background: "rgba(2,6,23,0.72)", border: "1px solid rgba(20,227,197,0.18)",
+          background: "rgba(2,6,23,0.72)", border: "1px solid rgba(20, 184, 166,0.18)",
           backdropFilter: "blur(6px)", fontFamily: "ui-monospace, Menlo, monospace",
           fontSize: 10, color: "#cbd5e1", pointerEvents: "none", maxWidth: "85%",
         }}>

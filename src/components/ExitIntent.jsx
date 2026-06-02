@@ -7,7 +7,7 @@ const T = {
   card: "rgba(17,24,39,0.96)",
   white: "#f1f5f9",
   muted: "#94a3b8",
-  cyan: "#14e3c5",
+  cyan: "#14b8a6",
   accent: "#6366f1",
   green: "#22c55e",
   border: "rgba(148,163,184,0.15)",
@@ -120,7 +120,7 @@ export default function ExitIntent() {
 
         <div style={{
           padding: "14px 16px", marginBottom: 16,
-          background: "rgba(20,227,197,0.08)",
+          background: "rgba(20, 184, 166,0.08)",
           border: `1px dashed ${T.cyan}40`,
           borderRadius: 10,
           display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,

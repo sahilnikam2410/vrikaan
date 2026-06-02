@@ -88,7 +88,7 @@ const SuccessIcon = () => (
 const S = {
   page: {
     minHeight: "100vh",
-    background: "#030712",
+    background: "#060a14",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -101,14 +101,14 @@ const S = {
     position: "absolute",
     inset: 0,
     backgroundImage:
-      "linear-gradient(rgba(20,227,197,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(20,227,197,0.04) 1px, transparent 1px)",
+      "linear-gradient(rgba(20, 184, 166,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 184, 166,0.04) 1px, transparent 1px)",
     backgroundSize: "60px 60px",
     pointerEvents: "none",
   },
   circuitLines: { position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" },
   glow1: {
     position: "absolute", width: 400, height: 400, borderRadius: "50%",
-    background: "radial-gradient(circle, rgba(20,227,197,0.08) 0%, transparent 70%)", top: "10%", left: "10%",
+    background: "radial-gradient(circle, rgba(20, 184, 166,0.08) 0%, transparent 70%)", top: "10%", left: "10%",
   },
   glow2: {
     position: "absolute", width: 300, height: 300, borderRadius: "50%",
@@ -121,16 +121,16 @@ const S = {
   card: {
     position: "relative", width: "100%", maxWidth: 460, padding: "40px 36px",
     background: "rgba(15,23,42,0.85)", backdropFilter: "blur(20px)",
-    border: "1px solid rgba(20,227,197,0.15)", borderRadius: 16, zIndex: 2,
+    border: "1px solid rgba(20, 184, 166,0.15)", borderRadius: 16, zIndex: 2,
   },
   logoIcon: {
     width: 48, height: 48, margin: "0 auto 12px",
-    background: "linear-gradient(135deg, #14e3c5, #6366f1)", borderRadius: 12,
+    background: "linear-gradient(135deg, #14b8a6, #6366f1)", borderRadius: 12,
     display: "flex", alignItems: "center", justifyContent: "center",
     fontSize: 22, fontWeight: 700, color: "#fff", fontFamily: "'Vrikaan Sans', sans-serif",
   },
   title: {
-    fontSize: 28, fontWeight: 700, color: "#14e3c5", marginBottom: 4,
+    fontSize: 28, fontWeight: 700, color: "#14b8a6", marginBottom: 4,
     fontFamily: "'Vrikaan Sans', sans-serif", textAlign: "center",
   },
   subtitle: { fontSize: 14, color: "#94a3b8", marginBottom: 28, textAlign: "center" },
@@ -142,8 +142,8 @@ const S = {
   },
   tabActive: {
     flex: 1, padding: "10px 0", textAlign: "center", fontSize: 14, fontWeight: 600,
-    fontFamily: "'Vrikaan Sans', sans-serif", color: "#030712",
-    background: "linear-gradient(135deg, #14e3c5, #0ea5e9)", border: "none", borderRadius: 8,
+    fontFamily: "'Vrikaan Sans', sans-serif", color: "#060a14",
+    background: "linear-gradient(135deg, #14b8a6, #0ea5e9)", border: "none", borderRadius: 8,
     cursor: "pointer", transition: "all 0.25s ease", display: "flex", alignItems: "center",
     justifyContent: "center", gap: 8,
   },
@@ -166,25 +166,25 @@ const S = {
   inputWrap: { position: "relative", marginBottom: 16 },
   showBtn: {
     position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
-    background: "none", border: "none", color: "#14e3c5", fontSize: 12,
+    background: "none", border: "none", color: "#14b8a6", fontSize: 12,
     cursor: "pointer", fontWeight: 600, fontFamily: "'Vrikaan Sans', sans-serif",
   },
   row: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 },
   remember: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#94a3b8", cursor: "pointer" },
-  checkbox: { accentColor: "#14e3c5", width: 16, height: 16 },
-  forgot: { fontSize: 13, color: "#14e3c5", textDecoration: "none", fontWeight: 500 },
+  checkbox: { accentColor: "#14b8a6", width: 16, height: 16 },
+  forgot: { fontSize: 13, color: "#14b8a6", textDecoration: "none", fontWeight: 500 },
 
   /* Primary button */
   btn: {
-    width: "100%", padding: "14px", background: "linear-gradient(135deg, #14e3c5, #0ea5e9)",
-    border: "none", borderRadius: 10, color: "#030712", fontSize: 15, fontWeight: 700,
+    width: "100%", padding: "14px", background: "linear-gradient(135deg, #14b8a6, #0ea5e9)",
+    border: "none", borderRadius: 10, color: "#060a14", fontSize: 15, fontWeight: 700,
     cursor: "pointer", transition: "opacity 0.2s, transform 0.15s",
     fontFamily: "'Vrikaan Sans', sans-serif", letterSpacing: 0.5,
     display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
   },
   btnGreen: {
     width: "100%", padding: "14px", background: "linear-gradient(135deg, #22c55e, #14b8a6)",
-    border: "none", borderRadius: 10, color: "#030712", fontSize: 15, fontWeight: 700,
+    border: "none", borderRadius: 10, color: "#060a14", fontSize: 15, fontWeight: 700,
     cursor: "pointer", transition: "opacity 0.2s, transform 0.15s",
     fontFamily: "'Vrikaan Sans', sans-serif", letterSpacing: 0.5,
     display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
@@ -229,7 +229,7 @@ const S = {
     width: 48, height: 56, textAlign: "center", fontSize: 22,
     fontFamily: "'Vrikaan Mono', monospace", fontWeight: 700,
     background: "rgba(15,23,42,0.6)", border: "1px solid rgba(148,163,184,0.2)",
-    borderRadius: 10, color: "#14e3c5", outline: "none",
+    borderRadius: 10, color: "#14b8a6", outline: "none",
     transition: "border-color 0.2s, box-shadow 0.2s",
   },
   changePhoneBtn: {
@@ -251,7 +251,7 @@ const S = {
     fontSize: 13, display: "flex", alignItems: "center", gap: 8,
   },
   footer: { textAlign: "center", marginTop: 24, fontSize: 14, color: "#94a3b8" },
-  link: { color: "#14e3c5", textDecoration: "none", fontWeight: 600 },
+  link: { color: "#14b8a6", textDecoration: "none", fontWeight: 600 },
 };
 
 /* ─── Inject keyframes once ─── */
@@ -268,10 +268,10 @@ function injectKeyframes() {
     @keyframes loginFloat3 { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-22px) rotate(10deg); } }
     @keyframes loginFloat4 { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-16px) rotate(-8deg); } }
     @keyframes loginBorderGlow {
-      0% { border-color: rgba(20,227,197,0.3); box-shadow: 0 0 20px rgba(20,227,197,0.08), 0 0 40px rgba(20,227,197,0.04); }
+      0% { border-color: rgba(20, 184, 166,0.3); box-shadow: 0 0 20px rgba(20, 184, 166,0.08), 0 0 40px rgba(20, 184, 166,0.04); }
       33% { border-color: rgba(99,102,241,0.35); box-shadow: 0 0 20px rgba(99,102,241,0.08), 0 0 40px rgba(99,102,241,0.04); }
       66% { border-color: rgba(14,165,233,0.3); box-shadow: 0 0 20px rgba(14,165,233,0.08), 0 0 40px rgba(14,165,233,0.04); }
-      100% { border-color: rgba(20,227,197,0.3); box-shadow: 0 0 20px rgba(20,227,197,0.08), 0 0 40px rgba(20,227,197,0.04); }
+      100% { border-color: rgba(20, 184, 166,0.3); box-shadow: 0 0 20px rgba(20, 184, 166,0.08), 0 0 40px rgba(20, 184, 166,0.04); }
     }
   `;
   document.head.appendChild(el);
@@ -390,8 +390,8 @@ export default function Login() {
   const clearMessages = () => { setError(""); setSuccessMsg(""); };
 
   const onFocus = (e) => {
-    e.target.style.borderColor = "#14e3c5";
-    e.target.style.boxShadow = "0 0 0 3px rgba(20,227,197,0.1)";
+    e.target.style.borderColor = "#14b8a6";
+    e.target.style.boxShadow = "0 0 0 3px rgba(20, 184, 166,0.1)";
   };
   const onBlur = (e) => {
     e.target.style.borderColor = "rgba(148,163,184,0.2)";
@@ -606,8 +606,8 @@ export default function Login() {
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             padding: "6px 14px", borderRadius: 20,
-            background: "rgba(20,227,197,0.08)", border: "1px solid rgba(20,227,197,0.2)",
-            fontSize: 12, fontWeight: 600, color: "#14e3c5",
+            background: "rgba(20, 184, 166,0.08)", border: "1px solid rgba(20, 184, 166,0.2)",
+            fontSize: 12, fontWeight: 600, color: "#14b8a6",
             fontFamily: "'Vrikaan Sans', sans-serif", letterSpacing: 0.3,
           }}>
             <span style={{ fontSize: 14 }}>{"\u2713"}</span>
@@ -647,7 +647,7 @@ export default function Login() {
               disabled={totpVerifying || !totpInput}
               style={{
                 padding: "12px 18px", borderRadius: 10, border: "none", fontSize: 15, fontWeight: 700, cursor: totpVerifying ? "wait" : "pointer",
-                background: "linear-gradient(135deg,#6366f1,#14e3c5)", color: "#fff", opacity: totpVerifying || !totpInput ? 0.6 : 1,
+                background: "linear-gradient(135deg,#6366f1,#14b8a6)", color: "#fff", opacity: totpVerifying || !totpInput ? 0.6 : 1,
               }}
             >{totpVerifying ? "Verifying..." : "Verify & Continue"}</button>
             <button

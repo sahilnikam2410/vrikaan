@@ -14,7 +14,7 @@ import ExitIntent from "./components/ExitIntent.jsx";
 import CommandPalette from "./components/CommandPalette.jsx";
 
 /* ── Skeleton Loader ── */
-const T = { bg: "#030712", card: "rgba(17,24,39,0.6)", border: "rgba(148,163,184,0.08)", accent: "#6366f1", cyan: "#14e3c5" };
+const T = { bg: "#060a14", card: "rgba(17,24,39,0.6)", border: "rgba(148,163,184,0.08)", accent: "#6366f1", cyan: "#14b8a6" };
 const PageSkeleton = () => (
   <div style={{ background: T.bg, minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 100 }}>
     <style>{`
@@ -76,14 +76,14 @@ const RouteLoader = () => {
 
   return (
     <div style={{
-      position: "fixed", inset: 0, zIndex: 99998, background: "#030712",
+      position: "fixed", inset: 0, zIndex: 99998, background: "#060a14",
       display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
       fontFamily: "system-ui, sans-serif",
       animation: "rl-fade 0.3s ease-out",
     }}>
       <style>{`
         @keyframes rl-fade { from { opacity: 0 } to { opacity: 1 } }
-        @keyframes rl-pulse { 0%,100% { filter: drop-shadow(0 0 10px rgba(20,227,197,0.4)) } 50% { filter: drop-shadow(0 0 22px rgba(20,227,197,0.7)) } }
+        @keyframes rl-pulse { 0%,100% { filter: drop-shadow(0 0 10px rgba(20, 184, 166,0.4)) } 50% { filter: drop-shadow(0 0 22px rgba(20, 184, 166,0.7)) } }
       `}</style>
       <img
         src="/wolf-compact.png"

@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
-const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", ember: "#f97316", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
+const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", ember: "#f97316", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
 const protocols = [
   { code: "ALPHA", title: "Bank Fraud / Unauthorized Transactions", color: T.red, urgency: "CRITICAL", steps: ["Call your bank's 24/7 fraud helpline immediately", "Request a freeze on all accounts and cards", "Document every unauthorized transaction with screenshots", "File a complaint on cybercrime.gov.in (India) or local portal", "File a police report and keep the reference number", "Follow up with bank within 48 hours for reversal", "Enable transaction alerts and set spending limits"] },

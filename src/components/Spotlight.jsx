@@ -9,7 +9,7 @@ import { useEffect, useRef } from "react";
  *
  * Usage:
  *   <section style={{ position: 'relative' }}>
- *     <Spotlight color="rgba(20,227,197,0.15)" size={500} />
+ *     <Spotlight color="rgba(20, 184, 166,0.15)" size={500} />
  *     ...rest of section...
  *   </section>
  */

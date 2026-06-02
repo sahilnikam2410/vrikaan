@@ -232,7 +232,7 @@ const Globe3D = memo(function Globe3D({ size, threatsRef, onContextLost }) {
     };
   }, [size, threatsRef]);
 
-  return <div ref={containerRef} style={{ width: "100%", height: size, background: "#030712" }} />;
+  return <div ref={containerRef} style={{ width: "100%", height: size, background: "#060a14" }} />;
 });
 
 export default Globe3D;

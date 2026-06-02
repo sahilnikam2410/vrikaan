@@ -32,8 +32,8 @@ function isToolPage(pathname) {
 }
 
 const T = {
-  bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b",
-  cyan: "#14e3c5", accent: "#6366f1", border: "rgba(148,163,184,0.08)",
+  bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b",
+  cyan: "#14b8a6", accent: "#6366f1", border: "rgba(148,163,184,0.08)",
 };
 
 // Plain link (Company / Legal columns — non-tool pages, no tier gating)
@@ -75,7 +75,7 @@ const Footer = () => {
                 display: "block",
                 flexShrink: 0,
                 objectFit: "contain",
-                filter: "drop-shadow(0 0 6px rgba(20,227,197,0.4))",
+                filter: "drop-shadow(0 0 6px rgba(20, 184, 166,0.4))",
                 animation: "wolfPulse 2.6s ease-in-out infinite",
               }}
             />

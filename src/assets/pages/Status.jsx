@@ -4,10 +4,10 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
 const T = {
-  bg: "#030712", surface: "#111827", card: "rgba(17,24,39,0.7)",
+  bg: "#060a14", surface: "#111827", card: "rgba(17,24,39,0.7)",
   white: "#f1f5f9", muted: "#94a3b8", green: "#22c55e",
   orange: "#f97316", red: "#ef4444", border: "rgba(148,163,184,0.1)",
-  cyan: "#14e3c5", accent: "#6366f1",
+  cyan: "#14b8a6", accent: "#6366f1",
 };
 
 const ENDPOINTS = [

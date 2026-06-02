@@ -10,7 +10,7 @@ import { mapEvents, summarizeEvents, bucketByTime, severityBand, SEVERITY_BANDS 
 import { MITRE_TACTICS, MITRE_TECHNIQUES, buildMitreHeatmap, topTactic } from "../../utils/mitreData";
 import { FRAMEWORKS, scoreAllFrameworks } from "../../utils/complianceData";
 
-const T = { bg: "#030712", panel: "rgba(17,24,39,0.85)", cardBorder: "rgba(148,163,184,0.1)", accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", orange: "#f97316", yellow: "#fbbf24", blue: "#3b82f6", purple: "#a855f7", white: "#f1f5f9", muted: "#94a3b8", subtle: "#64748b" };
+const T = { bg: "#060a14", panel: "rgba(17,24,39,0.85)", cardBorder: "rgba(148,163,184,0.1)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", orange: "#f97316", yellow: "#fbbf24", blue: "#3b82f6", purple: "#a855f7", white: "#f1f5f9", muted: "#94a3b8", subtle: "#64748b" };
 
 const TABS = [
   { id: "overview",   label: "Overview",         icon: "📊" },
@@ -255,7 +255,7 @@ function EventsTab({ events }) {
                 const open = expanded === e.id;
                 return (
                   <>
-                    <tr key={e.id} onClick={() => setExpanded(open ? null : e.id)} style={{ borderTop: `1px solid ${T.cardBorder}`, cursor: "pointer", background: open ? "rgba(20,227,197,0.04)" : "transparent" }}>
+                    <tr key={e.id} onClick={() => setExpanded(open ? null : e.id)} style={{ borderTop: `1px solid ${T.cardBorder}`, cursor: "pointer", background: open ? "rgba(20, 184, 166,0.04)" : "transparent" }}>
                       <td style={{ padding: "8px 12px", color: T.muted, fontFamily: "'Vrikaan Mono'", whiteSpace: "nowrap" }}>{e.timestamp.toLocaleTimeString("en-IN")}</td>
                       <td style={{ padding: "8px 12px" }}>
                         <span style={{ display: "inline-block", padding: "1px 7px", borderRadius: 3, fontSize: 10, fontWeight: 800, background: `${band.color}25`, color: band.color, fontFamily: "'Vrikaan Mono'" }}>{e.rule.level}</span>
@@ -393,7 +393,7 @@ function MitreTab({ events }) {
                   title={`${tech.id} ${tech.name} — ${count} event${count === 1 ? "" : "s"}`}
                   style={{
                     padding: "6px 8px",
-                    background: count ? `rgba(20,227,197,${intensity})` : "rgba(15,23,42,0.5)",
+                    background: count ? `rgba(20, 184, 166,${intensity})` : "rgba(15,23,42,0.5)",
                     border: count ? `1px solid ${T.cyan}80` : `1px solid ${T.cardBorder}`,
                     borderRadius: 4,
                     fontSize: 10,

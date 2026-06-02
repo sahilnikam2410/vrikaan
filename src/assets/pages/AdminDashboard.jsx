@@ -24,8 +24,8 @@ import {
 import SEO from "../../components/SEO";
 
 const T = {
-  bg: "#030712", sidebar: "#0a0f1e", surface: "#111827", card: "rgba(17,24,39,0.8)",
-  accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444",
+  bg: "#060a14", sidebar: "#0a0f1e", surface: "#111827", card: "rgba(17,24,39,0.8)",
+  accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444",
   orange: "#f97316", gold: "#eab308", pink: "#ec4899",
   white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)",
 };
@@ -74,7 +74,7 @@ function Avatar({ name, photo, size = 34 }) {
 }
 
 function Spinner() {
-  return <div style={{ display: "flex", justifyContent: "center", padding: 60 }}><div style={{ width: 36, height: 36, border: `3px solid ${T.border}`, borderTop: `3px solid ${T.cyan}`, borderRadius: "50%", animation: "spin 0.8s linear infinite", boxShadow: "0 0 15px rgba(20,227,197,0.3)" }} /></div>;
+  return <div style={{ display: "flex", justifyContent: "center", padding: 60 }}><div style={{ width: 36, height: 36, border: `3px solid ${T.border}`, borderTop: `3px solid ${T.cyan}`, borderRadius: "50%", animation: "spin 0.8s linear infinite", boxShadow: "0 0 15px rgba(20, 184, 166,0.3)" }} /></div>;
 }
 
 function Empty({ msg }) {
@@ -945,7 +945,7 @@ export default function AdminDashboard() {
         .adm-row { transition:all 0.2s ease }
         .adm-row:hover { background:rgba(99,102,241,0.05) !important }
         .adm-tool-link { transition:all 0.2s ease !important }
-        .adm-tool-link:hover { background:rgba(20,227,197,0.08) !important; color:${T.cyan} !important; transform:translateX(4px) }
+        .adm-tool-link:hover { background:rgba(20, 184, 166,0.08) !important; color:${T.cyan} !important; transform:translateX(4px) }
         .adm-input:focus { border-color:${T.accent} !important; box-shadow:0 0 0 3px rgba(99,102,241,0.15) !important }
         .adm-gradient-text { background:linear-gradient(135deg,${T.cyan},${T.accent}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-size:200% 200%; animation:gradientShift 4s ease infinite }
         .adm-avatar { animation:glow 3s ease-in-out infinite }
@@ -971,7 +971,7 @@ export default function AdminDashboard() {
           {/* Home Button */}
           <button onClick={() => navigate("/")} style={{
             width: "calc(100% - 20px)", margin: "0 10px 10px", display: "flex", alignItems: "center", gap: 10, padding: "10px 14px",
-            background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20,227,197,0.1))", border: `1px solid ${T.border}`,
+            background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20, 184, 166,0.1))", border: `1px solid ${T.border}`,
             borderRadius: 8, color: T.cyan, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Vrikaan Sans', sans-serif", textAlign: "left",
           }}>
             <HiOutlineHome size={18} /> Home

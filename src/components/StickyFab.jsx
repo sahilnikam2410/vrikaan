@@ -29,9 +29,9 @@ export default function StickyFab() {
           to   { transform: translateY(0) scale(1); opacity: 1; }
         }
         @keyframes vrk-fab-pulse-ring {
-          0% { box-shadow: 0 0 0 0 rgba(20,227,197,0.6); }
-          70% { box-shadow: 0 0 0 16px rgba(20,227,197,0); }
-          100% { box-shadow: 0 0 0 0 rgba(20,227,197,0); }
+          0% { box-shadow: 0 0 0 0 rgba(20, 184, 166,0.6); }
+          70% { box-shadow: 0 0 0 16px rgba(20, 184, 166,0); }
+          100% { box-shadow: 0 0 0 0 rgba(20, 184, 166,0); }
         }
         @media (max-width: 720px) {
           .vrk-fab { bottom: 80px !important; }
@@ -46,12 +46,12 @@ export default function StickyFab() {
           position: "fixed", bottom: 28, left: 28, zIndex: 800,
           display: "inline-flex", alignItems: "center", gap: 10,
           padding: expanded ? "14px 22px" : "14px 14px",
-          background: "linear-gradient(135deg, #14E3C5, #6366F1)",
-          color: "#030712",
+          background: "linear-gradient(135deg, #14b8a6, #6366F1)",
+          color: "#060a14",
           borderRadius: 999,
           fontWeight: 800, fontSize: 14, textDecoration: "none",
           fontFamily: "'Vrikaan Sans', 'Vrikaan Sans', sans-serif",
-          boxShadow: "0 12px 32px rgba(20,227,197,0.35), 0 0 0 1px rgba(255,255,255,0.08) inset",
+          boxShadow: "0 12px 32px rgba(20, 184, 166,0.35), 0 0 0 1px rgba(255,255,255,0.08) inset",
           animation: "vrk-fab-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), vrk-fab-pulse-ring 2.4s ease infinite",
           transition: "padding 0.25s, transform 0.15s",
           maxWidth: expanded ? 220 : 52,

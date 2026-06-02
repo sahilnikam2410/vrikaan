@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { captureException } from "../services/errorReporter";
 
 const T = {
-  bg: "#030712", card: "rgba(17,24,39,0.6)", white: "#f1f5f9",
-  muted: "#94a3b8", accent: "#6366f1", cyan: "#14e3c5", red: "#ef4444",
+  bg: "#060a14", card: "rgba(17,24,39,0.6)", white: "#f1f5f9",
+  muted: "#94a3b8", accent: "#6366f1", cyan: "#14b8a6", red: "#ef4444",
   border: "rgba(148,163,184,0.08)",
 };
 

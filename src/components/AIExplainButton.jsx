@@ -12,7 +12,7 @@ import { useState } from "react";
  *   />
  */
 const T = {
-  cyan: "#14e3c5",
+  cyan: "#14b8a6",
   accent: "#6366f1",
   white: "#f1f5f9",
   muted: "#94a3b8",
@@ -49,7 +49,7 @@ export default function AIExplainButton({ toolName, input, result, label = "✨ 
         disabled={loading}
         style={{
           padding: "8px 16px",
-          background: loading ? "rgba(20,227,197,0.06)" : "rgba(20,227,197,0.15)",
+          background: loading ? "rgba(20, 184, 166,0.06)" : "rgba(20, 184, 166,0.15)",
           border: `1px solid ${T.cyan}40`,
           borderRadius: 8,
           color: T.cyan,

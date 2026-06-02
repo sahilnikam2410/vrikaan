@@ -6,8 +6,8 @@ import SEO from "../../components/SEO";
 import { upcoming, formatFestivalDate, isHighAlert } from "../../lib/festivalFraud";
 
 const T = {
-  bg: "#030712", card: "rgba(17,24,39,0.7)",
-  accent: "#6366f1", cyan: "#14e3c5",
+  bg: "#060a14", card: "rgba(17,24,39,0.7)",
+  accent: "#6366f1", cyan: "#14b8a6",
   green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", orange: "#f97316",
   white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b",
   border: "rgba(148,163,184,0.12)",
@@ -207,7 +207,7 @@ export default function FestivalFraud() {
             <div style={{
               marginTop: 22, display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap",
               padding: 16, borderRadius: 12,
-              background: "linear-gradient(135deg, rgba(34,197,94,0.06), rgba(20,227,197,0.06))",
+              background: "linear-gradient(135deg, rgba(34,197,94,0.06), rgba(20, 184, 166,0.06))",
               border: `1px solid ${T.green}33`,
             }}>
               <div style={{ flex: 1, minWidth: 200 }}>
@@ -254,7 +254,7 @@ export default function FestivalFraud() {
                   cursor: "pointer", textAlign: "left", color: "inherit",
                   fontFamily: "inherit", transition: "background 0.15s",
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = "rgba(20,227,197,0.04)"}
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(20, 184, 166,0.04)"}
                 onMouseLeave={e => e.currentTarget.style.background = "transparent"}
               >
                 <div style={{ fontSize: 22 }}>{f.emoji}</div>

@@ -11,8 +11,8 @@ const GlobePlaceholder = ({ size = 520 }) => (
       height: size,
       borderRadius: "50%",
       background:
-        "radial-gradient(circle at 30% 30%, rgba(20,227,197,0.12), rgba(99,102,241,0.06) 40%, transparent 70%)",
-      border: "1px solid rgba(20,227,197,0.12)",
+        "radial-gradient(circle at 30% 30%, rgba(20, 184, 166,0.12), rgba(99,102,241,0.06) 40%, transparent 70%)",
+      border: "1px solid rgba(20, 184, 166,0.12)",
       opacity: 0.6,
     }}
   />
@@ -30,7 +30,7 @@ import SEO from "./components/SEO";
    ═══════════════════════════════════════════════════════ */
 
 const T = {
-  bg: "#030712",
+  bg: "#060a14",
   deep: "#0a0f1e",
   surface: "#111827",
   surfaceHover: "#1f2937",
@@ -40,11 +40,11 @@ const T = {
   accentSoft: "#818cf8",
   accentDim: "rgba(99,102,241,0.08)",
   accentMed: "rgba(99,102,241,0.18)",
-  cyan: "#14e3c5",
-  cyanSoft: "#00e5b9",
-  cyanDim: "rgba(20,227,197,0.06)",
-  cyanMed: "rgba(20,227,197,0.15)",
-  cyanGlow: "rgba(20,227,197,0.3)",
+  cyan: "#14b8a6",
+  cyanSoft: "#0d9488",
+  cyanDim: "rgba(20, 184, 166,0.06)",
+  cyanMed: "rgba(20, 184, 166,0.15)",
+  cyanGlow: "rgba(20, 184, 166,0.3)",
   ember: "#f97316",
   emberDim: "rgba(249,115,22,0.08)",
   red: "#ef4444",
@@ -71,7 +71,7 @@ const WolfMark = ({ size = 40 }) => (
       display: "block",
       flexShrink: 0,
       objectFit: "contain",
-      filter: "drop-shadow(0 0 6px rgba(20,227,197,0.4))",
+      filter: "drop-shadow(0 0 6px rgba(20, 184, 166,0.4))",
       animation: "wolfPulse 2.6s ease-in-out infinite",
     }}
   />
@@ -94,7 +94,7 @@ const BrandIcon = ({ size = 50 }) => {
           <stop offset="0%" stopColor="#4A3DA8"/><stop offset="100%" stopColor="#2A1F7A"/>
         </linearGradient>
         <linearGradient id={`orb_${id}`} x1="0" y1="0" x2="1" y2="0.5">
-          <stop offset="0%" stopColor="#14e3c5" stopOpacity="0"/><stop offset="30%" stopColor="#14e3c5" stopOpacity="0.8"/>
+          <stop offset="0%" stopColor="#14b8a6" stopOpacity="0"/><stop offset="30%" stopColor="#14b8a6" stopOpacity="0.8"/>
           <stop offset="60%" stopColor="#7B6CF6" stopOpacity="0.9"/><stop offset="100%" stopColor="#534AB7" stopOpacity="0"/>
         </linearGradient>
         <radialGradient id={`core_${id}`} cx="0.45" cy="0.4" r="0.5">
@@ -131,15 +131,15 @@ const BrandIcon = ({ size = 50 }) => {
       <circle cx="96" cy="84" r="2" fill="white" opacity="0.7"/>
       <g style={{ transformOrigin: "100px 88px", animation: "brand-orbit-ring 8s linear infinite" }}>
         <ellipse cx="100" cy="88" rx="80" ry="22" fill="none" stroke={`url(#orb_${id})`} strokeWidth="3.5" strokeLinecap="round" transform="rotate(-25 100 88)"/>
-        <circle cx="178" cy="80" r="4.5" fill="#14e3c5" opacity="0.95" transform="rotate(-25 100 88)">
+        <circle cx="178" cy="80" r="4.5" fill="#14b8a6" opacity="0.95" transform="rotate(-25 100 88)">
           <animate attributeName="opacity" values="0.95;0.5;0.95" dur="2s" repeatCount="indefinite"/>
         </circle>
-        <circle cx="178" cy="80" r="8" fill="#14e3c5" opacity="0.15" transform="rotate(-25 100 88)"/>
+        <circle cx="178" cy="80" r="8" fill="#14b8a6" opacity="0.15" transform="rotate(-25 100 88)"/>
       </g>
       <g style={{ transformOrigin: "100px 88px", animation: "brand-orbit-ring2 12s linear infinite" }}>
         <ellipse cx="100" cy="88" rx="70" ry="16" fill="none" stroke="#7B6CF6" strokeWidth="1.2" strokeDasharray="6 12" opacity="0.3" transform="rotate(15 100 88)"/>
       </g>
-      <circle cx="45" cy="40" r="3" fill="#14e3c5" opacity="0.7">
+      <circle cx="45" cy="40" r="3" fill="#14b8a6" opacity="0.7">
         <animate attributeName="cy" values="40;36;40" dur="2.5s" repeatCount="indefinite"/>
       </circle>
       <circle cx="160" cy="48" r="2" fill="#FF3CAC" opacity="0.6">
@@ -162,7 +162,7 @@ const ParticleField = () => {
     let raf;
     const chars = "01アイウエオカキクケコ10サシスセソタチツテト0xABCDEF∞§∆Ωλ{}[]<>/\\|";
     const fontSize = 14;
-    const colors = ["#14e3c5", "#6366f1"];
+    const colors = ["#14b8a6", "#6366f1"];
     let columns, drops;
     const initColumns = () => {
       columns = Math.floor(c.width / fontSize);
@@ -306,7 +306,7 @@ const Reveal = ({ children, delay = 0, direction = "up", style = {} }) => {
 /* ── GRADIENT TEXT ── */
 const GradientText = ({ children, style = {} }) => (
   <span style={{
-    background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 40%, #14e3c5 100%)",
+    background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 40%, #14b8a6 100%)",
     backgroundSize: "200% 200%", animation: "gradient-shift 8s ease infinite",
     WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", ...style,
   }}>{children}</span>
@@ -435,12 +435,12 @@ const Hero = () => {
 
   return (
     <section ref={parallaxRef} style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", padding: "120px clamp(16px, 5vw, 80px) 80px", maxWidth: "100vw", boxSizing: "border-box" }}>
-      <Spotlight color="rgba(20,227,197,0.16)" size={700} />
+      <Spotlight color="rgba(20, 184, 166,0.16)" size={700} />
       {/* Parallax background glows */}
       <div style={{ position: "absolute", top: "10%", left: "5%", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.07), transparent 65%)", pointerEvents: "none", transform: `translateY(${parallaxOffset * 0.5}px)`, transition: "transform 0.1s linear" }} />
-      <div style={{ position: "absolute", bottom: "5%", right: "5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(20,227,197,0.04), transparent 65%)", pointerEvents: "none", transform: `translateY(${parallaxOffset * -0.3}px)`, transition: "transform 0.1s linear" }} />
+      <div style={{ position: "absolute", bottom: "5%", right: "5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(20, 184, 166,0.04), transparent 65%)", pointerEvents: "none", transform: `translateY(${parallaxOffset * -0.3}px)`, transition: "transform 0.1s linear" }} />
       {/* Animated mesh gradient with parallax */}
-      <div style={{ position: "absolute", top: "30%", left: "50%", width: 900, height: 900, transform: `translate(-50%, calc(-50% + ${parallaxOffset * 0.2}px))`, borderRadius: "50%", background: "conic-gradient(from 0deg, rgba(99,102,241,0.04), rgba(20,227,197,0.03), rgba(139,92,246,0.04), rgba(99,102,241,0.04))", animation: "spin 30s linear infinite", pointerEvents: "none", filter: "blur(80px)" }} />
+      <div style={{ position: "absolute", top: "30%", left: "50%", width: 900, height: 900, transform: `translate(-50%, calc(-50% + ${parallaxOffset * 0.2}px))`, borderRadius: "50%", background: "conic-gradient(from 0deg, rgba(99,102,241,0.04), rgba(20, 184, 166,0.03), rgba(139,92,246,0.04), rgba(99,102,241,0.04))", animation: "spin 30s linear infinite", pointerEvents: "none", filter: "blur(80px)" }} />
 
       <div style={{ maxWidth: 1280, margin: "0 auto", width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center", position: "relative", zIndex: 2 }} className="hero-grid">
         {/* Left — Content */}
@@ -564,7 +564,7 @@ const SplashScreen = ({ onDone }) => {
       <div style={{ width: 200, height: 2, background: "rgba(148,163,184,0.08)", borderRadius: 2, marginTop: 32, overflow: "hidden" }}>
         <div style={{
           height: "100%", borderRadius: 2,
-          background: "linear-gradient(90deg, #6366f1, #14e3c5)",
+          background: "linear-gradient(90deg, #6366f1, #14b8a6)",
           width: phase >= 1 ? "100%" : "0%",
           transition: "width 1.2s cubic-bezier(0.22, 1, 0.36, 1)",
         }} />
@@ -589,8 +589,8 @@ const ScrollProgress = () => {
       <div style={{
         height: "100%", borderRadius: "0 2px 2px 0",
         width: `${progress}%`,
-        background: "linear-gradient(90deg, #6366f1, #8b5cf6, #14e3c5)",
-        boxShadow: progress > 0 ? "0 0 10px rgba(99,102,241,0.5), 0 0 30px rgba(20,227,197,0.2)" : "none",
+        background: "linear-gradient(90deg, #6366f1, #8b5cf6, #14b8a6)",
+        boxShadow: progress > 0 ? "0 0 10px rgba(99,102,241,0.5), 0 0 30px rgba(20, 184, 166,0.2)" : "none",
         transition: "width 0.1s linear",
       }} />
     </div>
@@ -717,7 +717,7 @@ const SocialProofToasts = () => {
     }}>
       <div style={{
         width: 36, height: 36, borderRadius: 10,
-        background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20,227,197,0.1))",
+        background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20, 184, 166,0.1))",
         border: `1px solid rgba(99,102,241,0.15)`,
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 14, flexShrink: 0,
@@ -875,7 +875,7 @@ const BeforeAfter = () => (
         <div style={{ position: "absolute", top: 0, bottom: 0, left: "50%", width: 1, background: `linear-gradient(180deg, transparent, ${T.border}, transparent)`, transform: "translateX(-50%)" }} />
         <div style={{
           width: 48, height: 48, borderRadius: "50%", zIndex: 2,
-          background: "linear-gradient(135deg, #6366f1, #14e3c5)", boxShadow: "0 8px 32px rgba(99,102,241,0.3)",
+          background: "linear-gradient(135deg, #6366f1, #14b8a6)", boxShadow: "0 8px 32px rgba(99,102,241,0.3)",
           display: "flex", alignItems: "center", justifyContent: "center",
           fontFamily: "var(--font-display)", fontSize: 14, fontWeight: 800, color: "#fff",
         }}>VS</div>
@@ -1678,7 +1678,7 @@ const ThreatMapSection = () => {
           </div>
 
           {/* Center — Map */}
-          <div style={{ position: "relative", minHeight: 450, borderRadius: 18, overflow: "hidden", border: `1px solid rgba(20,227,197,0.06)`, boxShadow: "0 8px 40px rgba(0,0,0,0.3)" }}>
+          <div style={{ position: "relative", minHeight: 450, borderRadius: 18, overflow: "hidden", border: `1px solid rgba(20, 184, 166,0.06)`, boxShadow: "0 8px 40px rgba(0,0,0,0.3)" }}>
             <ThreatMapLive events={events} />
           </div>
 
@@ -1717,7 +1717,7 @@ const ThreatMapSection = () => {
           <Badge color={T.mutedDark}>3D Threat Visualization</Badge>
           <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${T.border}, transparent)` }} />
         </div>
-        <div style={{ position: "relative", height: 500, borderRadius: 20, overflow: "hidden", border: `1px solid ${T.border}`, background: "radial-gradient(ellipse at 50% 50%, rgba(20,227,197,0.02) 0%, #030712 70%)" }}>
+        <div style={{ position: "relative", height: 500, borderRadius: 20, overflow: "hidden", border: `1px solid ${T.border}`, background: "radial-gradient(ellipse at 50% 50%, rgba(20, 184, 166,0.02) 0%, #060a14 70%)" }}>
           <Suspense fallback={<div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}><GlobePlaceholder size={400} /></div>}>
             <CyberGlobe size={500} />
           </Suspense>
@@ -1752,7 +1752,7 @@ const INDIA_CITIES = [
   { name: "Mumbai",     base: 4820, color: "#EF4444" },
   { name: "Delhi NCR",  base: 5310, color: "#F97316" },
   { name: "Bengaluru",  base: 3640, color: "#EAB308" },
-  { name: "Hyderabad",  base: 2890, color: "#14E3C5" },
+  { name: "Hyderabad",  base: 2890, color: "#14b8a6" },
   { name: "Chennai",    base: 2150, color: "#6366F1" },
   { name: "Pune",       base: 1820, color: "#A855F7" },
   { name: "Kolkata",    base: 1610, color: "#22C55E" },
@@ -2383,13 +2383,13 @@ const Newsletter = () => {
         <div style={{
           maxWidth: 700, margin: "0 auto", textAlign: "center",
           padding: "56px 48px", borderRadius: 24,
-          background: "linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(20,227,197,0.04) 50%, rgba(139,92,246,0.06) 100%)",
+          background: "linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(20, 184, 166,0.04) 50%, rgba(139,92,246,0.06) 100%)",
           border: `1px solid rgba(99,102,241,0.1)`,
           position: "relative", overflow: "hidden",
         }}>
           {/* Animated corner accents */}
           <div style={{ position: "absolute", top: 0, left: 0, width: 80, height: 80, borderTop: `2px solid rgba(99,102,241,0.2)`, borderLeft: `2px solid rgba(99,102,241,0.2)`, borderRadius: "24px 0 0 0", pointerEvents: "none" }} />
-          <div style={{ position: "absolute", bottom: 0, right: 0, width: 80, height: 80, borderBottom: `2px solid rgba(20,227,197,0.2)`, borderRight: `2px solid rgba(20,227,197,0.2)`, borderRadius: "0 0 24px 0", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: 0, right: 0, width: 80, height: 80, borderBottom: `2px solid rgba(20, 184, 166,0.2)`, borderRight: `2px solid rgba(20, 184, 166,0.2)`, borderRadius: "0 0 24px 0", pointerEvents: "none" }} />
 
           <Badge color={T.cyan}>Stay Protected</Badge>
           <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 700, color: T.white, margin: "16px 0 12px", letterSpacing: "-0.03em" }}>
@@ -2462,7 +2462,7 @@ const IndiaTrust = () => {
               <div style={{
                 fontSize: 26, lineHeight: 1, flexShrink: 0,
                 width: 44, height: 44, borderRadius: 10,
-                background: "rgba(20,227,197,0.08)",
+                background: "rgba(20, 184, 166,0.08)",
                 display: "flex", alignItems: "center", justifyContent: "center",
               }}>{b.icon}</div>
               <div style={{ minWidth: 0 }}>
@@ -2564,7 +2564,7 @@ const FounderSection = () => (
           {/* Khushi */}
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: "clamp(28px, 3vw, 40px)", backdropFilter: "blur(8px)" }}>
             <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 18 }}>
-              <div style={{ width: 76, height: 76, borderRadius: 18, display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, rgba(20,227,197,0.18), rgba(99,102,241,0.10))", border: "1px solid rgba(20,227,197,0.25)", flexShrink: 0 }}>
+              <div style={{ width: 76, height: 76, borderRadius: 18, display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, rgba(20, 184, 166,0.18), rgba(99,102,241,0.10))", border: "1px solid rgba(20, 184, 166,0.25)", flexShrink: 0 }}>
                 <span style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 300, color: T.white }}>K</span>
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -2731,7 +2731,7 @@ const CTABanner = () => (
     <Reveal>
       <div className="cta-glow-wrapper" style={{ maxWidth: 1280, margin: "0 auto", borderRadius: 24, position: "relative", padding: 1 }}>
         {/* Animated glow border */}
-        <div className="cta-glow-border" style={{ position: "absolute", inset: 0, borderRadius: 24, background: "conic-gradient(from var(--cta-angle, 0deg), #6366f1, #14e3c5, #8b5cf6, #22c55e, #6366f1)", opacity: 0.4, filter: "blur(1px)", animation: "cta-rotate 4s linear infinite" }} />
+        <div className="cta-glow-border" style={{ position: "absolute", inset: 0, borderRadius: 24, background: "conic-gradient(from var(--cta-angle, 0deg), #6366f1, #14b8a6, #8b5cf6, #22c55e, #6366f1)", opacity: 0.4, filter: "blur(1px)", animation: "cta-rotate 4s linear infinite" }} />
         <div style={{
           position: "relative", borderRadius: 23,
           padding: "clamp(48px, 6vw, 80px) clamp(24px, 5vw, 64px)",
@@ -2739,10 +2739,10 @@ const CTABanner = () => (
           textAlign: "center", overflow: "hidden",
         }}>
           <div style={{ position: "absolute", top: "-50%", right: "-20%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.08), transparent 70%)", pointerEvents: "none" }} />
-          <div style={{ position: "absolute", bottom: "-30%", left: "-10%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(20,227,197,0.06), transparent 70%)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: "-30%", left: "-10%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(20, 184, 166,0.06), transparent 70%)", pointerEvents: "none" }} />
 
           <div style={{ marginBottom: 20, position: "relative" }}>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: T.cyan, background: "rgba(20,227,197,0.08)", padding: "6px 16px", borderRadius: 100, border: "1px solid rgba(20,227,197,0.15)" }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: T.cyan, background: "rgba(20, 184, 166,0.08)", padding: "6px 16px", borderRadius: 100, border: "1px solid rgba(20, 184, 166,0.15)" }}>
               &#9889; 60+ AI security tools · free forever tier
             </span>
           </div>
@@ -2776,7 +2776,7 @@ const CTABanner = () => (
 
 /* ── FOOTER ── */
 const Footer = () => (
-  <footer style={{ borderTop: `1px solid ${T.border}`, padding: "80px clamp(24px, 5vw, 80px) 48px", background: "linear-gradient(180deg, transparent 0%, rgba(20,227,197,0.01) 100%)", position: "relative" }}>
+  <footer style={{ borderTop: `1px solid ${T.border}`, padding: "80px clamp(24px, 5vw, 80px) 48px", background: "linear-gradient(180deg, transparent 0%, rgba(20, 184, 166,0.01) 100%)", position: "relative" }}>
     <div style={{ maxWidth: 1280, margin: "0 auto", display: "grid", gridTemplateColumns: "1.5fr repeat(4, 1fr)", gap: "clamp(32px, 4vw, 60px)", alignItems: "start" }} className="footer-grid">
       <div>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
@@ -2877,11 +2877,11 @@ html { scroll-behavior: smooth; }
 @keyframes brand-orbit-ring { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes brand-orbit-ring2 { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
 @keyframes status-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.4); } 50% { box-shadow: 0 0 0 4px rgba(34,197,94,0); } }
-@keyframes wolfPulse { 0%,100% { filter: drop-shadow(0 0 6px rgba(20,227,197,0.4)); } 50% { filter: drop-shadow(0 0 14px rgba(20,227,197,0.7)); } }
+@keyframes wolfPulse { 0%,100% { filter: drop-shadow(0 0 6px rgba(20, 184, 166,0.4)); } 50% { filter: drop-shadow(0 0 14px rgba(20, 184, 166,0.7)); } }
 @keyframes card-enter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 @property --cta-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
 @keyframes cta-rotate { to { --cta-angle: 360deg; } }
-.cta-glow-border { background: conic-gradient(from var(--cta-angle, 0deg), #6366f1, #14e3c5, #8b5cf6, #22c55e, #6366f1) !important; }
+.cta-glow-border { background: conic-gradient(from var(--cta-angle, 0deg), #6366f1, #14b8a6, #8b5cf6, #22c55e, #6366f1) !important; }
 @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 @keyframes splash-pulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
 @keyframes demo-scan { 0% { width: 0%; } 50% { width: 100%; } 100% { width: 0%; } }
@@ -3045,8 +3045,8 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
             <span style={{
               fontSize: 9, fontWeight: 700, letterSpacing: 0.5,
               padding: "2px 7px", borderRadius: 999,
-              background: "rgba(20,227,197,0.18)", color: "#14E3C5",
-              border: "1px solid rgba(20,227,197,0.4)",
+              background: "rgba(20, 184, 166,0.18)", color: "#14b8a6",
+              border: "1px solid rgba(20, 184, 166,0.4)",
               textTransform: "uppercase",
               animation: "pulse-dot 2.4s ease-in-out infinite",
             }}>Hiring</span>
@@ -3082,8 +3082,8 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
             <span style={{
               fontSize: 11, fontWeight: 700, letterSpacing: 0.5,
               padding: "4px 10px", borderRadius: 999,
-              background: "rgba(20,227,197,0.18)", color: "#14E3C5",
-              border: "1px solid rgba(20,227,197,0.4)",
+              background: "rgba(20, 184, 166,0.18)", color: "#14b8a6",
+              border: "1px solid rgba(20, 184, 166,0.4)",
               textTransform: "uppercase",
             }}>Hiring</span>
           </Link>
@@ -3129,7 +3129,7 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
         {/* Wave transition */}
         <div className="wave-divider">
           <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
-            <path d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60Z" fill="rgba(20,227,197,0.025)" />
+            <path d="M0,30 C480,60 960,0 1440,30 L1440,60 L0,60Z" fill="rgba(20, 184, 166,0.025)" />
           </svg>
         </div>
 
@@ -3177,7 +3177,7 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
         {/* Wave transition into pricing */}
         <div className="wave-divider">
           <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
-            <path d="M0,50 C360,10 720,70 1080,30 C1260,15 1380,40 1440,50 L1440,80 L0,80Z" fill="rgba(20,227,197,0.02)" />
+            <path d="M0,50 C360,10 720,70 1080,30 C1260,15 1380,40 1440,50 L1440,80 L0,80Z" fill="rgba(20, 184, 166,0.02)" />
           </svg>
         </div>
 

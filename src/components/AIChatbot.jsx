@@ -10,7 +10,7 @@ const PLANS = {
   starter:    { name: "Standard",   credits: 200,      daily: false, price: "₹49/mo",   color: "#22c55e" },
   pro:        { name: "Advanced",   credits: 1000,     daily: false, price: "₹99/mo",   color: "#f97316" },
   enterprise: { name: "Enterprise", credits: Infinity,  daily: false, price: "₹199/mo",  color: "#6366f1" },
-  unlimited:  { name: "Enterprise", credits: Infinity,  daily: false, price: "₹199/mo",  color: "#14e3c5" },
+  unlimited:  { name: "Enterprise", credits: Infinity,  daily: false, price: "₹199/mo",  color: "#14b8a6" },
 };
 
 // userObj is optional — pass from useAuth() for accurate detection
@@ -196,7 +196,7 @@ function getSmartResponse(message) {
 }
 
 // ─── Styles ───
-const T = { bg: "#030712", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", border: "rgba(148,163,184,0.08)" };
+const T = { bg: "#060a14", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", border: "rgba(148,163,184,0.08)" };
 
 export default function AIChatbot() {
   const { user } = useAuth() || {};
@@ -416,7 +416,7 @@ export default function AIChatbot() {
   const formatText = (text) => {
     if (!text) return "";
     return text
-      .replace(/\*\*(.*?)\*\*/g, '<strong style="color:#14e3c5">$1</strong>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong style="color:#14b8a6">$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
       .replace(/`(.*?)`/g, '<code style="background:rgba(99,102,241,0.2);padding:1px 5px;border-radius:3px;font-family:JetBrains Mono,monospace;font-size:12px">$1</code>')
       .replace(/^- (.*)/gm, '&bull; $1')
@@ -436,14 +436,14 @@ export default function AIChatbot() {
       <div onClick={() => setOpen(true)} style={{
         position: "fixed", bottom: 24, right: 24, zIndex: 9999, width: 62, height: 62,
         borderRadius: "50%", cursor: "pointer",
-        background: "linear-gradient(135deg, #6366f1, #14e3c5)",
+        background: "linear-gradient(135deg, #6366f1, #14b8a6)",
         display: "flex", alignItems: "center", justifyContent: "center",
         boxShadow: "0 4px 24px rgba(99,102,241,0.4), 0 0 0 3px rgba(99,102,241,0.15)",
         animation: "chatPulse 2s ease-in-out infinite",
         transition: "transform 0.2s",
       }}>
         <style>{`
-          @keyframes chatPulse { 0%,100% { box-shadow: 0 4px 24px rgba(99,102,241,0.4); } 50% { box-shadow: 0 4px 32px rgba(20,227,197,0.6), 0 0 0 6px rgba(20,227,197,0.1); } }
+          @keyframes chatPulse { 0%,100% { box-shadow: 0 4px 24px rgba(99,102,241,0.4); } 50% { box-shadow: 0 4px 32px rgba(20, 184, 166,0.6), 0 0 0 6px rgba(20, 184, 166,0.1); } }
           @keyframes slideUp { from { opacity:0; transform:translateY(20px) scale(0.95); } to { opacity:1; transform:translateY(0) scale(1); } }
           @keyframes dotBounce { 0%,80%,100% { transform:translateY(0); } 40% { transform:translateY(-6px); } }
         `}</style>
@@ -452,7 +452,7 @@ export default function AIChatbot() {
           <circle cx="8" cy="10.5" r="1" fill="#fff"/><circle cx="12" cy="10.5" r="1" fill="#fff"/><circle cx="16" cy="10.5" r="1" fill="#fff"/>
         </svg>
         {/* AI badge */}
-        <div style={{ position: "absolute", top: -4, right: -4, background: "#22c55e", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800, color: "#fff", border: "2px solid #030712" }}>AI</div>
+        <div style={{ position: "absolute", top: -4, right: -4, background: "#22c55e", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800, color: "#fff", border: "2px solid #060a14" }}>AI</div>
       </div>
     );
   }
@@ -473,7 +473,7 @@ export default function AIChatbot() {
       <div style={{
         padding: "14px 16px", display: "flex", alignItems: "center", gap: 10,
         borderBottom: `1px solid ${T.border}`,
-        background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(20,227,197,0.05))",
+        background: "linear-gradient(135deg, rgba(99,102,241,0.08), rgba(20, 184, 166,0.05))",
       }}>
         <img src="/wolf-mark.png?v=2" alt="VRIKAAN" style={{ width: 36, height: 36, borderRadius: 10 }} />
         <div style={{ flex: 1 }}>
@@ -486,8 +486,8 @@ export default function AIChatbot() {
         {/* Credits badge */}
         <div onClick={() => setView(view === "credits" ? "chat" : "credits")} style={{
           padding: "4px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700, cursor: "pointer",
-          background: credits <= 3 ? "rgba(239,68,68,0.15)" : "rgba(20,227,197,0.1)",
-          color: credits <= 3 ? T.red : T.cyan, border: `1px solid ${credits <= 3 ? "rgba(239,68,68,0.3)" : "rgba(20,227,197,0.2)"}`,
+          background: credits <= 3 ? "rgba(239,68,68,0.15)" : "rgba(20, 184, 166,0.1)",
+          color: credits <= 3 ? T.red : T.cyan, border: `1px solid ${credits <= 3 ? "rgba(239,68,68,0.3)" : "rgba(20, 184, 166,0.2)"}`,
         }}>
           {credits === Infinity ? "∞" : credits} credits
         </div>
@@ -520,7 +520,7 @@ export default function AIChatbot() {
             </div>
           </div>
 
-          <div style={{ marginTop: 8, padding: 12, background: "rgba(20,227,197,0.06)", borderRadius: 8, border: `1px solid rgba(20,227,197,0.15)` }}>
+          <div style={{ marginTop: 8, padding: 12, background: "rgba(20, 184, 166,0.06)", borderRadius: 8, border: `1px solid rgba(20, 184, 166,0.15)` }}>
             <div style={{ fontSize: 11, color: T.cyan, fontWeight: 700 }}>Privacy & Security</div>
             <div style={{ fontSize: 11, color: T.muted, marginTop: 4, lineHeight: 1.6 }}>
               All conversations are private. AI responses are routed through VRIKAAN's secure server — your data is never sent to third parties from your browser.
@@ -545,7 +545,7 @@ export default function AIChatbot() {
               <span style={{ fontSize: 18, fontWeight: 800, color: credits <= 3 ? T.red : T.cyan }}>{credits === Infinity ? "Unlimited" : credits}</span>
             </div>
             <div style={{ height: 6, borderRadius: 3, background: "rgba(148,163,184,0.1)", overflow: "hidden" }}>
-              <div style={{ height: "100%", borderRadius: 3, width: `${Math.min(100, (credits / (PLANS[creditData.plan]?.credits || 20)) * 100)}%`, background: "linear-gradient(90deg, #6366f1, #14e3c5)", transition: "width 0.5s" }} />
+              <div style={{ height: "100%", borderRadius: 3, width: `${Math.min(100, (credits / (PLANS[creditData.plan]?.credits || 20)) * 100)}%`, background: "linear-gradient(90deg, #6366f1, #14b8a6)", transition: "width 0.5s" }} />
             </div>
             <div style={{ fontSize: 11, color: T.muted, marginTop: 8 }}>
               {(creditData.plan === "free" || creditData.plan === "guest") ? "Resets daily at midnight" : "Resets on subscription renewal"}
@@ -555,7 +555,7 @@ export default function AIChatbot() {
 
           {/* Login prompt for guests */}
           {creditData.plan === "guest" && (
-            <div style={{ background: "rgba(20,227,197,0.08)", border: `1px solid rgba(20,227,197,0.2)`, borderRadius: 10, padding: 14, marginBottom: 16 }}>
+            <div style={{ background: "rgba(20, 184, 166,0.08)", border: `1px solid rgba(20, 184, 166,0.2)`, borderRadius: 10, padding: 14, marginBottom: 16 }}>
               <div style={{ fontSize: 13, fontWeight: 700, color: T.cyan, marginBottom: 6 }}>🔓 Log in for more credits!</div>
               <div style={{ fontSize: 12, color: T.muted, lineHeight: 1.6, marginBottom: 10 }}>
                 Guest: <strong style={{ color: T.white }}>25 credits/day</strong><br/>
@@ -564,7 +564,7 @@ export default function AIChatbot() {
               <div style={{ display: "flex", gap: 8 }}>
                 <button onClick={() => { navigate("/login"); setOpen(false); }} style={{
                   flex: 1, padding: "8px 0", borderRadius: 8, border: "none", cursor: "pointer",
-                  background: "linear-gradient(135deg, #6366f1, #14e3c5)", color: "#fff", fontSize: 12, fontWeight: 700,
+                  background: "linear-gradient(135deg, #6366f1, #14b8a6)", color: "#fff", fontSize: 12, fontWeight: 700,
                 }}>Log In</button>
                 <button onClick={() => { navigate("/signup"); setOpen(false); }} style={{
                   flex: 1, padding: "8px 0", borderRadius: 8, cursor: "pointer",
@@ -647,7 +647,7 @@ export default function AIChatbot() {
                     <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
                       <button onClick={() => { navigate("/login"); setOpen(false); }} style={{
                         flex: 1, padding: "8px 0", borderRadius: 8, border: "none", cursor: "pointer",
-                        background: "linear-gradient(135deg, #6366f1, #14e3c5)", color: "#fff",
+                        background: "linear-gradient(135deg, #6366f1, #14b8a6)", color: "#fff",
                         fontSize: 12, fontWeight: 700,
                       }}>Log In</button>
                       <button onClick={() => { navigate("/signup"); setOpen(false); }} style={{
@@ -701,7 +701,7 @@ export default function AIChatbot() {
                 title={`Voice language: ${voiceLang === "hi-IN" ? "Hindi" : "English"}. Click to switch.`}
                 style={{
                   padding: "3px 9px", borderRadius: 6, fontSize: 10, fontWeight: 700,
-                  background: voiceLang === "hi-IN" ? "rgba(99,102,241,0.18)" : "rgba(20,227,197,0.15)",
+                  background: voiceLang === "hi-IN" ? "rgba(99,102,241,0.18)" : "rgba(20, 184, 166,0.15)",
                   border: `1px solid ${voiceLang === "hi-IN" ? T.accent : T.cyan}40`,
                   color: voiceLang === "hi-IN" ? T.accent : T.cyan,
                   cursor: "pointer", fontFamily: "'Vrikaan Mono', monospace",
@@ -714,7 +714,7 @@ export default function AIChatbot() {
                   title={voiceOutEnabled ? "Mute bot voice" : "Unmute bot voice"}
                   style={{
                     width: 26, height: 22, borderRadius: 6, border: "none",
-                    background: voiceOutEnabled ? "rgba(20,227,197,0.15)" : "rgba(148,163,184,0.08)",
+                    background: voiceOutEnabled ? "rgba(20, 184, 166,0.15)" : "rgba(148,163,184,0.08)",
                     cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center",
                   }}
                 >
@@ -739,7 +739,7 @@ export default function AIChatbot() {
               padding: "8px 14px 4px",
               borderTop: `1px solid ${T.border}`,
               display: "flex", gap: 6, flexWrap: "wrap",
-              background: "rgba(20,227,197,0.04)",
+              background: "rgba(20, 184, 166,0.04)",
             }}>
               <div style={{
                 fontSize: 9, fontWeight: 800, letterSpacing: 1.5,
@@ -749,7 +749,7 @@ export default function AIChatbot() {
               {quickReplies.map((q, i) => (
                 <button key={i} onClick={() => { setInput(q); setTimeout(() => inputRef.current?.focus(), 10); }} style={{
                   padding: "5px 10px", borderRadius: 999,
-                  background: "rgba(20,227,197,0.08)",
+                  background: "rgba(20, 184, 166,0.08)",
                   border: `1px solid ${T.cyan}33`,
                   color: T.cyan, fontSize: 11, fontWeight: 600,
                   cursor: "pointer", fontFamily: "'Vrikaan Sans'",
@@ -767,7 +767,7 @@ export default function AIChatbot() {
                 title={listening ? "Stop listening" : `Speak (${voiceLang === "hi-IN" ? "Hindi" : "English"})`}
                 style={{
                   width: 38, height: 38, borderRadius: 10, border: "none", cursor: "pointer",
-                  background: listening ? `linear-gradient(135deg, ${T.red}, #f97316)` : "rgba(20,227,197,0.15)",
+                  background: listening ? `linear-gradient(135deg, ${T.red}, #f97316)` : "rgba(20, 184, 166,0.15)",
                   display: "flex", alignItems: "center", justifyContent: "center",
                   animation: listening ? "vrikaan-pulse 1.2s infinite" : "none",
                 }}
@@ -794,7 +794,7 @@ export default function AIChatbot() {
             />
             <button onClick={handleSend} disabled={!input.trim() || typing} style={{
               width: 38, height: 38, borderRadius: 10, border: "none", cursor: input.trim() && !typing ? "pointer" : "default",
-              background: input.trim() && !typing ? "linear-gradient(135deg, #6366f1, #14e3c5)" : "rgba(148,163,184,0.1)",
+              background: input.trim() && !typing ? "linear-gradient(135deg, #6366f1, #14b8a6)" : "rgba(148,163,184,0.1)",
               display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s",
             }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={input.trim() && !typing ? "#fff" : "#475569"} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -844,7 +844,7 @@ export default function AIChatbot() {
           {/* Buy button */}
           <button onClick={confirmPurchase} style={{
             width: "100%", padding: "12px 0", borderRadius: 10, border: "none", cursor: "pointer",
-            background: "linear-gradient(135deg, #6366f1, #14e3c5)", color: "#fff",
+            background: "linear-gradient(135deg, #6366f1, #14b8a6)", color: "#fff",
             fontSize: 14, fontWeight: 800, marginBottom: 10,
             boxShadow: "0 4px 20px rgba(99,102,241,0.3)",
           }}>

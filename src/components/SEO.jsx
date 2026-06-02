@@ -70,7 +70,7 @@ export default function SEO({
       <title>{pageTitle}</title>
       <meta name="description" content={pageDesc} />
       {keywords && <meta name="keywords" content={keywords} />}
-      <meta name="theme-color" content="#030712" />
+      <meta name="theme-color" content="#060a14" />
       <link rel="canonical" href={pageUrl} />
       {noindex && <meta name="robots" content="noindex, nofollow" />}
       {!noindex && <meta name="robots" content="index, follow, max-image-preview:large" />}

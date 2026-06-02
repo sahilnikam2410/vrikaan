@@ -4,8 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 import SEO from "../../components/SEO";
 
 const T = {
-  bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", accent: "#6366f1",
-  cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24",
+  bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", accent: "#6366f1",
+  cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24",
   border: "rgba(148,163,184,0.08)",
 };
 
@@ -75,7 +75,7 @@ async function generateMemberCertificate(userName, email, memberId) {
 
   ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, W, H);
   const topBar = ctx.createLinearGradient(0, 0, W, 0);
-  topBar.addColorStop(0, "#6366f1"); topBar.addColorStop(0.5, "#14e3c5"); topBar.addColorStop(1, "#6366f1");
+  topBar.addColorStop(0, "#6366f1"); topBar.addColorStop(0.5, "#14b8a6"); topBar.addColorStop(1, "#6366f1");
   ctx.fillStyle = topBar; ctx.fillRect(0, 0, W, 8);
   ctx.strokeStyle = "#e5e7eb"; ctx.lineWidth = 1; ctx.strokeRect(40, 40, W - 80, H - 80);
 
@@ -91,7 +91,7 @@ async function generateMemberCertificate(userName, email, memberId) {
     ctx.bezierCurveTo(-24, 14, -10, 24, 0, 30); ctx.bezierCurveTo(10, 24, 24, 14, 24, 0);
     ctx.bezierCurveTo(24, -10, 18, -20, 0, -22); ctx.closePath();
     const shGrad = ctx.createLinearGradient(-24, -22, 24, 30);
-    shGrad.addColorStop(0, "#6366f1"); shGrad.addColorStop(1, "#14e3c5");
+    shGrad.addColorStop(0, "#6366f1"); shGrad.addColorStop(1, "#14b8a6");
     ctx.fillStyle = shGrad; ctx.fill();
     ctx.font = "bold 20px 'Arial', sans-serif"; ctx.fillStyle = "#fff";
     ctx.textAlign = "center"; ctx.fillText("V", 0, 8); ctx.restore();
@@ -102,13 +102,13 @@ async function generateMemberCertificate(userName, email, memberId) {
 
   ctx.textAlign = "right";
   ctx.font = "10px 'Arial', sans-serif"; ctx.fillStyle = light; ctx.fillText("Official", W - 120, 88);
-  ctx.font = "bold 16px 'Arial', sans-serif"; ctx.fillStyle = "#14e3c5"; ctx.fillText("MEMBERSHIP", W - 120, 108);
+  ctx.font = "bold 16px 'Arial', sans-serif"; ctx.fillStyle = "#14b8a6"; ctx.fillText("MEMBERSHIP", W - 120, 108);
   ctx.font = "10px 'Arial', sans-serif"; ctx.fillStyle = light; ctx.fillText("Verified Member", W - 120, 124);
 
   ctx.strokeStyle = "#e5e7eb"; ctx.beginPath(); ctx.moveTo(80, 155); ctx.lineTo(W - 80, 155); ctx.stroke();
   ctx.textAlign = "left"; ctx.font = "600 14px 'Arial', sans-serif"; ctx.fillStyle = "#6366f1";
   ctx.fillText("MEMBERSHIP CERTIFICATE", 120, 220);
-  ctx.fillStyle = "#14e3c5"; ctx.fillRect(120, 232, 60, 3);
+  ctx.fillStyle = "#14b8a6"; ctx.fillRect(120, 232, 60, 3);
 
   ctx.font = "bold 56px 'Georgia', serif"; ctx.fillStyle = dark;
   ctx.fillText(userName || "Member", 120, 310);
@@ -158,7 +158,7 @@ async function generateMemberCertificate(userName, email, memberId) {
     const bx = W - 280, by = 680;
     ctx.beginPath(); ctx.arc(bx + 30, by + 30, 28, 0, Math.PI * 2);
     const badgeGrad = ctx.createLinearGradient(bx, by, bx + 60, by + 60);
-    badgeGrad.addColorStop(0, "#6366f1"); badgeGrad.addColorStop(1, "#14e3c5");
+    badgeGrad.addColorStop(0, "#6366f1"); badgeGrad.addColorStop(1, "#14b8a6");
     ctx.fillStyle = badgeGrad; ctx.fill();
     ctx.strokeStyle = "#fff"; ctx.lineWidth = 4; ctx.lineCap = "round"; ctx.lineJoin = "round";
     ctx.beginPath(); ctx.moveTo(bx + 18, by + 30); ctx.lineTo(bx + 27, by + 40); ctx.lineTo(bx + 44, by + 20); ctx.stroke();
@@ -175,7 +175,7 @@ async function generateMemberCertificate(userName, email, memberId) {
   ctx.font = "13px 'Arial', sans-serif"; ctx.fillStyle = gray;
   benefits.forEach((b, i) => {
     const bxx = 120 + i * 240;
-    ctx.fillStyle = "#14e3c5"; ctx.font = "bold 14px 'Arial', sans-serif"; ctx.fillText("✓", bxx, 865);
+    ctx.fillStyle = "#14b8a6"; ctx.font = "bold 14px 'Arial', sans-serif"; ctx.fillText("✓", bxx, 865);
     ctx.fillStyle = gray; ctx.font = "13px 'Arial', sans-serif"; ctx.fillText(b, bxx + 18, 865);
   });
 
@@ -186,7 +186,7 @@ async function generateMemberCertificate(userName, email, memberId) {
   ctx.fillText("© 2026 VRIKAAN. All rights reserved.", W - 120, H - 85);
 
   const btmBar = ctx.createLinearGradient(0, 0, W, 0);
-  btmBar.addColorStop(0, "#6366f1"); btmBar.addColorStop(0.5, "#14e3c5"); btmBar.addColorStop(1, "#6366f1");
+  btmBar.addColorStop(0, "#6366f1"); btmBar.addColorStop(0.5, "#14b8a6"); btmBar.addColorStop(1, "#6366f1");
   ctx.fillStyle = btmBar; ctx.fillRect(0, H - 8, W, 8);
 
   return canvas.toDataURL("image/png");
@@ -329,8 +329,8 @@ export default function Welcome() {
           50% { transform: scale(1.05); }
         }
         @keyframes glow {
-          0%, 100% { box-shadow: 0 0 20px rgba(20,227,197,0.2); }
-          50%      { box-shadow: 0 0 60px rgba(20,227,197,0.5), 0 0 100px rgba(99,102,241,0.3); }
+          0%, 100% { box-shadow: 0 0 20px rgba(20, 184, 166,0.2); }
+          50%      { box-shadow: 0 0 60px rgba(20, 184, 166,0.5), 0 0 100px rgba(99,102,241,0.3); }
         }
         @keyframes shieldSpin {
           0%   { transform: rotateY(0deg)   rotateZ(0deg); }
@@ -364,7 +364,7 @@ export default function Welcome() {
       {showConfetti && Array.from({ length: extraConfetti ? 120 : 40 }).map((_, i) => (
         <div key={i} className="confetti-particle" style={{
           left: `${Math.random() * 100}%`,
-          background: ["#14e3c5","#6366f1","#22c55e","#eab308","#ec4899","#f97316","#ef4444"][i % 7],
+          background: ["#14b8a6","#6366f1","#22c55e","#eab308","#ec4899","#f97316","#ef4444"][i % 7],
           animationDelay: `${Math.random() * 2}s`,
           animationDuration: `${2 + Math.random() * 3}s`,
           width: 4 + Math.random() * 10,
@@ -381,7 +381,7 @@ export default function Welcome() {
       }} />
       <div style={{
         position: "absolute", width: 500, height: 500, borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(20,227,197,0.10) 0%, transparent 70%)",
+        background: "radial-gradient(circle, rgba(20, 184, 166,0.10) 0%, transparent 70%)",
         bottom: "5%", left: "5%", pointerEvents: "none",
       }} />
 
@@ -449,7 +449,7 @@ export default function Welcome() {
                 width: 30, height: 30, borderRadius: "50%",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: 12, fontWeight: 700, fontFamily: "'Vrikaan Sans'",
-                background: step >= i ? "linear-gradient(135deg, #6366f1, #14e3c5)" : "rgba(148,163,184,0.08)",
+                background: step >= i ? "linear-gradient(135deg, #6366f1, #14b8a6)" : "rgba(148,163,184,0.08)",
                 color: step >= i ? "#fff" : T.muted,
                 border: `1px solid ${step >= i ? "transparent" : "rgba(148,163,184,0.12)"}`,
                 transition: "all 0.4s",
@@ -483,7 +483,7 @@ export default function Welcome() {
               color: T.white, marginBottom: 14, lineHeight: 1.15,
             }}>
               Welcome, {firstName}.<br/>
-              <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <span style={{ background: "linear-gradient(135deg, #6366f1, #14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 You just upgraded your defenses.
               </span>
             </h1>
@@ -505,7 +505,7 @@ export default function Welcome() {
 
             <button onClick={() => setStep(1)} style={{
               padding: "16px 44px",
-              background: "linear-gradient(135deg, #6366f1, #14e3c5)", border: "none", borderRadius: 12,
+              background: "linear-gradient(135deg, #6366f1, #14b8a6)", border: "none", borderRadius: 12,
               color: "#fff", fontSize: 16, fontWeight: 700, cursor: "pointer",
               fontFamily: "'Vrikaan Sans'", boxShadow: "0 8px 30px rgba(99,102,241,0.3)",
               transition: "all 0.3s",
@@ -552,7 +552,7 @@ export default function Welcome() {
               {[
                 { id: "phishing",  icon: "🎣", label: "Phishing & Scam SMS",    color: "#ef4444" },
                 { id: "darkweb",   icon: "🕵", label: "Dark Web Monitoring",    color: "#8b5cf6" },
-                { id: "passwords", icon: "🔐", label: "Password Security",      color: "#14e3c5" },
+                { id: "passwords", icon: "🔐", label: "Password Security",      color: "#14b8a6" },
                 { id: "identity",  icon: "🛡", label: "Identity / Aadhaar",     color: "#3b82f6" },
                 { id: "devices",   icon: "💻", label: "Device & Malware",       color: "#f97316" },
                 { id: "education", icon: "📚", label: "Security Education",     color: "#22c55e" },
@@ -576,7 +576,7 @@ export default function Welcome() {
             </div>
             <button onClick={runSecurityCheck} disabled={interests.length === 0} style={{
               padding: "14px 40px",
-              background: interests.length > 0 ? "linear-gradient(135deg, #6366f1, #14e3c5)" : "rgba(148,163,184,0.1)",
+              background: interests.length > 0 ? "linear-gradient(135deg, #6366f1, #14b8a6)" : "rgba(148,163,184,0.1)",
               border: "none", borderRadius: 12,
               color: interests.length > 0 ? "#fff" : T.muted,
               fontSize: 15, fontWeight: 700,
@@ -613,7 +613,7 @@ export default function Welcome() {
               }}>
                 <div style={{
                   height: "100%", borderRadius: 10,
-                  background: "linear-gradient(90deg, #6366f1, #14e3c5)",
+                  background: "linear-gradient(90deg, #6366f1, #14b8a6)",
                   width: `${checkProgress}%`, transition: "width 0.3s ease",
                   boxShadow: `0 0 12px ${T.cyan}`,
                 }} />
@@ -725,7 +725,7 @@ export default function Welcome() {
                 </p>
                 <button onClick={handleGenerateCert} style={{
                   padding: "14px 36px",
-                  background: "linear-gradient(135deg, #14e3c5, #6366f1)",
+                  background: "linear-gradient(135deg, #14b8a6, #6366f1)",
                   border: "none", borderRadius: 10,
                   color: "#fff", fontSize: 15, fontWeight: 700,
                   cursor: "pointer", fontFamily: "'Vrikaan Sans'",
@@ -751,7 +751,7 @@ export default function Welcome() {
                 <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", marginBottom: 20 }}>
                   <button onClick={handleDownload} style={{
                     padding: "12px 24px",
-                    background: "linear-gradient(135deg, #22c55e, #14e3c5)",
+                    background: "linear-gradient(135deg, #22c55e, #14b8a6)",
                     border: "none", borderRadius: 10,
                     color: "#fff", fontSize: 14, fontWeight: 700,
                     cursor: "pointer", fontFamily: "'Vrikaan Sans'",

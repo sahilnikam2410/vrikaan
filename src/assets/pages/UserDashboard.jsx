@@ -27,8 +27,8 @@ import { getPermissionState, requestPermission, isEnabled as isPushEnabled, setE
 import { AreaChart, Area, PieChart, Pie, Cell, BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 
 const T = {
-  bg: "#030712", sidebar: "#0a0f1e", surface: "#111827", card: "rgba(17,24,39,0.8)",
-  accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444",
+  bg: "#060a14", sidebar: "#0a0f1e", surface: "#111827", card: "rgba(17,24,39,0.8)",
+  accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444",
   orange: "#f97316", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)",
 };
 
@@ -52,7 +52,7 @@ const Badge = ({ children, color }) => (
 
 const Spinner = () => (
   <div style={{ display: "flex", justifyContent: "center", padding: 40 }}>
-    <div style={{ width: 36, height: 36, border: `3px solid ${T.border}`, borderTop: `3px solid ${T.cyan}`, borderRadius: "50%", animation: "spin 0.8s linear infinite", boxShadow: "0 0 15px rgba(20,227,197,0.3)" }} />
+    <div style={{ width: 36, height: 36, border: `3px solid ${T.border}`, borderTop: `3px solid ${T.cyan}`, borderRadius: "50%", animation: "spin 0.8s linear infinite", boxShadow: "0 0 15px rgba(20, 184, 166,0.3)" }} />
   </div>
 );
 
@@ -906,7 +906,7 @@ export default function UserDashboard() {
             marginBottom: 16, padding: "14px 18px", borderRadius: 14,
             background: isUrgent
               ? "linear-gradient(135deg, rgba(249,115,22,0.15), rgba(239,68,68,0.08))"
-              : "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(20,227,197,0.08))",
+              : "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(20, 184, 166,0.08))",
             border: `1px solid ${isUrgent ? "rgba(249,115,22,0.35)" : "rgba(99,102,241,0.3)"}`,
             display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap",
             animation: "fadeInUp 0.4s ease both",
@@ -975,7 +975,7 @@ export default function UserDashboard() {
                     aspectRatio: "1 / 1",
                     borderRadius: 12,
                     background: b.unlocked
-                      ? "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(20,227,197,0.12))"
+                      ? "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(20, 184, 166,0.12))"
                       : "rgba(148,163,184,0.05)",
                     border: `1px solid ${b.unlocked ? "rgba(99,102,241,0.3)" : T.border}`,
                     display: "flex", alignItems: "center", justifyContent: "center",
@@ -997,7 +997,7 @@ export default function UserDashboard() {
           <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
             <div style={{
               flexShrink: 0, width: 48, height: 48, borderRadius: 14,
-              background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(20,227,197,0.12))",
+              background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(20, 184, 166,0.12))",
               border: `1px solid ${T.border}`,
               display: "flex", alignItems: "center", justifyContent: "center",
               fontSize: 24,
@@ -1045,7 +1045,7 @@ export default function UserDashboard() {
           <div style={{
             height: "100%", borderRadius: 2,
             width: `${([user?.emailVerified, userPlan !== "free", devices.length > 0, user?.phone, user?.name].filter(Boolean).length / 5) * 100}%`,
-            background: "linear-gradient(90deg, #6366f1, #14e3c5)",
+            background: "linear-gradient(90deg, #6366f1, #14b8a6)",
             transition: "width 0.8s ease",
           }} />
         </div>
@@ -1103,7 +1103,7 @@ export default function UserDashboard() {
         <div style={{ display: "flex", alignItems: "flex-start", gap: 14 }}>
           <div style={{
             width: 42, height: 42, borderRadius: 12, flexShrink: 0,
-            background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20,227,197,0.1))",
+            background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20, 184, 166,0.1))",
             border: `1px solid rgba(99,102,241,0.2)`,
             display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20,
           }}>💡</div>
@@ -1189,7 +1189,7 @@ export default function UserDashboard() {
         <AniCard delay={0.3} className="">
           <div style={{ textAlign: "center", borderColor: `${T.orange}33` }}>
             <p style={{ fontSize: 13, color: T.orange }}>Device limit reached. Upgrade your plan for more devices.</p>
-            <button onClick={() => navigate("/pricing")} className="dash-btn" style={{ ...sty.btn("linear-gradient(135deg, #6366f1, #14e3c5)"), marginTop: 8 }}>Upgrade Plan</button>
+            <button onClick={() => navigate("/pricing")} className="dash-btn" style={{ ...sty.btn("linear-gradient(135deg, #6366f1, #14b8a6)"), marginTop: 8 }}>Upgrade Plan</button>
           </div>
         </AniCard>
       )}
@@ -1412,7 +1412,7 @@ export default function UserDashboard() {
                     <span style={{ fontSize: 11, color: T.muted }}>Plan: {r.plan}</span>
                   </div>
                 </div>
-                <button onClick={() => downloadReport(r)} className="dash-btn" style={sty.btn("rgba(20,227,197,0.12)", T.cyan)}><HiOutlineDownload size={14} /> Download</button>
+                <button onClick={() => downloadReport(r)} className="dash-btn" style={sty.btn("rgba(20, 184, 166,0.12)", T.cyan)}><HiOutlineDownload size={14} /> Download</button>
               </div>
             ))}
           </div>
@@ -1433,7 +1433,7 @@ export default function UserDashboard() {
             <div>
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                 <code style={{ flex: 1, padding: "10px 14px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.cyan, fontSize: 13, fontFamily: "'Vrikaan Mono', monospace", overflow: "hidden", textOverflow: "ellipsis" }}>{apiKey}</code>
-                <button onClick={copyApiKey} style={sty.btn("rgba(20,227,197,0.12)", T.cyan)}><HiOutlineClipboard size={14} /> Copy</button>
+                <button onClick={copyApiKey} style={sty.btn("rgba(20, 184, 166,0.12)", T.cyan)}><HiOutlineClipboard size={14} /> Copy</button>
               </div>
               <button onClick={generateApiKey} style={{ ...sty.btn("rgba(239,68,68,0.12)", T.orange), marginTop: 12 }}><HiOutlineRefresh size={14} /> Regenerate</button>
             </div>
@@ -1705,7 +1705,7 @@ export default function UserDashboard() {
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           {userPlan !== "enterprise" && (
-            <button onClick={() => navigate("/pricing")} className="dash-btn" style={sty.btn("linear-gradient(135deg, #6366f1, #14e3c5)")}>Upgrade Plan <HiOutlineChevronRight size={14} /></button>
+            <button onClick={() => navigate("/pricing")} className="dash-btn" style={sty.btn("linear-gradient(135deg, #6366f1, #14b8a6)")}>Upgrade Plan <HiOutlineChevronRight size={14} /></button>
           )}
           {userPlan !== "free" && (
             <button onClick={() => setShowCancelModal(true)} className="dash-btn" style={sty.btn("rgba(239,68,68,0.1)", T.red)}>Cancel Plan</button>
@@ -1717,7 +1717,7 @@ export default function UserDashboard() {
         <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Vrikaan Sans'" }}>Payment History</h3>
         {payments.length === 0 ? (
           <div style={{ textAlign: "center", padding: "24px 12px" }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, margin: "0 auto 10px", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(20,227,197,0.08)", border: `1px solid ${T.border}`, fontSize: 20 }}>💳</div>
+            <div style={{ width: 44, height: 44, borderRadius: 12, margin: "0 auto 10px", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(20, 184, 166,0.08)", border: `1px solid ${T.border}`, fontSize: 20 }}>💳</div>
             <p style={{ fontSize: 13, color: T.white, margin: "0 0 4px", fontWeight: 500 }}>No payments yet</p>
             <p style={{ fontSize: 11, color: T.muted, margin: "0 0 12px", lineHeight: 1.6 }}>You're on the free plan. Upgrade to unlock pro features.</p>
             <button onClick={() => navigate("/pricing")} className="dash-btn" style={{ ...sty.btn("rgba(99,102,241,0.12)", T.accent), margin: "0 auto" }}>View Plans <HiOutlineChevronRight size={12} /></button>
@@ -1916,7 +1916,7 @@ export default function UserDashboard() {
           boxShadow: isMobile && sidebarOpen ? "8px 0 32px rgba(0,0,0,0.5)" : "none",
         }}>
           <div style={{ padding: "0 8px", marginBottom: 20, display: "flex", alignItems: "center", gap: 10 }}>
-            <img src="/wolf-compact.png" alt="VRIKAAN" width={36} height={36} style={{ flexShrink: 0, filter: "drop-shadow(0 0 8px rgba(20,227,197,0.4))" }} />
+            <img src="/wolf-compact.png" alt="VRIKAAN" width={36} height={36} style={{ flexShrink: 0, filter: "drop-shadow(0 0 8px rgba(20, 184, 166,0.4))" }} />
             <div>
               <h1 style={{ fontSize: 18, fontWeight: 800, margin: 0, fontFamily: "'Vrikaan Sans'", letterSpacing: 1 }}>
                 <span style={{ color: T.cyan }}>VRI</span><span style={{ color: T.white }}>KAAN</span>
@@ -1927,7 +1927,7 @@ export default function UserDashboard() {
           {/* Home Button */}
           <button onClick={() => navigate("/")} style={{
             width: "calc(100% - 16px)", margin: "0 8px 12px", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px",
-            background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20,227,197,0.1))", border: `1px solid ${T.border}`,
+            background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20, 184, 166,0.1))", border: `1px solid ${T.border}`,
             borderRadius: 8, color: T.cyan, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Vrikaan Sans'", textAlign: "left",
           }}>
             <HiOutlineHome size={18} /> Home
@@ -2078,7 +2078,7 @@ export default function UserDashboard() {
         .dash-nav-item { transition:all 0.2s ease !important }
         .dash-nav-item:hover { background:rgba(99,102,241,0.1) !important; transform:translateX(4px) }
         .dash-tool-link { transition:all 0.2s ease !important }
-        .dash-tool-link:hover { background:rgba(20,227,197,0.08) !important; color:${T.cyan} !important; transform:translateX(4px) }
+        .dash-tool-link:hover { background:rgba(20, 184, 166,0.08) !important; color:${T.cyan} !important; transform:translateX(4px) }
         .dash-stat { transition:all 0.3s cubic-bezier(0.4,0,0.2,1) !important }
         .dash-stat:hover { transform:translateY(-4px) scale(1.02) !important }
         .dash-stat:hover .stat-value { text-shadow:0 0 20px currentColor }
@@ -2088,7 +2088,7 @@ export default function UserDashboard() {
         .dash-quick-action:hover { transform:translateY(-3px) !important; box-shadow:0 4px 16px rgba(99,102,241,0.2) !important }
         .dash-avatar { animation:glow 3s ease-in-out infinite }
         .dash-gradient-text { background:linear-gradient(135deg,${T.cyan},${T.accent}); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-size:200% 200%; animation:gradientShift 4s ease infinite }
-        .dash-device:hover { transform:translateX(4px) !important; border-color:rgba(20,227,197,0.2) !important }
+        .dash-device:hover { transform:translateX(4px) !important; border-color:rgba(20, 184, 166,0.2) !important }
         .dash-row { transition:all 0.2s ease }
         .dash-row:hover { background:rgba(99,102,241,0.05) !important }
         @media (max-width: 768px) {

@@ -6,10 +6,10 @@ import SEO from "../../components/SEO";
 import EmailRouting from "../../components/EmailRouting";
 
 const T = {
-  bg: "#030712", surface: "#111827", card: "rgba(17,24,39,0.7)",
-  accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", amber: "#f59e0b",
+  bg: "#060a14", surface: "#111827", card: "rgba(17,24,39,0.7)",
+  accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", amber: "#f59e0b",
   red: "#ef4444", white: "#f1f5f9", muted: "#94a3b8",
-  border: "rgba(148,163,184,0.12)", chip: "rgba(20,227,197,0.10)",
+  border: "rgba(148,163,184,0.12)", chip: "rgba(20, 184, 166,0.10)",
 };
 
 // ── Job openings — edit this array to publish / pull roles ─────────────
@@ -570,7 +570,7 @@ function Chip({ children, color, solid }) {
       fontSize: 11, fontWeight: 600, letterSpacing: 0.5,
       borderRadius: 999,
       background: solid ? color : color + "1a",
-      color: solid ? "#030712" : color,
+      color: solid ? "#060a14" : color,
       border: solid ? "0" : `1px solid ${color}33`,
     }}>{children}</span>
   );
@@ -605,7 +605,7 @@ function pillBtn(active) {
 function primaryBtn(color) {
   return {
     display: "inline-block", padding: "12px 22px",
-    background: color, color: "#030712", fontWeight: 700, fontSize: 14,
+    background: color, color: "#060a14", fontWeight: 700, fontSize: 14,
     borderRadius: 12, textDecoration: "none",
   };
 }

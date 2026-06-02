@@ -43,10 +43,10 @@ export default function ScrollProgress() {
         style={{
           height: "100%",
           width: `${pct * 100}%`,
-          background: "linear-gradient(90deg, #14E3C5 0%, #6366F1 50%, #14E3C5 100%)",
+          background: "linear-gradient(90deg, #14b8a6 0%, #6366F1 50%, #14b8a6 100%)",
           backgroundSize: "200% 100%",
           backgroundPosition: `${pct * 100}% 50%`,
-          boxShadow: pct > 0.02 ? "0 0 12px rgba(20,227,197,0.6), 0 0 24px rgba(99,102,241,0.4)" : "none",
+          boxShadow: pct > 0.02 ? "0 0 12px rgba(20, 184, 166,0.6), 0 0 24px rgba(99,102,241,0.4)" : "none",
           transition: "box-shadow 0.2s ease",
           willChange: "width",
           borderRadius: "0 3px 3px 0",

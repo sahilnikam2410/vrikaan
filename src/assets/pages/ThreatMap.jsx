@@ -5,7 +5,7 @@ import Footer from "../../components/Footer";
 import ThreatMapLive from "../../components/ThreatMapLive";
 import SEO from "../../components/SEO";
 
-const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", ember: "#f97316", red: "#ef4444", gold: "#eab308", purple: "#a78bfa", blue: "#38bdf8", green: "#22c55e", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
+const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", ember: "#f97316", red: "#ef4444", gold: "#eab308", purple: "#a78bfa", blue: "#38bdf8", green: "#22c55e", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
 const cities = [
   { n: "New York", x: 27, y: 36 }, { n: "London", x: 47, y: 27 }, { n: "Moscow", x: 60, y: 25 },
@@ -110,7 +110,7 @@ export default function ThreatMap() {
         </div>
 
         {/* Map */}
-        <div style={{ position: "relative", height: 500, borderRadius: 18, overflow: "hidden", border: `1px solid rgba(20,227,197,0.06)`, boxShadow: "0 8px 40px rgba(0,0,0,0.3)", marginBottom: 24 }}>
+        <div style={{ position: "relative", height: 500, borderRadius: 18, overflow: "hidden", border: `1px solid rgba(20, 184, 166,0.06)`, boxShadow: "0 8px 40px rgba(0,0,0,0.3)", marginBottom: 24 }}>
           <ThreatMapLive events={events} />
         </div>
 

@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
-const T = { bg: "#030712", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827", gold: "#eab308", orange: "#f97316", purple: "#a78bfa", blue: "#38bdf8", pink: "#ec4899" };
+const T = { bg: "#060a14", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827", gold: "#eab308", orange: "#f97316", purple: "#a78bfa", blue: "#38bdf8", pink: "#ec4899" };
 
 const severityColors = { Critical: T.red, High: T.orange, Medium: T.gold, Low: T.green };
 const severityBg = { Critical: "rgba(239,68,68,0.12)", High: "rgba(249,115,22,0.12)", Medium: "rgba(234,179,8,0.12)", Low: "rgba(34,197,94,0.12)" };

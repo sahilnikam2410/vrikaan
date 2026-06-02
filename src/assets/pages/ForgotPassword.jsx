@@ -6,18 +6,18 @@ import SEO from "../../components/SEO";
 
 const styles = {
   page: {
-    minHeight: "100vh", background: "#030712", display: "flex", alignItems: "center",
+    minHeight: "100vh", background: "#060a14", display: "flex", alignItems: "center",
     justifyContent: "center", position: "relative", overflow: "hidden",
     fontFamily: "'Vrikaan Sans', sans-serif", padding: "80px 16px 40px",
   },
   gridBg: {
     position: "absolute", inset: 0,
-    backgroundImage: "linear-gradient(rgba(20,227,197,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(20,227,197,0.04) 1px, transparent 1px)",
+    backgroundImage: "linear-gradient(rgba(20, 184, 166,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 184, 166,0.04) 1px, transparent 1px)",
     backgroundSize: "60px 60px", pointerEvents: "none",
   },
   glow1: {
     position: "absolute", width: 400, height: 400, borderRadius: "50%",
-    background: "radial-gradient(circle, rgba(20,227,197,0.08) 0%, transparent 70%)", top: "10%", left: "10%",
+    background: "radial-gradient(circle, rgba(20, 184, 166,0.08) 0%, transparent 70%)", top: "10%", left: "10%",
   },
   glow2: {
     position: "absolute", width: 300, height: 300, borderRadius: "50%",
@@ -26,17 +26,17 @@ const styles = {
   card: {
     position: "relative", width: "100%", maxWidth: 440, padding: "48px 40px",
     background: "rgba(15,23,42,0.8)", backdropFilter: "blur(20px)",
-    border: "1px solid rgba(20,227,197,0.15)", borderRadius: 16, zIndex: 2,
+    border: "1px solid rgba(20, 184, 166,0.15)", borderRadius: 16, zIndex: 2,
   },
   logo: { textAlign: "center", marginBottom: 8 },
   logoIcon: {
     width: 48, height: 48, margin: "0 auto 12px",
-    background: "linear-gradient(135deg, #14e3c5, #6366f1)", borderRadius: 12,
+    background: "linear-gradient(135deg, #14b8a6, #6366f1)", borderRadius: 12,
     display: "flex", alignItems: "center", justifyContent: "center",
     fontSize: 22, fontWeight: 700, color: "#fff",
   },
   title: {
-    fontSize: 28, fontWeight: 700, color: "#14e3c5", marginBottom: 4,
+    fontSize: 28, fontWeight: 700, color: "#14b8a6", marginBottom: 4,
     fontFamily: "'Vrikaan Sans', sans-serif",
   },
   subtitle: {
@@ -50,8 +50,8 @@ const styles = {
     boxSizing: "border-box", fontFamily: "'Vrikaan Sans', sans-serif",
   },
   btn: {
-    width: "100%", padding: "14px", background: "linear-gradient(135deg, #14e3c5, #0ea5e9)",
-    border: "none", borderRadius: 10, color: "#030712", fontSize: 15, fontWeight: 700,
+    width: "100%", padding: "14px", background: "linear-gradient(135deg, #14b8a6, #0ea5e9)",
+    border: "none", borderRadius: 10, color: "#060a14", fontSize: 15, fontWeight: 700,
     cursor: "pointer", fontFamily: "'Vrikaan Sans', sans-serif",
     letterSpacing: 0.5, transition: "opacity 0.2s, transform 0.2s",
   },
@@ -64,7 +64,7 @@ const styles = {
     borderRadius: 8, padding: "10px 14px", marginBottom: 20, color: "#22c55e", fontSize: 13,
   },
   footer: { textAlign: "center", marginTop: 28, fontSize: 14, color: "#94a3b8" },
-  link: { color: "#14e3c5", textDecoration: "none", fontWeight: 600 },
+  link: { color: "#14b8a6", textDecoration: "none", fontWeight: 600 },
   successContainer: { textAlign: "center", padding: "20px 0" },
   emailIcon: {
     width: 72, height: 72, margin: "0 auto 24px", borderRadius: "50%",
@@ -79,14 +79,14 @@ const styles = {
     fontSize: 14, color: "#94a3b8", lineHeight: 1.6, marginBottom: 8,
   },
   successEmail: {
-    fontSize: 14, color: "#14e3c5", fontWeight: 600,
+    fontSize: 14, color: "#14b8a6", fontWeight: 600,
     fontFamily: "'Vrikaan Mono', monospace", marginBottom: 24,
   },
   resendText: {
     fontSize: 13, color: "#64748b", marginTop: 16,
   },
   resendBtn: {
-    background: "none", border: "none", color: "#14e3c5", fontSize: 13,
+    background: "none", border: "none", color: "#14b8a6", fontSize: 13,
     fontWeight: 600, cursor: "pointer", textDecoration: "underline",
     fontFamily: "'Vrikaan Sans', sans-serif",
   },
@@ -228,7 +228,7 @@ export default function ForgotPassword() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                onFocus={(e) => (e.target.style.borderColor = "#14e3c5")}
+                onFocus={(e) => (e.target.style.borderColor = "#14b8a6")}
                 onBlur={(e) => (e.target.style.borderColor = "rgba(148,163,184,0.2)")}
                 autoComplete="email"
                 autoFocus

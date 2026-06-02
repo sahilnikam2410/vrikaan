@@ -7,10 +7,10 @@ import { useAuth } from "../../context/AuthContext";
 import { getVariant, trackConversion } from "../../services/abTestService";
 
 const T = {
-  bg: "#030712", card: "rgba(15,23,42,0.5)", white: "#f1f5f9",
-  muted: "#94a3b8", mutedDark: "#64748b", cyan: "#14e3c5",
+  bg: "#060a14", card: "rgba(15,23,42,0.5)", white: "#f1f5f9",
+  muted: "#94a3b8", mutedDark: "#64748b", cyan: "#14b8a6",
   accent: "#6366f1", border: "rgba(148,163,184,0.08)",
-  cyanDim: "rgba(20,227,197,0.06)", accentDim: "rgba(99,102,241,0.06)",
+  cyanDim: "rgba(20, 184, 166,0.06)", accentDim: "rgba(99,102,241,0.06)",
   green: "#22c55e",
 };
 
@@ -266,7 +266,7 @@ export default function Pricing() {
             letterSpacing: "-0.03em", margin: "0 0 20px",
           }}>
             Choose Your{" "}
-            <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+            <span style={{ background: "linear-gradient(135deg, #6366f1, #14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
               Shield
             </span>
           </h1>
@@ -305,7 +305,7 @@ export default function Pricing() {
             {annual && (
               <span style={{
                 padding: "3px 10px", borderRadius: 100,
-                background: "linear-gradient(135deg, rgba(20,227,197,0.15), rgba(99,102,241,0.1))",
+                background: "linear-gradient(135deg, rgba(20, 184, 166,0.15), rgba(99,102,241,0.1))",
                 border: `1px solid ${T.cyan}30`,
                 fontSize: 11, fontWeight: 700, color: T.cyan, letterSpacing: 0.3,
               }}>
@@ -322,7 +322,7 @@ export default function Pricing() {
             gap: 12,
             padding: "10px 18px",
             borderRadius: 100,
-            background: student ? "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(20,227,197,0.08))" : T.card,
+            background: student ? "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(20, 184, 166,0.08))" : T.card,
             border: `1px solid ${student ? T.accent + "40" : T.border}`,
             transition: "all 0.3s",
           }}>
@@ -359,7 +359,7 @@ export default function Pricing() {
           <div style={{
             maxWidth: 760, margin: "0 auto 28px",
             padding: "20px 24px",
-            background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(20,227,197,0.08))",
+            background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(20, 184, 166,0.08))",
             border: `1px solid ${T.accent}40`,
             borderRadius: 16,
             display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap",
@@ -411,7 +411,7 @@ export default function Pricing() {
                 style={{
                   position: "relative",
                   background: plan.highlight
-                    ? "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(20,227,197,0.05))"
+                    ? "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(20, 184, 166,0.05))"
                     : T.card,
                   border: plan.highlight
                     ? `1px solid rgba(99,102,241,0.3)`
@@ -570,7 +570,7 @@ export default function Pricing() {
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <span style={{
               display: "inline-block", padding: "5px 14px", borderRadius: 100,
-              background: T.cyanDim, border: `1px solid rgba(20,227,197,0.12)`,
+              background: T.cyanDim, border: `1px solid rgba(20, 184, 166,0.12)`,
               fontSize: 11, fontWeight: 600, color: T.cyan, marginBottom: 16, letterSpacing: 0.5,
             }}>
               FAQ
@@ -638,7 +638,7 @@ export default function Pricing() {
         {/* CTA Banner */}
         <div style={{
           textAlign: "center", padding: "56px 32px",
-          background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20,227,197,0.03))",
+          background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20, 184, 166,0.03))",
           border: `1px solid rgba(99,102,241,0.1)`,
           borderRadius: 20,
         }}>

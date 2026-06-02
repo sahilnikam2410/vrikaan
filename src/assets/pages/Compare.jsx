@@ -4,10 +4,10 @@ import Footer from "../../components/Footer";
 import SEO, { faqSchema } from "../../components/SEO";
 
 const T = {
-  bg: "#030712", surface: "#111827", card: "rgba(17,24,39,0.7)",
+  bg: "#060a14", surface: "#111827", card: "rgba(17,24,39,0.7)",
   white: "#f1f5f9", muted: "#94a3b8", green: "#22c55e",
   red: "#ef4444", border: "rgba(148,163,184,0.1)",
-  cyan: "#14e3c5", accent: "#6366f1", gold: "#eab308",
+  cyan: "#14b8a6", accent: "#6366f1", gold: "#eab308",
 };
 
 // SEO-grade competitor comparison data. Numbers are public, marketed
@@ -177,7 +177,7 @@ export default function Compare() {
           }}>
             <div style={{
               padding: 24, borderRadius: 16,
-              background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(20,227,197,0.06))",
+              background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(20, 184, 166,0.06))",
               border: `1px solid ${T.accent}40`,
             }}>
               <div style={{ fontSize: 12, color: T.cyan, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}>VRIKAAN</div>
@@ -242,8 +242,8 @@ export default function Compare() {
             {VRIKAAN_FEATURES.map((feat) => (
               <div key={feat} style={{
                 padding: "12px 14px", borderRadius: 10,
-                background: "rgba(20,227,197,0.05)",
-                border: `1px solid rgba(20,227,197,0.18)`,
+                background: "rgba(20, 184, 166,0.05)",
+                border: `1px solid rgba(20, 184, 166,0.18)`,
                 display: "flex", alignItems: "center", gap: 10,
               }}>
                 <span style={{ color: T.cyan, fontWeight: 700 }}>✓</span>
@@ -272,7 +272,7 @@ export default function Compare() {
         <section style={{ maxWidth: 760, margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
           <div style={{
             padding: 32, borderRadius: 16,
-            background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(20,227,197,0.06))",
+            background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(20, 184, 166,0.06))",
             border: `1px solid ${T.accent}30`,
           }}>
             <h3 style={{ fontSize: 22, fontWeight: 800, color: T.white, margin: "0 0 8px", fontFamily: "'Vrikaan Sans', sans-serif" }}>

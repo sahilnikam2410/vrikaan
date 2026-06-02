@@ -14,9 +14,9 @@ import SEO from "../../components/SEO";
  */
 
 const T = {
-  bg: "#030712", card: "rgba(17,24,39,0.6)", white: "#f1f5f9",
+  bg: "#060a14", card: "rgba(17,24,39,0.6)", white: "#f1f5f9",
   muted: "#94a3b8", mutedDark: "#64748b",
-  accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", yellow: "#fbbf24",
+  accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", yellow: "#fbbf24",
   border: "rgba(148,163,184,0.10)",
 };
 
@@ -95,7 +95,7 @@ const ENDPOINTS = [
   },
 ];
 
-const TIER_COLOR = { free: "#14e3c5", pro: "#6366f1", enterprise: "#fbbf24" };
+const TIER_COLOR = { free: "#14b8a6", pro: "#6366f1", enterprise: "#fbbf24" };
 
 function CopyBtn({ text }) {
   const [copied, setCopied] = useState(false);

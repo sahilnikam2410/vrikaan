@@ -4,7 +4,7 @@
   "description": "AI-powered cyber defense platform protecting real people from fraud, phishing, and identity theft.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#030712",
+  "background_color": "#060a14",
   "theme_color": "#6366f1",
   "orientation": "portrait-primary",
   "scope": "/",

@@ -6,7 +6,7 @@ import SEO from "../../components/SEO";
 import { saveToolResult } from "../../services/toolHistoryService";
 import renderMarkdown from "../../utils/renderMarkdown";
 
-const T = { bg: "#030712", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
+const T = { bg: "#060a14", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
 const SAMPLE_HEADERS = `Delivered-To: victim@gmail.com
 Received: by 2002:a05:7300:478a:b0:d2:3f1e:8a12 with SMTP id r10csp891234mpc;
@@ -278,7 +278,7 @@ export default function EmailAnalyzer() {
         {/* Hero */}
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>Email Forensics</span>
-          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Email Header <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Analyzer</span></h1>
+          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Email Header <span style={{ background: "linear-gradient(135deg, #6366f1, #14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Analyzer</span></h1>
           <p style={{ color: T.muted, fontSize: 16, maxWidth: 540, margin: "0 auto", lineHeight: 1.7 }}>Paste raw email headers to trace the delivery route, verify authentication records, and detect spoofing attempts.</p>
         </div>
 
@@ -315,10 +315,10 @@ export default function EmailAnalyzer() {
                   <div style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, fontWeight: 700, color: result.assessment.color, marginBottom: 4 }}>{result.assessment.label}</div>
                   <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.6, margin: 0 }}>{result.assessment.desc}</p>
                 </div>
-                <button onClick={explainWithAI} disabled={aiLoading} style={{ padding: "8px 14px", background: "rgba(20,227,197,0.1)", border: "1px solid rgba(20,227,197,0.25)", borderRadius: 8, color: T.cyan, fontSize: 12, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", fontFamily: "'Vrikaan Sans'", flexShrink: 0, opacity: aiLoading ? 0.6 : 1 }}>{aiLoading ? "…" : "🤖 AI"}</button>
+                <button onClick={explainWithAI} disabled={aiLoading} style={{ padding: "8px 14px", background: "rgba(20, 184, 166,0.1)", border: "1px solid rgba(20, 184, 166,0.25)", borderRadius: 8, color: T.cyan, fontSize: 12, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", fontFamily: "'Vrikaan Sans'", flexShrink: 0, opacity: aiLoading ? 0.6 : 1 }}>{aiLoading ? "…" : "🤖 AI"}</button>
               </div>
               {(aiExplanation || aiError) && (
-                <div style={{ marginTop: 16, padding: "14px 16px", background: "rgba(20,227,197,0.05)", border: "1px solid rgba(20,227,197,0.15)", borderRadius: 10 }}>
+                <div style={{ marginTop: 16, padding: "14px 16px", background: "rgba(20, 184, 166,0.05)", border: "1px solid rgba(20, 184, 166,0.15)", borderRadius: 10 }}>
                   <div style={{ fontSize: 11, fontWeight: 700, color: T.cyan, fontFamily: "'Vrikaan Mono', monospace", letterSpacing: 0.5, marginBottom: 8 }}>🤖 AI ANALYSIS</div>
                   {aiError ? <div style={{ fontSize: 13, color: T.red }}>{aiError}</div>
                     : <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.7 }}>{renderMarkdown(aiExplanation)}</div>}

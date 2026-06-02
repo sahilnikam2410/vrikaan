@@ -5,7 +5,7 @@ import SEO from "../../components/SEO";
 import { saveToolResult } from "../../services/toolHistoryService";
 import { exportReport } from "../../utils/exportPDF";
 
-const T = { bg: "#030712", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", gold: "#eab308", blue: "#38bdf8", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
+const T = { bg: "#060a14", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", gold: "#eab308", blue: "#38bdf8", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
 const fonts = { heading: "'Vrikaan Sans', sans-serif", body: "'Vrikaan Sans', sans-serif", mono: "'Vrikaan Mono', monospace" };
 
@@ -131,12 +131,12 @@ function MiniMap({ lat, lon }) {
     // Pulse ring
     ctx.beginPath();
     ctx.arc(px, py, 12, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(20,227,197,0.15)";
+    ctx.fillStyle = "rgba(20, 184, 166,0.15)";
     ctx.fill();
 
     ctx.beginPath();
     ctx.arc(px, py, 8, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(20,227,197,0.25)";
+    ctx.fillStyle = "rgba(20, 184, 166,0.25)";
     ctx.fill();
 
     // Center dot
@@ -146,7 +146,7 @@ function MiniMap({ lat, lon }) {
     ctx.fill();
 
     // Crosshair
-    ctx.strokeStyle = "rgba(20,227,197,0.4)";
+    ctx.strokeStyle = "rgba(20, 184, 166,0.4)";
     ctx.lineWidth = 0.5;
     ctx.setLineDash([3, 3]);
     ctx.beginPath(); ctx.moveTo(px, 0); ctx.lineTo(px, h); ctx.stroke();

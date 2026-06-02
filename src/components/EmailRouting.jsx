@@ -21,7 +21,7 @@
 const T = {
   white: "#f1f5f9", muted: "#94a3b8",
   border: "rgba(148,163,184,0.12)", card: "rgba(17,24,39,0.7)",
-  cyan: "#14e3c5", accent: "#6366f1", green: "#22c55e",
+  cyan: "#14b8a6", accent: "#6366f1", green: "#22c55e",
 };
 
 export const INBOXES = [

@@ -5,8 +5,8 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
 const T = {
-  bg: "#030712", card: "rgba(17,24,39,0.7)",
-  accent: "#6366f1", cyan: "#14e3c5",
+  bg: "#060a14", card: "rgba(17,24,39,0.7)",
+  accent: "#6366f1", cyan: "#14b8a6",
   green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", orange: "#f97316",
   white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b",
   border: "rgba(148,163,184,0.12)",
@@ -162,7 +162,7 @@ export default function Desktop() {
         <header style={{ textAlign: "center", marginBottom: 36 }}>
           <span style={{
             display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: "rgba(20,227,197,0.10)", border: `1px solid ${T.cyan}40`,
+            background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}40`,
             fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
             color: T.cyan, marginBottom: 14,
           }}>{isPreRelease ? "🚧 Coming Q2 2026 · Join waitlist" : "✓ Live · Free · India-built"}</span>
@@ -428,7 +428,7 @@ export default function Desktop() {
           </div>
           <div style={{
             marginTop: 18, padding: 12, borderRadius: 10,
-            background: "rgba(20,227,197,0.06)", border: `1px solid ${T.cyan}33`,
+            background: "rgba(20, 184, 166,0.06)", border: `1px solid ${T.cyan}33`,
             color: T.muted, fontSize: 12, lineHeight: 1.6,
           }}>
             🔓 <strong style={{ color: T.white }}>Source code:</strong> <a href="https://github.com/sahilnikam2410/vrikaan" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan }}>github.com/sahilnikam2410/vrikaan</a> · Electron wrapper at <code>/desktop</code>. Build it yourself if you don't trust prebuilt binaries.

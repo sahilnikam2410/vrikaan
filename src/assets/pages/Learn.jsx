@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 
-const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", ember: "#f97316", red: "#ef4444", gold: "#eab308", purple: "#a78bfa", blue: "#38bdf8", green: "#22c55e", pink: "#ec4899", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
+const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", ember: "#f97316", red: "#ef4444", gold: "#eab308", purple: "#a78bfa", blue: "#38bdf8", green: "#22c55e", pink: "#ec4899", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
 const sty = {
   card: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24, backdropFilter: "blur(10px)" },
@@ -591,7 +591,7 @@ async function generateCertificate(courseName, userName) {
   // ── Top accent bar (brand gradient) ──
   const topBar = ctx.createLinearGradient(0, 0, W, 0);
   topBar.addColorStop(0, "#6366f1");
-  topBar.addColorStop(0.5, "#14e3c5");
+  topBar.addColorStop(0.5, "#14b8a6");
   topBar.addColorStop(1, "#6366f1");
   ctx.fillStyle = topBar;
   ctx.fillRect(0, 0, W, 8);
@@ -630,7 +630,7 @@ async function generateCertificate(courseName, userName) {
     ctx.closePath();
     const shGrad = ctx.createLinearGradient(-24, -22, 24, 30);
     shGrad.addColorStop(0, "#6366f1");
-    shGrad.addColorStop(1, "#14e3c5");
+    shGrad.addColorStop(1, "#14b8a6");
     ctx.fillStyle = shGrad;
     ctx.fill();
     ctx.font = "bold 20px 'Arial', sans-serif";
@@ -672,7 +672,7 @@ async function generateCertificate(courseName, userName) {
   ctx.fillText("CERTIFICATE OF COMPLETION", 120, 220);
 
   // ── Small accent line under label ──
-  ctx.fillStyle = "#14e3c5";
+  ctx.fillStyle = "#14b8a6";
   ctx.fillRect(120, 232, 60, 3);
 
   // ── Learner Name (largest element) ──
@@ -790,7 +790,7 @@ async function generateCertificate(courseName, userName) {
     ctx.arc(bx + 30, by + 30, 28, 0, Math.PI * 2);
     const badgeGrad = ctx.createLinearGradient(bx, by, bx + 60, by + 60);
     badgeGrad.addColorStop(0, "#6366f1");
-    badgeGrad.addColorStop(1, "#14e3c5");
+    badgeGrad.addColorStop(1, "#14b8a6");
     ctx.fillStyle = badgeGrad;
     ctx.fill();
     ctx.strokeStyle = "#fff"; ctx.lineWidth = 4; ctx.lineCap = "round"; ctx.lineJoin = "round";
@@ -824,7 +824,7 @@ async function generateCertificate(courseName, userName) {
   // ── Bottom accent bar ──
   const btmBar = ctx.createLinearGradient(0, 0, W, 0);
   btmBar.addColorStop(0, "#6366f1");
-  btmBar.addColorStop(0.5, "#14e3c5");
+  btmBar.addColorStop(0.5, "#14b8a6");
   btmBar.addColorStop(1, "#6366f1");
   ctx.fillStyle = btmBar;
   ctx.fillRect(0, H - 8, W, 8);
@@ -840,7 +840,7 @@ function VideoPlayer({ title, lessonDesc, duration }) {
   if (playing) {
     return (
       <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "linear-gradient(135deg, #0a0f1e, #111827)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24, boxSizing: "border-box" }}>
-        <div style={{ width: 56, height: 56, borderRadius: 14, background: "linear-gradient(135deg, #22c55e, #14e3c5)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, animation: "pulse 2s infinite" }}>
+        <div style={{ width: 56, height: 56, borderRadius: 14, background: "linear-gradient(135deg, #22c55e, #14b8a6)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, animation: "pulse 2s infinite" }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </div>
         <div style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Vrikaan Sans'", marginBottom: 6, textAlign: "center" }}>Opening YouTube...</div>
@@ -854,11 +854,11 @@ function VideoPlayer({ title, lessonDesc, duration }) {
     <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "linear-gradient(135deg, #0a0f1e 0%, #111827 50%, #0a0f1e 100%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24, boxSizing: "border-box", cursor: "pointer" }}
       onClick={() => { setPlaying(true); window.open(searchUrl, "_blank"); }}>
       {/* Decorative grid background */}
-      <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(20,227,197,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(20,227,197,0.03) 1px, transparent 1px)", backgroundSize: "40px 40px", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(20, 184, 166,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 184, 166,0.03) 1px, transparent 1px)", backgroundSize: "40px 40px", pointerEvents: "none" }} />
       {/* Shield icon */}
-      <div style={{ position: "relative", width: 72, height: 72, borderRadius: 18, background: "linear-gradient(135deg, rgba(99,102,241,0.2), rgba(20,227,197,0.2))", border: "1px solid rgba(99,102,241,0.2)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#14e3c5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <polygon points="5 3 19 12 5 21 5 3" fill="rgba(20,227,197,0.3)"/>
+      <div style={{ position: "relative", width: 72, height: 72, borderRadius: 18, background: "linear-gradient(135deg, rgba(99,102,241,0.2), rgba(20, 184, 166,0.2))", border: "1px solid rgba(99,102,241,0.2)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16 }}>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="5 3 19 12 5 21 5 3" fill="rgba(20, 184, 166,0.3)"/>
         </svg>
       </div>
       <div style={{ position: "relative", fontSize: 17, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Vrikaan Sans'", marginBottom: 6, textAlign: "center" }}>{title}</div>
@@ -979,7 +979,7 @@ export default function Learn() {
       <div style={{ textAlign: "center", marginBottom: 48 }}>
         <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>VRIKAAN ACADEMY</span>
         <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>
-          Learn Cybersecurity. <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Get Certified.</span>
+          Learn Cybersecurity. <span style={{ background: "linear-gradient(135deg, #6366f1, #14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Get Certified.</span>
         </h1>
         <p style={{ color: T.muted, fontSize: 16, maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
           India-first scam-defense courses + technical security tracks. Learn the threat, practice on real VRIKAAN tools, earn a certificate.
@@ -988,7 +988,7 @@ export default function Learn() {
 
       {/* ── Learner Dashboard (XP · level · streak · continue · badges) ── */}
       <div style={{
-        background: "linear-gradient(135deg, rgba(99,102,241,0.10), rgba(20,227,197,0.05))",
+        background: "linear-gradient(135deg, rgba(99,102,241,0.10), rgba(20, 184, 166,0.05))",
         border: `1px solid ${T.accent}22`, borderRadius: 20, padding: "26px 28px", marginBottom: 36,
       }}>
         {/* Top row: level + XP bar + streak */}
@@ -1058,7 +1058,7 @@ export default function Learn() {
           {badges.map(b => (
             <div key={b.id} title={`${b.name} — ${b.desc}`} style={{
               display: "flex", alignItems: "center", gap: 7, padding: "7px 12px", borderRadius: 999,
-              background: b.earned ? "rgba(20,227,197,0.10)" : "rgba(148,163,184,0.04)",
+              background: b.earned ? "rgba(20, 184, 166,0.10)" : "rgba(148,163,184,0.04)",
               border: `1px solid ${b.earned ? T.cyan + "44" : T.border}`,
               opacity: b.earned ? 1 : 0.45, filter: b.earned ? "none" : "grayscale(1)",
             }}>
@@ -1451,7 +1451,7 @@ export default function Learn() {
             {certs.map((cert, i) => {
               const course = courses.find(c => c.id === cert.courseId);
               return (
-                <div key={i} style={{ ...sty.card, background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20,227,197,0.04))", border: "1px solid rgba(99,102,241,0.15)" }}>
+                <div key={i} style={{ ...sty.card, background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20, 184, 166,0.04))", border: "1px solid rgba(99,102,241,0.15)" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
                     <span style={{ fontSize: 28 }}>{course?.icon || "🎓"}</span>
                     <div>

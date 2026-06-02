@@ -13,9 +13,9 @@ import SEO from "../../components/SEO";
  */
 
 const T = {
-  bg: "#030712", card: "rgba(17,24,39,0.6)", white: "#f1f5f9",
+  bg: "#060a14", card: "rgba(17,24,39,0.6)", white: "#f1f5f9",
   muted: "#94a3b8", mutedDark: "#64748b",
-  accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e",
+  accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e",
   red: "#ef4444", orange: "#f97316", yellow: "#fbbf24",
   border: "rgba(148,163,184,0.10)",
 };
