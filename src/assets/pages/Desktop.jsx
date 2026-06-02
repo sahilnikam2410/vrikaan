@@ -4,6 +4,7 @@ import {
   LuMonitor, LuLaptop, LuShield, LuScanLine, LuDownload, LuHardDrive,
   LuUsb, LuLayoutGrid, LuRefreshCw, LuLock, LuGlobe, LuRadio, LuWrench,
   LuMail, LuTriangleAlert, LuCircleCheck, LuEye, LuKey, LuStar,
+  LuGem, LuScrollText,
 } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -454,12 +455,12 @@ export default function Desktop() {
             <div style={{ color: T.muted, fontSize: 12, marginTop: 4 }}>No download needed · 10 files / day free</div>
           </Link>
           <Link to="/scam-recovery" style={ctaCard(T.red)}>
-            <div style={{ fontSize: 22, marginBottom: 6 }}>🚨</div>
+            <div style={{ marginBottom: 6 }}><LuTriangleAlert size={22} color={T.red} /></div>
             <div style={{ color: T.white, fontWeight: 700, fontSize: 14 }}>Already scammed?</div>
             <div style={{ color: T.muted, fontSize: 12, marginTop: 4 }}>30-sec triage · helplines · pre-filled FIR</div>
           </Link>
           <Link to="/pricing" style={ctaCard(T.accent)}>
-            <div style={{ fontSize: 22, marginBottom: 6 }}>💎</div>
+            <div style={{ marginBottom: 6 }}><LuGem size={22} color={T.accent} /></div>
             <div style={{ color: T.white, fontWeight: 700, fontSize: 14 }}>Unlock Pro (₹990/yr)</div>
             <div style={{ color: T.muted, fontSize: 12, marginTop: 4 }}>500 file scans / day · all AI tools unlimited</div>
           </Link>
@@ -471,7 +472,7 @@ export default function Desktop() {
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
           🇮🇳 Built in Nashik · Free forever · Use alongside Windows Defender / your existing antivirus, not as replacement.<br />
-          📜 <a href="https://github.com/sahilnikam2410/vrikaan/blob/master/desktop/CODE-SIGNING.md" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan }}>Code-signing roadmap</a> · <a href="https://vrikaan.com/.well-known/security.txt" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan }}>Responsible disclosure</a>
+          <LuScrollText size={13} color={T.cyan} style={{ verticalAlign: "-2px" }} /> <a href="https://github.com/sahilnikam2410/vrikaan/blob/master/desktop/CODE-SIGNING.md" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan }}>Code-signing roadmap</a> · <a href="https://vrikaan.com/.well-known/security.txt" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan }}>Responsible disclosure</a>
         </p>
       </main>
 
