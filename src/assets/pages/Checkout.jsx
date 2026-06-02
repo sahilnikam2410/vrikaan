@@ -358,6 +358,7 @@ export default function Checkout() {
         body: JSON.stringify({
           planKey,
           billing,
+          uid: user?.uid || "",
           email: user?.email || "",
           name: user?.displayName || user?.name || "",
         }),

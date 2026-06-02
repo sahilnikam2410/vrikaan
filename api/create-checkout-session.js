@@ -34,7 +34,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { planKey, billing, email, phone, name, returnPath } = req.body;
+    const { planKey, billing, uid, email, phone, name, returnPath } = req.body;
 
     const priceKey = `${planKey}_${billing}`;
     const priceConfig = PRICES[priceKey];
@@ -70,6 +70,9 @@ export default async function handler(req, res) {
       order_tags: {
         plan: planKey,
         billing: billing,
+        // uid lets verify-payment / webhook grant the plan SERVER-SIDE
+        // (authoritative) instead of trusting the client.
+        ...(uid ? { uid: String(uid) } : {}),
       },
     };
 

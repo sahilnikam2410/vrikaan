@@ -1,4 +1,5 @@
 import { checkRateLimit } from "./_rateLimit.js";
+import { getAdminFirestore } from "./_firebaseAdmin.js";
 
 const CASHFREE_API_BASE = process.env.CASHFREE_ENV === "production"
   ? "https://api.cashfree.com/pg/orders"
@@ -61,6 +62,29 @@ export default async function handler(req, res) {
     const durationDays = billing === "annual" ? 365 : 30;
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + durationDays);
+
+    // SERVER-AUTHORITATIVE grant: write the plan to Firestore via Admin SDK
+    // (bypasses security rules). This is the source of truth — the client can
+    // no longer mint its own plan. uid travels in the Cashfree order_tags.
+    const uid = cfData.order_tags?.uid;
+    if (uid) {
+      const db = getAdminFirestore();
+      if (db) {
+        try {
+          await db.collection("users").doc(String(uid)).set({
+            plan: normalizedPlan,
+            planBilling: billing,
+            planActivatedAt: new Date().toISOString(),
+            planExpiresAt: expiresAt.toISOString(),
+            lastOrderId: cfData.order_id,
+          }, { merge: true });
+        } catch (e) {
+          console.error("verify-payment: failed to write plan for", uid, e.message);
+        }
+      } else {
+        console.warn("verify-payment: admin SDK unavailable — plan not written server-side");
+      }
+    }
 
     return res.status(200).json({
       verified: true,
