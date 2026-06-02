@@ -3,6 +3,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { useAuth } from "../../context/AuthContext";
+import { LuUpload, LuDownload, LuTriangleAlert, LuCheck, LuX } from "react-icons/lu";
 
 const T = {
   bg: "#060a14", surface: "#111827", card: "rgba(17,24,39,0.7)",
@@ -201,9 +202,9 @@ export default function BulkScanner() {
                   padding: "10px 16px", borderRadius: 8,
                   background: "rgba(99,102,241,0.1)", border: `1px solid ${T.border}`,
                   color: T.cyan, fontSize: 13, fontWeight: 600, cursor: "pointer",
-                  fontFamily: "inherit",
+                  fontFamily: "inherit", display: "inline-flex", alignItems: "center", gap: 6,
                 }}
-              >📁 Upload CSV</button>
+              ><LuUpload size={14} /> Upload CSV</button>
               <span style={{ fontSize: 12, color: T.muted, flex: 1 }}>
                 {urls.length > 0 && `${urls.length} URL${urls.length !== 1 ? "s" : ""} ready`}
               </span>
@@ -260,9 +261,9 @@ export default function BulkScanner() {
                       padding: "6px 14px", borderRadius: 6,
                       background: "rgba(34,197,94,0.1)", border: `1px solid ${T.green}40`,
                       color: T.green, fontSize: 12, fontWeight: 600, cursor: "pointer",
-                      fontFamily: "inherit",
+                      fontFamily: "inherit", display: "inline-flex", alignItems: "center", gap: 6,
                     }}
-                  >📥 Export CSV</button>
+                  ><LuDownload size={13} /> Export CSV</button>
                 )}
               </div>
               {urls.map((u) => {
@@ -286,8 +287,8 @@ export default function BulkScanner() {
                         overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                       }}>{u}</span>
                     </div>
-                    <span style={{ fontSize: 11, color: T.muted, flexShrink: 0 }}>
-                      {!r ? (scanning ? "queued" : "—") : r.ok ? (r.data.threats?.length ? `⚠ ${r.data.threats.length} threats` : "✓ clean") : "✗ failed"}
+                    <span style={{ fontSize: 11, color: T.muted, flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 5 }}>
+                      {!r ? (scanning ? "queued" : "—") : r.ok ? (r.data.threats?.length ? <><LuTriangleAlert size={12} color={T.orange} /> {r.data.threats.length} threats</> : <><LuCheck size={12} color={T.green} /> clean</>) : <><LuX size={12} color={T.red} /> failed</>}
                     </span>
                   </div>
                 );

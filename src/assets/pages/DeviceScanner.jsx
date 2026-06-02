@@ -5,6 +5,10 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import QuotaBanner from "../../components/QuotaBanner";
 import { useToolQuota } from "../../hooks/useToolQuota";
+import {
+  LuCircleCheck, LuTriangleAlert, LuCircleAlert, LuCircleHelp, LuX, LuSearch,
+  LuUpload, LuFile, LuMonitor, LuSmartphone, LuLock,
+} from "react-icons/lu";
 
 const T = {
   bg: "#060a14", card: "rgba(17,24,39,0.7)",
@@ -15,12 +19,12 @@ const T = {
 };
 
 const STATUS_META = {
-  clean:       { color: T.green,  emoji: "✅", label: "Clean" },
-  suspicious:  { color: T.yellow, emoji: "⚠️", label: "Suspicious" },
-  malicious:   { color: T.red,    emoji: "🚨", label: "Malicious" },
-  unknown:     { color: T.muted,  emoji: "❓", label: "Unknown" },
-  error:       { color: T.orange, emoji: "❌", label: "Error" },
-  scanning:    { color: T.cyan,   emoji: "🔍", label: "Scanning…" },
+  clean:       { color: T.green,  icon: <LuCircleCheck size={13} />,    label: "Clean" },
+  suspicious:  { color: T.yellow, icon: <LuTriangleAlert size={13} />,  label: "Suspicious" },
+  malicious:   { color: T.red,    icon: <LuCircleAlert size={13} />,    label: "Malicious" },
+  unknown:     { color: T.muted,  icon: <LuCircleHelp size={13} />,     label: "Unknown" },
+  error:       { color: T.orange, icon: <LuX size={13} />,              label: "Error" },
+  scanning:    { color: T.cyan,   icon: <LuSearch size={13} />,         label: "Scanning…" },
 };
 
 const MAX_FILE_MB = 50;
@@ -277,7 +281,7 @@ export default function DeviceScanner() {
             transition: "all 0.2s", marginBottom: 18,
           }}
         >
-          <div style={{ fontSize: 48, marginBottom: 14 }}>📁</div>
+          <div style={{ marginBottom: 14 }}><LuUpload size={48} color={T.cyan} /></div>
           <div style={{ color: T.white, fontSize: 17, fontWeight: 700, marginBottom: 6 }}>
             Drag files or folders here
           </div>
@@ -292,12 +296,12 @@ export default function DeviceScanner() {
                 background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`,
                 color: "#fff",
               }}>
-                🖥 Scan whole disk · NATIVE
+                <LuMonitor size={15} style={{ verticalAlign: "-2px" }} /> Scan whole disk · NATIVE
               </button>
             )}
             <input ref={fileRef} type="file" multiple onChange={(e) => addFiles(e.target.files)} style={{ display: "none" }} />
             <button onClick={() => fileRef.current?.click()} style={btnPrimary()}>
-              📄 Select files
+              <LuFile size={15} style={{ verticalAlign: "-2px" }} /> Select files
             </button>
             <input
               ref={folderRef}
@@ -309,11 +313,11 @@ export default function DeviceScanner() {
               style={{ display: "none" }}
             />
             <button onClick={() => folderRef.current?.click()} style={btnSecondary()}>
-              📂 Select folder
+              <LuUpload size={15} style={{ verticalAlign: "-2px" }} /> Select folder
             </button>
           </div>
           <p style={{ color: T.mutedDark, fontSize: 11, marginTop: 18, lineHeight: 1.6 }}>
-            🔒 Files never leave your browser. We only send the SHA-256 hash (a short fingerprint) to our servers.
+            <LuLock size={13} style={{ verticalAlign: "-2px" }} /> Files never leave your browser. We only send the SHA-256 hash (a short fingerprint) to our servers.
           </p>
         </div>
 
@@ -328,7 +332,7 @@ export default function DeviceScanner() {
                 fontSize: 10, fontWeight: 800, letterSpacing: 1.5, textTransform: "uppercase",
                 padding: "3px 10px", borderRadius: 999,
                 background: `${T.cyan}22`, color: T.cyan, border: `1px solid ${T.cyan}55`,
-              }}>🖥 NATIVE SCAN</span>
+              }}><LuMonitor size={13} style={{ verticalAlign: "-2px" }} /> NATIVE SCAN</span>
               <span style={{ color: T.white, fontWeight: 600, fontSize: 13, fontFamily: "ui-monospace, Menlo, monospace" }}>{nativeScan.folder}</span>
             </div>
             {nativeScan.phase !== "done" && nativeScan.phase !== "error" && (
@@ -358,7 +362,7 @@ export default function DeviceScanner() {
               </div>
             )}
             {nativeScan.phase === "error" && (
-              <div style={{ color: T.red, fontSize: 13 }}>❌ {nativeScan.error}</div>
+              <div style={{ color: T.red, fontSize: 13 }}><LuX size={13} style={{ verticalAlign: "-2px" }} /> {nativeScan.error}</div>
             )}
           </div>
         )}
@@ -392,9 +396,9 @@ export default function DeviceScanner() {
 
             <div style={{ display: "flex", gap: 8 }}>
               <button onClick={scanAll} disabled={scanning || !quota.allowed} style={btnPrimary(scanning ? 0.5 : 1)}>
-                {scanning ? "🔍 Scanning…" : `🔍 Scan ${summary.total} files`}
+                <LuSearch size={14} style={{ verticalAlign: "-2px" }} /> {scanning ? "Scanning…" : `Scan ${summary.total} files`}
               </button>
-              <button onClick={clearAll} style={btnSecondary()}>🗑 Clear</button>
+              <button onClick={clearAll} style={btnSecondary()}><LuX size={14} style={{ verticalAlign: "-2px" }} /> Clear</button>
             </div>
           </div>
         )}
@@ -426,7 +430,7 @@ export default function DeviceScanner() {
                 }} className="files-row">
                   <div style={{ minWidth: 0 }}>
                     <div style={{ color: T.white, fontSize: 13, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{f.name}</div>
-                    {f.signature && <div style={{ color: meta.color, fontSize: 11, marginTop: 2 }}>⚠ {f.signature}</div>}
+                    {f.signature && <div style={{ color: meta.color, fontSize: 11, marginTop: 2 }}><LuTriangleAlert size={11} style={{ verticalAlign: "-1px" }} /> {f.signature}</div>}
                   </div>
                   <div style={{ color: T.muted, fontSize: 11, fontFamily: "ui-monospace,monospace" }}>{formatBytes(f.size)}</div>
                   <div style={{ color: T.mutedDark, fontSize: 10, fontFamily: "ui-monospace,monospace", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={f.hash || ""}>
@@ -439,7 +443,7 @@ export default function DeviceScanner() {
                       background: `${meta.color}1a`, color: meta.color,
                       border: `1px solid ${meta.color}55`,
                       fontSize: 11, fontWeight: 700,
-                    }}>{meta.emoji} {meta.label}</span>
+                    }}>{meta.icon} {meta.label}</span>
                   </div>
                   <button onClick={() => removeFile(f.id)} title="Remove" style={{
                     background: "transparent", border: 0, color: T.mutedDark, cursor: "pointer",
@@ -461,7 +465,7 @@ export default function DeviceScanner() {
           }}>What this scan can (and can't) do — honestly</h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }} className="capability-grid">
             <div>
-              <div style={{ color: T.green, fontSize: 12, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 10 }}>✅ Can</div>
+              <div style={{ color: T.green, fontSize: 12, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 10 }}><LuCircleCheck size={13} style={{ verticalAlign: "-2px" }} /> Can</div>
               <ul style={{ margin: 0, paddingLeft: 18, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>
                 <li>Hash any file you drag in (SHA-256)</li>
                 <li>Check that hash against malware databases</li>
@@ -472,7 +476,7 @@ export default function DeviceScanner() {
               </ul>
             </div>
             <div>
-              <div style={{ color: T.red, fontSize: 12, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 10 }}>❌ Can't</div>
+              <div style={{ color: T.red, fontSize: 12, fontWeight: 700, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 10 }}><LuX size={13} style={{ verticalAlign: "-2px" }} /> Can't</div>
               <ul style={{ margin: 0, paddingLeft: 18, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>
                 <li>Auto-scan your whole disk without you selecting files</li>
                 <li>Run in background watching for new threats (use Windows Defender for that)</li>
@@ -506,13 +510,13 @@ export default function DeviceScanner() {
             {[
               {
                 phase: "Phase 2", eta: "Q2 2026",
-                title: "💻 VRIKAAN Desktop", os: "Windows · macOS · Linux",
+                title: <><LuMonitor size={16} style={{ verticalAlign: "-2px" }} /> VRIKAAN Desktop</>, os: "Windows · macOS · Linux",
                 features: ["Real-time download watcher", "USB drive auto-scan", "Whole-disk schedule scan", "System tray notifications", "Offline mode"],
                 color: T.cyan,
               },
               {
                 phase: "Phase 3", eta: "Q3 2026",
-                title: "📱 VRIKAAN Android", os: "Android 9+",
+                title: <><LuSmartphone size={16} style={{ verticalAlign: "-2px" }} /> VRIKAAN Android</>, os: "Android 9+",
                 features: ["Scan all installed APKs", "Downloads folder monitor", "SMS scam alerts (auto-flag)", "WhatsApp file scanner", "SD card scan"],
                 color: T.accent,
               },
@@ -568,7 +572,7 @@ export default function DeviceScanner() {
           marginTop: 28, padding: 16, color: T.mutedDark, fontSize: 12,
           textAlign: "center", lineHeight: 1.6, borderTop: `1px solid ${T.border}`,
         }}>
-          🔒 Privacy promise: files are hashed in your browser using your CPU. Only the hash (a 64-char fingerprint)
+          <LuLock size={13} style={{ verticalAlign: "-2px" }} /> Privacy promise: files are hashed in your browser using your CPU. Only the hash (a 64-char fingerprint)
           is sent to our servers — never the file contents. We can't reconstruct your files from the hash.
           <br />
           🇮🇳 Built in Nashik · Free tier for everyone · No card required

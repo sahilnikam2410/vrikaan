@@ -2,14 +2,15 @@ import { useState, useRef } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
+import { LuAudioLines, LuCircleCheck, LuActivity, LuTriangleAlert, LuCircleHelp } from "react-icons/lu";
 
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
 const VERDICT_META = {
-  "likely-real":     { color: T.green,  emoji: "✅", label: "Likely real human voice" },
-  "likely-deepfake": { color: T.red,    emoji: "🤖", label: "Likely AI-generated / deepfake" },
-  "scam-script":     { color: T.red,    emoji: "🚨", label: "Scam call script detected" },
-  "uncertain":       { color: T.yellow, emoji: "❓", label: "Uncertain — be cautious" },
+  "likely-real":     { color: T.green,  Icon: LuCircleCheck,    label: "Likely real human voice" },
+  "likely-deepfake": { color: T.red,    Icon: LuActivity,       label: "Likely AI-generated / deepfake" },
+  "scam-script":     { color: T.red,    Icon: LuTriangleAlert,  label: "Scam call script detected" },
+  "uncertain":       { color: T.yellow, Icon: LuCircleHelp,     label: "Uncertain — be cautious" },
 };
 
 const MAX_BYTES = 5 * 1024 * 1024; // 5 MB raw
@@ -109,14 +110,14 @@ export default function DeepfakeAudio() {
           />
           {!file && (
             <>
-              <div style={{ fontSize: 36, marginBottom: 8 }}>🎙</div>
+              <div style={{ marginBottom: 8, display: "flex", justifyContent: "center" }}><LuAudioLines size={36} color={T.cyan} /></div>
               <p style={{ color: T.white, margin: "0 0 4px", fontWeight: 600 }}>Drop an audio file here, or click to browse</p>
               <p style={{ color: T.muted, fontSize: 12, margin: 0 }}>MP3 · WAV · M4A · OGG · max 5 MB</p>
             </>
           )}
           {file && (
             <div style={{ display: "flex", alignItems: "center", gap: 14, textAlign: "left" }}>
-              <div style={{ fontSize: 32 }}>🎙</div>
+              <div style={{ display: "flex" }}><LuAudioLines size={32} color={T.cyan} /></div>
               <div style={{ flex: 1 }}>
                 <p style={{ color: T.white, margin: 0, fontWeight: 600, fontSize: 14 }}>{file.name}</p>
                 <p style={{ color: T.muted, fontSize: 11, margin: "2px 0 0" }}>{(file.size / 1024 / 1024).toFixed(2)} MB · {file.type}</p>
@@ -170,7 +171,7 @@ export default function DeepfakeAudio() {
         {result && meta && (
           <div style={{ background: T.card, border: `2px solid ${meta.color}40`, borderRadius: 14, padding: 24 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18, paddingBottom: 18, borderBottom: `1px solid ${T.border}` }}>
-              <span style={{ fontSize: 48 }}>{meta.emoji}</span>
+              <meta.Icon size={48} color={meta.color} style={{ flexShrink: 0 }} />
               <div style={{ flex: 1 }}>
                 <h2 style={{ color: meta.color, fontSize: 22, fontWeight: 700, margin: 0, fontFamily: "'Vrikaan Sans', sans-serif" }}>{meta.label}</h2>
                 <p style={{ color: T.muted, fontSize: 12, margin: "4px 0 0" }}>

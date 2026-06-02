@@ -7,13 +7,14 @@ import QuotaBanner from "../../components/QuotaBanner";
 import UpgradeModal from "../../components/UpgradeModal";
 import { useToolQuota } from "../../hooks/useToolQuota";
 import { apiFetch, parseTierError } from "../../lib/apiFetch";
+import { LuCircleCheck, LuTriangleAlert, LuMessageSquare } from "react-icons/lu";
 
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
 const VERDICT_META = {
-  safe:       { color: T.green,  emoji: "✅", label: "Looks safe" },
-  suspicious: { color: T.yellow, emoji: "⚠️", label: "Suspicious" },
-  dangerous:  { color: T.red,    emoji: "🚨", label: "Dangerous — likely scam" },
+  safe:       { color: T.green,  Icon: LuCircleCheck,   label: "Looks safe" },
+  suspicious: { color: T.yellow, Icon: LuTriangleAlert, label: "Suspicious" },
+  dangerous:  { color: T.red,    Icon: LuTriangleAlert, label: "Dangerous — likely scam" },
 };
 
 const SAMPLES = [
@@ -156,7 +157,7 @@ export default function ScamCheck() {
           <div style={{ background: T.card, border: `2px solid ${meta.color}40`, borderRadius: 14, padding: 24 }}>
             {/* Verdict banner */}
             <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18, paddingBottom: 18, borderBottom: `1px solid ${T.border}` }}>
-              <span style={{ fontSize: 48 }}>{meta.emoji}</span>
+              <meta.Icon size={48} color={meta.color} style={{ flexShrink: 0 }} />
               <div style={{ flex: 1 }}>
                 <h2 style={{ color: meta.color, fontSize: 22, fontWeight: 700, margin: 0, fontFamily: "'Vrikaan Sans', sans-serif" }}>{meta.label}</h2>
                 <p style={{ color: T.muted, fontSize: 12, margin: "4px 0 0" }}>
@@ -190,7 +191,7 @@ export default function ScamCheck() {
 
             {/* Share */}
             <div style={{ display: "flex", gap: 8, paddingTop: 18, borderTop: `1px solid ${T.border}`, flexWrap: "wrap" }}>
-              <button onClick={shareWhatsApp} style={{ padding: "10px 16px", borderRadius: 8, border: "none", background: "rgba(34,197,94,0.15)", color: T.green, fontSize: 13, fontWeight: 600, cursor: "pointer" }}>📲 Share on WhatsApp</button>
+              <button onClick={shareWhatsApp} style={{ padding: "10px 16px", borderRadius: 8, border: "none", background: "rgba(34,197,94,0.15)", color: T.green, fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}><LuMessageSquare size={14} /> Share on WhatsApp</button>
               <button onClick={() => navigator.clipboard.writeText(`VRIKAAN Scam Check — ${meta.label} (${result.score}/100)\n${result.reasoning}\nhttps://vrikaan.com/scam-check`)} style={{ padding: "10px 16px", borderRadius: 8, border: `1px solid ${T.border}`, background: "transparent", color: T.muted, fontSize: 13, cursor: "pointer" }}>Copy result</button>
             </div>
 

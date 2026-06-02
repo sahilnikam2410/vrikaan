@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
+import {
+  LuStar, LuTriangleAlert, LuShield, LuLock, LuEye, LuCircleCheck, LuX,
+  LuMessageSquare, LuMic, LuInfo, LuZap,
+} from "react-icons/lu";
 
 const T = {
   bg: "#060a14", card: "rgba(17,24,39,0.7)",
@@ -108,7 +112,7 @@ export default function SafeWordVault() {
             background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}40`,
             fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
             color: T.cyan, marginBottom: 14,
-          }}>🆕 FREE · India-First · Stored On Device</span>
+          }}><LuStar size={13} style={{ verticalAlign: "-2px" }} /> FREE · India-First · Stored On Device</span>
           <h1 style={{
             fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
@@ -129,7 +133,7 @@ export default function SafeWordVault() {
         }}>
           <div style={{
             fontSize: 11, fontWeight: 800, letterSpacing: 1.5, color: T.red, textTransform: "uppercase", marginBottom: 6,
-          }}>⚠ THE 2026 SCAM YOU HAVEN'T SEEN YET</div>
+          }}><LuTriangleAlert size={13} style={{ verticalAlign: "-2px" }} /> THE 2026 SCAM YOU HAVEN'T SEEN YET</div>
           <div style={{ color: T.white, fontSize: 14, lineHeight: 1.7 }}>
             Mom's phone rings. A voice exactly like yours (cloned from your Insta reel) cries:
             <em style={{ color: T.muted }}> "Mummy, accident ho gaya, ₹50k bhejo iss UPI pe, please jaldi…"</em>
@@ -165,7 +169,7 @@ export default function SafeWordVault() {
                   }}
                   maxLength={20}
                 />
-                <button onClick={suggestRandom} style={btnGhost()}>🎲 Random</button>
+                <button onClick={suggestRandom} style={btnGhost()}><LuZap size={13} style={{ verticalAlign: "-2px" }} /> Random</button>
                 {wordStrength && (
                   <span style={{
                     fontSize: 10, fontWeight: 800, letterSpacing: 1.5, color: wordStrength.color,
@@ -176,7 +180,7 @@ export default function SafeWordVault() {
                 )}
               </div>
               <div style={{ fontSize: 11, color: T.muted, marginTop: 8, lineHeight: 1.6 }}>
-                💡 Pick something specific to your family — a nickname, your dog's name, a place you all visited.
+                <LuInfo size={13} style={{ verticalAlign: "-2px" }} /> Pick something specific to your family — a nickname, your dog's name, a place you all visited.
                 Avoid things on your social media (anniversary date, kid's name, etc.).
               </div>
             </Field>
@@ -225,7 +229,7 @@ export default function SafeWordVault() {
               border: 0, fontWeight: 800, fontSize: 15,
               cursor: word.trim().length >= 4 ? "pointer" : "not-allowed",
               fontFamily: "'Vrikaan Sans', sans-serif", width: "100%", marginTop: 10,
-            }}>🔒 Save safe-word</button>
+            }}><LuLock size={15} style={{ verticalAlign: "-2px" }} /> Save safe-word</button>
 
             <div style={{ fontSize: 11, color: T.muted, marginTop: 12, textAlign: "center", lineHeight: 1.6 }}>
               Saved in YOUR browser only (localStorage). We never see this word.
@@ -253,11 +257,11 @@ export default function SafeWordVault() {
             onClick={() => setShowWord(s => !s)}
             >{data.word.toUpperCase()}</div>
             <button onClick={() => setShowWord(s => !s)} style={btnGhost()}>
-              {showWord ? "🙈 Hide" : "👁 Reveal"}
+              <LuEye size={13} style={{ verticalAlign: "-2px" }} /> {showWord ? "Hide" : "Reveal"}
             </button>
             <div style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 14, flexWrap: "wrap" }}>
-              <button onClick={() => setEditing(true)} style={btnSecondary()}>✏️ Edit</button>
-              <button onClick={reset} style={{ ...btnSecondary(), color: T.red, borderColor: `${T.red}55` }}>🗑 Reset all</button>
+              <button onClick={() => setEditing(true)} style={btnSecondary()}>Edit</button>
+              <button onClick={reset} style={{ ...btnSecondary(), color: T.red, borderColor: `${T.red}55` }}><LuX size={13} style={{ verticalAlign: "-2px" }} /> Reset all</button>
             </div>
           </div>
         )}

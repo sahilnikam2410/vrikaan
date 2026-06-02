@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
+import { LuTriangleAlert, LuCircleCheck } from "react-icons/lu";
 
 /**
  * /risk-score — free AI-powered personal cyber risk assessment.
@@ -168,7 +169,7 @@ export default function RiskScore() {
             {/* Top risks */}
             {result.topRisks?.length > 0 && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24, marginBottom: 20 }}>
-                <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 17, fontWeight: 700, margin: "0 0 16px" }}>⚠ Your top risks</h3>
+                <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 17, fontWeight: 700, margin: "0 0 16px", display: "flex", alignItems: "center", gap: 8 }}><LuTriangleAlert size={17} color={T.orange} /> Your top risks</h3>
                 {result.topRisks.map((r, i) => (
                   <div key={i} style={{ display: "flex", gap: 12, padding: "12px 0", borderTop: i === 0 ? "none" : `1px solid ${T.border}` }}>
                     <span style={{ width: 8, height: 8, borderRadius: "50%", background: sevColor(r.severity), marginTop: 6, flexShrink: 0 }} />
@@ -184,7 +185,7 @@ export default function RiskScore() {
             {/* Quick wins */}
             {result.quickWins?.length > 0 && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24, marginBottom: 20 }}>
-                <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 17, fontWeight: 700, margin: "0 0 16px" }}>✓ Fix these first</h3>
+                <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 17, fontWeight: 700, margin: "0 0 16px", display: "flex", alignItems: "center", gap: 8 }}><LuCircleCheck size={17} color={T.green} /> Fix these first</h3>
                 {result.quickWins.map((w, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "12px 0", borderTop: i === 0 ? "none" : `1px solid ${T.border}` }}>
                     <div style={{ flex: 1 }}>

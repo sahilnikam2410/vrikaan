@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { LuBot, LuFileText } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
@@ -199,7 +200,7 @@ export default function FraudAnalyzer() {
                   disabled={aiLoading}
                   style={{ padding: "8px 16px", background: "rgba(20, 184, 166,0.12)", border: "1px solid rgba(20, 184, 166,0.3)", borderRadius: 8, color: T.cyan, fontSize: 12, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Vrikaan Sans'", opacity: aiLoading ? 0.6 : 1 }}
                 >
-                  {aiLoading ? "Analyzing..." : "🤖 Explain with AI"}
+                  {aiLoading ? "Analyzing..." : <><LuBot size={14} style={{ verticalAlign: "-2px" }} /> Explain with AI</>}
                 </button>
                 <button
                   onClick={() => exportReport({
@@ -221,7 +222,7 @@ export default function FraudAnalyzer() {
                   })}
                   style={{ padding: "8px 16px", background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 8, color: "#818cf8", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Vrikaan Sans'" }}
                 >
-                  📄 Export Report
+                  <LuFileText size={14} style={{ verticalAlign: "-2px" }} /> Export Report
                 </button>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 20 }}>
@@ -247,7 +248,7 @@ export default function FraudAnalyzer() {
               {(aiExplanation || aiError) && (
                 <div style={{ marginTop: 20, padding: "16px 18px", background: "rgba(20, 184, 166,0.05)", border: "1px solid rgba(20, 184, 166,0.15)", borderRadius: 12 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                    <span style={{ fontSize: 14 }}>🤖</span>
+                    <LuBot size={14} color={T.cyan} />
                     <span style={{ fontSize: 12, fontWeight: 700, color: T.cyan, fontFamily: "'Vrikaan Mono', monospace", letterSpacing: 0.5 }}>AI ANALYSIS</span>
                   </div>
                   {aiError ? (

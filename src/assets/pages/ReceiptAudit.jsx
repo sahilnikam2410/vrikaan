@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { auditReceipt, validateGSTIN } from "../../lib/receiptAudit";
+import { LuTriangleAlert, LuLandmark, LuLock, LuCircleCheck, LuCircleAlert } from "react-icons/lu";
 
 const T = {
   bg: "#060a14", card: "rgba(17,24,39,0.7)",
@@ -90,8 +91,8 @@ export default function ReceiptAudit() {
                 fontSize: 12,
               }}>
                 {gstinCheck.valid
-                  ? `✓ Valid · State: ${gstinCheck.state} · PAN: ${gstinCheck.pan}`
-                  : `❌ Invalid · ${gstinCheck.reason}`}
+                  ? <><LuCircleCheck size={13} style={{ verticalAlign: "-2px" }} /> Valid · State: {gstinCheck.state} · PAN: {gstinCheck.pan}</>
+                  : <><LuCircleAlert size={13} style={{ verticalAlign: "-2px" }} /> Invalid · {gstinCheck.reason}</>}
               </div>
             )}
           </Field>
@@ -150,7 +151,7 @@ export default function ReceiptAudit() {
                   </div>
                   {result.computed.claimedTotal > 0 && Math.abs(result.computed.claimedTotal - result.computed.expectedTotal) > 1 && (
                     <div style={{ color: T.red, fontSize: 12, fontWeight: 700, marginTop: 4 }}>
-                      ⚠ Bill: ₹{result.computed.claimedTotal} ({(result.computed.claimedTotal > result.computed.expectedTotal ? "+" : "")}{(result.computed.claimedTotal - result.computed.expectedTotal).toFixed(2)})
+                      <LuTriangleAlert size={12} style={{ verticalAlign: "-2px" }} /> Bill: ₹{result.computed.claimedTotal} ({(result.computed.claimedTotal > result.computed.expectedTotal ? "+" : "")}{(result.computed.claimedTotal - result.computed.expectedTotal).toFixed(2)})
                     </div>
                   )}
                 </div>
@@ -200,7 +201,7 @@ export default function ReceiptAudit() {
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
           <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
-            🇮🇳 India tax cheat-sheet
+            <LuLandmark size={20} style={{ verticalAlign: "-3px" }} color={T.cyan} /> India tax cheat-sheet
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }} className="ed-grid">
             <div>
@@ -229,7 +230,7 @@ export default function ReceiptAudit() {
           marginTop: 32, padding: 16, color: T.mutedDark, fontSize: 12,
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
-          🔒 All math + GSTIN checks run in your browser. Nothing uploaded.
+          <LuLock size={13} style={{ verticalAlign: "-2px" }} /> All math + GSTIN checks run in your browser. Nothing uploaded.
           GST slab data current as of 2026; verify large transactions against
           <a href="https://www.gst.gov.in" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan, marginLeft: 4 }}>gst.gov.in</a>.<br />
           🇮🇳 Built in Nashik · Free forever

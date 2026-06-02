@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { LuBot, LuCircleCheck, LuCircleX, LuTriangleAlert, LuInfo, LuMail, LuArrowLeftRight } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
@@ -186,10 +187,10 @@ function parseHeaders(raw) {
   const passCount = [spf, dkim, dmarc].filter((r) => r === "pass").length;
   const failCount = [spf, dkim, dmarc].filter((r) => r === "fail" || r === "softfail").length;
   let assessment;
-  if (passCount === 3) assessment = { label: "Authenticated", color: T.green, icon: "\u2713", desc: "All authentication checks passed. This email appears legitimate." };
-  else if (failCount >= 2) assessment = { label: "Likely Spoofed", color: T.red, icon: "\u2717", desc: "Multiple authentication checks failed. This email is likely forged." };
-  else if (failCount >= 1 || suspiciousFlags.length > 0) assessment = { label: "Suspicious", color: T.gold, icon: "\u26A0", desc: "Some authentication checks failed or suspicious indicators found." };
-  else assessment = { label: "Partially Verified", color: T.cyan, icon: "\u2139", desc: "Some authentication data is missing. Exercise caution." };
+  if (passCount === 3) assessment = { label: "Authenticated", color: T.green, icon: "check", desc: "All authentication checks passed. This email appears legitimate." };
+  else if (failCount >= 2) assessment = { label: "Likely Spoofed", color: T.red, icon: "x", desc: "Multiple authentication checks failed. This email is likely forged." };
+  else if (failCount >= 1 || suspiciousFlags.length > 0) assessment = { label: "Suspicious", color: T.gold, icon: "warn", desc: "Some authentication checks failed or suspicious indicators found." };
+  else assessment = { label: "Partially Verified", color: T.cyan, icon: "info", desc: "Some authentication data is missing. Exercise caution." };
 
   return { from, fromName, fromEmail, to, subject, date, returnPath, replyTo, messageId, xMailer, contentType, hops, spf, dkim, dmarc, assessment, suspiciousFlags };
 }
@@ -198,6 +199,13 @@ const authColor = (val) => {
   if (val === "pass") return T.green;
   if (val === "fail" || val === "softfail") return T.red;
   return T.mutedDark;
+};
+
+const AssessmentIcon = ({ icon, size, color }) => {
+  if (icon === "check") return <LuCircleCheck size={size} color={color} />;
+  if (icon === "x") return <LuCircleX size={size} color={color} />;
+  if (icon === "warn") return <LuTriangleAlert size={size} color={color} />;
+  return <LuInfo size={size} color={color} />;
 };
 
 export default function EmailAnalyzer() {

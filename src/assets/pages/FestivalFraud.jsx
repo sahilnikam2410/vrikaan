@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { upcoming, formatFestivalDate, isHighAlert } from "../../lib/festivalFraud";
+import { LuCalendar, LuTriangleAlert, LuList, LuMessageSquare } from "react-icons/lu";
 
 const T = {
   bg: "#060a14", card: "rgba(17,24,39,0.7)",
@@ -59,7 +60,7 @@ export default function FestivalFraud() {
             background: "rgba(245,158,11,0.12)", border: `1px solid ${T.yellow}40`,
             fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
             color: T.yellow, marginBottom: 14,
-          }}>📅 India · Festival Fraud Calendar</span>
+          }}><LuCalendar size={13} style={{ verticalAlign: "-2px" }} /> India · Festival Fraud Calendar</span>
           <h1 style={{
             fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
@@ -153,7 +154,7 @@ export default function FestivalFraud() {
                 background: `${T.red}1a`, border: `1px solid ${T.red}55`,
                 color: T.red, fontSize: 12, fontWeight: 800,
                 letterSpacing: 1, textTransform: "uppercase",
-              }}>🚨 In high-alert window</div>
+              }}><LuTriangleAlert size={12} style={{ verticalAlign: "-2px" }} /> In high-alert window</div>
             )}
           </div>
 
@@ -180,7 +181,7 @@ export default function FestivalFraud() {
                     fontFamily: "ui-monospace, Menlo, monospace",
                     margin: "0 0 10px",
                   }}>
-                    🚨 Example: {s.pattern}
+                    <LuTriangleAlert size={13} style={{ verticalAlign: "-2px" }} /> Example: {s.pattern}
                   </div>
                   <div style={{ color: T.muted, fontSize: 13, lineHeight: 1.6 }}>
                     <strong style={{ color: T.green }}>✓ Defense:</strong> {s.defense}
@@ -197,7 +198,7 @@ export default function FestivalFraud() {
               <div style={{
                 fontSize: 11, color: T.cyan, fontWeight: 800, letterSpacing: 1.5,
                 textTransform: "uppercase", marginBottom: 10,
-              }}>📋 Family checklist — do these now</div>
+              }}><LuList size={13} style={{ verticalAlign: "-2px" }} /> Family checklist — do these now</div>
               <ul style={{ margin: 0, paddingLeft: 18, color: T.muted, fontSize: 14, lineHeight: 1.9 }}>
                 {selected.actions.map((a, i) => <li key={i}>{a}</li>)}
               </ul>
@@ -212,7 +213,7 @@ export default function FestivalFraud() {
             }}>
               <div style={{ flex: 1, minWidth: 200 }}>
                 <div style={{ color: T.white, fontWeight: 700, fontSize: 14, marginBottom: 2 }}>
-                  Send this to your family WhatsApp 👆
+                  Send this to your family WhatsApp
                 </div>
                 <div style={{ color: T.muted, fontSize: 12 }}>
                   One-tap share. Pre-formatted with the most important scam + defense.
@@ -224,7 +225,7 @@ export default function FestivalFraud() {
                 border: 0, fontWeight: 800, fontSize: 14, cursor: "pointer",
                 fontFamily: "'Vrikaan Sans', sans-serif",
                 display: "inline-flex", alignItems: "center", gap: 6,
-              }}>📲 Share on WhatsApp</button>
+              }}><LuMessageSquare size={14} /> Share on WhatsApp</button>
               {shared && (
                 <div style={{ color: T.green, fontSize: 12, fontWeight: 700 }}>✓ Shared</div>
               )}
@@ -300,7 +301,7 @@ export default function FestivalFraud() {
           marginTop: 32, padding: 16, color: T.mutedDark, fontSize: 12,
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
-          📅 Festival dates are approximate — exact dates vary by lunar calendar. Fraud spike %s sourced from
+          <LuCalendar size={13} style={{ verticalAlign: "-2px" }} /> Festival dates are approximate — exact dates vary by lunar calendar. Fraud spike %s sourced from
           aggregated reports by Indian banks, NPCI, and SOC analysts at VRIKAAN.<br />
           🇮🇳 Built in Nashik · Free forever · Share with your family before every festival
         </p>

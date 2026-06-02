@@ -7,6 +7,7 @@ import SEO from "../../components/SEO";
 import { exportReport } from "../../utils/exportPDF";
 import { saveToolResult } from "../../services/toolHistoryService";
 import renderMarkdown from "../../utils/renderMarkdown";
+import { LuBot, LuMail, LuShield, LuLock } from "react-icons/lu";
 
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
@@ -191,13 +192,13 @@ export default function SecurityAudit() {
               </h2>
               <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
                 <button onClick={doExport} style={{ padding: "10px 20px", borderRadius: 8, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>Export Full Report</button>
-                <button onClick={explainWithAI} disabled={aiLoading} style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid rgba(20, 184, 166,0.3)", background: "rgba(20, 184, 166,0.08)", color: T.cyan, fontSize: 14, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", opacity: aiLoading ? 0.6 : 1 }}>{aiLoading ? "Analyzing..." : "🤖 Explain with AI"}</button>
+                <button onClick={explainWithAI} disabled={aiLoading} style={{ padding: "10px 20px", borderRadius: 8, border: "1px solid rgba(20, 184, 166,0.3)", background: "rgba(20, 184, 166,0.08)", color: T.cyan, fontSize: 14, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", opacity: aiLoading ? 0.6 : 1 }}>{aiLoading ? "Analyzing..." : <><LuBot size={15} style={{ verticalAlign: "-2px", marginRight: 6 }} />Explain with AI</>}</button>
                 <button onClick={() => { setResults(null); setAiExplanation(""); setAiError(""); }} style={{ padding: "10px 20px", borderRadius: 8, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.muted, fontSize: 14, cursor: "pointer" }}>New Audit</button>
               </div>
               {(aiExplanation || aiError) && (
                 <div style={{ marginTop: 20, padding: "16px 18px", background: "rgba(20, 184, 166,0.05)", border: "1px solid rgba(20, 184, 166,0.15)", borderRadius: 12, textAlign: "left" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                    <span style={{ fontSize: 14 }}>🤖</span>
+                    <LuBot size={14} color={T.cyan} />
                     <span style={{ fontSize: 12, fontWeight: 700, color: T.cyan, fontFamily: "'Vrikaan Mono', monospace", letterSpacing: 0.5 }}>AI ANALYSIS</span>
                   </div>
                   {aiError ? <div style={{ fontSize: 13, color: T.red }}>{aiError}</div>
@@ -209,7 +210,7 @@ export default function SecurityAudit() {
             {/* Individual results */}
             {results.checks.breach && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: 20, marginBottom: 12 }}>
-                <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 8 }}>&#x1F4E7; Email Breach Check</h3>
+                <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}><LuMail size={15} color={T.cyan} /> Email Breach Check</h3>
                 {results.checks.breach.error ? (
                   <p style={{ fontSize: 13, color: T.red }}>{results.checks.breach.error}</p>
                 ) : (
@@ -221,7 +222,7 @@ export default function SecurityAudit() {
             )}
             {results.checks.headers && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: 20, marginBottom: 12 }}>
-                <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 8 }}>&#x1F6E1; Security Headers</h3>
+                <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}><LuShield size={15} color={T.cyan} /> Security Headers</h3>
                 {results.checks.headers.error ? (
                   <p style={{ fontSize: 13, color: T.red }}>{results.checks.headers.error}</p>
                 ) : (
@@ -234,7 +235,7 @@ export default function SecurityAudit() {
             )}
             {results.checks.ssl && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: 20 }}>
-                <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 8 }}>&#x1F512; SSL Certificate</h3>
+                <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 8, display: "flex", alignItems: "center", gap: 8 }}><LuLock size={15} color={T.cyan} /> SSL Certificate</h3>
                 {results.checks.ssl.error ? (
                   <p style={{ fontSize: 13, color: T.red }}>{results.checks.ssl.error}</p>
                 ) : (

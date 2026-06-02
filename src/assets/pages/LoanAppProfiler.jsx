@@ -5,6 +5,7 @@ import SeniorModeBanner from "../../components/SeniorModeBanner";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { profileLoanApp, RED_FLAG_PERMISSIONS, RBI_REGISTERED } from "../../lib/loanAppProfiler";
+import { LuTriangleAlert, LuCircleAlert, LuCircleCheck, LuList, LuFileText } from "react-icons/lu";
 
 const T = {
   bg: "#060a14", card: "rgba(17,24,39,0.7)",
@@ -81,7 +82,7 @@ export default function LoanAppProfiler() {
           background: `${T.red}0a`, border: `1px solid ${T.red}33`,
         }}>
           <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.5, color: T.red, textTransform: "uppercase", marginBottom: 6 }}>
-            ⚠ THE PREDATORY LOAN APP TRAP
+            <LuTriangleAlert size={13} style={{ verticalAlign: "-2px" }} /> THE PREDATORY LOAN APP TRAP
           </div>
           <div style={{ color: T.white, fontSize: 14, lineHeight: 1.7 }}>
             App promises ₹10k loan instantly. Approves. Charges ₹3k as "processing fee" upfront → you get ₹7k. Loan term: 7 days, repay ₹15k. Miss a day? <strong style={{ color: T.red }}>Calls your entire contact list with morphed nude photos of you.</strong> Suicide cases in India hit ~1,500/year. Per RBI: any app not on the registered list is illegal — install at your own risk.
@@ -180,7 +181,7 @@ export default function LoanAppProfiler() {
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
           <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
-            🚫 Permissions no legit loan app needs
+            <LuCircleAlert size={18} style={{ verticalAlign: "-3px" }} color={T.red} /> Permissions no legit loan app needs
           </h3>
           <div style={{ display: "grid", gap: 8 }}>
             {RED_FLAG_PERMISSIONS.map(p => (
@@ -200,7 +201,7 @@ export default function LoanAppProfiler() {
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
           <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
-            ✅ Sample of RBI-registered legit lenders ({RBI_REGISTERED.length})
+            <LuCircleCheck size={18} style={{ verticalAlign: "-3px" }} color={T.green} /> Sample of RBI-registered legit lenders ({RBI_REGISTERED.length})
           </h3>
           <p style={{ color: T.muted, fontSize: 12, margin: "0 0 12px" }}>
             Full list: <a href="https://www.rbi.org.in" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan }}>rbi.org.in</a> ·
@@ -224,7 +225,7 @@ export default function LoanAppProfiler() {
           border: `1px solid ${T.red}33`,
         }}>
           <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 8px" }}>
-            🚨 Already installed a predatory app + getting harassed?
+            <LuTriangleAlert size={18} style={{ verticalAlign: "-3px" }} color={T.red} /> Already installed a predatory app + getting harassed?
           </h3>
           <p style={{ color: T.muted, fontSize: 13, margin: "0 0 14px", lineHeight: 1.6 }}>
             File at sachet.rbi.org.in + cybercrime.gov.in + call 1930. Don't pay any "settlement". Block all unknown numbers.
@@ -233,14 +234,14 @@ export default function LoanAppProfiler() {
             display: "inline-block", padding: "11px 22px", borderRadius: 10,
             background: T.red, color: "#fff", fontWeight: 800, fontSize: 14,
             textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
-          }}>📋 Scam Recovery Hotline →</Link>
+          }}><LuList size={14} style={{ verticalAlign: "-2px" }} /> Scam Recovery Hotline →</Link>
         </section>
 
         <p style={{
           marginTop: 32, padding: 16, color: T.mutedDark, fontSize: 12,
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
-          📜 RBI Digital Lending Guidelines: rbi.org.in/Scripts/NotificationUser.aspx?Id=12382 (Sep 2022).
+          <LuFileText size={13} style={{ verticalAlign: "-2px" }} /> RBI Digital Lending Guidelines: rbi.org.in/Scripts/NotificationUser.aspx?Id=12382 (Sep 2022).
           App lists current as of Mar 2026 — predatory app names rotate; do additional research.<br/>
           🇮🇳 Built in Nashik · Free forever
         </p>

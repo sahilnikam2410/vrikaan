@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useUsageLimit } from "../../hooks/useUsageLimit";
+import { LuSparkles, LuCheck, LuCircleCheck, LuCircleX, LuTriangleAlert } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
@@ -8,7 +9,11 @@ import { exportReport } from "../../utils/exportPDF";
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
 const gradeColor = { A: "#22c55e", B: "#14b8a6", C: "#fbbf24", D: "#f97316", E: "#ef4444", F: "#ef4444" };
-const statusIcon = { present: "\u2705", missing: "\u274C", misconfigured: "\u26A0\uFE0F" };
+const StatusIcon = ({ status }) => {
+  if (status === "present") return <LuCircleCheck size={16} color="#22c55e" />;
+  if (status === "missing") return <LuCircleX size={16} color="#ef4444" />;
+  return <LuTriangleAlert size={16} color="#fbbf24" />;
+};
 
 export default function SecurityHeaders() {
   const { checkLimit, limitError } = useUsageLimit("security-headers");
@@ -110,7 +115,7 @@ export default function SecurityHeaders() {
               </div>
               <div style={{ display: "flex", gap: 8 }}>
                 <button onClick={generateFix} disabled={fixLoading || result.summary.missing + result.summary.misconfigured === 0} style={{ padding: "8px 16px", borderRadius: 8, border: `1px solid ${T.cyan}40`, background: "rgba(20, 184, 166,0.15)", color: T.cyan, fontSize: 12, fontWeight: 600, cursor: fixLoading ? "wait" : "pointer", opacity: result.summary.missing + result.summary.misconfigured === 0 ? 0.5 : 1 }}>
-                  {fixLoading ? "Generating…" : "✨ AI Auto-Fix"}
+                  {fixLoading ? "Generating…" : <><LuSparkles size={13} style={{ verticalAlign: "-2px" }} /> AI Auto-Fix</>}
                 </button>
                 <button onClick={doExport} style={{ padding: "8px 16px", borderRadius: 8, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.muted, fontSize: 12, cursor: "pointer" }}>Export PDF</button>
               </div>
@@ -122,10 +127,10 @@ export default function SecurityHeaders() {
               <div style={{ marginBottom: 24, padding: 18, background: "rgba(20, 184, 166,0.06)", border: `1px solid ${T.cyan}30`, borderRadius: 12 }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12, paddingBottom: 12, borderBottom: `1px solid ${T.border}` }}>
                   <div>
-                    <span style={{ color: T.cyan, fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}>✨ AI Auto-Fix</span>
+                    <span style={{ color: T.cyan, fontSize: 13, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1 }}><LuSparkles size={13} style={{ verticalAlign: "-2px" }} /> AI Auto-Fix</span>
                     <p style={{ margin: "2px 0 0", color: T.muted, fontSize: 11 }}>Copy-paste-ready replacement headers</p>
                   </div>
-                  <button onClick={copyFix} style={{ padding: "8px 14px", borderRadius: 8, border: "none", background: copied ? T.green : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`, color: "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>{copied ? "✓ Copied" : "Copy headers"}</button>
+                  <button onClick={copyFix} style={{ padding: "8px 14px", borderRadius: 8, border: "none", background: copied ? T.green : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`, color: "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>{copied ? <><LuCheck size={13} style={{ verticalAlign: "-2px" }} /> Copied</> : "Copy headers"}</button>
                 </div>
                 <pre style={{ margin: 0, padding: 14, background: "rgba(3,7,18,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, fontFamily: "'Vrikaan Mono', monospace", fontSize: 12, color: T.white, overflowX: "auto", lineHeight: 1.6, whiteSpace: "pre-wrap" }}>{fix.fixedHeaders}</pre>
                 {fix.explanations?.length > 0 && (
@@ -158,7 +163,7 @@ export default function SecurityHeaders() {
               {result.headers.map(h => (
                 <div key={h.name} style={{ padding: "14px 16px", background: "rgba(15,23,42,0.5)", borderRadius: 10, border: `1px solid ${h.status === "present" ? "rgba(34,197,94,0.15)" : h.status === "missing" ? "rgba(239,68,68,0.15)" : "rgba(251,191,36,0.15)"}` }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                    <span style={{ fontSize: 14 }}>{statusIcon[h.status]}</span>
+                    <StatusIcon status={h.status} />
                     <span style={{ fontSize: 14, fontWeight: 600, color: T.white }}>{h.name}</span>
                   </div>
                   <div style={{ fontSize: 12, color: T.muted, marginBottom: h.value || h.note ? 6 : 0 }}>{h.description}</div>

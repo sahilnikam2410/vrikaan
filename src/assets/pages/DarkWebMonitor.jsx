@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { LuLock, LuFileText, LuSparkles, LuCalendar, LuChartBar, LuTriangleAlert, LuKeyRound, LuShield, LuCreditCard, LuKey } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
@@ -223,7 +224,7 @@ export default function DarkWebMonitor() {
                 onKeyDown={(e) => e.key === "Enter" && handleScan()}
                 style={{ ...sty.input, padding: "16px 18px 16px 46px", fontSize: 15, borderRadius: 10, border: `1px solid ${scanning ? T.cyan : T.border}`, transition: "border 0.3s" }}
               />
-              <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", fontSize: 18, opacity: 0.5 }}>&#128274;</span>
+              <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", opacity: 0.5, display: "flex" }}><LuLock size={18} color={T.muted} /></span>
             </div>
             <button
               onClick={handleScan}
@@ -271,7 +272,7 @@ export default function DarkWebMonitor() {
                     toolName="dark-web-monitor"
                     input={results.email}
                     result={{ breaches: results.breaches, score: results.score, source: results.source }}
-                    label="✨ AI Explain my breaches"
+                    label={<><LuSparkles size={13} style={{ verticalAlign: "-2px" }} /> AI Explain my breaches</>}
                   />
                 </div>
                 <button
@@ -297,7 +298,7 @@ export default function DarkWebMonitor() {
                   })}
                   style={{ padding: "8px 16px", background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 8, color: "#818cf8", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Vrikaan Sans'" }}
                 >
-                  📄 Export Report
+                  <LuFileText size={14} style={{ verticalAlign: "-2px" }} /> Export Report
                 </button>
               </div>
               <div style={{ ...sty.card, textAlign: "center", padding: "40px 24px", borderColor: results.breaches.length > 4 ? `${T.red}30` : results.breaches.length > 2 ? `${T.orange}30` : `${T.yellow}30` }}>
@@ -333,8 +334,8 @@ export default function DarkWebMonitor() {
                       </div>
 
                       <div style={{ display: "flex", gap: 16, flexWrap: "wrap", fontSize: 12, color: T.muted, marginBottom: 12 }}>
-                        <span>&#128197; {b.year}</span>
-                        <span>&#128202; {b.records} records affected</span>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><LuCalendar size={13} /> {b.year}</span>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><LuChartBar size={13} /> {b.records} records affected</span>
                       </div>
 
                       <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
@@ -376,13 +377,13 @@ export default function DarkWebMonitor() {
                 <div style={{ ...sty.card, padding: 32 }}>
                   <h2 style={{ ...h2, fontSize: 22, marginBottom: 20 }}>Recommended Actions</h2>
                   {[
-                    { icon: "&#128272;", title: "Change Compromised Passwords", desc: "Update passwords for all breached services immediately. Use unique passwords for each.", priority: "Urgent", color: T.red },
-                    { icon: "&#128737;", title: "Enable Two-Factor Authentication", desc: "Add 2FA to every account that supports it. Use an authenticator app over SMS.", priority: "High", color: T.orange },
-                    { icon: "&#128179;", title: "Monitor Your Credit", desc: "Set up credit monitoring alerts and check reports for unauthorized activity.", priority: "Medium", color: T.yellow },
-                    { icon: "&#128273;", title: "Use Unique Passwords", desc: "Use a password manager to generate and store unique passwords for every account.", priority: "Important", color: T.blue },
+                    { icon: <LuKeyRound size={18} color={T.red} />, title: "Change Compromised Passwords", desc: "Update passwords for all breached services immediately. Use unique passwords for each.", priority: "Urgent", color: T.red },
+                    { icon: <LuShield size={18} color={T.orange} />, title: "Enable Two-Factor Authentication", desc: "Add 2FA to every account that supports it. Use an authenticator app over SMS.", priority: "High", color: T.orange },
+                    { icon: <LuCreditCard size={18} color={T.yellow} />, title: "Monitor Your Credit", desc: "Set up credit monitoring alerts and check reports for unauthorized activity.", priority: "Medium", color: T.yellow },
+                    { icon: <LuKey size={18} color={T.blue} />, title: "Use Unique Passwords", desc: "Use a password manager to generate and store unique passwords for every account.", priority: "Important", color: T.blue },
                   ].map((a, i) => (
                     <div key={i} style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "14px 0", borderBottom: i < 3 ? `1px solid ${T.border}` : "none" }}>
-                      <div style={{ width: 40, height: 40, borderRadius: 10, background: `${a.color}12`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }} dangerouslySetInnerHTML={{ __html: a.icon }} />
+                      <div style={{ width: 40, height: 40, borderRadius: 10, background: `${a.color}12`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{a.icon}</div>
                       <div style={{ flex: 1 }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" }}>
                           <span style={{ fontSize: 14, fontWeight: 600, color: T.white }}>{a.title}</span>
@@ -471,7 +472,7 @@ export default function DarkWebMonitor() {
                 const time = offset === 0 ? "Just now" : offset === 1 ? "3s ago" : offset === 2 ? "6s ago" : offset === 3 ? "9s ago" : "12s ago";
                 return (
                   <div key={idx + "-" + offset} style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "10px 0", borderBottom: offset < 4 ? `1px solid ${T.border}` : "none", opacity, transition: "opacity 0.5s" }}>
-                    <span style={{ fontSize: 14, marginTop: 2 }}>&#9888;&#65039;</span>
+                    <span style={{ marginTop: 2, display: "flex" }}><LuTriangleAlert size={14} color={T.red} /></span>
                     <div style={{ flex: 1 }}>
                       <p style={{ fontSize: 13, color: T.white, margin: 0, lineHeight: 1.5 }}>{DARK_WEB_EVENTS[idx]}</p>
                       <span style={{ fontSize: 11, color: T.mutedDark }}>{time}</span>

@@ -4,6 +4,7 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { saveToolResult } from "../../services/toolHistoryService";
 import { exportReport } from "../../utils/exportPDF";
+import { LuSearch, LuGlobe, LuTriangleAlert, LuFileText, LuRadar, LuMapPin, LuMap, LuShield, LuClipboardList, LuClock, LuInfo } from "react-icons/lu";
 
 const T = { bg: "#060a14", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", gold: "#eab308", blue: "#38bdf8", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
@@ -346,7 +347,7 @@ export default function IPLookup() {
                 transition: "all 0.2s",
               }}
             >
-              {loading ? `Looking up${dots}` : "\u{1F50D} Lookup"}
+              {loading ? `Looking up${dots}` : <><LuSearch size={14} style={{ verticalAlign: "-2px", marginRight: 6 }} />Lookup</>}
             </button>
             <button
               onClick={checkMyIp}
@@ -357,7 +358,7 @@ export default function IPLookup() {
                 fontFamily: fonts.heading, whiteSpace: "nowrap", opacity: myIpLoading ? 0.6 : 1, transition: "all 0.2s",
               }}
             >
-              {myIpLoading ? `Checking${dots}` : "\u{1F310} Check My IP"}
+              {myIpLoading ? `Checking${dots}` : <><LuGlobe size={14} style={{ verticalAlign: "-2px", marginRight: 6 }} />Check My IP</>}
             </button>
           </div>
           <p style={{ color: T.mutedDark, fontSize: 12, fontFamily: fonts.mono }}>
@@ -374,7 +375,7 @@ export default function IPLookup() {
         {error && (
           <div style={{ maxWidth: 900, margin: "0 auto 20px", padding: "0 20px" }}>
             <div style={{ background: `${T.red}12`, border: `1px solid ${T.red}30`, borderRadius: 10, padding: "14px 20px", display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ fontSize: 18 }}>{"\u26A0\uFE0F"}</span>
+              <LuTriangleAlert size={18} color={T.red} />
               <span style={{ color: T.red, fontSize: 14, fontFamily: fonts.body }}>{error}</span>
             </div>
           </div>
@@ -445,7 +446,7 @@ export default function IPLookup() {
                   })}
                   style={{ padding: "8px 16px", background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 8, color: "#818cf8", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Vrikaan Sans'" }}
                 >
-                  📄 Export Report
+                  <LuFileText size={14} /> Export Report
                 </button>
                 <Badge color={result.threat.color}>{result.threat.level} Risk</Badge>
                 <span style={{ fontFamily: fonts.mono, fontSize: 12, color: T.muted }}>{result.isp}</span>
@@ -456,7 +457,7 @@ export default function IPLookup() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16, marginBottom: 16 }}>
 
               {/* Network Info */}
-              <Card title="Network Information" icon={"\u{1F4E1}"}>
+              <Card title="Network Information" icon={<LuRadar size={18} color={T.cyan} />}>
                 <InfoRow label="IP Address" value={result.query} mono />
                 <InfoRow label="ISP" value={result.isp} />
                 <InfoRow label="Organization" value={result.org} />
@@ -467,7 +468,7 @@ export default function IPLookup() {
               </Card>
 
               {/* Geolocation */}
-              <Card title="Geolocation" icon={"\u{1F4CD}"}>
+              <Card title="Geolocation" icon={<LuMapPin size={18} color={T.cyan} />}>
                 <InfoRow label="Country" value={`${getFlag(result.countryCode)} ${result.country} (${result.countryCode})`} />
                 <InfoRow label="Region" value={result.regionName || "N/A"} />
                 <InfoRow label="City" value={result.city || "N/A"} />
@@ -482,7 +483,7 @@ export default function IPLookup() {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 16, marginBottom: 16 }}>
 
               {/* Map */}
-              <Card title="Location Map" icon={"\u{1F5FA}\uFE0F"}>
+              <Card title="Location Map" icon={<LuMap size={18} color={T.cyan} />}>
                 <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
                   <MiniMap lat={result.lat} lon={result.lon} />
                 </div>
@@ -494,7 +495,7 @@ export default function IPLookup() {
               </Card>
 
               {/* Threat Assessment */}
-              <Card title="Threat Assessment" icon={"\u{1F6E1}\uFE0F"}>
+              <Card title="Threat Assessment" icon={<LuShield size={18} color={T.cyan} />}>
                 <div style={{ textAlign: "center", marginBottom: 16 }}>
                   <div style={{
                     width: 80, height: 80, borderRadius: "50%", margin: "0 auto 12px",
@@ -534,7 +535,7 @@ export default function IPLookup() {
             {/* Raw Data */}
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: 20, marginBottom: 16 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-                <span style={{ fontSize: 18 }}>{"\u{1F4CB}"}</span>
+                <LuClipboardList size={18} color={T.cyan} />
                 <span style={{ fontFamily: fonts.heading, fontWeight: 600, fontSize: 15, color: T.white }}>Raw API Response</span>
               </div>
               <pre style={{
@@ -570,7 +571,7 @@ export default function IPLookup() {
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: 20 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ fontSize: 18 }}>{"\u{1F553}"}</span>
+                  <LuClock size={18} color={T.cyan} />
                   <span style={{ fontFamily: fonts.heading, fontWeight: 600, fontSize: 15, color: T.white }}>Recent Lookups</span>
                   <span style={{ fontFamily: fonts.mono, fontSize: 11, color: T.muted }}>({history.length})</span>
                 </div>
@@ -623,10 +624,10 @@ export default function IPLookup() {
           <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 20px 80px" }}>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
               {[
-                { icon: "\u{1F4CD}", title: "Geolocation", desc: "Find the physical location of any IP address including country, region, and city." },
-                { icon: "\u{1F4E1}", title: "Network Details", desc: "Discover ISP, organization, AS number, and reverse DNS information." },
-                { icon: "\u{1F6E1}\uFE0F", title: "Threat Intel", desc: "Assess risk level based on IP type - datacenter, proxy, VPN, or residential." },
-                { icon: "\u{1F5FA}\uFE0F", title: "Visual Mapping", desc: "See the approximate location plotted on an interactive world map visualization." },
+                { icon: <LuMapPin size={32} color={T.cyan} />, title: "Geolocation", desc: "Find the physical location of any IP address including country, region, and city." },
+                { icon: <LuRadar size={32} color={T.cyan} />, title: "Network Details", desc: "Discover ISP, organization, AS number, and reverse DNS information." },
+                { icon: <LuShield size={32} color={T.cyan} />, title: "Threat Intel", desc: "Assess risk level based on IP type - datacenter, proxy, VPN, or residential." },
+                { icon: <LuMap size={32} color={T.cyan} />, title: "Visual Mapping", desc: "See the approximate location plotted on an interactive world map visualization." },
               ].map((f, i) => (
                 <div key={i} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: 24, textAlign: "center" }}>
                   <div style={{ fontSize: 32, marginBottom: 12 }}>{f.icon}</div>
@@ -638,7 +639,7 @@ export default function IPLookup() {
 
             {/* Info notice */}
             <div style={{ marginTop: 32, background: `${T.accent}08`, border: `1px solid ${T.accent}18`, borderRadius: 10, padding: "16px 20px", display: "flex", alignItems: "flex-start", gap: 12 }}>
-              <span style={{ fontSize: 16, flexShrink: 0, marginTop: 1 }}>{"\u{2139}\uFE0F"}</span>
+              <LuInfo size={16} color={T.accent} style={{ flexShrink: 0, marginTop: 1 }} />
               <div>
                 <p style={{ color: T.white, fontSize: 13, fontWeight: 600, margin: "0 0 4px", fontFamily: fonts.heading }}>About This Tool</p>
                 <p style={{ color: T.muted, fontSize: 12, margin: 0, lineHeight: 1.6 }}>

@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import ThreatMapLive from "../../components/ThreatMapLive";
 import SEO from "../../components/SEO";
+import { LuCircleAlert, LuRadar, LuActivity, LuGlobe, LuTag } from "react-icons/lu";
 
 const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", ember: "#f97316", red: "#ef4444", gold: "#eab308", purple: "#a78bfa", blue: "#38bdf8", green: "#22c55e", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
@@ -118,13 +119,13 @@ export default function ThreatMap() {
         {realData && (
           <div className="resp-grid-4" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14, marginBottom: 24 }}>
             {[
-              { label: "Active Threats", value: realData.stats.totalThreats || 0, color: T.red, icon: "🔴" },
-              { label: "Malware URLs", value: realData.stats.malwareUrls || 0, color: T.ember, icon: "🦠" },
-              { label: "Botnet C&Cs", value: realData.stats.botnets || 0, color: T.purple, icon: "🤖" },
-              { label: "Countries Hit", value: Object.keys(realData.stats.countries).length || 0, color: T.cyan, icon: "🌍" },
+              { label: "Active Threats", value: realData.stats.totalThreats || 0, color: T.red, Icon: LuCircleAlert },
+              { label: "Malware URLs", value: realData.stats.malwareUrls || 0, color: T.ember, Icon: LuRadar },
+              { label: "Botnet C&Cs", value: realData.stats.botnets || 0, color: T.purple, Icon: LuActivity },
+              { label: "Countries Hit", value: Object.keys(realData.stats.countries).length || 0, color: T.cyan, Icon: LuGlobe },
             ].map((s, i) => (
               <div key={i} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: "16px 18px", textAlign: "center" }}>
-                <div style={{ fontSize: 18, marginBottom: 6 }}>{s.icon}</div>
+                <div style={{ marginBottom: 6, display: "flex", justifyContent: "center" }}><s.Icon size={18} color={s.color} /></div>
                 <div style={{ fontFamily: "'Vrikaan Sans'", fontSize: 24, fontWeight: 800, color: s.color }}>{s.value}</div>
                 <div style={{ fontSize: 10, color: T.mutedDark, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5 }}>{s.label}</div>
               </div>
@@ -234,7 +235,7 @@ export default function ThreatMap() {
           <div style={{ marginTop: 24, background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
               <h3 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 16, fontWeight: 600, margin: 0, display: "flex", alignItems: "center", gap: 8 }}>
-                🦠 Real-Time Malware Feed
+                <LuRadar size={16} color={T.red} /> Real-Time Malware Feed
               </h3>
               <span style={{ fontSize: 10, color: T.cyan, fontWeight: 600, padding: "3px 10px", borderRadius: 6, background: `${T.cyan}10`, border: `1px solid ${T.cyan}20` }}>URLhaus — LIVE</span>
             </div>
@@ -249,8 +250,8 @@ export default function ThreatMap() {
                     {m.url?.substring(0, 70)}{m.url?.length > 70 ? "..." : ""}
                   </div>
                   <div style={{ display: "flex", gap: 12, fontSize: 10, color: T.mutedDark }}>
-                    <span>🌍 {m.country || "Unknown"}</span>
-                    {m.tags?.length > 0 && <span>🏷️ {m.tags.slice(0, 2).join(", ")}</span>}
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}><LuGlobe size={11} /> {m.country || "Unknown"}</span>
+                    {m.tags?.length > 0 && <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}><LuTag size={11} /> {m.tags.slice(0, 2).join(", ")}</span>}
                   </div>
                 </div>
               ))}

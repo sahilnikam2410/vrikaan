@@ -1,5 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
+import {
+  LuMonitor, LuLaptop, LuShield, LuScanLine, LuDownload, LuHardDrive,
+  LuUsb, LuLayoutGrid, LuRefreshCw, LuLock, LuGlobe, LuRadio, LuWrench,
+  LuMail, LuTriangleAlert, LuCircleCheck, LuEye, LuKey, LuStar,
+} from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
@@ -28,7 +33,7 @@ function detectOS() {
 // Auto-link to latest GitHub Release asset by OS
 const DOWNLOADS = {
   windows: {
-    icon: "🪟",
+    Icon: LuMonitor,
     label: "Windows",
     desc: "Windows 10 / 11 · 64-bit",
     file: "VRIKAAN-Setup.exe",
@@ -37,7 +42,7 @@ const DOWNLOADS = {
     eta: "Q2 2026",
   },
   mac: {
-    icon: "",
+    Icon: LuLaptop,
     label: "macOS",
     desc: "macOS 12 Monterey or later · Universal (Intel + Apple Silicon)",
     file: "VRIKAAN.dmg",
@@ -46,7 +51,7 @@ const DOWNLOADS = {
     eta: "Q2 2026",
   },
   linux: {
-    icon: "🐧",
+    Icon: LuHardDrive,
     label: "Linux",
     desc: "AppImage · works on any modern Linux distro",
     file: "VRIKAAN.AppImage",
@@ -57,14 +62,14 @@ const DOWNLOADS = {
 };
 
 const FEATURES = [
-  { icon: "🖥", title: "Whole-disk scan", desc: "Walk any folder, any depth — hashes every executable / archive / document, checks against malware DBs. 10,000 files in ~2 min." },
-  { icon: "🔁", title: "Real-time download watcher", desc: "Background service auto-scans every new download in your Downloads folder. Native notification if a threat lands." },
-  { icon: "💾", title: "USB drive auto-scan", desc: "When you plug a USB stick in, VRIKAAN scans it before you can open anything." },
-  { icon: "📊", title: "System tray", desc: "Always-on protection from your taskbar. Right-click for quick scan, status check, settings." },
-  { icon: "🔄", title: "Auto-update", desc: "New malware signatures + features ship every week. Updates download silently, install on next launch." },
-  { icon: "🔒", title: "Privacy-first", desc: "Files NEVER leave your device. Only the 64-char SHA-256 hash crosses the network to check the malware DB." },
-  { icon: "🌐", title: "Same web UI", desc: "Native wrapper around vrikaan.com — all 50+ web tools still work, plus the disk-scan native ones." },
-  { icon: "📡", title: "Works offline (mostly)", desc: "Cached malware signatures let you scan without internet. Sync newest signatures when you come online." },
+  { Icon: LuScanLine, title: "Whole-disk scan", desc: "Walk any folder, any depth — hashes every executable / archive / document, checks against malware DBs. 10,000 files in ~2 min." },
+  { Icon: LuDownload, title: "Real-time download watcher", desc: "Background service auto-scans every new download in your Downloads folder. Native notification if a threat lands." },
+  { Icon: LuUsb, title: "USB drive auto-scan", desc: "When you plug a USB stick in, VRIKAAN scans it before you can open anything." },
+  { Icon: LuLayoutGrid, title: "System tray", desc: "Always-on protection from your taskbar. Right-click for quick scan, status check, settings." },
+  { Icon: LuRefreshCw, title: "Auto-update", desc: "New malware signatures + features ship every week. Updates download silently, install on next launch." },
+  { Icon: LuLock, title: "Privacy-first", desc: "Files NEVER leave your device. Only the 64-char SHA-256 hash crosses the network to check the malware DB." },
+  { Icon: LuGlobe, title: "Same web UI", desc: "Native wrapper around vrikaan.com — all 50+ web tools still work, plus the disk-scan native ones." },
+  { Icon: LuRadio, title: "Works offline (mostly)", desc: "Cached malware signatures let you scan without internet. Sync newest signatures when you come online." },
 ];
 
 const COMPARISON = [
@@ -165,7 +170,8 @@ export default function Desktop() {
             background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}40`,
             fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
             color: T.cyan, marginBottom: 14,
-          }}>{isPreRelease ? "🚧 Coming Q2 2026 · Join waitlist" : "✓ Live · Free · India-built"}</span>
+            display: "inline-flex", alignItems: "center", gap: 6,
+          }}>{isPreRelease ? <><LuWrench size={13} style={{ verticalAlign: "-2px" }} /> Coming Q2 2026 · Join waitlist</> : <><LuCircleCheck size={13} style={{ verticalAlign: "-2px" }} /> Live · Free · India-built</>}</span>
           <h1 style={{
             fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 5vw, 60px)",
             fontWeight: 800, color: T.white, margin: "0 0 14px", lineHeight: 1.1,
@@ -189,7 +195,7 @@ export default function Desktop() {
               fontSize: 11, fontWeight: 800, letterSpacing: 1.5, color: T.cyan,
               textTransform: "uppercase", marginBottom: 10,
             }}>Detected: {primary.label}</div>
-            <div style={{ fontSize: 50, marginBottom: 8 }}>{primary.icon}</div>
+            <div style={{ marginBottom: 8 }}><primary.Icon size={50} color={T.cyan} /></div>
             <div style={{ color: T.white, fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{primary.file}</div>
             <div style={{ color: T.muted, fontSize: 13, marginBottom: 18 }}>{primary.desc} · {primary.size}</div>
 
@@ -199,14 +205,16 @@ export default function Desktop() {
                 padding: "14px 32px", borderRadius: 12,
                 background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 16,
                 textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
-              }}>📧 Notify me when ready ({primary.eta}) →</a>
+                display: "inline-flex", alignItems: "center", gap: 8,
+              }}><LuMail size={16} /> Notify me when ready ({primary.eta}) →</a>
             ) : (
               <a href={primary.url} style={{
                 display: "inline-block",
                 padding: "14px 32px", borderRadius: 12,
                 background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 16,
                 textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
-              }}>⬇ Download {primary.label} · {primary.size}</a>
+                display: "inline-flex", alignItems: "center", gap: 8,
+              }}><LuDownload size={16} /> Download {primary.label} · {primary.size}</a>
             )}
           </div>
         ) : (
@@ -214,8 +222,9 @@ export default function Desktop() {
             background: T.card, border: `1px solid ${T.border}`, borderRadius: 14,
             padding: 20, marginBottom: 18, textAlign: "center",
             color: T.muted, fontSize: 13,
+            display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
           }}>
-            👀 We can't detect your OS — pick one below.
+            <LuEye size={16} /> We can't detect your OS — pick one below.
           </div>
         )}
 
@@ -227,13 +236,13 @@ export default function Desktop() {
           {others.map(([key, d]) => (
             isPreRelease ? (
               <a key={key} href="#waitlist" onClick={(e) => { e.preventDefault(); document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" }); }} style={otherDownloadStyle()}>
-                <div style={{ fontSize: 28, marginBottom: 6 }}>{d.icon}</div>
+                <div style={{ marginBottom: 6 }}><d.Icon size={28} color={T.cyan} /></div>
                 <div style={{ color: T.white, fontWeight: 700, fontSize: 14 }}>{d.label}</div>
                 <div style={{ color: T.muted, fontSize: 11, marginTop: 4 }}>{d.eta} · {d.size}</div>
               </a>
             ) : (
               <a key={key} href={d.url} style={otherDownloadStyle()}>
-                <div style={{ fontSize: 28, marginBottom: 6 }}>{d.icon}</div>
+                <div style={{ marginBottom: 6 }}><d.Icon size={28} color={T.cyan} /></div>
                 <div style={{ color: T.white, fontWeight: 700, fontSize: 14 }}>{d.label}</div>
                 <div style={{ color: T.muted, fontSize: 11, marginTop: 4 }}>{d.size}</div>
               </a>
@@ -251,7 +260,8 @@ export default function Desktop() {
             <h2 style={{
               fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, color: T.white,
               margin: "0 0 8px",
-            }}>📧 Get the link when it ships</h2>
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            }}><LuMail size={20} /> Get the link when it ships</h2>
             <p style={{ color: T.muted, fontSize: 13, margin: "0 0 18px" }}>
               ~3,400 already waiting. We'll email the moment v1.0 is signed + downloadable.
             </p>
@@ -260,7 +270,8 @@ export default function Desktop() {
                 padding: 14, borderRadius: 10, color: T.green,
                 background: `${T.green}1a`, border: `1px solid ${T.green}55`,
                 fontWeight: 700, fontSize: 14, maxWidth: 400, margin: "0 auto",
-              }}>✓ You're on the list. Welcome — we'll email when Desktop drops.</div>
+                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              }}><LuCircleCheck size={16} /> You're on the list. Welcome — we'll email when Desktop drops.</div>
             ) : (
               <form onSubmit={onWaitlist} style={{
                 display: "flex", gap: 10, maxWidth: 500, margin: "0 auto", flexWrap: "wrap",
@@ -301,7 +312,7 @@ export default function Desktop() {
                 padding: 20, borderRadius: 14,
                 background: T.card, border: `1px solid ${T.border}`,
               }}>
-                <div style={{ fontSize: 28, marginBottom: 10 }}>{f.icon}</div>
+                <div style={{ marginBottom: 10 }}><f.Icon size={28} color={T.cyan} /></div>
                 <div style={{ color: T.white, fontWeight: 700, fontSize: 15, marginBottom: 6 }}>{f.title}</div>
                 <div style={{ color: T.muted, fontSize: 13, lineHeight: 1.6 }}>{f.desc}</div>
               </div>
@@ -394,8 +405,8 @@ export default function Desktop() {
           padding: 26, borderRadius: 18, marginBottom: 36,
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
-          <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, color: T.white, margin: "0 0 14px" }}>
-            🛠 Tech specs (for the curious)
+          <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, color: T.white, margin: "0 0 14px", display: "flex", alignItems: "center", gap: 8 }}>
+            <LuWrench size={22} /> Tech specs (for the curious)
           </h2>
           <div style={{
             display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
@@ -431,14 +442,14 @@ export default function Desktop() {
             background: "rgba(20, 184, 166,0.06)", border: `1px solid ${T.cyan}33`,
             color: T.muted, fontSize: 12, lineHeight: 1.6,
           }}>
-            🔓 <strong style={{ color: T.white }}>Source code:</strong> <a href="https://github.com/sahilnikam2410/vrikaan" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan }}>github.com/sahilnikam2410/vrikaan</a> · Electron wrapper at <code>/desktop</code>. Build it yourself if you don't trust prebuilt binaries.
+            <LuKey size={13} style={{ verticalAlign: "-2px" }} /> <strong style={{ color: T.white }}>Source code:</strong> <a href="https://github.com/sahilnikam2410/vrikaan" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan }}>github.com/sahilnikam2410/vrikaan</a> · Electron wrapper at <code>/desktop</code>. Build it yourself if you don't trust prebuilt binaries.
           </div>
         </section>
 
         {/* Bottom CTAs */}
         <section style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
           <Link to="/device-scan" style={ctaCard(T.cyan)}>
-            <div style={{ fontSize: 22, marginBottom: 6 }}>🛡</div>
+            <div style={{ marginBottom: 6 }}><LuShield size={22} color={T.cyan} /></div>
             <div style={{ color: T.white, fontWeight: 700, fontSize: 14 }}>Try web scanner first</div>
             <div style={{ color: T.muted, fontSize: 12, marginTop: 4 }}>No download needed · 10 files / day free</div>
           </Link>

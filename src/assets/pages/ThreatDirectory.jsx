@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO, { breadcrumbSchema } from "../../components/SEO";
 import THREATS, { THREAT_CATEGORIES } from "../../data/threats";
+import { LuArrowRight } from "react-icons/lu";
 
 const T = {
   bg: "#060a14",
@@ -188,7 +189,7 @@ export default function ThreatDirectory() {
                     gap: 4,
                   }}
                 >
-                  Read guide <span>→</span>
+                  Read guide <LuArrowRight size={14} />
                 </div>
               </Link>
             ))}

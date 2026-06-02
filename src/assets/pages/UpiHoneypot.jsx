@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import SeniorModeBanner from "../../components/SeniorModeBanner";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
+import { LuTriangleAlert, LuCircleCheck, LuLock } from "react-icons/lu";
 
 const T = {
   bg: "#060a14", card: "rgba(17,24,39,0.7)",
@@ -208,7 +209,7 @@ export default function UpiHoneypot() {
                 background: `${T.red}1a`, border: `1px solid ${T.red}55`,
                 color: T.white, fontSize: 13, lineHeight: 1.7,
               }}>
-                🚨 <strong>This UPI was REPORTED as scam.</strong><br/>
+                <LuTriangleAlert size={13} style={{ verticalAlign: "-2px" }} /> <strong>This UPI was REPORTED as scam.</strong><br/>
                 Category: <strong style={{ color: T.red }}>{matchInDb.category}</strong> · Reported {matchInDb.date} by {matchInDb.reportedBy}<br/>
                 Evidence: "{matchInDb.evidence}"
               </div>
@@ -259,7 +260,7 @@ export default function UpiHoneypot() {
                   padding: "10px 20px", borderRadius: 10,
                   background: T.red, color: "#fff", border: 0,
                   fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit",
-                }}>🚨 Report this UPI as scam</button>
+                }}><LuTriangleAlert size={13} style={{ verticalAlign: "-2px" }} /> Report this UPI as scam</button>
               </div>
             ) : (
               <div style={{ display: "grid", gap: 10 }}>
@@ -301,7 +302,7 @@ export default function UpiHoneypot() {
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
           <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
-            ✅ Before you pay any UPI ID, always:
+            <LuCircleCheck size={18} style={{ verticalAlign: "-3px" }} color={T.green} /> Before you pay any UPI ID, always:
           </h3>
           <ol style={{ margin: 0, paddingLeft: 20, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>
             <li><strong style={{ color: T.cyan }}>Type UPI ID manually</strong> — never tap "Pay this number" from a chat/SMS link.</li>
@@ -317,7 +318,7 @@ export default function UpiHoneypot() {
           marginTop: 32, padding: 16, color: T.mutedDark, fontSize: 12,
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
-          🔒 Your reports are stored in your browser's localStorage (not shared yet).
+          <LuLock size={13} style={{ verticalAlign: "-2px" }} /> Your reports are stored in your browser's localStorage (not shared yet).
           We're building a Firestore-backed shared database for v2 — your reports will sync once you sign in.<br/>
           🇮🇳 Built in Nashik · Free forever
         </p>

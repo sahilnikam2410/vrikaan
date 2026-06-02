@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { LuTriangleAlert, LuMic, LuActivity, LuDownload, LuX, LuCircleAlert, LuFile, LuList, LuLock } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
@@ -137,7 +138,7 @@ export default function VoiceprintVault() {
           background: `${T.red}0a`, border: `1px solid ${T.red}33`,
         }}>
           <div style={{ fontSize: 11, fontWeight: 800, letterSpacing: 1.5, color: T.red, textTransform: "uppercase", marginBottom: 6 }}>
-            ⚠ Why pre-record now
+            <LuTriangleAlert size={13} style={{ verticalAlign: "-2px" }} /> Why pre-record now
           </div>
           <div style={{ color: T.white, fontSize: 14, lineHeight: 1.7 }}>
             AI voice clones built from just 3 seconds of public audio. Mom panics → sends ₹50k. <strong style={{ color: T.cyan }}>Comparing the scam call to your real voice = 95%+ detection.</strong> But you need a real reference. Record once. Use forever.
@@ -150,7 +151,7 @@ export default function VoiceprintVault() {
           padding: 22, marginBottom: 18,
         }}>
           <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
-            🎙 Record a sample
+            <LuMic size={20} style={{ verticalAlign: "-3px" }} /> Record a sample
           </h2>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 14 }} className="vp-name-row">
@@ -213,7 +214,7 @@ export default function VoiceprintVault() {
                 background: `${T.red}22`, color: T.red,
                 fontSize: 12, fontWeight: 700,
                 animation: "pulse 1s infinite",
-              }}>🔴 REC {recordedDuration}s / 30s</div>
+              }}><LuActivity size={12} style={{ verticalAlign: "-2px" }} /> REC {recordedDuration}s / 30s</div>
             )}
           </div>
 
@@ -226,13 +227,13 @@ export default function VoiceprintVault() {
                   padding: "10px 18px", borderRadius: 10,
                   background: T.green, color: T.bg, border: 0,
                   fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "inherit",
-                }}>💾 Save voiceprint</button>
+                }}><LuDownload size={13} style={{ verticalAlign: "-2px" }} /> Save voiceprint</button>
                 <button onClick={() => setRecordedBlob(null)} style={{
                   padding: "10px 18px", borderRadius: 10,
                   background: "transparent", color: T.muted,
                   border: `1px solid ${T.border}`, fontSize: 13, fontWeight: 600,
                   cursor: "pointer", fontFamily: "inherit",
-                }}>🗑 Discard, re-record</button>
+                }}><LuX size={13} style={{ verticalAlign: "-2px" }} /> Discard, re-record</button>
               </div>
             </div>
           )}
@@ -242,7 +243,7 @@ export default function VoiceprintVault() {
               marginTop: 14, padding: 12, borderRadius: 10,
               background: `${T.red}1a`, border: `1px solid ${T.red}55`,
               color: T.red, fontSize: 13,
-            }}>❌ {error}</div>
+            }}><LuCircleAlert size={13} style={{ verticalAlign: "-2px" }} /> {error}</div>
           )}
         </div>
 
@@ -252,7 +253,7 @@ export default function VoiceprintVault() {
           padding: 20, marginBottom: 24,
         }}>
           <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
-            📁 Saved voiceprints ({members.length})
+            <LuFile size={18} style={{ verticalAlign: "-3px" }} /> Saved voiceprints ({members.length})
           </h2>
           {members.length === 0 ? (
             <p style={{ color: T.muted, fontSize: 13, margin: 0 }}>None yet. Record above ↑</p>
@@ -288,7 +289,7 @@ export default function VoiceprintVault() {
           border: `1px solid ${T.cyan}33`,
         }}>
           <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
-            🎯 How to use these later
+            <LuList size={18} style={{ verticalAlign: "-3px" }} /> How to use these later
           </h3>
           <ol style={{ margin: 0, paddingLeft: 18, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>
             <li>Record + screenshot the suspicious call (Android: built-in recorder · iOS: Voice Memos w/ speakerphone)</li>
@@ -303,7 +304,7 @@ export default function VoiceprintVault() {
           marginTop: 32, padding: 16, color: T.mutedDark, fontSize: 12,
           textAlign: "center", lineHeight: 1.7, borderTop: `1px solid ${T.border}`,
         }}>
-          🔒 All recordings encoded as base64 in your browser's localStorage. Never uploaded. Clear browser data → samples gone.
+          <LuLock size={13} style={{ verticalAlign: "-2px" }} /> All recordings encoded as base64 in your browser's localStorage. Never uploaded. Clear browser data → samples gone.
           Recommendation: download local backup ZIP every 6 months.<br/>
           🇮🇳 Built in Pune · Free forever
         </p>
