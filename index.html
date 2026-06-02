@@ -52,8 +52,10 @@
          Each page that uses /wolf-mark.webp now loads it via a normal <img> tag
          with fetchpriority="high"; preload removed here to silence the
          "preloaded but not used" Lighthouse warning. -->
-    <!-- Self-hosted Vrikaan brand fonts (no Google Fonts request). @font-face in src/styles/fonts.css -->
-    <link rel="preload" href="/fonts/vrikaan-sans.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Self-hosted Vrikaan brand fonts (no Google Fonts request). @font-face in
+         src/styles/fonts.css. Preload removed: on JS-heavy tool pages the font
+         is consumed after Chrome's "preloaded but not used in a few seconds"
+         window, which spammed warnings. font-display:swap already covers FOIT. -->
     <title>VRIKAAN — AI-Powered Cyber Defense Platform</title>
 
     <!-- JSON-LD Structured Data -->

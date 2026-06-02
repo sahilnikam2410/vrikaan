@@ -51,6 +51,18 @@ requestAnimationFrame(() => requestAnimationFrame(() => {
   window.dispatchEvent(new Event("vrikaan:ready"));
 }));
 
+// Stale-chunk recovery: after a new deploy, an already-open tab still references
+// the OLD hashed chunk filenames. Navigating to a lazy route then 404s with
+// "Failed to fetch dynamically imported module". Vite fires `vite:preloadError`
+// — reload once (loop-guarded) to pull the fresh index.html + new chunks.
+window.addEventListener("vite:preloadError", () => {
+  const last = Number(sessionStorage.getItem("vrikaan_chunkReloadAt")) || 0;
+  if (Date.now() - last > 10000) {
+    sessionStorage.setItem("vrikaan_chunkReloadAt", String(Date.now()));
+    window.location.reload();
+  }
+});
+
 // PWA Service Worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
