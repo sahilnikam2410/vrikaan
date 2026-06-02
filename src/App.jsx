@@ -68,7 +68,7 @@ const RouteLoader = () => {
     // Skip on the very first render — the index.html splash already covers it
     if (firstMount) { setFirstMount(false); return; }
     setShow(true);
-    const t = setTimeout(() => setShow(false), 1200);
+    const t = setTimeout(() => setShow(false), 500);
     return () => clearTimeout(t);
   }, [location.pathname]);
 
@@ -80,6 +80,7 @@ const RouteLoader = () => {
       display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
       fontFamily: "system-ui, sans-serif",
       animation: "rl-fade 0.3s ease-out",
+      pointerEvents: "none", // never intercept clicks — was forcing users to click twice
     }}>
       <style>{`
         @keyframes rl-fade { from { opacity: 0 } to { opacity: 1 } }

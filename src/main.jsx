@@ -45,6 +45,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </React.StrictMode>
 );
 
+// Tell splash.js the app is mounted so it can hide immediately (no fixed 5s wait
+// that was blocking clicks on first load). Double rAF = after first paint.
+requestAnimationFrame(() => requestAnimationFrame(() => {
+  window.dispatchEvent(new Event("vrikaan:ready"));
+}));
+
 // PWA Service Worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
