@@ -72,7 +72,7 @@ export default function ScamRecovery() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="Scam Recovery Hotline — What to do now"
         description="Just got scammed? Get a personalized recovery plan in 30 seconds — exact helplines, pre-filled FIR draft, NPCI/RBI dispute steps, IPC sections. Free, India-first."
@@ -92,7 +92,7 @@ export default function ScamRecovery() {
             color: T.red, marginBottom: 14,
           }}>🚨 Emergency · Free · No Signup</span>
           <h1 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Just got scammed?<br />
@@ -124,7 +124,7 @@ export default function ScamRecovery() {
           <a href="tel:1930" style={{
             padding: "12px 22px", borderRadius: 10,
             background: T.red, color: "#fff", textDecoration: "none",
-            fontWeight: 800, fontSize: 15, fontFamily: "'Space Grotesk', sans-serif",
+            fontWeight: 800, fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif",
           }}>📞 Call 1930</a>
         </div>
 
@@ -135,7 +135,7 @@ export default function ScamRecovery() {
             padding: 26,
           }}>
             <h2 style={{
-              fontFamily: "'Space Grotesk', sans-serif", fontSize: 22,
+              fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22,
               color: T.white, margin: "0 0 18px",
             }}>30-second triage</h2>
 
@@ -195,7 +195,7 @@ export default function ScamRecovery() {
                 color: scamType ? "#fff" : T.muted,
                 border: 0, fontWeight: 800, fontSize: 15,
                 cursor: scamType ? "pointer" : "not-allowed",
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "'Hanken Grotesk', sans-serif",
                 width: "100%", marginTop: 8,
               }}
             >🚨 Show my recovery plan →</button>
@@ -213,7 +213,7 @@ export default function ScamRecovery() {
               <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap", marginBottom: 14 }}>
                 <span style={{ fontSize: 36 }}>{plan.scam.emoji}</span>
                 <div style={{ flex: 1, minWidth: 200 }}>
-                  <h2 style={{ margin: 0, fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, color: T.white }}>
+                  <h2 style={{ margin: 0, fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white }}>
                     {plan.scam.label}
                   </h2>
                   <div style={{ color: T.muted, fontSize: 13, marginTop: 4 }}>
@@ -250,7 +250,7 @@ export default function ScamRecovery() {
             {/* Escalation steps */}
             <div>
               <h3 style={{
-                fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: T.white,
+                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, color: T.white,
                 margin: "0 0 14px",
               }}>📋 Do these in order — fastest recovery path</h3>
               <div style={{ display: "grid", gap: 12 }}>
@@ -266,7 +266,7 @@ export default function ScamRecovery() {
                         background: i === 0 ? T.red : T.cyan, color: "#030712",
                         display: "flex", alignItems: "center", justifyContent: "center",
                         fontWeight: 800, fontSize: 14,
-                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontFamily: "'Hanken Grotesk', sans-serif",
                       }}>{i + 1}</span>
                       <div style={{ flex: 1 }}>
                         <div style={{ color: T.white, fontSize: 16, fontWeight: 700 }}>{s.title}</div>
@@ -284,7 +284,7 @@ export default function ScamRecovery() {
                       <a href={s.url} target="_blank" rel="noopener noreferrer" style={{
                         padding: "8px 14px", borderRadius: 8,
                         background: T.cyan, color: T.bg, textDecoration: "none",
-                        fontWeight: 700, fontSize: 12, fontFamily: "'Space Grotesk', sans-serif",
+                        fontWeight: 700, fontSize: 12, fontFamily: "'Hanken Grotesk', sans-serif",
                       }}>🔗 Open portal</a>
                       <div style={{ flex: 1 }} />
                       <div style={{
@@ -302,7 +302,7 @@ export default function ScamRecovery() {
             <div style={{
               background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 20,
             }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
                 ☎️ Helplines — call in this order
               </h3>
               <div style={{ display: "grid", gap: 8 }}>
@@ -330,7 +330,7 @@ export default function ScamRecovery() {
             <div style={{
               background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 20,
             }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 8px" }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 8px" }}>
                 📄 Pre-filled FIR / cybercrime complaint
               </h3>
               <p style={{ color: T.muted, fontSize: 13, margin: "0 0 14px" }}>
@@ -374,7 +374,7 @@ export default function ScamRecovery() {
               padding: 18, borderRadius: 14,
               background: `${T.red}0a`, border: `1px solid ${T.red}33`,
             }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, color: T.red, margin: "0 0 10px" }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, color: T.red, margin: "0 0 10px" }}>
                 ❌ Don't do these — they make recovery harder
               </h3>
               <ul style={{ margin: 0, paddingLeft: 18, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>
@@ -399,7 +399,7 @@ export default function ScamRecovery() {
                 display: "inline-block", marginTop: 10,
                 padding: "10px 22px", borderRadius: 10,
                 background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 14,
-                textDecoration: "none", fontFamily: "'Space Grotesk', sans-serif",
+                textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
               }}>Scan a suspicious message →</Link>
             </div>
           </div>

@@ -34,7 +34,7 @@ export default function ReceiptAudit() {
   }, [text, gstin, subtotal, cgst, sgst, igst, service, tip, total]);
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="Receipt Authenticity Scanner — Verify Indian Bills"
         description="Spot fake restaurant / fuel / parking receipts in India. Validates GSTIN, checks CGST+SGST math, flags overcharge tax, identifies non-mandatory service charge. Free."
@@ -53,7 +53,7 @@ export default function ReceiptAudit() {
             color: T.cyan, marginBottom: 14,
           }}>FREE · India-First · GSTIN-aware</span>
           <h1 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Restaurant overcharging you?<br />
@@ -69,7 +69,7 @@ export default function ReceiptAudit() {
           background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24,
           marginBottom: 18,
         }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
+          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
             Paste receipt details
           </h2>
 
@@ -134,7 +134,7 @@ export default function ReceiptAudit() {
                   textTransform: "uppercase", marginBottom: 4,
                 }}>Verdict</div>
                 <div style={{
-                  fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 800,
+                  fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 28, fontWeight: 800,
                   color: result.verdict.color, lineHeight: 1.1,
                 }}>{result.verdict.label}</div>
                 <div style={{ color: T.muted, fontSize: 13, marginTop: 6 }}>
@@ -199,7 +199,7 @@ export default function ReceiptAudit() {
           marginTop: 36, padding: 24, borderRadius: 18,
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
+          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
             🇮🇳 India tax cheat-sheet
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }} className="ed-grid">

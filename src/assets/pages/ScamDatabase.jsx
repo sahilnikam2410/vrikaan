@@ -28,7 +28,7 @@ export default function ScamDatabase() {
   const filtered = scams.filter(s => (filter === "ALL" || s.type === filter) && (s.title.toLowerCase().includes(search.toLowerCase()) || s.desc.toLowerCase().includes(search.toLowerCase())));
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="Scam Database — Active Scam Tracker"
         description="Browse an active database of cyber scams: phishing, investment fraud, impersonation, romance scams, and more. Searchable, regularly updated, reported by users."
@@ -40,17 +40,17 @@ export default function ScamDatabase() {
         <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.red}0c`, border: `1px solid ${T.red}20`, fontSize: 11, fontWeight: 600, color: T.red, marginBottom: 16, letterSpacing: 0.5 }}>Community Reports</span>
-          <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Scam Database</h1>
+          <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Scam Database</h1>
           <p style={{ color: T.muted, fontSize: 16, maxWidth: 500, margin: "0 auto", lineHeight: 1.7 }}>Community-reported scams and fraud attempts. Learn to recognize and avoid them.</p>
         </div>
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search scams..." style={{ width: "100%", padding: "14px 20px", background: "rgba(0,0,0,0.3)", border: `1px solid ${T.border}`, borderRadius: 12, color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, outline: "none", marginBottom: 24 }} onFocus={e => e.target.style.borderColor = "rgba(99,102,241,0.3)"} onBlur={e => e.target.style.borderColor = T.border} />
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search scams..." style={{ width: "100%", padding: "14px 20px", background: "rgba(0,0,0,0.3)", border: `1px solid ${T.border}`, borderRadius: 12, color: T.white, fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, outline: "none", marginBottom: 24 }} onFocus={e => e.target.style.borderColor = "rgba(99,102,241,0.3)"} onBlur={e => e.target.style.borderColor = T.border} />
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 32 }}>
-          {types.map(t => (<button key={t} onClick={() => setFilter(t)} style={{ padding: "7px 14px", borderRadius: 8, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 11, fontWeight: 600, cursor: "pointer", transition: "all 0.3s", background: filter === t ? `${T.accent}15` : "rgba(148,163,184,0.04)", border: `1px solid ${filter === t ? T.accent + "30" : T.border}`, color: filter === t ? T.accent : T.mutedDark }}>{t}</button>))}
+          {types.map(t => (<button key={t} onClick={() => setFilter(t)} style={{ padding: "7px 14px", borderRadius: 8, fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 11, fontWeight: 600, cursor: "pointer", transition: "all 0.3s", background: filter === t ? `${T.accent}15` : "rgba(148,163,184,0.04)", border: `1px solid ${filter === t ? T.accent + "30" : T.border}`, color: filter === t ? T.accent : T.mutedDark }}>{t}</button>))}
         </div>
         <div style={{ display: "flex", gap: 16, marginBottom: 32, flexWrap: "wrap" }}>
           {[{ label: "Total Scams", val: scams.length, color: T.accent }, { label: "Critical", val: scams.filter(s => s.severity === "CRITICAL").length, color: T.red }, { label: "Total Reports", val: scams.reduce((a, s) => a + s.reports, 0).toLocaleString(), color: T.cyan }].map((s, i) => (
             <div key={i} style={{ padding: "12px 20px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 10, display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: s.color }}>{s.val}</span>
+              <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: s.color }}>{s.val}</span>
               <span style={{ fontSize: 12, color: T.mutedDark }}>{s.label}</span>
             </div>
           ))}
@@ -63,7 +63,7 @@ export default function ScamDatabase() {
                 <span style={{ padding: "3px 10px", borderRadius: 6, background: `${T.accent}08`, border: `1px solid ${T.accent}12`, fontSize: 10, fontWeight: 600, color: T.accent, fontFamily: "'JetBrains Mono', monospace" }}>{s.type}</span>
                 <span style={{ marginLeft: "auto", fontSize: 11, color: T.mutedDark }}>{s.date}</span>
               </div>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, margin: "0 0 8px" }}>{s.title}</h3>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, fontWeight: 600, margin: "0 0 8px" }}>{s.title}</h3>
               <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.7, margin: "0 0 12px" }}>{s.desc}</p>
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <span style={{ width: 6, height: 6, borderRadius: "50%", background: T.red }} />

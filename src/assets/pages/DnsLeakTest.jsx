@@ -79,16 +79,16 @@ export default function DnsLeakTest() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk',sans-serif" }}>
       <SEO title="DNS & WebRTC Leak Test" description="Check if your DNS queries or WebRTC connections are leaking your real IP." path="/dns-leak-test" />
       <Navbar />
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "120px 20px 60px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Space Grotesk',sans-serif" }}>DNS & WebRTC Leak Test</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Hanken Grotesk',sans-serif" }}>DNS & WebRTC Leak Test</h1>
         <p style={{ color: T.muted, fontSize: 14, marginBottom: 28 }}>Check if your DNS queries or WebRTC connections are leaking your real IP address.</p>
 
         {!result && (
           <div style={{ textAlign: "center", padding: "60px 20px" }}>
-            <button onClick={runTest} disabled={testing} style={{ padding: "16px 40px", borderRadius: 12, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 18, fontWeight: 700, cursor: testing ? "wait" : "pointer", fontFamily: "'Space Grotesk',sans-serif" }}>
+            <button onClick={runTest} disabled={testing} style={{ padding: "16px 40px", borderRadius: 12, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 18, fontWeight: 700, cursor: testing ? "wait" : "pointer", fontFamily: "'Hanken Grotesk',sans-serif" }}>
               {testing ? "Testing..." : "Run Leak Test"}
             </button>
             {testing && <p style={{ color: T.muted, fontSize: 14, marginTop: 16 }}>Checking DNS resolvers and WebRTC connections...</p>}
@@ -100,7 +100,7 @@ export default function DnsLeakTest() {
             {/* Status */}
             <div style={{ textAlign: "center", marginBottom: 28 }}>
               <div style={{ fontSize: 48, marginBottom: 8 }}>{result.overallStatus === "safe" ? "\u2705" : "\u26A0\uFE0F"}</div>
-              <h2 style={{ fontSize: 24, fontWeight: 700, color: result.overallStatus === "safe" ? T.green : T.red, fontFamily: "'Space Grotesk',sans-serif" }}>
+              <h2 style={{ fontSize: 24, fontWeight: 700, color: result.overallStatus === "safe" ? T.green : T.red, fontFamily: "'Hanken Grotesk',sans-serif" }}>
                 {result.overallStatus === "safe" ? "No Leaks Detected" : "Leak Detected!"}
               </h2>
             </div>

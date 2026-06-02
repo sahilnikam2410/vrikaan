@@ -7,8 +7,8 @@ const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 
 const sty = {
   card: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24, backdropFilter: "blur(10px)" },
-  btn: (bg, clr) => ({ padding: "12px 28px", background: bg, border: "none", borderRadius: 8, color: clr || "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "'Plus Jakarta Sans'", transition: "all 0.2s" }),
-  input: { width: "100%", padding: "14px 18px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 14, outline: "none", boxSizing: "border-box", fontFamily: "'Plus Jakarta Sans'" },
+  btn: (bg, clr) => ({ padding: "12px 28px", background: bg, border: "none", borderRadius: 8, color: clr || "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "'Hanken Grotesk'", transition: "all 0.2s" }),
+  input: { width: "100%", padding: "14px 18px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 14, outline: "none", boxSizing: "border-box", fontFamily: "'Hanken Grotesk'" },
 };
 
 // ─── SHA-1 via Web Crypto API ───
@@ -106,11 +106,11 @@ export default function PasswordChecker() {
   }
 
   const wrap = { maxWidth: 1100, margin: "0 auto", padding: "0 20px" };
-  const h2 = { fontSize: 28, fontWeight: 700, fontFamily: "'Space Grotesk'", color: T.white, margin: "0 0 8px" };
+  const h2 = { fontSize: 28, fontWeight: 700, fontFamily: "'Hanken Grotesk'", color: T.white, margin: "0 0 8px" };
   const sub = { fontSize: 14, color: T.muted, margin: 0, lineHeight: 1.6 };
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO title="Password Breach Checker — VRIKAAN" description="Check if your password has been exposed in data breaches. Uses k-anonymity so your password never leaves the browser." />
       <Navbar />
 
@@ -125,7 +125,7 @@ export default function PasswordChecker() {
             <span style={{ fontSize: 12, fontWeight: 600, color: T.accent }}>Secure Breach Lookup</span>
           </div>
 
-          <h1 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 800, fontFamily: "'Space Grotesk'", margin: "0 0 16px", background: `linear-gradient(135deg, ${T.accent}, ${T.cyan}, ${T.accent})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <h1 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 800, fontFamily: "'Hanken Grotesk'", margin: "0 0 16px", background: `linear-gradient(135deg, ${T.accent}, ${T.cyan}, ${T.accent})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             Password Breach Checker
           </h1>
           <p style={{ fontSize: 17, color: T.muted, maxWidth: 560, margin: "0 auto 40px", lineHeight: 1.7 }}>
@@ -207,18 +207,18 @@ export default function PasswordChecker() {
                 {results.breached ? (
                   <>
                     <div style={{ fontSize: 56, marginBottom: 8 }}>&#128680;</div>
-                    <div style={{ fontSize: 32, fontWeight: 800, fontFamily: "'Space Grotesk'", color: T.red }}>
+                    <div style={{ fontSize: 32, fontWeight: 800, fontFamily: "'Hanken Grotesk'", color: T.red }}>
                       Password Compromised
                     </div>
                     <p style={{ fontSize: 15, color: T.muted, margin: "12px 0 0", lineHeight: 1.7 }}>
-                      This password has been seen <span style={{ color: T.red, fontWeight: 700, fontFamily: "'Space Grotesk'" }}>{results.count.toLocaleString()}</span> time{results.count !== 1 ? "s" : ""} in data breaches.
+                      This password has been seen <span style={{ color: T.red, fontWeight: 700, fontFamily: "'Hanken Grotesk'" }}>{results.count.toLocaleString()}</span> time{results.count !== 1 ? "s" : ""} in data breaches.
                       <br />You should change it immediately wherever it is used.
                     </p>
                   </>
                 ) : (
                   <>
                     <div style={{ fontSize: 56, marginBottom: 8 }}>&#128737;&#65039;</div>
-                    <div style={{ fontSize: 32, fontWeight: 800, fontFamily: "'Space Grotesk'", color: T.green }}>
+                    <div style={{ fontSize: 32, fontWeight: 800, fontFamily: "'Hanken Grotesk'", color: T.green }}>
                       Safe — Not Found
                     </div>
                     <p style={{ fontSize: 15, color: T.muted, margin: "12px 0 0", lineHeight: 1.7 }}>
@@ -330,10 +330,10 @@ export default function PasswordChecker() {
               },
             ].map((item, i) => (
               <div key={i} style={{ ...sty.card, animation: `pwc-slideIn 0.4s ease ${i * 0.1}s both` }}>
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: `${item.color}12`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 16, color: item.color, fontFamily: "'Space Grotesk'", marginBottom: 16 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 10, background: `${item.color}12`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 16, color: item.color, fontFamily: "'Hanken Grotesk'", marginBottom: 16 }}>
                   {item.step}
                 </div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'", marginBottom: 8 }}>{item.title}</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 8 }}>{item.title}</div>
                 <p style={{ fontSize: 13, color: T.muted, margin: 0, lineHeight: 1.6 }}>{item.desc}</p>
               </div>
             ))}
@@ -343,7 +343,7 @@ export default function PasswordChecker() {
           <div style={{ ...sty.card, marginTop: 24, display: "flex", gap: 16, alignItems: "flex-start", borderColor: `${T.green}20` }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, background: `${T.green}12`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>&#128274;</div>
             <div>
-              <div style={{ fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'", marginBottom: 6 }}>Your Privacy Is Protected</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 6 }}>Your Privacy Is Protected</div>
               <p style={{ fontSize: 13, color: T.muted, margin: 0, lineHeight: 1.7 }}>
                 This tool uses the Have I Been Pwned k-anonymity API. Your password is hashed client-side, and only a small prefix of the hash is ever transmitted. The full hash and your plaintext password never leave your device. No passwords are stored or logged at any point.
               </p>

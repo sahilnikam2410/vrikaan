@@ -92,7 +92,7 @@ export default function BlogPost() {
   ];
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Plus Jakarta Sans', sans-serif", color: T.white }}>
+    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Hanken Grotesk', sans-serif", color: T.white }}>
       <SEO
         title={article.title}
         description={article.excerpt}
@@ -148,7 +148,7 @@ export default function BlogPost() {
             </div>
 
             {/* Title */}
-            <h1 className="bp-title" style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 40, fontWeight: 800, color: T.white, margin: "0 0 20px", lineHeight: 1.15, letterSpacing: "-0.02em" }}>
+            <h1 className="bp-title" style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 40, fontWeight: 800, color: T.white, margin: "0 0 20px", lineHeight: 1.15, letterSpacing: "-0.02em" }}>
               {article.title}
             </h1>
 
@@ -158,7 +158,7 @@ export default function BlogPost() {
             {/* Author + share */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 0", borderTop: `1px solid ${T.border}`, borderBottom: `1px solid ${T.border}`, marginBottom: 36, flexWrap: "wrap", gap: 12 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <div style={{ width: 44, height: 44, borderRadius: "50%", background: `${article.author.color}20`, border: `2px solid ${article.author.color}40`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: article.author.color, fontFamily: "'Space Grotesk'" }}>
+                <div style={{ width: 44, height: 44, borderRadius: "50%", background: `${article.author.color}20`, border: `2px solid ${article.author.color}40`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: article.author.color, fontFamily: "'Hanken Grotesk'" }}>
                   {article.author.initials}
                 </div>
                 <div>
@@ -175,7 +175,7 @@ export default function BlogPost() {
 
             {/* Mobile TOC */}
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: "16px 20px", marginBottom: 32 }} className="bp-toc-mobile">
-              <h4 style={{ fontFamily: "'Space Grotesk'", fontSize: 13, fontWeight: 700, color: T.mutedDark, margin: "0 0 12px", letterSpacing: 1, textTransform: "uppercase" }}>
+              <h4 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 13, fontWeight: 700, color: T.mutedDark, margin: "0 0 12px", letterSpacing: 1, textTransform: "uppercase" }}>
                 Table of Contents
               </h4>
               {article.content.map((sec, i) => (
@@ -201,7 +201,7 @@ export default function BlogPost() {
             {/* Sections */}
             {article.content.map((section, i) => (
               <section key={i} data-section={i} style={{ marginBottom: 36 }}>
-                <h2 style={{ fontFamily: "'Space Grotesk'", fontSize: 24, fontWeight: 700, color: T.white, margin: "0 0 14px", paddingTop: 8, letterSpacing: "-0.01em" }}>
+                <h2 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 24, fontWeight: 700, color: T.white, margin: "0 0 14px", paddingTop: 8, letterSpacing: "-0.01em" }}>
                   {section.heading}
                 </h2>
                 <p style={{ fontSize: 15.5, color: T.muted, lineHeight: 1.8, margin: 0 }}>{section.text}</p>
@@ -219,12 +219,12 @@ export default function BlogPost() {
 
             {/* Author bio card */}
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, marginTop: 12, marginBottom: 48, display: "flex", gap: 20, alignItems: "flex-start", flexWrap: "wrap" }}>
-              <div style={{ width: 56, height: 56, borderRadius: "50%", background: `${article.author.color}20`, border: `2px solid ${article.author.color}40`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, color: article.author.color, fontFamily: "'Space Grotesk'", flexShrink: 0 }}>
+              <div style={{ width: 56, height: 56, borderRadius: "50%", background: `${article.author.color}20`, border: `2px solid ${article.author.color}40`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, color: article.author.color, fontFamily: "'Hanken Grotesk'", flexShrink: 0 }}>
                 {article.author.initials}
               </div>
               <div style={{ flex: 1, minWidth: 200 }}>
                 <div style={{ fontSize: 11, fontWeight: 700, color: T.mutedDark, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}>Written by</div>
-                <div style={{ fontSize: 18, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'", marginBottom: 8 }}>{article.author.name}</div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 8 }}>{article.author.name}</div>
                 <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.7, margin: 0 }}>{article.author.bio}</p>
               </div>
             </div>
@@ -235,7 +235,7 @@ export default function BlogPost() {
               border: `1px solid ${T.accent}30`, borderRadius: 16, padding: "28px 32px",
               marginBottom: 48, textAlign: "center",
             }}>
-              <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 22, fontWeight: 700, color: T.white, margin: "0 0 10px" }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 22, fontWeight: 700, color: T.white, margin: "0 0 10px" }}>
                 Protect yourself with VRIKAAN
               </h3>
               <p style={{ fontSize: 14, color: T.muted, margin: "0 0 18px", lineHeight: 1.6 }}>
@@ -255,7 +255,7 @@ export default function BlogPost() {
             {/* Related articles */}
             {related.length > 0 && (
               <div>
-                <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 20 }}>
+                <h3 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 20 }}>
                   Related Articles
                 </h3>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 16 }}>
@@ -278,7 +278,7 @@ export default function BlogPost() {
                           </span>
                         </div>
                         <div style={{ padding: 16, flex: 1 }}>
-                          <h4 style={{ fontFamily: "'Space Grotesk'", fontSize: 14, fontWeight: 700, color: T.white, margin: "0 0 6px", lineHeight: 1.4 }}>
+                          <h4 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 14, fontWeight: 700, color: T.white, margin: "0 0 6px", lineHeight: 1.4 }}>
                             {a.title}
                           </h4>
                           <div style={{ fontSize: 11, color: T.mutedDark }}>{a.readTime}</div>
@@ -294,7 +294,7 @@ export default function BlogPost() {
           {/* Desktop sidebar TOC */}
           <aside className="bp-sidebar" style={{ width: 220, flexShrink: 0, position: "sticky", top: 100, alignSelf: "flex-start" }}>
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 20 }}>
-              <h4 style={{ fontFamily: "'Space Grotesk'", fontSize: 13, fontWeight: 700, color: T.mutedDark, margin: "0 0 14px", letterSpacing: 1, textTransform: "uppercase" }}>Contents</h4>
+              <h4 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 13, fontWeight: 700, color: T.mutedDark, margin: "0 0 14px", letterSpacing: 1, textTransform: "uppercase" }}>Contents</h4>
               {article.content.map((sec, i) => (
                 <div
                   key={i}
@@ -331,6 +331,6 @@ const shareBtn = {
   fontWeight: 600,
   padding: "6px 14px",
   cursor: "pointer",
-  fontFamily: "'Plus Jakarta Sans', sans-serif",
+  fontFamily: "'Hanken Grotesk', sans-serif",
   transition: "all 0.2s",
 };

@@ -308,7 +308,7 @@ export default function Welcome() {
     <div style={{
       minHeight: "100vh", background: T.bg,
       display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-      fontFamily: "'Plus Jakarta Sans', sans-serif",
+      fontFamily: "'Hanken Grotesk', sans-serif",
       position: "relative", overflow: "hidden", padding: 24,
     }}>
       <SEO title="Welcome" description="Welcome to VRIKAAN — your cybersecurity journey starts here." path="/welcome" />
@@ -432,7 +432,7 @@ export default function Welcome() {
             borderRadius: 22,
             display: "flex", alignItems: "center", justifyContent: "center",
             color: "#fff", fontSize: 46, fontWeight: 800,
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
             animation: "shieldSpin 6s ease-in-out infinite, glow 2s ease-in-out infinite",
             transformStyle: "preserve-3d",
           }}>V</div>
@@ -448,7 +448,7 @@ export default function Welcome() {
               <div style={{
                 width: 30, height: 30, borderRadius: "50%",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 12, fontWeight: 700, fontFamily: "'Space Grotesk'",
+                fontSize: 12, fontWeight: 700, fontFamily: "'Hanken Grotesk'",
                 background: step >= i ? "linear-gradient(135deg, #6366f1, #14e3c5)" : "rgba(148,163,184,0.08)",
                 color: step >= i ? "#fff" : T.muted,
                 border: `1px solid ${step >= i ? "transparent" : "rgba(148,163,184,0.12)"}`,
@@ -478,7 +478,7 @@ export default function Welcome() {
             </div>
 
             <h1 style={{
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "'Hanken Grotesk', sans-serif",
               fontSize: "clamp(28px, 4.5vw, 48px)", fontWeight: 800,
               color: T.white, marginBottom: 14, lineHeight: 1.15,
             }}>
@@ -507,7 +507,7 @@ export default function Welcome() {
               padding: "16px 44px",
               background: "linear-gradient(135deg, #6366f1, #14e3c5)", border: "none", borderRadius: 12,
               color: "#fff", fontSize: 16, fontWeight: 700, cursor: "pointer",
-              fontFamily: "'Space Grotesk'", boxShadow: "0 8px 30px rgba(99,102,241,0.3)",
+              fontFamily: "'Hanken Grotesk'", boxShadow: "0 8px 30px rgba(99,102,241,0.3)",
               transition: "all 0.3s",
             }}
               onMouseEnter={e => e.currentTarget.style.transform = "translateY(-2px) scale(1.02)"}
@@ -524,7 +524,7 @@ export default function Welcome() {
             }}>
               <div style={{
                 color: T.cyan, fontSize: 28, lineHeight: 1, marginBottom: 6,
-                fontFamily: "'Space Grotesk'",
+                fontFamily: "'Hanken Grotesk'",
               }}>"</div>
               <p style={{
                 color: T.white, fontSize: 14, fontStyle: "italic", lineHeight: 1.6,
@@ -539,7 +539,7 @@ export default function Welcome() {
         {step === 1 && (
           <div style={{ animation: "fadeInUp 0.6s ease" }}>
             <h2 style={{
-              fontFamily: "'Space Grotesk'", fontSize: 28, fontWeight: 800,
+              fontFamily: "'Hanken Grotesk'", fontSize: 28, fontWeight: 800,
               color: T.white, marginBottom: 8,
             }}>What matters most, {firstName}?</h2>
             <p style={{ fontSize: 15, color: T.muted, marginBottom: 28 }}>
@@ -581,7 +581,7 @@ export default function Welcome() {
               color: interests.length > 0 ? "#fff" : T.muted,
               fontSize: 15, fontWeight: 700,
               cursor: interests.length > 0 ? "pointer" : "default",
-              fontFamily: "'Space Grotesk'",
+              fontFamily: "'Hanken Grotesk'",
               opacity: interests.length > 0 ? 1 : 0.5,
             }}>
               {interests.length === 0 ? "Pick at least one above" : `Run security check (${interests.length} selected) →`}
@@ -589,7 +589,7 @@ export default function Welcome() {
             <div>
               <button onClick={() => setStep(3)} style={{
                 background: "none", border: "none", color: T.muted, fontSize: 13,
-                cursor: "pointer", fontFamily: "'Plus Jakarta Sans'", marginTop: 16,
+                cursor: "pointer", fontFamily: "'Hanken Grotesk'", marginTop: 16,
               }}>
                 Skip to certificate →
               </button>
@@ -600,7 +600,7 @@ export default function Welcome() {
         {/* Step 2 — Security check */}
         {step === 2 && (
           <div style={{ animation: "fadeInUp 0.6s ease" }}>
-            <h2 style={{ fontFamily: "'Space Grotesk'", fontSize: 28, fontWeight: 800, color: T.white, marginBottom: 8 }}>
+            <h2 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 28, fontWeight: 800, color: T.white, marginBottom: 8 }}>
               Running security check...
             </h2>
             <p style={{ fontSize: 15, color: T.muted, marginBottom: 32 }}>
@@ -657,7 +657,7 @@ export default function Welcome() {
         {/* Step 3 — Certificate + recommendations + share */}
         {step === 3 && (
           <div style={{ animation: "fadeInUp 0.6s ease" }}>
-            <h2 style={{ fontFamily: "'Space Grotesk'", fontSize: 28, fontWeight: 800, color: T.white, marginBottom: 8 }}>
+            <h2 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 28, fontWeight: 800, color: T.white, marginBottom: 8 }}>
               You're protected, {firstName}. 🛡
             </h2>
             <p style={{ fontSize: 15, color: T.muted, marginBottom: 20 }}>
@@ -675,7 +675,7 @@ export default function Welcome() {
                 { label: "Your Plan",        value: user.plan?.charAt(0).toUpperCase() + user.plan?.slice(1) || "Free", color: "#eab308" },
               ].map(s => (
                 <div key={s.label} style={{ textAlign: "center" }}>
-                  <div style={{ fontSize: 24, fontWeight: 800, color: s.color, fontFamily: "'Space Grotesk'" }}>{s.value}</div>
+                  <div style={{ fontSize: 24, fontWeight: 800, color: s.color, fontFamily: "'Hanken Grotesk'" }}>{s.value}</div>
                   <div style={{ fontSize: 12, color: T.muted, marginTop: 4 }}>{s.label}</div>
                 </div>
               ))}
@@ -717,7 +717,7 @@ export default function Welcome() {
                 borderRadius: 16, padding: 28, backdropFilter: "blur(10px)", marginBottom: 20,
               }}>
                 <div style={{ fontSize: 40, marginBottom: 12 }}>🎓</div>
-                <h3 style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'", marginBottom: 8 }}>
+                <h3 style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 8 }}>
                   Your membership certificate
                 </h3>
                 <p style={{ fontSize: 14, color: T.muted, marginBottom: 20 }}>
@@ -728,7 +728,7 @@ export default function Welcome() {
                   background: "linear-gradient(135deg, #14e3c5, #6366f1)",
                   border: "none", borderRadius: 10,
                   color: "#fff", fontSize: 15, fontWeight: 700,
-                  cursor: "pointer", fontFamily: "'Space Grotesk'",
+                  cursor: "pointer", fontFamily: "'Hanken Grotesk'",
                   animation: "pulse 2s infinite",
                 }}>
                   🎨 Generate certificate
@@ -754,7 +754,7 @@ export default function Welcome() {
                     background: "linear-gradient(135deg, #22c55e, #14e3c5)",
                     border: "none", borderRadius: 10,
                     color: "#fff", fontSize: 14, fontWeight: 700,
-                    cursor: "pointer", fontFamily: "'Space Grotesk'",
+                    cursor: "pointer", fontFamily: "'Hanken Grotesk'",
                   }}>
                     ⬇ Download
                   </button>
@@ -762,7 +762,7 @@ export default function Welcome() {
                     padding: "12px 22px", borderRadius: 10,
                     background: "#25D366", color: "#fff", border: 0,
                     fontSize: 14, fontWeight: 700, cursor: "pointer",
-                    fontFamily: "'Space Grotesk'",
+                    fontFamily: "'Hanken Grotesk'",
                   }}>
                     📲 WhatsApp share
                   </button>
@@ -770,7 +770,7 @@ export default function Welcome() {
                     padding: "12px 22px", borderRadius: 10,
                     background: "#000", color: "#fff", border: 0,
                     fontSize: 14, fontWeight: 700, cursor: "pointer",
-                    fontFamily: "'Space Grotesk'",
+                    fontFamily: "'Hanken Grotesk'",
                   }}>
                     𝕏 Post
                   </button>
@@ -779,7 +779,7 @@ export default function Welcome() {
                     background: "rgba(99,102,241,0.15)", border: `1px solid rgba(99,102,241,0.3)`,
                     borderRadius: 10,
                     color: T.accent, fontSize: 14, fontWeight: 700,
-                    cursor: "pointer", fontFamily: "'Space Grotesk'",
+                    cursor: "pointer", fontFamily: "'Hanken Grotesk'",
                   }}>
                     Dashboard →
                   </button>
@@ -790,7 +790,7 @@ export default function Welcome() {
             {!certImage && (
               <button onClick={() => navigate("/dashboard")} style={{
                 background: "none", border: "none", color: T.muted, fontSize: 14,
-                cursor: "pointer", fontFamily: "'Plus Jakarta Sans'", marginTop: 12,
+                cursor: "pointer", fontFamily: "'Hanken Grotesk'", marginTop: 12,
               }}>
                 Skip to dashboard →
               </button>

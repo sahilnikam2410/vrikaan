@@ -92,7 +92,7 @@ export default function OnboardingTour({ uid, forceShow = false, onClose }) {
         alignItems: "center",
         justifyContent: "center",
         padding: 20,
-        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        fontFamily: "'Hanken Grotesk', sans-serif",
         animation: "fadeIn 0.3s ease",
       }}
     >
@@ -151,7 +151,7 @@ export default function OnboardingTour({ uid, forceShow = false, onClose }) {
 
         <h2
           style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
             fontSize: 22,
             fontWeight: 700,
             color: T.white,
@@ -189,7 +189,7 @@ export default function OnboardingTour({ uid, forceShow = false, onClose }) {
               fontSize: 13,
               fontWeight: 700,
               cursor: "pointer",
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "'Hanken Grotesk', sans-serif",
             }}
           >
             {s.cta.label} →

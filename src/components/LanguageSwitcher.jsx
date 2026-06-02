@@ -35,7 +35,7 @@ export default function LanguageSwitcher({ compact = false }) {
               borderRadius: 6, border: "none",
               background: active ? "linear-gradient(135deg, #6366f1, #14e3c5)" : "transparent",
               color: active ? "#fff" : "#94a3b8",
-              cursor: "pointer", fontFamily: "'Plus Jakarta Sans', sans-serif",
+              cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif",
               transition: "background 0.15s, color 0.15s",
             }}
           >{l.label}</button>

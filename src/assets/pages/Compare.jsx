@@ -140,7 +140,7 @@ export default function Compare() {
   if (!data) return <Navigate to="/pricing" replace />;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title={`VRIKAAN vs ${data.name} — Cybersecurity Comparison`}
         description={`Side-by-side comparison: ${data.tagline}. Features, pricing, and which to pick.`}
@@ -160,7 +160,7 @@ export default function Compare() {
           }}>Comparison</span>
           <h1 style={{
             fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 800, color: T.white,
-            margin: "0 0 14px", fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1.1,
+            margin: "0 0 14px", fontFamily: "'Hanken Grotesk', sans-serif", lineHeight: 1.1,
           }}>
             VRIKAAN <span style={{ color: T.muted, fontWeight: 400 }}>vs</span> {data.name}
           </h1>
@@ -205,7 +205,7 @@ export default function Compare() {
 
         {/* Comparison table */}
         <section style={{ maxWidth: 920, margin: "0 auto", padding: "0 24px 40px" }}>
-          <h2 style={{ fontSize: 24, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk', sans-serif" }}>Feature-by-feature</h2>
+          <h2 style={{ fontSize: 24, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk', sans-serif" }}>Feature-by-feature</h2>
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, overflow: "hidden" }}>
             <div style={{
               display: "grid", gridTemplateColumns: "2fr 1fr 1fr",
@@ -234,7 +234,7 @@ export default function Compare() {
 
         {/* When to pick which */}
         <section style={{ maxWidth: 920, margin: "0 auto", padding: "0 24px 40px" }}>
-          <h2 style={{ fontSize: 24, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk', sans-serif" }}>Pick VRIKAAN if you need</h2>
+          <h2 style={{ fontSize: 24, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk', sans-serif" }}>Pick VRIKAAN if you need</h2>
           <div style={{
             display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
             gap: 12,
@@ -255,7 +255,7 @@ export default function Compare() {
 
         {/* FAQ */}
         <section style={{ maxWidth: 760, margin: "0 auto", padding: "0 24px 40px" }}>
-          <h2 style={{ fontSize: 24, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk', sans-serif" }}>FAQ</h2>
+          <h2 style={{ fontSize: 24, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk', sans-serif" }}>FAQ</h2>
           {data.faqs.map((f, i) => (
             <details key={i} style={{
               padding: 18, marginBottom: 8,
@@ -275,7 +275,7 @@ export default function Compare() {
             background: "linear-gradient(135deg, rgba(99,102,241,0.1), rgba(20,227,197,0.06))",
             border: `1px solid ${T.accent}30`,
           }}>
-            <h3 style={{ fontSize: 22, fontWeight: 800, color: T.white, margin: "0 0 8px", fontFamily: "'Space Grotesk', sans-serif" }}>
+            <h3 style={{ fontSize: 22, fontWeight: 800, color: T.white, margin: "0 0 8px", fontFamily: "'Hanken Grotesk', sans-serif" }}>
               Try VRIKAAN free for 7 days
             </h3>
             <p style={{ fontSize: 14, color: T.muted, margin: "0 0 18px" }}>

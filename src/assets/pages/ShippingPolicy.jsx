@@ -7,7 +7,7 @@ const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 
 export default function ShippingPolicy() {
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO title="Shipping Policy" description="VRIKAAN shipping and delivery policy for digital services." path="/shipping-policy" />
       <Navbar />
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "120px 24px 80px" }}>
@@ -16,7 +16,7 @@ export default function ShippingPolicy() {
         </div>
 
         <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>Legal</span>
-        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 44, fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 12px" }}>Shipping Policy</h1>
+        <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 44, fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 12px" }}>Shipping Policy</h1>
         <p style={{ color: T.mutedDark, fontSize: 14, marginBottom: 48 }}>Last updated: April 12, 2026</p>
 
         {[
@@ -30,7 +30,7 @@ export default function ShippingPolicy() {
           { title: "8. Contact Us", content: "If you have any questions about our delivery process or face any issues accessing your subscription, please contact us at hello@vrikaan.com or call +91 8329935878. Our support team is available 24/7." },
         ].map((s, i) => (
           <div key={i} style={{ marginBottom: 36 }}>
-            <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 10, fontFamily: "'Space Grotesk', sans-serif" }}>{s.title}</h2>
+            <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 10, fontFamily: "'Hanken Grotesk', sans-serif" }}>{s.title}</h2>
             <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.8, margin: 0 }}>{s.content}</p>
           </div>
         ))}

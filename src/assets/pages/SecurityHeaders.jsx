@@ -79,16 +79,16 @@ export default function SecurityHeaders() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk',sans-serif" }}>
       <SEO title="Security Headers Checker" description="Analyze any website's HTTP security headers and get a security grade." path="/security-headers" />
       <Navbar />
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "120px 20px 60px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Space Grotesk',sans-serif" }}>Security Headers Checker</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Hanken Grotesk',sans-serif" }}>Security Headers Checker</h1>
         <p style={{ color: T.muted, fontSize: 14, marginBottom: 28 }}>Analyze any website's HTTP security headers and get a security grade.</p>
 
         <div style={{ display: "flex", gap: 10, marginBottom: 28 }}>
-          <input value={url} onChange={e => setUrl(e.target.value)} onKeyDown={e => e.key === "Enter" && scan()} placeholder="https://example.com" style={{ flex: 1, padding: "14px 16px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "'Plus Jakarta Sans',sans-serif" }} />
-          <button onClick={scan} disabled={loading} style={{ padding: "14px 28px", borderRadius: 10, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 15, fontWeight: 700, cursor: loading ? "wait" : "pointer", fontFamily: "'Space Grotesk',sans-serif", whiteSpace: "nowrap" }}>
+          <input value={url} onChange={e => setUrl(e.target.value)} onKeyDown={e => e.key === "Enter" && scan()} placeholder="https://example.com" style={{ flex: 1, padding: "14px 16px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "'Hanken Grotesk',sans-serif" }} />
+          <button onClick={scan} disabled={loading} style={{ padding: "14px 28px", borderRadius: 10, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 15, fontWeight: 700, cursor: loading ? "wait" : "pointer", fontFamily: "'Hanken Grotesk',sans-serif", whiteSpace: "nowrap" }}>
             {loading ? "Scanning..." : "Scan Headers"}
           </button>
         </div>
@@ -101,10 +101,10 @@ export default function SecurityHeaders() {
               {/* Grade circle */}
               <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
                 <div style={{ width: 80, height: 80, borderRadius: "50%", border: `3px solid ${gradeColor[result.grade]}`, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-                  <span style={{ fontSize: 32, fontWeight: 800, color: gradeColor[result.grade], fontFamily: "'Space Grotesk',sans-serif", lineHeight: 1 }}>{result.grade}</span>
+                  <span style={{ fontSize: 32, fontWeight: 800, color: gradeColor[result.grade], fontFamily: "'Hanken Grotesk',sans-serif", lineHeight: 1 }}>{result.grade}</span>
                 </div>
                 <div>
-                  <div style={{ fontSize: 24, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk',sans-serif" }}>{result.score}/100</div>
+                  <div style={{ fontSize: 24, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk',sans-serif" }}>{result.score}/100</div>
                   <div style={{ fontSize: 13, color: T.muted }}>{result.summary.present} present, {result.summary.missing} missing</div>
                 </div>
               </div>

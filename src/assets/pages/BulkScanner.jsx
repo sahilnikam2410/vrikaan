@@ -139,7 +139,7 @@ export default function BulkScanner() {
   const failCount = Object.values(results).filter((r) => !r.ok).length;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="Bulk URL Scanner"
         description="Scan up to 100 URLs at once for phishing, malware, and reputation threats. CSV upload + export."
@@ -152,7 +152,7 @@ export default function BulkScanner() {
         <section style={{ maxWidth: 920, margin: "0 auto", padding: "0 24px" }}>
           <h1 style={{
             fontSize: 36, fontWeight: 800, color: T.white,
-            margin: "0 0 8px", fontFamily: "'Space Grotesk', sans-serif",
+            margin: "0 0 8px", fontFamily: "'Hanken Grotesk', sans-serif",
           }}>Bulk URL Scanner</h1>
           <p style={{ fontSize: 15, color: T.muted, marginBottom: 28, lineHeight: 1.7 }}>
             Paste a list of URLs or upload a CSV. We'll scan each for phishing, malware, and reputation threats.
@@ -215,7 +215,7 @@ export default function BulkScanner() {
                   background: scanning || urls.length === 0 ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                   border: "none", color: "#fff", fontSize: 14, fontWeight: 700,
                   cursor: scanning || urls.length === 0 ? "not-allowed" : "pointer",
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'Hanken Grotesk', sans-serif",
                 }}
               >
                 {scanning ? `Scanning… ${progress}%` : `Scan ${urls.length} URLs`}

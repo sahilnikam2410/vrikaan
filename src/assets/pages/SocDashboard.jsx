@@ -72,7 +72,7 @@ function Donut({ data, size = 130 }) {
         const large = end - start > Math.PI ? 1 : 0;
         return <path key={i} d={`M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`} stroke={d.color} strokeWidth="14" fill="none" />;
       })}
-      <text x={cx} y={cy + 6} textAnchor="middle" fill={T.white} fontSize="22" fontWeight="700" fontFamily="'Space Grotesk'">{total}</text>
+      <text x={cx} y={cy + 6} textAnchor="middle" fill={T.white} fontSize="22" fontWeight="700" fontFamily="'Hanken Grotesk'">{total}</text>
     </svg>
   );
 }
@@ -161,7 +161,7 @@ function OverviewTab({ events, summary, sparkline }) {
       <div style={{ ...panelStyle(), padding: 18 }}>
         <div style={tileLabel}>Events</div>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-          <span style={{ fontSize: 36, fontWeight: 800, color: T.cyan, fontFamily: "'Space Grotesk'" }}>{summary.total}</span>
+          <span style={{ fontSize: 36, fontWeight: 800, color: T.cyan, fontFamily: "'Hanken Grotesk'" }}>{summary.total}</span>
           <span style={{ fontSize: 12, color: T.muted }}>in window</span>
         </div>
         <Sparkline values={sparkline} color={T.cyan} />
@@ -188,7 +188,7 @@ function OverviewTab({ events, summary, sparkline }) {
           <div style={tileLabel}>Top MITRE Tactic</div>
           {top ? (
             <>
-              <div style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'", marginTop: 4 }}>{top.short}</div>
+              <div style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginTop: 4 }}>{top.short}</div>
               <div style={{ fontSize: 11, color: T.muted, fontFamily: "'JetBrains Mono'", marginTop: 2 }}>{top.id} · {top.count} event{top.count === 1 ? "" : "s"}</div>
             </>
           ) : <div style={{ color: T.muted, fontSize: 12, marginTop: 6 }}>No tactic activity in window.</div>}
@@ -231,7 +231,7 @@ function EventsTab({ events }) {
   return (
     <div style={panelStyle()}>
       <div style={{ padding: "12px 16px", borderBottom: `1px solid ${T.cardBorder}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Space Grotesk'" }}>Security Events ({events.length})</h3>
+        <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Hanken Grotesk'" }}>Security Events ({events.length})</h3>
         <span style={{ color: T.muted, fontSize: 11 }}>Newest first · click row to expand</span>
       </div>
       <div style={{ maxHeight: 600, overflowY: "auto" }}>
@@ -313,7 +313,7 @@ function VulnsTab({ events }) {
     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
       <div style={{ ...panelStyle(), padding: 18 }}>
         <div style={tileLabel}>Vulnerability Events</div>
-        <div style={{ fontSize: 28, fontWeight: 800, color: T.orange, fontFamily: "'Space Grotesk'", marginBottom: 12 }}>{vulnEvents.length}</div>
+        <div style={{ fontSize: 28, fontWeight: 800, color: T.orange, fontFamily: "'Hanken Grotesk'", marginBottom: 12 }}>{vulnEvents.length}</div>
         {SEVERITY_BANDS.map((b) => {
           const n = vulnEvents.filter((e) => e.severity === b.label).length;
           return (
@@ -369,7 +369,7 @@ function MitreTab({ events }) {
   return (
     <div style={panelStyle()}>
       <div style={{ padding: "14px 16px", borderBottom: `1px solid ${T.cardBorder}` }}>
-        <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Space Grotesk'" }}>MITRE ATT&CK — Enterprise Matrix</h3>
+        <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Hanken Grotesk'" }}>MITRE ATT&CK — Enterprise Matrix</h3>
         <p style={{ color: T.muted, fontSize: 11, margin: "4px 0 0" }}>Cells light up by event count. Click a tactic header for the full MITRE definition.</p>
       </div>
       <div style={{ overflowX: "auto", padding: 16 }}>
@@ -428,10 +428,10 @@ function ComplianceTab({ state }) {
           <div key={f.id} style={{ ...panelStyle(), padding: 18, borderColor: `${color}40` }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
               <div>
-                <h4 style={{ margin: 0, color: T.white, fontSize: 14, fontFamily: "'Space Grotesk'" }}>{f.name}</h4>
+                <h4 style={{ margin: 0, color: T.white, fontSize: 14, fontFamily: "'Hanken Grotesk'" }}>{f.name}</h4>
                 <span style={{ color: T.muted, fontSize: 11 }}>{f.jurisdiction} · {f.total} controls</span>
               </div>
-              <div style={{ fontSize: 32, fontWeight: 800, color, fontFamily: "'Space Grotesk'", lineHeight: 1 }}>{f.score}<span style={{ fontSize: 14, color: T.muted, fontWeight: 500 }}>/100</span></div>
+              <div style={{ fontSize: 32, fontWeight: 800, color, fontFamily: "'Hanken Grotesk'", lineHeight: 1 }}>{f.score}<span style={{ fontSize: 14, color: T.muted, fontWeight: 500 }}>/100</span></div>
             </div>
             <div style={{ height: 6, background: "rgba(15,23,42,0.6)", borderRadius: 3, overflow: "hidden", marginBottom: 12 }}>
               <div style={{ width: `${f.score}%`, height: "100%", background: color, transition: "width 0.4s ease" }} />
@@ -463,7 +463,7 @@ function AgentsTab({ agents, events }) {
   return (
     <div style={panelStyle()}>
       <div style={{ padding: "12px 16px", borderBottom: `1px solid ${T.cardBorder}` }}>
-        <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Space Grotesk'" }}>Agents · {agents.length}</h3>
+        <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Hanken Grotesk'" }}>Agents · {agents.length}</h3>
         <p style={{ color: T.muted, fontSize: 11, margin: "4px 0 0" }}>Each registered device acts as a Wazuh-style agent. Last-seen derived from event activity.</p>
       </div>
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
@@ -646,7 +646,7 @@ export default function SocDashboard() {
   if (!user || !isAdmin) return null;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO title="SOC Dashboard — VRIKAAN" description="Wazuh-style Security Operations Center for VRIKAAN — live events, MITRE ATT&CK heat-map, vulnerabilities, compliance posture, agent inventory." path="/admin/soc" />
       <Navbar />
 
@@ -654,7 +654,7 @@ export default function SocDashboard() {
         {/* Header */}
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 18, flexWrap: "wrap", gap: 12 }}>
           <div>
-            <h1 style={{ fontSize: 28, fontWeight: 700, color: T.white, margin: 0, fontFamily: "'Space Grotesk'" }}>
+            <h1 style={{ fontSize: 28, fontWeight: 700, color: T.white, margin: 0, fontFamily: "'Hanken Grotesk'" }}>
               <span style={{ color: T.cyan }}>SOC</span> Dashboard
               <span style={{ marginLeft: 12, fontSize: 11, color: T.muted, fontWeight: 400, fontFamily: "'JetBrains Mono'" }}>v1 · Wazuh-style</span>
             </h1>
@@ -673,7 +673,7 @@ export default function SocDashboard() {
               color: tab === t.id ? T.cyan : T.muted,
               fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap",
               borderBottom: tab === t.id ? `2px solid ${T.cyan}` : "2px solid transparent",
-              fontFamily: "'Space Grotesk'", letterSpacing: 0.3,
+              fontFamily: "'Hanken Grotesk'", letterSpacing: 0.3,
             }}>
               <span style={{ marginRight: 6 }}>{t.icon}</span>{t.label}
             </button>

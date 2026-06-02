@@ -188,14 +188,14 @@ const CyberNews = () => {
   const tickerWidth = tickerText.length * 8;
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO title="Cyber News - VRIKAAN" description="Real-time cybersecurity news, threat alerts, and breaking security intelligence." />
       <Navbar />
 
       {/* Threat Ticker */}
       <div style={{ background: "linear-gradient(90deg, rgba(239,68,68,0.15) 0%, rgba(99,102,241,0.10) 50%, rgba(239,68,68,0.15) 100%)", borderBottom: `1px solid ${T.border}`, overflow: "hidden", whiteSpace: "nowrap", padding: "10px 0", marginTop: 80 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, paddingLeft: 16 }}>
-          <span style={{ background: T.red, color: "#fff", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 11, padding: "3px 10px", borderRadius: 4, letterSpacing: 1, flexShrink: 0, animation: "pulse 2s infinite" }}>LIVE THREATS</span>
+          <span style={{ background: T.red, color: "#fff", fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 700, fontSize: 11, padding: "3px 10px", borderRadius: 4, letterSpacing: 1, flexShrink: 0, animation: "pulse 2s infinite" }}>LIVE THREATS</span>
           <div style={{ overflow: "hidden", flex: 1 }}>
             <div ref={tickerRef} style={{ display: "inline-block", whiteSpace: "nowrap", transform: `translateX(${tickerOffset % (tickerWidth + 600)}px)`, fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: T.red, letterSpacing: 0.3 }}>
               {tickerText}{"     \u2022     "}{tickerText}
@@ -207,7 +207,7 @@ const CyberNews = () => {
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "40px 24px 80px" }}>
         {/* Page Header */}
         <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 700, color: T.white, margin: 0, lineHeight: 1.1 }}>
+          <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 700, color: T.white, margin: 0, lineHeight: 1.1 }}>
             Cyber <span style={{ color: T.accent }}>News</span> Feed
           </h1>
           <p style={{ color: T.muted, fontSize: 16, marginTop: 12, maxWidth: 600, marginLeft: "auto", marginRight: "auto" }}>
@@ -220,7 +220,7 @@ const CyberNews = () => {
           <svg style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)" }} width="18" height="18" fill="none" viewBox="0 0 24 24" stroke={T.muted} strokeWidth="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
           <input
             type="text" placeholder="Search news articles, sources, topics..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ width: "100%", boxSizing: "border-box", padding: "14px 16px 14px 44px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, color: T.white, fontSize: 14, fontFamily: "'Plus Jakarta Sans', sans-serif", outline: "none", transition: "border-color 0.2s" }}
+            style={{ width: "100%", boxSizing: "border-box", padding: "14px 16px 14px 44px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, color: T.white, fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif", outline: "none", transition: "border-color 0.2s" }}
             onFocus={(e) => (e.target.style.borderColor = T.accent)} onBlur={(e) => (e.target.style.borderColor = T.border)}
           />
         </div>
@@ -232,7 +232,7 @@ const CyberNews = () => {
             const isHovered = hoveredCategory === cat;
             return (
               <button key={cat} onClick={() => setActiveCategory(cat)} onMouseEnter={() => setHoveredCategory(cat)} onMouseLeave={() => setHoveredCategory(null)}
-                style={{ padding: "8px 18px", borderRadius: 20, border: isActive ? "none" : `1px solid ${T.border}`, background: isActive ? T.accent : isHovered ? "rgba(99,102,241,0.1)" : "transparent", color: isActive ? "#fff" : isHovered ? T.accent : T.muted, fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", cursor: "pointer", transition: "all 0.2s", letterSpacing: 0.3 }}>
+                style={{ padding: "8px 18px", borderRadius: 20, border: isActive ? "none" : `1px solid ${T.border}`, background: isActive ? T.accent : isHovered ? "rgba(99,102,241,0.1)" : "transparent", color: isActive ? "#fff" : isHovered ? T.accent : T.muted, fontSize: 13, fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif", cursor: "pointer", transition: "all 0.2s", letterSpacing: 0.3 }}>
                 {cat}
                 {cat !== "All" && <span style={{ marginLeft: 6, fontSize: 11, opacity: 0.7 }}>({newsArticles.filter((a) => a.category === cat).length})</span>}
               </button>
@@ -251,14 +251,14 @@ const CyberNews = () => {
                 style={{ background: "linear-gradient(135deg, rgba(239,68,68,0.08) 0%, rgba(17,24,39,0.8) 40%, rgba(99,102,241,0.06) 100%)", border: `1px solid ${hoveredCard === "breaking" ? "rgba(239,68,68,0.3)" : T.border}`, borderRadius: 16, padding: 28, marginBottom: 32, cursor: "pointer", transition: "all 0.3s", transform: hoveredCard === "breaking" ? "translateY(-2px)" : "none", boxShadow: hoveredCard === "breaking" ? "0 8px 32px rgba(239,68,68,0.1)" : "none" }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                  <span style={{ background: T.red, color: "#fff", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 11, padding: "4px 12px", borderRadius: 4, letterSpacing: 1, animation: "pulse 2s infinite" }}>BREAKING</span>
+                  <span style={{ background: T.red, color: "#fff", fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 700, fontSize: 11, padding: "4px 12px", borderRadius: 4, letterSpacing: 1, animation: "pulse 2s infinite" }}>BREAKING</span>
                   <span style={{ background: severityBg[breakingArticle.severity], color: severityColors[breakingArticle.severity], fontFamily: "'JetBrains Mono', monospace", fontSize: 11, fontWeight: 600, padding: "4px 10px", borderRadius: 4 }}>{breakingArticle.severity.toUpperCase()}</span>
                   <span style={{ color: T.muted, fontSize: 12, fontFamily: "'JetBrains Mono', monospace" }}>{breakingArticle.date}</span>
                 </div>
-                <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: T.white, margin: "0 0 12px", lineHeight: 1.3 }}>{breakingArticle.title}</h2>
+                <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: T.white, margin: "0 0 12px", lineHeight: 1.3 }}>{breakingArticle.title}</h2>
                 <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.6, margin: "0 0 16px" }}>{breakingArticle.summary}</p>
                 <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-                  <span style={{ color: categoryColors[breakingArticle.category] || T.accent, fontSize: 12, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", background: `${categoryColors[breakingArticle.category] || T.accent}15`, padding: "4px 10px", borderRadius: 6 }}>{breakingArticle.category}</span>
+                  <span style={{ color: categoryColors[breakingArticle.category] || T.accent, fontSize: 12, fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif", background: `${categoryColors[breakingArticle.category] || T.accent}15`, padding: "4px 10px", borderRadius: 6 }}>{breakingArticle.category}</span>
                   <span style={{ color: T.muted, fontSize: 12 }}>Source: <span style={{ color: T.cyan }}>{breakingArticle.source}</span></span>
                   <span style={{ color: T.muted, fontSize: 12 }}>{breakingArticle.readTime} read</span>
                   <span style={{ color: T.accent, fontSize: 12, fontWeight: 600, marginLeft: "auto" }}>{expandedArticle === breakingArticle.id ? "Click to collapse" : "Click to read more"} &rarr;</span>
@@ -266,7 +266,7 @@ const CyberNews = () => {
                 {expandedArticle === breakingArticle.id && (
                   <div style={{ marginTop: 24, paddingTop: 24, borderTop: `1px solid ${T.border}` }}>
                     {breakingArticle.fullContent.split("\n\n").map((p, i) => (
-                      <p key={i} style={{ color: "rgba(241,245,249,0.85)", fontSize: 14, lineHeight: 1.8, margin: "0 0 16px", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{p}</p>
+                      <p key={i} style={{ color: "rgba(241,245,249,0.85)", fontSize: 14, lineHeight: 1.8, margin: "0 0 16px", fontFamily: "'Hanken Grotesk', sans-serif" }}>{p}</p>
                     ))}
                   </div>
                 )}
@@ -283,10 +283,10 @@ const CyberNews = () => {
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, flexWrap: "wrap" }}>
                     <span style={{ background: severityBg[article.severity], color: severityColors[article.severity], fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 700, padding: "3px 8px", borderRadius: 4, letterSpacing: 0.5 }}>{article.severity.toUpperCase()}</span>
-                    <span style={{ color: categoryColors[article.category] || T.accent, fontSize: 11, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", background: `${categoryColors[article.category] || T.accent}12`, padding: "3px 8px", borderRadius: 4 }}>{article.category}</span>
+                    <span style={{ color: categoryColors[article.category] || T.accent, fontSize: 11, fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif", background: `${categoryColors[article.category] || T.accent}12`, padding: "3px 8px", borderRadius: 4 }}>{article.category}</span>
                     <span style={{ color: T.muted, fontSize: 11, fontFamily: "'JetBrains Mono', monospace", marginLeft: "auto" }}>{article.date}</span>
                   </div>
-                  <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700, color: T.white, margin: "0 0 10px", lineHeight: 1.3 }}>{article.title}</h3>
+                  <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, fontWeight: 700, color: T.white, margin: "0 0 10px", lineHeight: 1.3 }}>{article.title}</h3>
                   <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.6, margin: "0 0 14px" }}>{article.summary}</p>
                   <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
                     <span style={{ color: T.cyan, fontSize: 11, fontWeight: 500 }}>{article.source}</span>
@@ -296,7 +296,7 @@ const CyberNews = () => {
                   {isExpanded && (
                     <div style={{ marginTop: 20, paddingTop: 20, borderTop: `1px solid ${T.border}` }}>
                       {article.fullContent.split("\n\n").map((p, i) => (
-                        <p key={i} style={{ color: "rgba(241,245,249,0.85)", fontSize: 14, lineHeight: 1.8, margin: "0 0 14px", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{p}</p>
+                        <p key={i} style={{ color: "rgba(241,245,249,0.85)", fontSize: 14, lineHeight: 1.8, margin: "0 0 14px", fontFamily: "'Hanken Grotesk', sans-serif" }}>{p}</p>
                       ))}
                     </div>
                   )}
@@ -307,7 +307,7 @@ const CyberNews = () => {
             {filteredArticles.length === 0 && (
               <div style={{ textAlign: "center", padding: "60px 20px" }}>
                 <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke={T.muted} strokeWidth="1.5" style={{ marginBottom: 16, opacity: 0.5 }}><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
-                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", color: T.white, fontSize: 20, margin: "0 0 8px" }}>No articles found</h3>
+                <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", color: T.white, fontSize: 20, margin: "0 0 8px" }}>No articles found</h3>
                 <p style={{ color: T.muted, fontSize: 14 }}>Try adjusting your search or category filter.</p>
               </div>
             )}
@@ -317,7 +317,7 @@ const CyberNews = () => {
           <div style={{ position: "sticky", top: 120 }}>
             {/* Trending Topics */}
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24, marginBottom: 24 }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: T.white, margin: "0 0 18px", display: "flex", alignItems: "center", gap: 8 }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: T.white, margin: "0 0 18px", display: "flex", alignItems: "center", gap: 8 }}>
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke={T.cyan} strokeWidth="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /><polyline points="17 6 23 6 23 12" /></svg>
                 Trending Topics
               </h3>
@@ -329,7 +329,7 @@ const CyberNews = () => {
                     <button key={topic.label}
                       onClick={() => { setSearchQuery(topic.label); setActiveCategory("All"); }}
                       onMouseEnter={() => setHoveredTopic(topic.label)} onMouseLeave={() => setHoveredTopic(null)}
-                      style={{ padding: "5px 12px", borderRadius: 8, border: `1px solid ${isHovered ? "rgba(99,102,241,0.3)" : T.border}`, background: isHovered ? "rgba(99,102,241,0.1)" : "transparent", color: isHovered ? T.accent : T.muted, fontSize: size, fontWeight: 500, fontFamily: "'Plus Jakarta Sans', sans-serif", cursor: "pointer", transition: "all 0.2s" }}
+                      style={{ padding: "5px 12px", borderRadius: 8, border: `1px solid ${isHovered ? "rgba(99,102,241,0.3)" : T.border}`, background: isHovered ? "rgba(99,102,241,0.1)" : "transparent", color: isHovered ? T.accent : T.muted, fontSize: size, fontWeight: 500, fontFamily: "'Hanken Grotesk', sans-serif", cursor: "pointer", transition: "all 0.2s" }}
                     >
                       {topic.label} <span style={{ fontSize: 10, opacity: 0.6 }}>({topic.count})</span>
                     </button>
@@ -340,7 +340,7 @@ const CyberNews = () => {
 
             {/* Threat Level Summary */}
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24, marginBottom: 24 }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: T.white, margin: "0 0 18px", display: "flex", alignItems: "center", gap: 8 }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: T.white, margin: "0 0 18px", display: "flex", alignItems: "center", gap: 8 }}>
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke={T.red} strokeWidth="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
                 Severity Breakdown
               </h3>
@@ -350,7 +350,7 @@ const CyberNews = () => {
                 return (
                   <div key={sev} style={{ marginBottom: 14 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
-                      <span style={{ color: severityColors[sev], fontSize: 12, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif" }}>{sev}</span>
+                      <span style={{ color: severityColors[sev], fontSize: 12, fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif" }}>{sev}</span>
                       <span style={{ color: T.muted, fontSize: 12, fontFamily: "'JetBrains Mono', monospace" }}>{count} articles</span>
                     </div>
                     <div style={{ height: 6, background: "rgba(148,163,184,0.08)", borderRadius: 3, overflow: "hidden" }}>
@@ -363,7 +363,7 @@ const CyberNews = () => {
 
             {/* Top Sources */}
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24, marginBottom: 24 }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: T.white, margin: "0 0 18px", display: "flex", alignItems: "center", gap: 8 }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: T.white, margin: "0 0 18px", display: "flex", alignItems: "center", gap: 8 }}>
                 <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke={T.accent} strokeWidth="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z" /><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z" /></svg>
                 Top Sources
               </h3>
@@ -382,7 +382,7 @@ const CyberNews = () => {
 
             {/* Newsletter Signup */}
             <div style={{ background: "linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(17,24,39,0.8) 100%)", border: `1px solid rgba(99,102,241,0.15)`, borderRadius: 14, padding: 24 }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: T.white, margin: "0 0 8px" }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: T.white, margin: "0 0 8px" }}>
                 Threat Intel Digest
               </h3>
               <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.5, margin: "0 0 16px" }}>
@@ -397,10 +397,10 @@ const CyberNews = () => {
                 <form onSubmit={handleNewsletter} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   <input
                     type="email" placeholder="your@email.com" value={newsletterEmail} onChange={(e) => setNewsletterEmail(e.target.value)}
-                    style={{ padding: "10px 14px", background: "rgba(17,24,39,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 13, fontFamily: "'Plus Jakarta Sans', sans-serif", outline: "none" }}
+                    style={{ padding: "10px 14px", background: "rgba(17,24,39,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", outline: "none" }}
                     onFocus={(e) => (e.target.style.borderColor = T.accent)} onBlur={(e) => (e.target.style.borderColor = T.border)}
                   />
-                  <button type="submit" style={{ padding: "10px 0", background: T.accent, border: "none", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif", cursor: "pointer", transition: "opacity 0.2s", letterSpacing: 0.5 }}
+                  <button type="submit" style={{ padding: "10px 0", background: T.accent, border: "none", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif", cursor: "pointer", transition: "opacity 0.2s", letterSpacing: 0.5 }}
                     onMouseEnter={(e) => (e.target.style.opacity = "0.85")} onMouseLeave={(e) => (e.target.style.opacity = "1")}
                   >
                     Subscribe to Alerts
@@ -421,7 +421,7 @@ const CyberNews = () => {
           ].map((stat, i) => (
             <div key={i} style={{ textAlign: "center", padding: "16px 12px" }}>
               <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke={stat.color} strokeWidth="1.5" style={{ marginBottom: 8 }}><path d={stat.icon} /></svg>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: stat.color }}>{stat.value}</div>
+              <div style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: stat.color }}>{stat.value}</div>
               <div style={{ color: T.muted, fontSize: 12, marginTop: 4 }}>{stat.label}</div>
             </div>
           ))}

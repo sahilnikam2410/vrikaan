@@ -44,7 +44,7 @@ const RULES = [
 
 export default function ResponsibleDisclosure() {
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="Responsible Disclosure · Bug Bounty"
         description="Found a vulnerability in VRIKAAN? Report it via responsible disclosure. ₹2k-25k bounties + Hall of Fame credit + 1-year Pro plan. 48h acknowledgement."
@@ -62,7 +62,7 @@ export default function ResponsibleDisclosure() {
             color: T.cyan, marginBottom: 14,
           }}>🛡 Bug Bounty · India-First</span>
           <h1 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Find a vulnerability?<br />
@@ -80,7 +80,7 @@ export default function ResponsibleDisclosure() {
           background: `linear-gradient(135deg, ${T.cyan}1a, ${T.accent}1a)`,
           border: `1px solid ${T.cyan}55`, textAlign: "center",
         }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 14px" }}>
+          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 14px" }}>
             📧 Report at <span style={{ color: T.cyan }}>hello@vrikaan.com</span>
           </h2>
           <p style={{ color: T.muted, fontSize: 13, margin: "0 0 18px", lineHeight: 1.6 }}>
@@ -92,7 +92,7 @@ export default function ResponsibleDisclosure() {
                display: "inline-block",
                padding: "12px 28px", borderRadius: 10,
                background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 15,
-               textDecoration: "none", fontFamily: "'Space Grotesk', sans-serif",
+               textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
              }}>📩 Open pre-filled email</a>
         </div>
 
@@ -101,7 +101,7 @@ export default function ResponsibleDisclosure() {
           padding: 22, borderRadius: 14, marginBottom: 22,
           background: T.card, border: `1px solid ${T.border}`,
         }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: T.white, margin: "0 0 14px" }}>
+          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, color: T.white, margin: "0 0 14px" }}>
             ⏱ Our SLA — what to expect
           </h2>
           <ul style={{ margin: 0, paddingLeft: 20, color: T.muted, fontSize: 14, lineHeight: 2 }}>
@@ -114,7 +114,7 @@ export default function ResponsibleDisclosure() {
         </div>
 
         {/* Bounty table */}
-        <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "32px 0 14px" }}>
+        <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "32px 0 14px" }}>
           💰 Bounty tiers (INR)
         </h2>
         <p style={{ color: T.muted, fontSize: 13, margin: "0 0 18px", lineHeight: 1.6 }}>
@@ -148,7 +148,7 @@ export default function ResponsibleDisclosure() {
           padding: 22, borderRadius: 14, marginBottom: 22,
           background: T.card, border: `1px solid ${T.border}`,
         }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: T.white, margin: "0 0 14px" }}>
+          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, color: T.white, margin: "0 0 14px" }}>
             ✅ Rules of engagement
           </h2>
           <ul style={{ margin: 0, paddingLeft: 20, color: T.muted, fontSize: 14, lineHeight: 1.9 }}>
@@ -163,7 +163,7 @@ export default function ResponsibleDisclosure() {
           padding: 22, borderRadius: 14, marginBottom: 22,
           background: `${T.red}0a`, border: `1px solid ${T.red}33`,
         }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: T.red, margin: "0 0 14px" }}>
+          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, color: T.red, margin: "0 0 14px" }}>
             ❌ Out of scope
           </h2>
           <ul style={{ margin: 0, paddingLeft: 20, color: T.muted, fontSize: 13, lineHeight: 1.8 }}>
@@ -176,7 +176,7 @@ export default function ResponsibleDisclosure() {
           padding: 22, borderRadius: 14, marginBottom: 22,
           background: `${T.green}0a`, border: `1px solid ${T.green}33`,
         }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: T.green, margin: "0 0 14px" }}>
+          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, color: T.green, margin: "0 0 14px" }}>
             ✅ In scope
           </h2>
           <ul style={{ margin: 0, paddingLeft: 20, color: T.muted, fontSize: 13, lineHeight: 1.8 }}>
@@ -199,7 +199,7 @@ export default function ResponsibleDisclosure() {
           background: `linear-gradient(135deg, ${T.accent}1a, ${T.cyan}1a)`,
           border: `1px solid ${T.cyan}33`,
         }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 10px" }}>
+          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 10px" }}>
             🏆 Hall of Fame
           </h2>
           <p style={{ color: T.muted, fontSize: 14, margin: "0 0 16px" }}>
@@ -208,7 +208,7 @@ export default function ResponsibleDisclosure() {
           <Link to="/security/hall-of-fame" style={{
             display: "inline-block", padding: "11px 22px", borderRadius: 10,
             background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 14,
-            textDecoration: "none", fontFamily: "'Space Grotesk', sans-serif",
+            textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
           }}>See the wall →</Link>
         </div>
 

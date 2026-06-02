@@ -30,8 +30,11 @@
   --border: rgba(148,163,184,0.08);
   --border-hover: rgba(6,255,208,0.2);
 
-  --font-display: 'Space Grotesk', 'Outfit', -apple-system, sans-serif;
-  --font-body: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+  /* Claude-style stack: Hanken Grotesk (Styrene-like UI/display sans) everywhere,
+     Lora (Tiempos-like serif) reserved for long-form prose via .prose-serif */
+  --font-display: 'Hanken Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Hanken Grotesk', 'Inter', -apple-system, sans-serif;
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);

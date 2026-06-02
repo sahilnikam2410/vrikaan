@@ -187,7 +187,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link to="/" style={{
           fontSize: 20, fontWeight: 800, color: T.white, textDecoration: "none",
-          fontFamily: "'Space Grotesk', sans-serif", display: "flex", alignItems: "center", gap: 10,
+          fontFamily: "'Hanken Grotesk', sans-serif", display: "flex", alignItems: "center", gap: 10,
         }}>
           <img
             src="/wolf-compact.png"
@@ -475,7 +475,7 @@ const Navbar = () => {
                   <path d="M13.73 21a2 2 0 0 1-3.46 0" />
                 </svg>
                 {unreadCount > 0 && (
-                  <span style={{ position: "absolute", top: 2, right: 2, minWidth: 16, height: 16, borderRadius: 8, background: "#ef4444", border: `2px solid ${T.bg}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 700, color: "#fff", padding: "0 3px", fontFamily: "'Space Grotesk'" }}>
+                  <span style={{ position: "absolute", top: 2, right: 2, minWidth: 16, height: 16, borderRadius: 8, background: "#ef4444", border: `2px solid ${T.bg}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 700, color: "#fff", padding: "0 3px", fontFamily: "'Hanken Grotesk'" }}>
                     {unreadCount}
                   </span>
                 )}
@@ -490,7 +490,7 @@ const Navbar = () => {
                     animation: "dropIn 0.2s ease",
                   }}>
                     <div style={{ padding: "14px 16px", borderBottom: `1px solid ${T.border}`, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, fontWeight: 700, color: T.white }}>
+                      <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, fontWeight: 700, color: T.white }}>
                         Notifications {unreadCount > 0 && <span style={{ fontSize: 11, color: T.accent, fontWeight: 600, marginLeft: 6 }}>{unreadCount} new</span>}
                       </span>
                       {unreadCount > 0 && (
@@ -536,7 +536,7 @@ const Navbar = () => {
                 display: "flex", alignItems: "center", justifyContent: "center",
                 fontSize: 13, fontWeight: 700, color: "#fff", textDecoration: "none",
                 border: "2px solid rgba(99,102,241,0.3)",
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "'Hanken Grotesk', sans-serif",
               }}>
                 {(user.displayName || user.email || "U")[0].toUpperCase()}
               </Link>
@@ -546,7 +546,7 @@ const Navbar = () => {
                   padding: "8px 14px", border: "1px solid rgba(236,72,153,0.35)",
                   background: "rgba(236,72,153,0.08)",
                   borderRadius: 8, color: "#ec4899", textDecoration: "none", fontSize: 13,
-                  fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif",
+                  fontWeight: 700, fontFamily: "'Hanken Grotesk', sans-serif",
                   display: "inline-flex", alignItems: "center", gap: 6,
                 }} title="Family Dashboard — manage members, invites, kid/senior modes">
                   <span style={{ fontSize: 14 }}>👪</span> Family
@@ -555,7 +555,7 @@ const Navbar = () => {
               <Link to="/dashboard" style={{
                 padding: "8px 20px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
                 borderRadius: 8, color: "#fff", textDecoration: "none", fontSize: 13,
-                fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif",
+                fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif",
               }}>Dashboard</Link>
             </>
           ) : (
@@ -568,7 +568,7 @@ const Navbar = () => {
               <Link to="/signup" style={{
                 padding: "8px 18px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
                 borderRadius: 8, color: "#fff", textDecoration: "none", fontSize: 13,
-                fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif",
+                fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif",
               }}>Sign Up</Link>
             </>
           )}
@@ -600,7 +600,7 @@ const Navbar = () => {
               <button onClick={() => setMobileToolsOpen(!mobileToolsOpen)} style={{
                 background: "none", border: "none", cursor: "pointer",
                 color: isToolActive ? T.accent : T.white, fontSize: 20, fontWeight: 600,
-                fontFamily: "'Space Grotesk', sans-serif", padding: "12px 24px",
+                fontFamily: "'Hanken Grotesk', sans-serif", padding: "12px 24px",
                 display: "flex", alignItems: "center", gap: 8,
               }}>
                 Tools
@@ -630,7 +630,7 @@ const Navbar = () => {
                 <Link key={l.to} to={l.to} style={{
                   color: isActive(l.to) ? T.accent : T.white,
                   textDecoration: "none", fontSize: 20, fontWeight: 600,
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'Hanken Grotesk', sans-serif",
                   padding: "12px 24px", transition: "color 0.2s",
                   display: "inline-flex", alignItems: "center", gap: 8,
                 }}>
@@ -653,7 +653,7 @@ const Navbar = () => {
           <Link to="/pricing" style={{
             color: isActive("/pricing") ? T.accent : T.white,
             textDecoration: "none", fontSize: 20, fontWeight: 600,
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
             padding: "12px 24px", transition: "color 0.2s",
           }}>Pricing</Link>
 
@@ -662,7 +662,7 @@ const Navbar = () => {
             <Link key={l.to} to={l.to} style={{
               color: isActive(l.to) ? T.accent : T.white,
               textDecoration: "none", fontSize: 20, fontWeight: 600,
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "'Hanken Grotesk', sans-serif",
               padding: "12px 24px", transition: "color 0.2s",
               display: "inline-flex", alignItems: "center", gap: 8,
             }}>
@@ -687,7 +687,7 @@ const Navbar = () => {
             <Link to="/dashboard" style={{
               padding: "12px 36px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
               borderRadius: 10, color: "#fff", textDecoration: "none", fontSize: 16,
-              fontWeight: 600, fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif",
             }}>Dashboard</Link>
           ) : (
             <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
@@ -745,7 +745,7 @@ const Navbar = () => {
               <Link key={i} to={item.to} style={{
                 display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
                 textDecoration: "none", color: active ? T.accent : T.muted, fontSize: 10, fontWeight: 600,
-                fontFamily: "'Plus Jakarta Sans', sans-serif", padding: "4px 12px",
+                fontFamily: "'Hanken Grotesk', sans-serif", padding: "4px 12px",
                 transition: "color 0.2s", position: "relative",
               }}>
                 {active && <span style={{ position: "absolute", top: -6, width: 20, height: 3, borderRadius: 2, background: "linear-gradient(90deg, #6366f1, #14e3c5)" }} />}

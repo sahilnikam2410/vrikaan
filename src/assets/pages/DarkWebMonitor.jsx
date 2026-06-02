@@ -9,8 +9,8 @@ const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 
 const sty = {
   card: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24, backdropFilter: "blur(10px)" },
-  btn: (bg, clr) => ({ padding: "12px 28px", background: bg, border: "none", borderRadius: 8, color: clr || "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "'Plus Jakarta Sans'", transition: "all 0.2s" }),
-  input: { width: "100%", padding: "14px 18px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 14, outline: "none", boxSizing: "border-box", fontFamily: "'Plus Jakarta Sans'" },
+  btn: (bg, clr) => ({ padding: "12px 28px", background: bg, border: "none", borderRadius: 8, color: clr || "#fff", fontSize: 14, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "'Hanken Grotesk'", transition: "all 0.2s" }),
+  input: { width: "100%", padding: "14px 18px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 14, outline: "none", boxSizing: "border-box", fontFamily: "'Hanken Grotesk'" },
 };
 
 const Badge = ({ children, color }) => (
@@ -101,7 +101,7 @@ function CircleScore({ score, size = 180 }) {
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={10} strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={offset} style={{ transition: "stroke 0.3s" }} />
       </svg>
       <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <span style={{ fontSize: 42, fontWeight: 700, fontFamily: "'Space Grotesk'", color }}>{anim}</span>
+        <span style={{ fontSize: 42, fontWeight: 700, fontFamily: "'Hanken Grotesk'", color }}>{anim}</span>
         <span style={{ fontSize: 12, color: T.muted, marginTop: -4 }}>/ 100</span>
       </div>
     </div>
@@ -183,14 +183,14 @@ export default function DarkWebMonitor() {
   }
 
   const wrap = { maxWidth: 1100, margin: "0 auto", padding: "0 20px" };
-  const h2 = { fontSize: 28, fontWeight: 700, fontFamily: "'Space Grotesk'", color: T.white, margin: "0 0 8px" };
+  const h2 = { fontSize: 28, fontWeight: 700, fontFamily: "'Hanken Grotesk'", color: T.white, margin: "0 0 8px" };
   const sub = { fontSize: 14, color: T.muted, margin: 0, lineHeight: 1.6 };
 
   const now = new Date();
   const lastScan = results ? now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) + " at " + now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) : "Never";
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO title="Dark Web Monitor — VRIKAAN" description="Check if your personal data has been exposed in data breaches on the dark web." />
       <Navbar />
 
@@ -205,7 +205,7 @@ export default function DarkWebMonitor() {
             <span style={{ fontSize: 12, fontWeight: 600, color: T.cyan }}>Dark Web Intelligence Active</span>
           </div>
 
-          <h1 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 800, fontFamily: "'Space Grotesk'", margin: "0 0 16px", background: `linear-gradient(135deg, ${T.cyan}, ${T.accent}, ${T.cyan})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <h1 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 800, fontFamily: "'Hanken Grotesk'", margin: "0 0 16px", background: `linear-gradient(135deg, ${T.cyan}, ${T.accent}, ${T.cyan})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             Dark Web Monitor
           </h1>
           <p style={{ fontSize: 17, color: T.muted, maxWidth: 540, margin: "0 auto 40px", lineHeight: 1.7 }}>
@@ -295,13 +295,13 @@ export default function DarkWebMonitor() {
                       }))},
                     ],
                   })}
-                  style={{ padding: "8px 16px", background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 8, color: "#818cf8", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Plus Jakarta Sans'" }}
+                  style={{ padding: "8px 16px", background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 8, color: "#818cf8", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Hanken Grotesk'" }}
                 >
                   📄 Export Report
                 </button>
               </div>
               <div style={{ ...sty.card, textAlign: "center", padding: "40px 24px", borderColor: results.breaches.length > 4 ? `${T.red}30` : results.breaches.length > 2 ? `${T.orange}30` : `${T.yellow}30` }}>
-                <div style={{ fontSize: 56, fontWeight: 800, fontFamily: "'Space Grotesk'", color: results.breaches.length > 4 ? T.red : results.breaches.length > 2 ? T.orange : T.yellow }}>
+                <div style={{ fontSize: 56, fontWeight: 800, fontFamily: "'Hanken Grotesk'", color: results.breaches.length > 4 ? T.red : results.breaches.length > 2 ? T.orange : T.yellow }}>
                   {results.breaches.length}
                 </div>
                 <div style={{ fontSize: 18, fontWeight: 600, color: T.white, marginBottom: 6 }}>Breaches Found</div>
@@ -322,13 +322,13 @@ export default function DarkWebMonitor() {
                 {results.breaches.map((b, i) => (
                   <div key={b.name} style={{ ...sty.card, display: "flex", gap: 20, alignItems: "flex-start", animation: `dwm-slideIn 0.4s ease ${i * 0.1}s both`, flexWrap: "wrap" }}>
                     {/* Logo placeholder */}
-                    <div style={{ width: 52, height: 52, borderRadius: 12, background: `${b.color}20`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 16, color: b.color, fontFamily: "'Space Grotesk'", flexShrink: 0 }}>
+                    <div style={{ width: 52, height: 52, borderRadius: 12, background: `${b.color}20`, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 16, color: b.color, fontFamily: "'Hanken Grotesk'", flexShrink: 0 }}>
                       {b.icon}
                     </div>
 
                     <div style={{ flex: 1, minWidth: 200 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 8 }}>
-                        <span style={{ fontSize: 17, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'" }}>{b.name}</span>
+                        <span style={{ fontSize: 17, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'" }}>{b.name}</span>
                         <Badge color={SEV_COLORS[b.severity]}>{b.severity}</Badge>
                       </div>
 
@@ -443,7 +443,7 @@ export default function DarkWebMonitor() {
               ].map((s, i) => (
                 <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: i < 2 ? `1px solid ${T.border}` : "none" }}>
                   <span style={{ fontSize: 12, color: T.muted }}>{s.label}</span>
-                  <span style={{ fontSize: 16, fontWeight: 700, fontFamily: "'Space Grotesk'", color: s.color }}>{s.value}</span>
+                  <span style={{ fontSize: 16, fontWeight: 700, fontFamily: "'Hanken Grotesk'", color: s.color }}>{s.value}</span>
                 </div>
               ))}
             </div>

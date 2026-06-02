@@ -84,7 +84,7 @@ export default function NotificationBell({ size = 22 }) {
             fontSize: 10, fontWeight: 700,
             display: "flex", alignItems: "center", justifyContent: "center",
             border: "2px solid #030712",
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
           }}>
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
@@ -115,7 +115,7 @@ export default function NotificationBell({ size = 22 }) {
               zIndex: 9999,
               display: "flex", flexDirection: "column",
               animation: "nd-slide 0.28s cubic-bezier(0.22, 1, 0.36, 1)",
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontFamily: "'Hanken Grotesk', sans-serif",
             }}
           >
             {/* Header */}
@@ -127,7 +127,7 @@ export default function NotificationBell({ size = 22 }) {
               <div style={{ flex: 1 }}>
                 <h3 style={{
                   fontSize: 17, fontWeight: 700, color: T.white,
-                  margin: 0, fontFamily: "'Space Grotesk', sans-serif",
+                  margin: 0, fontFamily: "'Hanken Grotesk', sans-serif",
                 }}>Notifications</h3>
                 <p style={{ fontSize: 12, color: T.muted, margin: "2px 0 0" }}>
                   {unreadCount === 0 ? "You're all caught up" : `${unreadCount} unread`}

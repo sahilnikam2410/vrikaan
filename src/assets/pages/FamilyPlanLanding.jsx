@@ -96,7 +96,7 @@ const MARKETING_HEAD = `
 
 export default function FamilyPlanLanding() {
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="Family Plan — VRIKAAN protects parents, kids & grandparents (₹149/mo)"
         description="One plan, whole family safe. 5 members. Parent dashboard, kid-safe mode, senior UPI scam guard, family scam alerts. ₹149/mo — cancel anytime, 30-day refund."
@@ -125,7 +125,7 @@ export default function FamilyPlanLanding() {
               fontSize: 11, fontWeight: 700, color: T.pink, marginBottom: 18, letterSpacing: 0.5,
             }}>FAMILY PLAN · NEW</span>
             <h1 style={{
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "'Hanken Grotesk', sans-serif",
               fontSize: "clamp(38px, 5vw, 60px)", fontWeight: 800,
               letterSpacing: "-0.03em", lineHeight: 1.05, margin: "0 0 22px",
             }}>
@@ -145,7 +145,7 @@ export default function FamilyPlanLanding() {
                 color: "#fff", borderRadius: 12,
                 fontSize: 15, fontWeight: 700, textDecoration: "none",
                 boxShadow: `0 12px 32px ${T.pink}40`,
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "'Hanken Grotesk', sans-serif",
               }}>
                 Start Family Plan — ₹149/mo
               </Link>
@@ -198,7 +198,7 @@ export default function FamilyPlanLanding() {
         {/* Features grid */}
         <section style={{ marginBottom: 96 }}>
           <h2 style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
             fontSize: 36, fontWeight: 700, textAlign: "center",
             margin: "0 0 14px", letterSpacing: "-0.02em",
           }}>What you get</h2>
@@ -213,7 +213,7 @@ export default function FamilyPlanLanding() {
                 backdropFilter: "blur(8px)",
               }}>
                 <div style={{ fontSize: 32, marginBottom: 14 }}>{f.icon}</div>
-                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 700, margin: "0 0 8px" }}>{f.title}</h3>
+                <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 17, fontWeight: 700, margin: "0 0 8px" }}>{f.title}</h3>
                 <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.7, margin: 0 }}>{f.body}</p>
               </div>
             ))}
@@ -223,7 +223,7 @@ export default function FamilyPlanLanding() {
         {/* Compare */}
         <section style={{ marginBottom: 96 }}>
           <h2 style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
             fontSize: 32, fontWeight: 700, textAlign: "center",
             margin: "0 0 38px", letterSpacing: "-0.02em",
           }}>Standard vs Family</h2>
@@ -255,7 +255,7 @@ export default function FamilyPlanLanding() {
         {/* Testimonials */}
         <section style={{ marginBottom: 96 }}>
           <h2 style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
             fontSize: 32, fontWeight: 700, textAlign: "center",
             margin: "0 0 38px", letterSpacing: "-0.02em",
           }}>Indian families using VRIKAAN</h2>
@@ -276,7 +276,7 @@ export default function FamilyPlanLanding() {
         {/* FAQ */}
         <section style={{ marginBottom: 80 }}>
           <h2 style={{
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
             fontSize: 32, fontWeight: 700, textAlign: "center",
             margin: "0 0 38px", letterSpacing: "-0.02em",
           }}>Family FAQs</h2>
@@ -300,7 +300,7 @@ export default function FamilyPlanLanding() {
           border: `1px solid ${T.pink}22`,
           borderRadius: 22,
         }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 700, margin: "0 0 14px", letterSpacing: "-0.02em" }}>
+          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 32, fontWeight: 700, margin: "0 0 14px", letterSpacing: "-0.02em" }}>
             Get your family on VRIKAAN today
           </h2>
           <p style={{ color: T.muted, fontSize: 15, marginBottom: 28 }}>
@@ -311,7 +311,7 @@ export default function FamilyPlanLanding() {
             background: `linear-gradient(135deg, ${T.pink}, ${T.indigo})`,
             color: "#fff", borderRadius: 12, textDecoration: "none",
             fontSize: 15, fontWeight: 700,
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
             boxShadow: `0 12px 32px ${T.pink}40`,
           }}>
             Start Family Plan — ₹149/mo

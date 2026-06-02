@@ -44,7 +44,7 @@ export default function ThreatDirectory() {
   }, [query, category]);
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="Cybersecurity Threat Directory"
         description="A plain-English directory of the most common cybersecurity threats — phishing, ransomware, SIM swapping, romance scams and more. Signs, examples, and prevention for each."

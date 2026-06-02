@@ -27,7 +27,7 @@ export default function PlanGate({ required = "pro", feature = "This feature", c
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="1.5">
           <rect x="3" y="11" width="18" height="11" rx="2" ry="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" />
         </svg>
-        <h3 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", marginTop: 16, fontFamily: "'Space Grotesk', sans-serif" }}>
+        <h3 style={{ fontSize: 18, fontWeight: 700, color: "#f1f5f9", marginTop: 16, fontFamily: "'Hanken Grotesk', sans-serif" }}>
           {required.charAt(0).toUpperCase() + required.slice(1)} Plan Required
         </h3>
         <p style={{ fontSize: 13, color: "#94a3b8", marginTop: 6, textAlign: "center", maxWidth: 300 }}>
@@ -36,7 +36,7 @@ export default function PlanGate({ required = "pro", feature = "This feature", c
         <Link to="/pricing" style={{
           marginTop: 16, padding: "10px 24px", background: "linear-gradient(135deg, #6366f1, #14e3c5)",
           borderRadius: 8, color: "#fff", textDecoration: "none", fontSize: 14, fontWeight: 600,
-          fontFamily: "'Space Grotesk', sans-serif",
+          fontFamily: "'Hanken Grotesk', sans-serif",
         }}>
           Upgrade Now
         </Link>

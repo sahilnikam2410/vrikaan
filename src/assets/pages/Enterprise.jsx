@@ -127,7 +127,7 @@ export default function Enterprise() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="VRIKAAN Enterprise SOC — Managed Security for India"
         description="24×7 SOC-as-a-Service for Indian fintech, banks, IT services. MITRE ATT&CK, DPDP-ready, ₹50k-50L/mo. INR billing, Hindi-fluent on-call, India data residency."
@@ -147,7 +147,7 @@ export default function Enterprise() {
             color: T.gold, marginBottom: 18,
           }}>🏛 Enterprise · 24×7 SOC · India-Built</span>
           <h1 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(38px, 6vw, 64px)",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(38px, 6vw, 64px)",
             fontWeight: 800, color: T.white, margin: "0 0 18px", lineHeight: 1.05,
             letterSpacing: "-0.02em",
           }}>
@@ -167,13 +167,13 @@ export default function Enterprise() {
               display: "inline-flex", alignItems: "center", gap: 8,
               padding: "14px 26px", borderRadius: 12,
               background: T.cyan, color: T.bg, textDecoration: "none",
-              fontWeight: 800, fontSize: 15, fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 800, fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif",
             }}>📊 See pricing tiers</a>
             <a href="#talk" style={{
               display: "inline-flex", alignItems: "center", gap: 8,
               padding: "14px 26px", borderRadius: 12,
               background: T.gold, color: T.bg, textDecoration: "none",
-              fontWeight: 800, fontSize: 15, fontFamily: "'Space Grotesk', sans-serif",
+              fontWeight: 800, fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif",
             }}>📞 Talk to founders</a>
           </div>
         </header>
@@ -195,7 +195,7 @@ export default function Enterprise() {
               textAlign: "center",
             }}>
               <div style={{
-                fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 800,
+                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 28, fontWeight: 800,
                 color: s.c, lineHeight: 1,
               }}>{s.v}</div>
               <div style={{
@@ -236,7 +236,7 @@ export default function Enterprise() {
         <section id="tiers" style={{ marginBottom: 60 }}>
           <div style={{ textAlign: "center", marginBottom: 36 }}>
             <h2 style={{
-              fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(28px, 4vw, 40px)",
+              fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(28px, 4vw, 40px)",
               fontWeight: 800, color: T.white, margin: "0 0 10px",
             }}>3 tiers · pick your scale</h2>
             <p style={{ color: T.muted, fontSize: 15 }}>
@@ -265,7 +265,7 @@ export default function Enterprise() {
                   }}>Most Popular</div>
                 )}
                 <h3 style={{
-                  fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 800,
+                  fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 24, fontWeight: 800,
                   color: tier.color, margin: "0 0 6px",
                 }}>{tier.name}</h3>
                 <div style={{ color: T.muted, fontSize: 12, marginBottom: 16, lineHeight: 1.5 }}>
@@ -273,7 +273,7 @@ export default function Enterprise() {
                 </div>
                 <div style={{ marginBottom: 8 }}>
                   <span style={{
-                    fontFamily: "'Space Grotesk', sans-serif", fontSize: 30, fontWeight: 800,
+                    fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 30, fontWeight: 800,
                     color: T.white,
                   }}>{tier.price}</span>
                   <span style={{ color: T.muted, fontSize: 14 }}>{tier.per}</span>
@@ -321,7 +321,7 @@ export default function Enterprise() {
         <section style={{ marginBottom: 60 }}>
           <div style={{ textAlign: "center", marginBottom: 30 }}>
             <h2 style={{
-              fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(28px, 4vw, 40px)",
+              fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(28px, 4vw, 40px)",
               fontWeight: 800, color: T.white, margin: "0 0 10px",
             }}>VRIKAAN vs the incumbents</h2>
             <p style={{ color: T.muted, fontSize: 14 }}>India-tuned · INR · transparent</p>
@@ -364,7 +364,7 @@ export default function Enterprise() {
         <section style={{ marginBottom: 60 }}>
           <div style={{ textAlign: "center", marginBottom: 30 }}>
             <h2 style={{
-              fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(28px, 4vw, 40px)",
+              fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(28px, 4vw, 40px)",
               fontWeight: 800, color: T.white, margin: "0 0 8px",
             }}>Case studies</h2>
             <p style={{ color: T.muted, fontSize: 13, fontStyle: "italic" }}>
@@ -406,7 +406,7 @@ export default function Enterprise() {
         }}>
           <div style={{ textAlign: "center", marginBottom: 28 }}>
             <h2 style={{
-              fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 800,
+              fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 28, fontWeight: 800,
               color: T.white, margin: "0 0 8px",
             }}>Get a 20-min walkthrough</h2>
             <p style={{ color: T.muted, fontSize: 14, margin: 0 }}>
@@ -468,7 +468,7 @@ export default function Enterprise() {
                 padding: "14px 24px", borderRadius: 12,
                 background: T.cyan, color: T.bg, border: 0,
                 fontWeight: 800, fontSize: 15, cursor: "pointer",
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "'Hanken Grotesk', sans-serif",
               }}>Request walkthrough →</button>
               <p style={{ fontSize: 11, color: T.mutedDark, textAlign: "center", margin: "6px 0 0" }}>
                 🔒 We never sell your data. DPDP compliant. Reply within 24 hours.

@@ -76,7 +76,7 @@ export default function RiskScore() {
   };
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="Free Cyber Risk Score — How exposed are you? | VRIKAAN"
         description="Take the free 2-minute VRIKAAN cyber risk assessment. AI scores your exposure to UPI fraud, scams, deepfakes, password leaks — and gives a personalized fix plan. No login."
@@ -89,7 +89,7 @@ export default function RiskScore() {
         {/* Hero */}
         <div style={{ textAlign: "center", marginBottom: 44 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.cyan}10`, border: `1px solid ${T.cyan}30`, fontSize: 11, fontWeight: 700, color: T.cyan, marginBottom: 16, letterSpacing: 0.5 }}>FREE · 2 MIN · NO LOGIN</span>
-          <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800, letterSpacing: "-0.03em", margin: "0 0 16px" }}>
+          <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800, letterSpacing: "-0.03em", margin: "0 0 16px" }}>
             What's your <span style={{ background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>cyber risk score?</span>
           </h1>
           <p style={{ color: T.muted, fontSize: 16, lineHeight: 1.7, maxWidth: 520, margin: "0 auto" }}>
@@ -150,7 +150,7 @@ export default function RiskScore() {
           background: allAnswered ? `linear-gradient(135deg, ${T.cyan}, ${T.accent})` : "rgba(148,163,184,0.1)",
           color: allAnswered ? "#020617" : T.mutedDark,
           fontSize: 16, fontWeight: 800, cursor: allAnswered && !loading ? "pointer" : "not-allowed",
-          fontFamily: "'Space Grotesk', sans-serif",
+          fontFamily: "'Hanken Grotesk', sans-serif",
         }}>
           {loading ? "AI analyzing…" : allAnswered ? "Get my risk score →" : `Answer all questions (${Object.keys(answers).length}/9)`}
         </button>
@@ -161,14 +161,14 @@ export default function RiskScore() {
             {/* Score dial */}
             <div style={{ textAlign: "center", padding: "32px 24px", background: T.card, border: `1px solid ${bandColor(result.band)}40`, borderRadius: 18, marginBottom: 20 }}>
               <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 2, color: bandColor(result.band), textTransform: "uppercase", marginBottom: 12 }}>{result.band} RISK</div>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 72, fontWeight: 800, lineHeight: 1, color: bandColor(result.band), letterSpacing: "-0.04em" }}>{result.score}<span style={{ fontSize: 28, color: T.mutedDark }}>/100</span></div>
+              <div style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 72, fontWeight: 800, lineHeight: 1, color: bandColor(result.band), letterSpacing: "-0.04em" }}>{result.score}<span style={{ fontSize: 28, color: T.mutedDark }}>/100</span></div>
               <p style={{ color: T.white, fontSize: 16, lineHeight: 1.6, maxWidth: 460, margin: "16px auto 0", fontWeight: 600 }}>{result.headline}</p>
             </div>
 
             {/* Top risks */}
             {result.topRisks?.length > 0 && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24, marginBottom: 20 }}>
-                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 700, margin: "0 0 16px" }}>⚠ Your top risks</h3>
+                <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 17, fontWeight: 700, margin: "0 0 16px" }}>⚠ Your top risks</h3>
                 {result.topRisks.map((r, i) => (
                   <div key={i} style={{ display: "flex", gap: 12, padding: "12px 0", borderTop: i === 0 ? "none" : `1px solid ${T.border}` }}>
                     <span style={{ width: 8, height: 8, borderRadius: "50%", background: sevColor(r.severity), marginTop: 6, flexShrink: 0 }} />
@@ -184,7 +184,7 @@ export default function RiskScore() {
             {/* Quick wins */}
             {result.quickWins?.length > 0 && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24, marginBottom: 20 }}>
-                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 700, margin: "0 0 16px" }}>✓ Fix these first</h3>
+                <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 17, fontWeight: 700, margin: "0 0 16px" }}>✓ Fix these first</h3>
                 {result.quickWins.map((w, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "12px 0", borderTop: i === 0 ? "none" : `1px solid ${T.border}` }}>
                     <div style={{ flex: 1 }}>
@@ -203,7 +203,7 @@ export default function RiskScore() {
             <div style={{ textAlign: "center", padding: "32px 28px", background: `linear-gradient(135deg, ${T.accent}10, ${T.cyan}06)`, border: `1px solid ${T.accent}22`, borderRadius: 18 }}>
               <p style={{ color: T.white, fontSize: 15, lineHeight: 1.7, margin: "0 0 20px", fontWeight: 600 }}>{result.proPitch}</p>
               <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-                <Link to="/pricing" style={{ padding: "13px 28px", background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`, color: "#020617", borderRadius: 10, textDecoration: "none", fontSize: 14, fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif" }}>See plans →</Link>
+                <Link to="/pricing" style={{ padding: "13px 28px", background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`, color: "#020617", borderRadius: 10, textDecoration: "none", fontSize: 14, fontWeight: 800, fontFamily: "'Hanken Grotesk', sans-serif" }}>See plans →</Link>
                 <Link to="/family-plan" style={{ padding: "13px 28px", background: "transparent", border: `1px solid ${T.border}`, color: T.white, borderRadius: 10, textDecoration: "none", fontSize: 14, fontWeight: 600 }}>Protect family</Link>
               </div>
             </div>

@@ -34,8 +34,8 @@ const T = {
 
 const sty = {
   card: { background: "rgba(17,24,39,0.6)", border: `1px solid ${T.border}`, borderRadius: 16, padding: 24, backdropFilter: "blur(12px)", transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)", boxShadow: "0 4px 24px rgba(0,0,0,0.2)" },
-  input: { width: "100%", padding: "10px 14px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 13, outline: "none", boxSizing: "border-box", fontFamily: "'Plus Jakarta Sans'", transition: "border-color 0.3s, box-shadow 0.3s" },
-  btn: (bg, clr) => ({ padding: "8px 16px", background: bg, border: "none", borderRadius: 8, color: clr || "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Plus Jakarta Sans'", transition: "all 0.2s ease" }),
+  input: { width: "100%", padding: "10px 14px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 13, outline: "none", boxSizing: "border-box", fontFamily: "'Hanken Grotesk'", transition: "border-color 0.3s, box-shadow 0.3s" },
+  btn: (bg, clr) => ({ padding: "8px 16px", background: bg, border: "none", borderRadius: 8, color: clr || "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Hanken Grotesk'", transition: "all 0.2s ease" }),
 };
 
 const AniCard = ({ children, delay = 0, className = "" }) => (
@@ -832,11 +832,11 @@ export default function UserDashboard() {
   const renderOverview = () => (
     <AniTab>
       <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28, animation: "fadeInUp 0.4s ease both" }}>
-        <div className="dash-avatar" style={{ width: 60, height: 60, borderRadius: "50%", background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, fontWeight: 700, color: "#fff", fontFamily: "'Space Grotesk'", boxShadow: "0 0 20px rgba(99,102,241,0.3)" }}>
+        <div className="dash-avatar" style={{ width: 60, height: 60, borderRadius: "50%", background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, fontWeight: 700, color: "#fff", fontFamily: "'Hanken Grotesk'", boxShadow: "0 0 20px rgba(99,102,241,0.3)" }}>
           {user?.photoURL ? <img src={user.photoURL} alt="" style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }} /> : (user?.name?.charAt(0)?.toUpperCase() || "U")}
         </div>
         <div>
-          <h2 style={{ fontSize: 24, fontWeight: 700, margin: 0, fontFamily: "'Space Grotesk'" }}><span className="dash-gradient-text">Welcome, {user?.name || "User"}</span></h2>
+          <h2 style={{ fontSize: 24, fontWeight: 700, margin: 0, fontFamily: "'Hanken Grotesk'" }}><span className="dash-gradient-text">Welcome, {user?.name || "User"}</span></h2>
           <div style={{ marginTop: 4 }}><Badge color={planColors[userPlan]}>{planLabels[userPlan]} Plan</Badge></div>
         </div>
       </div>
@@ -855,8 +855,8 @@ export default function UserDashboard() {
         ].map((s, i) => (
           <div key={i} className="dash-stat" style={{ ...sty.card, textAlign: "center", position: "relative", overflow: "hidden", animation: `fadeInUp 0.5s ease ${i * 0.08}s both` }}>
             <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: s.gradient, borderRadius: "16px 16px 0 0" }} />
-            <p style={{ fontSize: 12, color: T.muted, marginBottom: 8, fontFamily: "'Plus Jakarta Sans'" }}>{s.label}</p>
-            <p className="stat-value" style={{ fontSize: 26, fontWeight: 700, color: s.color, margin: 0, fontFamily: "'Space Grotesk'" }}>{s.value}</p>
+            <p style={{ fontSize: 12, color: T.muted, marginBottom: 8, fontFamily: "'Hanken Grotesk'" }}>{s.label}</p>
+            <p className="stat-value" style={{ fontSize: 26, fontWeight: 700, color: s.color, margin: 0, fontFamily: "'Hanken Grotesk'" }}>{s.value}</p>
           </div>
         ))}
       </div>
@@ -890,7 +890,7 @@ export default function UserDashboard() {
               padding: "8px 14px", borderRadius: 8,
               background: "rgba(236,72,153,0.18)", color: "#ec4899",
               fontSize: 12, fontWeight: 700,
-              fontFamily: "'Space Grotesk', sans-serif", flexShrink: 0,
+              fontFamily: "'Hanken Grotesk', sans-serif", flexShrink: 0,
             }}>Open →</span>
           </div>
         </a>
@@ -946,7 +946,7 @@ export default function UserDashboard() {
                 }}>🔥</div>
                 <div>
                   <div style={{ fontSize: 11, color: T.muted, textTransform: "uppercase", letterSpacing: 1 }}>Daily Streak</div>
-                  <div style={{ fontSize: 24, fontWeight: 800, color: T.white, fontFamily: "'Space Grotesk'" }}>
+                  <div style={{ fontSize: 24, fontWeight: 800, color: T.white, fontFamily: "'Hanken Grotesk'" }}>
                     {streak.current} day{streak.current !== 1 ? "s" : ""}
                   </div>
                   {streak.longest > streak.current && (
@@ -956,7 +956,7 @@ export default function UserDashboard() {
               </div>
               <div style={{ textAlign: "right" }}>
                 <div style={{ fontSize: 11, color: T.muted, textTransform: "uppercase", letterSpacing: 1 }}>Badges</div>
-                <div style={{ fontSize: 24, fontWeight: 800, color: T.cyan, fontFamily: "'Space Grotesk'" }}>
+                <div style={{ fontSize: 24, fontWeight: 800, color: T.cyan, fontFamily: "'Hanken Grotesk'" }}>
                   {earned.length}<span style={{ fontSize: 14, color: T.muted, fontWeight: 400 }}>/{badges.length}</span>
                 </div>
               </div>
@@ -1008,7 +1008,7 @@ export default function UserDashboard() {
                 <span style={{ fontSize: 10, color: T.muted }}>•</span>
                 <span style={{ fontSize: 10, color: T.muted }}>{new Date().toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</span>
               </div>
-              <h3 style={{ fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 4px", fontFamily: "'Space Grotesk'" }}>{tip.title}</h3>
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 4px", fontFamily: "'Hanken Grotesk'" }}>{tip.title}</h3>
               <p style={{ fontSize: 13, color: T.muted, margin: 0, lineHeight: 1.55 }}>{tip.body}</p>
             </div>
           </div>
@@ -1017,7 +1017,7 @@ export default function UserDashboard() {
       {/* Onboarding Checklist */}
       <AniCard delay={0.2}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-          <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, margin: 0, fontFamily: "'Space Grotesk'" }}>Setup Checklist</h3>
+          <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, margin: 0, fontFamily: "'Hanken Grotesk'" }}>Setup Checklist</h3>
           <span style={{ fontSize: 12, color: T.cyan, fontFamily: "'JetBrains Mono', monospace" }}>{[user?.emailVerified, userPlan !== "free", devices.length > 0, user?.phone, user?.name].filter(Boolean).length}/5 complete</span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -1051,7 +1051,7 @@ export default function UserDashboard() {
         </div>
       </AniCard>
       <AniCard delay={0.3}>
-        <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Space Grotesk'" }}>Current Device</h3>
+        <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Hanken Grotesk'" }}>Current Device</h3>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
           {[
             ["Device", currentDevice.name],
@@ -1082,7 +1082,7 @@ export default function UserDashboard() {
         ))}
       </div>
       <AniCard delay={0.5} className="">
-        <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Space Grotesk'" }}>Recent Activity</h3>
+        <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Hanken Grotesk'" }}>Recent Activity</h3>
         {activity.length === 0 ? (
           <div style={{ textAlign: "center", padding: "24px 12px" }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, margin: "0 auto 10px", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(99,102,241,0.08)", border: `1px solid ${T.border}`, fontSize: 20 }}>📋</div>
@@ -1108,7 +1108,7 @@ export default function UserDashboard() {
             display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20,
           }}>💡</div>
           <div>
-            <h3 style={{ fontSize: 13, fontWeight: 600, color: T.cyan, margin: "0 0 6px", fontFamily: "'Space Grotesk'", letterSpacing: 0.5 }}>Security Tip of the Day</h3>
+            <h3 style={{ fontSize: 13, fontWeight: 600, color: T.cyan, margin: "0 0 6px", fontFamily: "'Hanken Grotesk'", letterSpacing: 0.5 }}>Security Tip of the Day</h3>
             <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.7, margin: 0 }}>
               {[
                 "Enable two-factor authentication on all your accounts. It blocks 99.9% of automated attacks even if your password is compromised.",
@@ -1126,7 +1126,7 @@ export default function UserDashboard() {
 
       {/* Quick Links */}
       <AniCard delay={0.7}>
-        <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Space Grotesk'" }}>Explore Tools</h3>
+        <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Hanken Grotesk'" }}>Explore Tools</h3>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 8 }}>
           {[
             { label: "Threat Map", icon: "🌐", path: "/threat-map" },
@@ -1154,7 +1154,7 @@ export default function UserDashboard() {
   const renderDevices = () => (
     <AniTab>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-        <h2 style={{ fontSize: 20, fontWeight: 700, fontFamily: "'Space Grotesk'" }}><span className="dash-gradient-text">Devices</span> <span style={{ color: T.muted, fontSize: 16 }}>({devices.length}/{deviceLimit === Infinity ? "∞" : deviceLimit})</span></h2>
+        <h2 style={{ fontSize: 20, fontWeight: 700, fontFamily: "'Hanken Grotesk'" }}><span className="dash-gradient-text">Devices</span> <span style={{ color: T.muted, fontSize: 16 }}>({devices.length}/{deviceLimit === Infinity ? "∞" : deviceLimit})</span></h2>
         <button onClick={addDevice} className="dash-btn" style={sty.btn(T.accent)}><HiOutlinePlus size={14} /> Register Device</button>
       </div>
       {devices.length === 0 ? (
@@ -1198,10 +1198,10 @@ export default function UserDashboard() {
 
   const renderSecurity = () => (
     <AniTab>
-      <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, fontFamily: "'Space Grotesk'" }}><span className="dash-gradient-text">Security Center</span></h2>
+      <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, fontFamily: "'Hanken Grotesk'" }}><span className="dash-gradient-text">Security Center</span></h2>
       {/* Free: Score + Factors */}
       <div className="dash-card" style={{ ...sty.card, marginBottom: 20, animation: "fadeInUp 0.5s ease both" }}>
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk'" }}>Security Score</h3>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk'" }}>Security Score</h3>
         <div style={{ display: "flex", alignItems: "center", gap: 24, flexWrap: "wrap" }}>
           <div style={{ width: 100, height: 100, position: "relative" }}>
             <ResponsiveContainer width={100} height={100}>
@@ -1209,7 +1209,7 @@ export default function UserDashboard() {
                 <Cell fill={secScore >= 80 ? T.green : secScore >= 50 ? T.orange : T.red} /><Cell fill="rgba(148,163,184,0.1)" />
               </Pie></PieChart>
             </ResponsiveContainer>
-            <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontSize: 18, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'", animation: "scaleIn 0.6s ease 0.3s both" }}>{secScore}</span>
+            <span style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", fontSize: 18, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", animation: "scaleIn 0.6s ease 0.3s both" }}>{secScore}</span>
           </div>
           <div style={{ flex: 1 }}>
             {secFactors.map((f, i) => (
@@ -1223,7 +1223,7 @@ export default function UserDashboard() {
       </div>
       {/* Free: Password checker */}
       <div className="dash-card" style={{ ...sty.card, marginBottom: 20, animation: "fadeInUp 0.5s ease 0.1s both" }}>
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Space Grotesk'" }}>Password Strength Checker</h3>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Hanken Grotesk'" }}>Password Strength Checker</h3>
         <div style={{ position: "relative" }}>
           <input type={showPw ? "text" : "password"} placeholder="Test a password..." value={pwInput} onChange={(e) => setPwInput(e.target.value)} style={sty.input} />
           <button onClick={() => setShowPw(!showPw)} style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", color: T.muted, cursor: "pointer" }}>
@@ -1245,7 +1245,7 @@ export default function UserDashboard() {
       {/* Pro: URL Scanner + Email Breach */}
       <PlanGate required="pro" feature="Advanced security tools">
         <div style={{ ...sty.card, marginBottom: 20 }}>
-          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Space Grotesk'" }}>URL Safety Scanner</h3>
+          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Hanken Grotesk'" }}>URL Safety Scanner</h3>
           <div style={{ display: "flex", gap: 8 }}>
             <input placeholder="Enter URL to check..." value={urlInput} onChange={(e) => setUrlInput(e.target.value)} style={{ ...sty.input, flex: 1 }} />
             <button onClick={() => setUrlResult(checkUrlSafety(urlInput))} style={sty.btn(T.accent)}>Scan</button>
@@ -1258,7 +1258,7 @@ export default function UserDashboard() {
           )}
         </div>
         <div style={{ ...sty.card, marginBottom: 20 }}>
-          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Space Grotesk'" }}>Email Breach Checker</h3>
+          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Hanken Grotesk'" }}>Email Breach Checker</h3>
           <div style={{ display: "flex", gap: 8 }}>
             <input placeholder="Enter email to check..." value={emailCheckInput} onChange={(e) => setEmailCheckInput(e.target.value)} style={{ ...sty.input, flex: 1 }} />
             <button onClick={async () => {
@@ -1277,7 +1277,7 @@ export default function UserDashboard() {
           )}
         </div>
         <div style={sty.card}>
-          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Space Grotesk'" }}>Security Recommendations</h3>
+          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Hanken Grotesk'" }}>Security Recommendations</h3>
           {[
             { text: "Enable two-factor authentication", done: false },
             { text: "Use a unique password for each account", done: false },
@@ -1299,7 +1299,7 @@ export default function UserDashboard() {
     <AniTab>
     <PlanGate required="pro" feature="Threat Monitor">
       <div>
-        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, fontFamily: "'Space Grotesk'" }}><span className="dash-gradient-text">Threat Monitor</span></h2>
+        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, fontFamily: "'Hanken Grotesk'" }}><span className="dash-gradient-text">Threat Monitor</span></h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16, marginBottom: 20 }}>
           {[
             { title: "Dark Web Monitoring", status: "Active", statusColor: T.green, sub: `Monitoring: ${user?.email}`, dot: true },
@@ -1318,7 +1318,7 @@ export default function UserDashboard() {
           ))}
         </div>
         <AniCard delay={0.3}>
-          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk'" }}>Threat Feed</h3>
+          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk'" }}>Threat Feed</h3>
           {threatEvents.length === 0 ? (
             <div style={{ textAlign: "center", padding: 32 }}>
               <HiOutlineShieldCheck size={36} color={T.green} />
@@ -1346,10 +1346,10 @@ export default function UserDashboard() {
     <AniTab>
     <PlanGate required="pro" feature="Analytics">
       <div>
-        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, fontFamily: "'Space Grotesk'" }}><span className="dash-gradient-text">Analytics</span></h2>
+        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, fontFamily: "'Hanken Grotesk'" }}><span className="dash-gradient-text">Analytics</span></h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 16 }}>
           <div className="dash-card" style={{ ...sty.card, animation: "fadeInUp 0.5s ease both" }}>
-            <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk'" }}>Login History</h3>
+            <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk'" }}>Login History</h3>
             {loginChartData.length === 0 ? <p style={{ fontSize: 13, color: T.muted }}>No login data yet</p> : (
               <ResponsiveContainer width="100%" height={180}>
                 <AreaChart data={loginChartData}><XAxis dataKey="date" tick={{ fontSize: 10, fill: T.muted }} /><YAxis tick={{ fontSize: 10, fill: T.muted }} /><Tooltip />
@@ -1359,7 +1359,7 @@ export default function UserDashboard() {
             )}
           </div>
           <div className="dash-card" style={{ ...sty.card, animation: "fadeInUp 0.5s ease 0.1s both" }}>
-            <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk'" }}>Device Types</h3>
+            <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk'" }}>Device Types</h3>
             {deviceTypeData.length === 0 ? <p style={{ fontSize: 13, color: T.muted }}>No device data</p> : (
               <ResponsiveContainer width="100%" height={180}>
                 <PieChart><Pie data={deviceTypeData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={60} label={({ name }) => name}>
@@ -1369,7 +1369,7 @@ export default function UserDashboard() {
             )}
           </div>
           <div className="dash-card" style={{ ...sty.card, animation: "fadeInUp 0.5s ease 0.2s both" }}>
-            <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk'" }}>Security Events</h3>
+            <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk'" }}>Security Events</h3>
             {eventTypeData.length === 0 ? <p style={{ fontSize: 13, color: T.muted }}>No events recorded</p> : (
               <ResponsiveContainer width="100%" height={180}>
                 <BarChart data={eventTypeData}><XAxis dataKey="name" tick={{ fontSize: 10, fill: T.muted }} /><YAxis tick={{ fontSize: 10, fill: T.muted }} /><Tooltip />
@@ -1388,7 +1388,7 @@ export default function UserDashboard() {
     <AniTab>
     <PlanGate required="pro" feature="Security Reports">
       <div>
-        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, fontFamily: "'Space Grotesk'" }}><span className="dash-gradient-text">Security Reports</span></h2>
+        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, fontFamily: "'Hanken Grotesk'" }}><span className="dash-gradient-text">Security Reports</span></h2>
         <div style={{ display: "flex", gap: 12, marginBottom: 20 }}>
           <button onClick={generateReport} className="dash-btn" style={sty.btn(T.accent)}><HiOutlineDocumentReport size={14} /> Generate Report</button>
         </div>
@@ -1426,9 +1426,9 @@ export default function UserDashboard() {
     <AniTab>
     <PlanGate required="enterprise" feature="API Access">
       <div>
-        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, fontFamily: "'Space Grotesk'" }}><span className="dash-gradient-text">API Access</span></h2>
+        <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, fontFamily: "'Hanken Grotesk'" }}><span className="dash-gradient-text">API Access</span></h2>
         <AniCard delay={0.1}>
-          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk'" }}>API Key</h3>
+          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk'" }}>API Key</h3>
           {apiKey ? (
             <div>
               <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
@@ -1446,12 +1446,12 @@ export default function UserDashboard() {
           )}
         </AniCard>
         <AniCard delay={0.2}>
-          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Space Grotesk'" }}>Usage</h3>
+          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Hanken Grotesk'" }}>Usage</h3>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12 }}>
             {[["Requests Today", "0"], ["Monthly Quota", "10,000"], ["Rate Limit", "100/min"]].map(([l, v], i) => (
               <div key={i} style={{ textAlign: "center", padding: 16, background: "rgba(99,102,241,0.06)", borderRadius: 8 }}>
                 <p style={{ fontSize: 11, color: T.muted }}>{l}</p>
-                <p style={{ fontSize: 18, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'" }}>{v}</p>
+                <p style={{ fontSize: 18, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'" }}>{v}</p>
               </div>
             ))}
           </div>
@@ -1469,7 +1469,7 @@ export default function UserDashboard() {
   const renderToolHistory = () => (
     <AniTab>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-        <h2 style={{ fontSize: 20, fontWeight: 700, margin: 0, fontFamily: "'Space Grotesk'" }}><span className="dash-gradient-text">Tool History</span></h2>
+        <h2 style={{ fontSize: 20, fontWeight: 700, margin: 0, fontFamily: "'Hanken Grotesk'" }}><span className="dash-gradient-text">Tool History</span></h2>
         <div style={{ display: "flex", gap: 8 }}>
           <button onClick={loadToolHistory} className="dash-btn" style={sty.btn("rgba(99,102,241,0.12)", T.cyan)}><HiOutlineRefresh size={14} /> Refresh</button>
           {toolHistory.length > 0 && <button onClick={exportToolHistoryCsv} className="dash-btn" style={sty.btn("rgba(34,197,94,0.12)", T.green)}><HiOutlineDownload size={14} /> CSV</button>}
@@ -1487,7 +1487,7 @@ export default function UserDashboard() {
               return (
                 <div key={tool} className="dash-stat" style={{ ...sty.card, textAlign: "center", animation: `fadeInUp 0.4s ease ${i * 0.06}s both` }}>
                   <Icon size={20} style={{ color: T.cyan, marginBottom: 6 }} />
-                  <p style={{ fontSize: 20, fontWeight: 700, color: T.white, margin: "4px 0", fontFamily: "'Space Grotesk'" }}>{count}</p>
+                  <p style={{ fontSize: 20, fontWeight: 700, color: T.white, margin: "4px 0", fontFamily: "'Hanken Grotesk'" }}>{count}</p>
                   <p style={{ fontSize: 11, color: T.muted, margin: 0 }}>{tool}</p>
                 </div>
               );
@@ -1545,16 +1545,16 @@ export default function UserDashboard() {
     const isEmailProvider = user?.provider === "password" || user?.provider === "email" || !user?.provider;
     return (
     <AniTab>
-      <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, fontFamily: "'Space Grotesk'" }}><span className="dash-gradient-text">Account Settings</span></h2>
+      <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20, fontFamily: "'Hanken Grotesk'" }}><span className="dash-gradient-text">Account Settings</span></h2>
       {/* Profile + Avatar */}
       <AniCard delay={0}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, fontFamily: "'Space Grotesk'" }}>Profile</h3>
+          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, fontFamily: "'Hanken Grotesk'" }}>Profile</h3>
           {!editing && <button onClick={() => setEditing(true)} className="dash-btn" style={sty.btn("rgba(99,102,241,0.12)", T.accent)}><HiOutlinePencil size={14} /> Edit</button>}
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
           <div style={{ position: "relative" }}>
-            <div className="dash-avatar" style={{ width: 72, height: 72, borderRadius: "50%", background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, fontWeight: 700, color: "#fff", fontFamily: "'Space Grotesk'", overflow: "hidden", boxShadow: "0 0 20px rgba(99,102,241,0.3)" }}>
+            <div className="dash-avatar" style={{ width: 72, height: 72, borderRadius: "50%", background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26, fontWeight: 700, color: "#fff", fontFamily: "'Hanken Grotesk'", overflow: "hidden", boxShadow: "0 0 20px rgba(99,102,241,0.3)" }}>
               {(user?.photoURL || user?.avatar) ? <img src={user.photoURL || user.avatar} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} loading="lazy" /> : (user?.name?.charAt(0)?.toUpperCase() || "U")}
             </div>
             <button onClick={() => setEditingAvatar(!editingAvatar)} title="Change avatar" style={{ position: "absolute", bottom: -2, right: -2, width: 26, height: 26, borderRadius: "50%", background: T.accent, border: `2px solid ${T.bg}`, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", padding: 0 }}>
@@ -1611,7 +1611,7 @@ export default function UserDashboard() {
       {/* Password Change (email/password users only) */}
       {isEmailProvider && (
         <AniCard delay={0.1}>
-          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 14, fontFamily: "'Space Grotesk'" }}>Change Password</h3>
+          <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 14, fontFamily: "'Hanken Grotesk'" }}>Change Password</h3>
           <div style={{ display: "grid", gap: 12 }}>
             <div>
               <label style={{ fontSize: 12, color: T.muted, display: "block", marginBottom: 4 }}>Current Password</label>
@@ -1652,7 +1652,7 @@ export default function UserDashboard() {
       )}
       {/* Appearance */}
       <AniCard delay={isEmailProvider ? 0.2 : 0.1}>
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 14, fontFamily: "'Space Grotesk'" }}>Appearance</h3>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 14, fontFamily: "'Hanken Grotesk'" }}>Appearance</h3>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", borderRadius: 10, background: "rgba(148,163,184,0.04)", border: `1px solid ${T.border}` }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             {themeMode === "dark" ? <HiOutlineMoon size={20} style={{ color: T.accent }} /> : <HiOutlineSun size={20} style={{ color: "#f59e0b" }} />}
@@ -1668,7 +1668,7 @@ export default function UserDashboard() {
       </AniCard>
       {/* Notification Preferences */}
       <AniCard delay={isEmailProvider ? 0.3 : 0.2}>
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 14, fontFamily: "'Space Grotesk'" }}>Notification Preferences</h3>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 14, fontFamily: "'Hanken Grotesk'" }}>Notification Preferences</h3>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {[
             { key: "security", label: "Security Alerts", desc: "Get notified about threats and breaches", icon: HiOutlineShieldCheck },
@@ -1694,9 +1694,9 @@ export default function UserDashboard() {
       </AniCard>
       {/* Plan */}
       <AniCard delay={isEmailProvider ? 0.4 : 0.3}>
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Space Grotesk'" }}>Current Plan</h3>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Hanken Grotesk'" }}>Current Plan</h3>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-          <span style={{ fontSize: 22, fontWeight: 700, color: planColors[userPlan], fontFamily: "'Space Grotesk'" }}>{planLabels[userPlan]}</span>
+          <span style={{ fontSize: 22, fontWeight: 700, color: planColors[userPlan], fontFamily: "'Hanken Grotesk'" }}>{planLabels[userPlan]}</span>
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 16 }}>
           {(planFeatures[userPlan] || planFeatures.free).map((f, i) => (
@@ -1714,7 +1714,7 @@ export default function UserDashboard() {
       </AniCard>
       {/* Payments */}
       <AniCard delay={isEmailProvider ? 0.5 : 0.4}>
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Space Grotesk'" }}>Payment History</h3>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 12, fontFamily: "'Hanken Grotesk'" }}>Payment History</h3>
         {payments.length === 0 ? (
           <div style={{ textAlign: "center", padding: "24px 12px" }}>
             <div style={{ width: 44, height: 44, borderRadius: 12, margin: "0 auto 10px", display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(20,227,197,0.08)", border: `1px solid ${T.border}`, fontSize: 20 }}>💳</div>
@@ -1741,7 +1741,7 @@ export default function UserDashboard() {
                       {refundEligible && (
                         <button
                           onClick={() => requestRefund(p)}
-                          style={{ padding: "3px 10px", fontSize: 11, borderRadius: 6, border: `1px solid ${T.border}`, background: "transparent", color: T.muted, cursor: "pointer", fontFamily: "'Plus Jakarta Sans'" }}
+                          style={{ padding: "3px 10px", fontSize: 11, borderRadius: 6, border: `1px solid ${T.border}`, background: "transparent", color: T.muted, cursor: "pointer", fontFamily: "'Hanken Grotesk'" }}
                         >Refund</button>
                       )}
                     </div>
@@ -1754,7 +1754,7 @@ export default function UserDashboard() {
       </AniCard>
       {/* Two-Factor Authentication */}
       <AniCard delay={isEmailProvider ? 0.55 : 0.45}>
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 6, fontFamily: "'Space Grotesk'" }}>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 6, fontFamily: "'Hanken Grotesk'" }}>
           Two-Factor Authentication
           {mfaEnrolled && <span style={{ marginLeft: 10, fontSize: 11, padding: "2px 8px", borderRadius: 4, background: "rgba(34,197,94,0.15)", color: T.green, fontWeight: 600 }}>ACTIVE</span>}
         </h3>
@@ -1814,7 +1814,7 @@ export default function UserDashboard() {
 
       {/* Outbound Webhooks */}
       <AniCard delay={isEmailProvider ? 0.58 : 0.48}>
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 6, fontFamily: "'Space Grotesk'" }}>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 6, fontFamily: "'Hanken Grotesk'" }}>
           Outbound Webhook
           {webhookEnabled && <span style={{ marginLeft: 10, fontSize: 11, padding: "2px 8px", borderRadius: 4, background: "rgba(34,197,94,0.15)", color: T.green, fontWeight: 600 }}>ACTIVE</span>}
         </h3>
@@ -1850,7 +1850,7 @@ export default function UserDashboard() {
 
       {/* Session Info */}
       <AniCard delay={isEmailProvider ? 0.6 : 0.5}>
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 14, fontFamily: "'Space Grotesk'" }}>Active Session</h3>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 14, fontFamily: "'Hanken Grotesk'" }}>Active Session</h3>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 10 }}>
           {[
             { label: "Device", value: currentDevice.name, icon: HiOutlineDesktopComputer },
@@ -1874,7 +1874,7 @@ export default function UserDashboard() {
       </AniCard>
       {/* Delete Account */}
       <div className="dash-card" style={{ ...sty.card, borderColor: "rgba(239,68,68,0.15)", animation: `fadeInUp 0.5s ease ${isEmailProvider ? 0.7 : 0.6}s both` }}>
-        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.red, marginBottom: 8, fontFamily: "'Space Grotesk'" }}>Danger Zone</h3>
+        <h3 style={{ fontSize: 15, fontWeight: 600, color: T.red, marginBottom: 8, fontFamily: "'Hanken Grotesk'" }}>Danger Zone</h3>
         <p style={{ fontSize: 13, color: T.muted, marginBottom: 12 }}>Permanently delete your account and all data. This action cannot be undone.</p>
         <button onClick={() => setShowDeleteModal(true)} className="dash-btn" style={sty.btn("rgba(239,68,68,0.12)", T.red)}><HiOutlineTrash size={14} /> Delete Account</button>
       </div>
@@ -1890,7 +1890,7 @@ export default function UserDashboard() {
     <>
       <SEO title="Dashboard | Vrikaan" description="Manage your security, devices, and account settings." />
       <OnboardingTour uid={user?.uid} />
-      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: T.bg, display: "flex", fontFamily: "'Hanken Grotesk', sans-serif" }}>
         {/* Mobile hamburger */}
         <button onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Open menu" style={{
           position: "fixed", top: 16, left: 16, zIndex: 100,
@@ -1918,7 +1918,7 @@ export default function UserDashboard() {
           <div style={{ padding: "0 8px", marginBottom: 20, display: "flex", alignItems: "center", gap: 10 }}>
             <img src="/wolf-compact.png" alt="VRIKAAN" width={36} height={36} style={{ flexShrink: 0, filter: "drop-shadow(0 0 8px rgba(20,227,197,0.4))" }} />
             <div>
-              <h1 style={{ fontSize: 18, fontWeight: 800, margin: 0, fontFamily: "'Space Grotesk'", letterSpacing: 1 }}>
+              <h1 style={{ fontSize: 18, fontWeight: 800, margin: 0, fontFamily: "'Hanken Grotesk'", letterSpacing: 1 }}>
                 <span style={{ color: T.cyan }}>VRI</span><span style={{ color: T.white }}>KAAN</span>
               </h1>
               <p style={{ fontSize: 10, color: T.muted, marginTop: 2 }}>Security Dashboard</p>
@@ -1928,7 +1928,7 @@ export default function UserDashboard() {
           <button onClick={() => navigate("/")} style={{
             width: "calc(100% - 16px)", margin: "0 8px 12px", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px",
             background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20,227,197,0.1))", border: `1px solid ${T.border}`,
-            borderRadius: 8, color: T.cyan, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Plus Jakarta Sans'", textAlign: "left",
+            borderRadius: 8, color: T.cyan, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Hanken Grotesk'", textAlign: "left",
           }}>
             <HiOutlineHome size={18} /> Home
           </button>
@@ -1944,7 +1944,7 @@ export default function UserDashboard() {
                     background: isActive ? "rgba(99,102,241,0.12)" : "transparent",
                     border: "none", borderRadius: 8, color: isActive ? T.cyan : T.muted,
                     fontSize: 13, fontWeight: isActive ? 600 : 400, cursor: "pointer",
-                    marginBottom: 2, fontFamily: "'Plus Jakarta Sans'", textAlign: "left",
+                    marginBottom: 2, fontFamily: "'Hanken Grotesk'", textAlign: "left",
                     opacity: locked ? 0.5 : 1,
                     borderLeft: isActive ? `3px solid ${T.cyan}` : "3px solid transparent",
                     animation: `slideInLeft 0.3s ease ${i * 0.04}s both`,
@@ -1962,7 +1962,7 @@ export default function UserDashboard() {
                   width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "9px 12px",
                   background: "transparent", border: "none", borderRadius: 8, color: T.muted,
                   fontSize: 12, fontWeight: 400, cursor: "pointer", marginBottom: 1,
-                  fontFamily: "'Plus Jakarta Sans'", textAlign: "left",
+                  fontFamily: "'Hanken Grotesk'", textAlign: "left",
                   animation: `slideInLeft 0.3s ease ${0.3 + i * 0.03}s both`,
                 }}>
                 <t.icon size={16} /> {t.label}
@@ -1972,14 +1972,14 @@ export default function UserDashboard() {
           <button onClick={handleSwitchAccount} style={{
             width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px",
             background: "transparent", border: "none", borderRadius: 8, color: T.cyan,
-            fontSize: 13, cursor: "pointer", fontFamily: "'Plus Jakarta Sans'", textAlign: "left",
+            fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk'", textAlign: "left",
           }}>
             <HiOutlineSwitchHorizontal size={18} /> Switch Account
           </button>
           <button onClick={handleLogout} style={{
             width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 12px",
             background: "transparent", border: "none", borderRadius: 8, color: T.red,
-            fontSize: 13, cursor: "pointer", fontFamily: "'Plus Jakarta Sans'", textAlign: "left",
+            fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk'", textAlign: "left",
           }}>
             <HiOutlineLogout size={18} /> Sign Out
           </button>
@@ -2018,7 +2018,7 @@ export default function UserDashboard() {
                     background: "transparent", border: "none", padding: "10px 4px 8px",
                     display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
                     color: isActive ? T.cyan : T.muted,
-                    cursor: "pointer", fontFamily: "'Plus Jakarta Sans'",
+                    cursor: "pointer", fontFamily: "'Hanken Grotesk'",
                     transition: "color 0.2s",
                   }}
                 >
@@ -2035,7 +2035,7 @@ export default function UserDashboard() {
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, animation: "fadeIn 0.2s ease" }}>
             <div style={{ ...sty.card, maxWidth: 420, width: "90%", textAlign: "center", animation: "scaleIn 0.3s ease both" }}>
               <HiOutlineExclamation size={40} color={T.orange} />
-              <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, marginTop: 12, fontFamily: "'Space Grotesk'" }}>Cancel {planLabels[userPlan]} Plan?</h3>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, marginTop: 12, fontFamily: "'Hanken Grotesk'" }}>Cancel {planLabels[userPlan]} Plan?</h3>
               <p style={{ fontSize: 13, color: T.muted, marginTop: 8, lineHeight: 1.6 }}>
                 Your plan stays active until the current billing period ends. After that, your account reverts to the free plan. You can re-subscribe anytime.
               </p>
@@ -2053,7 +2053,7 @@ export default function UserDashboard() {
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, animation: "fadeIn 0.2s ease" }}>
             <div style={{ ...sty.card, maxWidth: 400, width: "90%", textAlign: "center", animation: "scaleIn 0.3s ease both" }}>
               <HiOutlineExclamation size={40} color={T.red} />
-              <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, marginTop: 12, fontFamily: "'Space Grotesk'" }}>Delete Account?</h3>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, marginTop: 12, fontFamily: "'Hanken Grotesk'" }}>Delete Account?</h3>
               <p style={{ fontSize: 13, color: T.muted, marginTop: 8 }}>This will permanently delete your account and all associated data. This cannot be undone.</p>
               <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 20 }}>
                 <button onClick={() => setShowDeleteModal(false)} style={sty.btn("rgba(148,163,184,0.12)", T.muted)}>Cancel</button>

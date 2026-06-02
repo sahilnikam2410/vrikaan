@@ -73,13 +73,13 @@ export default function Referral() {
   ];
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans',sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk',sans-serif" }}>
       <SEO title="Refer & Earn" description="Invite friends to VRIKAAN and earn free credits and subscription upgrades." path="/referral" />
       <Navbar />
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "120px 20px 60px" }}>
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <div style={{ fontSize: 48, marginBottom: 12 }}>&#x1F381;</div>
-          <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk',sans-serif", marginBottom: 8 }}>Refer & Earn</h1>
+          <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk',sans-serif", marginBottom: 8 }}>Refer & Earn</h1>
           <p style={{ color: T.muted, fontSize: 15 }}>Invite friends and earn free credits & subscription upgrades</p>
         </div>
 
@@ -109,11 +109,11 @@ export default function Referral() {
             {/* Stats */}
             <div className="ref-stats-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24 }}>
               <div style={{ padding: 20, background: T.card, borderRadius: 12, border: `1px solid ${T.border}`, textAlign: "center" }}>
-                <div style={{ fontSize: 32, fontWeight: 800, color: T.cyan, fontFamily: "'Space Grotesk',sans-serif" }}>{referrals.length}</div>
+                <div style={{ fontSize: 32, fontWeight: 800, color: T.cyan, fontFamily: "'Hanken Grotesk',sans-serif" }}>{referrals.length}</div>
                 <div style={{ fontSize: 12, color: T.muted }}>Successful Referrals</div>
               </div>
               <div style={{ padding: 20, background: T.card, borderRadius: 12, border: `1px solid ${T.border}`, textAlign: "center" }}>
-                <div style={{ fontSize: 32, fontWeight: 800, color: T.green, fontFamily: "'Space Grotesk',sans-serif" }}>{referrals.length * 10}</div>
+                <div style={{ fontSize: 32, fontWeight: 800, color: T.green, fontFamily: "'Hanken Grotesk',sans-serif" }}>{referrals.length * 10}</div>
                 <div style={{ fontSize: 12, color: T.muted }}>Credits Earned</div>
               </div>
             </div>
@@ -121,7 +121,7 @@ export default function Referral() {
             {/* Recent referrals */}
             {referrals.length > 0 && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, marginBottom: 24 }}>
-                <h3 style={{ fontSize: 16, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk',sans-serif" }}>Recent Referrals</h3>
+                <h3 style={{ fontSize: 16, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk',sans-serif" }}>Recent Referrals</h3>
                 {referrals.slice(0, 10).map((r, i) => (
                   <div key={r.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 0", borderBottom: i < Math.min(referrals.length, 10) - 1 ? `1px solid ${T.border}` : "none" }}>
                     <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(99,102,241,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: T.accent }}>{(r.name || r.email || "U")[0].toUpperCase()}</div>
@@ -137,7 +137,7 @@ export default function Referral() {
 
             {/* Rewards tiers */}
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28 }}>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk',sans-serif" }}>Reward Tiers</h3>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk',sans-serif" }}>Reward Tiers</h3>
               {rewards.map((r, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 0", borderBottom: i < rewards.length - 1 ? `1px solid ${T.border}` : "none" }}>
                   <span style={{ fontSize: 24 }}>{r.icon}</span>

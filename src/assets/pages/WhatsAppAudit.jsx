@@ -49,7 +49,7 @@ export default function WhatsAppAudit() {
   const clear = () => { setResult(null); setError(""); };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="WhatsApp Group Auditor — Detect Scam Groups"
         description="Paste any WhatsApp group's chat export. AI flags pump-and-dump patterns, fake admins, hidden URLs, UPI drops, mass-adders. India-first. Free."
@@ -68,7 +68,7 @@ export default function WhatsAppAudit() {
             color: "#25D366", marginBottom: 14,
           }}>FREE · No upload · India-first</span>
           <h1 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             That investment group?<br />
@@ -107,7 +107,7 @@ export default function WhatsAppAudit() {
                 padding: "12px 26px", borderRadius: 10,
                 background: T.cyan, color: T.bg, border: 0,
                 fontWeight: 800, fontSize: 14, cursor: "pointer",
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "'Hanken Grotesk', sans-serif",
               }}>📁 Select .txt file</button>
               {error && (
                 <div style={{
@@ -123,7 +123,7 @@ export default function WhatsAppAudit() {
               padding: 22, borderRadius: 14,
               background: "rgba(2,6,23,0.5)", border: `1px solid ${T.border}`,
             }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
                 📤 How to export WhatsApp chat
               </h3>
               <ol style={{ margin: 0, paddingLeft: 20, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>
@@ -151,7 +151,7 @@ export default function WhatsAppAudit() {
                     textTransform: "uppercase", marginBottom: 4,
                   }}>Verdict</div>
                   <div style={{
-                    fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 800,
+                    fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 32, fontWeight: 800,
                     color: result.verdict.color, lineHeight: 1,
                   }}>{result.verdict.label}</div>
                   <div style={{ color: T.muted, fontSize: 13, marginTop: 6 }}>
@@ -178,7 +178,7 @@ export default function WhatsAppAudit() {
             ) : (
               <div>
                 <h3 style={{
-                  fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: T.white,
+                  fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, color: T.white,
                   margin: "0 0 14px",
                 }}>🚩 {result.findings.length} findings — review each</h3>
                 <div style={{ display: "grid", gap: 12 }}>
@@ -215,7 +215,7 @@ export default function WhatsAppAudit() {
             <div style={{
               background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 20,
             }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
                 👥 Top {Math.min(result.members.length, 30)} most-active members
               </h3>
               <div style={{
@@ -258,7 +258,7 @@ export default function WhatsAppAudit() {
                 display: "inline-block",
                 padding: "11px 22px", borderRadius: 10,
                 background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 14,
-                textDecoration: "none", fontFamily: "'Space Grotesk', sans-serif",
+                textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
               }}>📝 Paste a specific message →</Link>
             </div>
           </div>

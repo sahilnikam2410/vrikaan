@@ -56,7 +56,7 @@ export default function AIExplainButton({ toolName, input, result, label = "✨ 
           fontSize: 12, fontWeight: 600,
           cursor: loading ? "wait" : "pointer",
           display: "inline-flex", alignItems: "center", gap: 6,
-          fontFamily: "'Plus Jakarta Sans'",
+          fontFamily: "'Hanken Grotesk'",
           ...style,
         }}
       >

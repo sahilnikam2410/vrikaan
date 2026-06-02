@@ -70,7 +70,7 @@ const inputStyle = (hasError) => ({
   width: "100%", padding: "14px 16px", background: "rgba(15,23,42,0.6)",
   border: hasError ? `1px solid ${T.red}` : `1px solid ${T.border}`,
   borderRadius: 10, color: T.white, fontSize: 14, outline: "none",
-  boxSizing: "border-box", fontFamily: "'Plus Jakarta Sans', sans-serif",
+  boxSizing: "border-box", fontFamily: "'Hanken Grotesk', sans-serif",
 });
 
 const paymentMethods = [
@@ -104,7 +104,7 @@ function CopyButton({ text }) {
       padding: "8px 14px", borderRadius: 8, border: `1px solid ${T.border}`,
       background: copied ? "rgba(34,197,94,0.1)" : "rgba(15,23,42,0.6)",
       color: copied ? T.green : T.muted, fontSize: 12, fontWeight: 500,
-      cursor: "pointer", fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "all 0.2s",
+      cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", transition: "all 0.2s",
     }}>
       <IconCopy size={14} color={copied ? T.green : T.muted} />
       {copied ? "Copied!" : "Copy"}
@@ -447,7 +447,7 @@ export default function Checkout() {
   /* ==================== VERIFYING SCREEN ==================== */
   if (verifying || errors.verify) {
     return (
-      <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
         <SEO title={errors.verify ? "Payment Failed" : "Verifying Payment"} description="Verifying your payment..." path="/checkout" />
         <Navbar />
         <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", paddingTop: 100 }}>
@@ -462,14 +462,14 @@ export default function Checkout() {
                 }}>
                   <span style={{ fontSize: 44 }}>&#x2717;</span>
                 </div>
-                <h2 style={{ fontSize: 28, fontWeight: 700, color: T.red, marginBottom: 10, fontFamily: "'Space Grotesk', sans-serif" }}>
+                <h2 style={{ fontSize: 28, fontWeight: 700, color: T.red, marginBottom: 10, fontFamily: "'Hanken Grotesk', sans-serif" }}>
                   Payment Failed
                 </h2>
                 <p style={{ fontSize: 14, color: T.muted, marginBottom: 24 }}>
                   {errors.verify}
                 </p>
                 <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
-                  <button onClick={() => { setErrors({}); setVerifying(false); verifyAttempted.current = false; navigate(`/checkout?plan=${planKey}`, { replace: true }); }} style={{ padding: "12px 28px", borderRadius: 10, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <button onClick={() => { setErrors({}); setVerifying(false); verifyAttempted.current = false; navigate(`/checkout?plan=${planKey}`, { replace: true }); }} style={{ padding: "12px 28px", borderRadius: 10, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}>
                     Try Again
                   </button>
                   <button onClick={() => navigate("/pricing")} style={{ padding: "12px 28px", borderRadius: 10, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.muted, fontSize: 15, cursor: "pointer" }}>
@@ -487,7 +487,7 @@ export default function Checkout() {
                 }}>
                   <IconShieldCheck size={44} color={T.accent} />
                 </div>
-                <h2 style={{ fontSize: 28, fontWeight: 700, color: T.white, marginBottom: 10, fontFamily: "'Space Grotesk', sans-serif" }}>
+                <h2 style={{ fontSize: 28, fontWeight: 700, color: T.white, marginBottom: 10, fontFamily: "'Hanken Grotesk', sans-serif" }}>
                   Verifying Payment...
                 </h2>
                 <p style={{ fontSize: 14, color: T.muted }}>
@@ -510,7 +510,7 @@ export default function Checkout() {
   /* ==================== SUCCESS SCREEN ==================== */
   if (success) {
     return (
-      <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
         <SEO title="Payment Successful" description="Your VRIKAAN subscription is now active." path="/checkout" />
         <Navbar />
         <ConfettiOverlay />
@@ -525,7 +525,7 @@ export default function Checkout() {
             }}>
               <IconCheck size={44} color={T.green} />
             </div>
-            <h2 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 10, fontFamily: "'Space Grotesk', sans-serif" }}>
+            <h2 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 10, fontFamily: "'Hanken Grotesk', sans-serif" }}>
               Payment Successful!
             </h2>
             <p style={{ fontSize: 16, color: T.cyan, marginBottom: 6, fontWeight: 600 }}>
@@ -542,7 +542,7 @@ export default function Checkout() {
                   display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px",
                   background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                   border: "none", borderRadius: 10, color: "#fff", fontSize: 14, fontWeight: 700,
-                  cursor: "pointer", marginBottom: 16, fontFamily: "'Space Grotesk', sans-serif",
+                  cursor: "pointer", marginBottom: 16, fontFamily: "'Hanken Grotesk', sans-serif",
                   boxShadow: "0 4px 16px rgba(99,102,241,0.3)",
                 }}
               >
@@ -570,7 +570,7 @@ export default function Checkout() {
 
   /* ==================== MAIN CHECKOUT ==================== */
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO title="Checkout" description="Complete your Vrikaan subscription securely." path="/checkout" />
       <Navbar />
 
@@ -635,7 +635,7 @@ export default function Checkout() {
 
           {/* ===== LEFT: Payment Section ===== */}
           <div>
-            <h2 style={{ fontSize: 26, fontWeight: 700, color: T.white, marginBottom: 6, fontFamily: "'Space Grotesk', sans-serif" }}>
+            <h2 style={{ fontSize: 26, fontWeight: 700, color: T.white, marginBottom: 6, fontFamily: "'Hanken Grotesk', sans-serif" }}>
               Payment Details
             </h2>
             <p style={{ fontSize: 14, color: T.muted, marginBottom: 28 }}>Choose your preferred payment method</p>
@@ -648,7 +648,7 @@ export default function Checkout() {
                   background: billing === b ? `linear-gradient(135deg, ${T.accent}, ${T.cyan})` : "transparent",
                   border: billing === b ? "none" : `1px solid ${T.border}`,
                   color: billing === b ? "#fff" : T.muted,
-                  fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "all 0.2s",
+                  fontFamily: "'Hanken Grotesk', sans-serif", transition: "all 0.2s",
                 }}>
                   {b === "monthly" ? "Monthly" : `Annual (Save \u20B9${savings || plan.price * 12 - plan.annual})`}
                 </button>
@@ -710,7 +710,7 @@ export default function Checkout() {
                     background: method === m.id ? "rgba(99,102,241,0.15)" : "rgba(15,23,42,0.4)",
                     border: method === m.id ? `1.5px solid ${T.accent}` : `1px solid ${T.border}`,
                     color: method === m.id ? T.white : T.muted,
-                    fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "all 0.2s",
+                    fontFamily: "'Hanken Grotesk', sans-serif", transition: "all 0.2s",
                     display: "flex", alignItems: "center", gap: 8, position: "relative", zIndex: 2,
                   }}
                 >
@@ -723,7 +723,7 @@ export default function Checkout() {
             {method === "cashfree" && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, backdropFilter: "blur(10px)" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                  <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, margin: 0, fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, margin: 0, fontFamily: "'Hanken Grotesk', sans-serif" }}>
                     Pay with Cashfree
                   </h3>
                   <span style={{
@@ -814,7 +814,7 @@ export default function Checkout() {
                   width: "100%", padding: "16px", border: "none", borderRadius: 10,
                   background: processing ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                   color: "#fff", fontSize: 16, fontWeight: 700, cursor: processing ? "wait" : "pointer",
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'Hanken Grotesk', sans-serif",
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "opacity 0.2s",
                 }}>
                   <IconLock size={18} color="#fff" />
@@ -829,7 +829,7 @@ export default function Checkout() {
             {/* ---- UPI DIRECT METHOD ---- */}
             {method === "upi" && upiConfigured && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, backdropFilter: "blur(10px)" }}>
-                <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Space Grotesk', sans-serif" }}>
+                <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
                   UPI Direct Payment
                 </h3>
                 <p style={{ fontSize: 13, color: T.muted, marginBottom: 24 }}>
@@ -866,7 +866,7 @@ export default function Checkout() {
                       <div style={{
                         padding: "12px 14px", background: "rgba(15,23,42,0.6)", borderRadius: 8,
                         border: `1px solid ${T.border}`, fontSize: 20, fontWeight: 700, color: T.green,
-                        fontFamily: "'Space Grotesk', sans-serif",
+                        fontFamily: "'Hanken Grotesk', sans-serif",
                       }}>
                         {"\u20B9"}{price.toLocaleString("en-IN")}
                       </div>
@@ -887,7 +887,7 @@ export default function Checkout() {
                     width: "100%", padding: "16px", border: "none", borderRadius: 10, marginTop: 16,
                     background: processing ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                     color: "#fff", fontSize: 15, fontWeight: 700, cursor: processing ? "wait" : "pointer",
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: "'Hanken Grotesk', sans-serif",
                     display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                   }}>
                     <IconCheck size={18} color="#fff" />
@@ -900,7 +900,7 @@ export default function Checkout() {
             {/* ---- CRYPTO METHOD ---- */}
             {method === "crypto" && cryptoConfigured && (
               <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, backdropFilter: "blur(10px)" }}>
-                <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Space Grotesk', sans-serif" }}>
+                <h3 style={{ fontSize: 18, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
                   Cryptocurrency Payment
                 </h3>
                 <p style={{ fontSize: 13, color: T.muted, marginBottom: 20 }}>
@@ -918,7 +918,7 @@ export default function Checkout() {
                       flex: 1, padding: "12px 8px", borderRadius: 10, border: cryptoCoin === c.id ? `1.5px solid ${T.accent}` : `1px solid ${T.border}`,
                       background: cryptoCoin === c.id ? "rgba(99,102,241,0.12)" : "rgba(15,23,42,0.4)",
                       color: cryptoCoin === c.id ? T.white : T.muted, fontSize: 13, fontWeight: 600,
-                      cursor: "pointer", fontFamily: "'Plus Jakarta Sans', sans-serif", textAlign: "center",
+                      cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", textAlign: "center",
                     }}>
                       <div style={{ fontSize: 11, marginBottom: 2 }}>{c.label}</div>
                       <div style={{ fontSize: 14, color: cryptoCoin === c.id ? T.cyan : T.muted }}>{c.symbol}</div>
@@ -944,7 +944,7 @@ export default function Checkout() {
 
                     <div style={{ marginTop: 16, padding: "12px 14px", background: "rgba(99,102,241,0.06)", borderRadius: 8, border: `1px solid rgba(99,102,241,0.1)` }}>
                       <div style={{ fontSize: 12, color: T.muted, marginBottom: 4 }}>Amount to send</div>
-                      <div style={{ fontSize: 18, fontWeight: 700, color: T.cyan, fontFamily: "'Space Grotesk', sans-serif" }}>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: T.cyan, fontFamily: "'Hanken Grotesk', sans-serif" }}>
                         {cryptoCoin === "btc" && `${btcEquiv} BTC`}
                         {cryptoCoin === "eth" && `${ethEquiv} ETH`}
                         {cryptoCoin === "usdt" && `${usdtEquiv} USDT`}
@@ -996,7 +996,7 @@ export default function Checkout() {
                     width: "100%", padding: "16px", border: "none", borderRadius: 10, marginTop: 16,
                     background: processing ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                     color: "#fff", fontSize: 15, fontWeight: 700, cursor: processing ? "wait" : "pointer",
-                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontFamily: "'Hanken Grotesk', sans-serif",
                     display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                   }}>
                     <IconCheck size={18} color="#fff" />
@@ -1039,7 +1039,7 @@ export default function Checkout() {
                 display: "flex", alignItems: "center", gap: 8, width: "100%",
                 background: "none", border: "none", cursor: "pointer", padding: "8px 0",
               }}>
-                <span style={{ fontSize: 13, color: T.muted, fontWeight: 500, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                <span style={{ fontSize: 13, color: T.muted, fontWeight: 500, fontFamily: "'Hanken Grotesk', sans-serif" }}>
                   Payment Configuration (Admin)
                 </span>
                 <IconChevron size={14} color={T.muted} down={!showAdmin} />
@@ -1074,7 +1074,7 @@ export default function Checkout() {
                     padding: "10px 24px", borderRadius: 8, border: "none",
                     background: errors.adminSaved ? "rgba(34,197,94,0.15)" : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                     color: "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer",
-                    fontFamily: "'Plus Jakarta Sans', sans-serif",
+                    fontFamily: "'Hanken Grotesk', sans-serif",
                   }}>
                     {errors.adminSaved ? "Saved!" : "Save Configuration"}
                   </button>
@@ -1105,7 +1105,7 @@ export default function Checkout() {
                     background: "rgba(99,102,241,0.2)", color: T.accent, textTransform: "uppercase",
                   }}>{billing}</span>
                 </div>
-                <div style={{ fontSize: 28, fontWeight: 800, color: T.cyan, fontFamily: "'Space Grotesk', sans-serif" }}>
+                <div style={{ fontSize: 28, fontWeight: 800, color: T.cyan, fontFamily: "'Hanken Grotesk', sans-serif" }}>
                   {"\u20B9"}{price.toLocaleString("en-IN")}
                   <span style={{ fontSize: 14, fontWeight: 400, color: T.muted }}>/{billing === "annual" ? "yr" : "mo"}</span>
                 </div>

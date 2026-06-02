@@ -91,7 +91,7 @@ export default function AadhaarMask() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="Aadhaar Mask Tool — Free Redaction"
         description="Mask Aadhaar / PAN / driving licence numbers in text or images. Free, no signup, files never leave your browser. Made for India."
@@ -110,7 +110,7 @@ export default function AadhaarMask() {
             color: T.cyan, marginBottom: 14,
           }}>Free · No Signup · 100% Private</span>
           <h1 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Mask Aadhaar before<br />
@@ -210,7 +210,7 @@ export default function AadhaarMask() {
               padding: "14px 22px", background: T.cyan, color: T.bg,
               border: 0, borderRadius: 12, fontWeight: 800, fontSize: 15,
               cursor: text.trim() ? "pointer" : "not-allowed", opacity: text.trim() ? 1 : 0.5,
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "'Hanken Grotesk', sans-serif",
             }}>🔒 Mask now</button>
 
             {maskedResult && (
@@ -270,7 +270,7 @@ export default function AadhaarMask() {
                   padding: "11px 22px", borderRadius: 10,
                   background: T.cyan, color: T.bg, border: 0,
                   fontWeight: 800, fontSize: 14, cursor: "pointer",
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'Hanken Grotesk', sans-serif",
                 }}>📁 Select image</button>
               </div>
             ) : (
@@ -307,7 +307,7 @@ export default function AadhaarMask() {
                       padding: "13px 22px", borderRadius: 10,
                       background: T.cyan, color: T.bg, border: 0,
                       fontWeight: 800, fontSize: 14, cursor: "pointer",
-                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontFamily: "'Hanken Grotesk', sans-serif",
                     }}>🔒 Detect & mask</button>
                   )}
                   {progress && progress.stage !== "done" && (
@@ -332,7 +332,7 @@ export default function AadhaarMask() {
                       padding: "13px 22px", borderRadius: 10,
                       background: T.green, color: T.bg, border: 0,
                       fontWeight: 800, fontSize: 14, cursor: "pointer",
-                      fontFamily: "'Space Grotesk', sans-serif",
+                      fontFamily: "'Hanken Grotesk', sans-serif",
                     }}>💾 Download masked PNG</button>
                   )}
                   <button onClick={() => { setImgFile(null); setImgPreview(null); setMaskedImage(null); setProgress(null); setImgError(""); }} style={{
@@ -383,7 +383,7 @@ export default function AadhaarMask() {
           marginTop: 60, padding: 26, borderRadius: 18,
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 14px" }}>
+          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 14px" }}>
             Why mask Aadhaar before sharing?
           </h2>
           <ul style={{ margin: 0, paddingLeft: 18, color: T.muted, fontSize: 14, lineHeight: 1.9 }}>
@@ -417,7 +417,7 @@ export default function AadhaarMask() {
             display: "inline-block", marginTop: 10,
             padding: "10px 22px", borderRadius: 10,
             background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 14,
-            textDecoration: "none", fontFamily: "'Space Grotesk', sans-serif",
+            textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
           }}>Check dark web for breaches →</Link>
         </div>
       </main>

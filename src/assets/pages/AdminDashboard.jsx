@@ -34,8 +34,8 @@ const PIE_COLORS = [T.muted, T.cyan, T.accent, T.gold];
 
 const sty = {
   card: { background: "rgba(17,24,39,0.6)", border: `1px solid ${T.border}`, borderRadius: 16, padding: 24, backdropFilter: "blur(12px)", transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)", boxShadow: "0 4px 24px rgba(0,0,0,0.2)" },
-  input: { width: "100%", padding: "10px 14px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 13, outline: "none", boxSizing: "border-box", fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "border-color 0.3s, box-shadow 0.3s" },
-  btn: (bg, clr) => ({ padding: "8px 16px", background: bg, border: "none", borderRadius: 8, color: clr || "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontFamily: "'Plus Jakarta Sans', sans-serif", whiteSpace: "nowrap", transition: "all 0.2s ease" }),
+  input: { width: "100%", padding: "10px 14px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 13, outline: "none", boxSizing: "border-box", fontFamily: "'Hanken Grotesk', sans-serif", transition: "border-color 0.3s, box-shadow 0.3s" },
+  btn: (bg, clr) => ({ padding: "8px 16px", background: bg, border: "none", borderRadius: 8, color: clr || "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: 6, fontFamily: "'Hanken Grotesk', sans-serif", whiteSpace: "nowrap", transition: "all 0.2s ease" }),
   th: { textAlign: "left", padding: "10px 12px", fontSize: 12, color: T.muted, fontWeight: 500, borderBottom: `1px solid ${T.border}` },
   td: { padding: "12px", fontSize: 13, color: T.white, borderBottom: `1px solid ${T.border}`, transition: "background 0.2s" },
 };
@@ -67,7 +67,7 @@ function Avatar({ name, photo, size = 34 }) {
   if (photo) return <img src={photo} alt="" style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover" }} />;
   const initials = (name || "?").split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
   return (
-    <div style={{ width: size, height: size, borderRadius: "50%", background: T.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: size * 0.38, color: "#fff", fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>
+    <div style={{ width: size, height: size, borderRadius: "50%", background: T.accent, display: "flex", alignItems: "center", justifyContent: "center", fontSize: size * 0.38, color: "#fff", fontWeight: 700, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       {initials}
     </div>
   );
@@ -484,7 +484,7 @@ export default function AdminDashboard() {
             </div>
             <div style={{ minWidth: 0, flex: 1 }}>
               <div style={{ fontSize: 11, color: T.muted, textTransform: "uppercase", letterSpacing: 0.5 }}>{s.label}</div>
-              <div className="stat-val" style={{ fontSize: 20, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk', sans-serif", marginTop: 2 }}>{s.value}</div>
+              <div className="stat-val" style={{ fontSize: 20, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk', sans-serif", marginTop: 2 }}>{s.value}</div>
               {s.sub && <div style={{ fontSize: 10, color: s.color, marginTop: 2, fontWeight: 500 }}>{s.sub}</div>}
             </div>
           </div>
@@ -494,7 +494,7 @@ export default function AdminDashboard() {
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 16 }}>
         <div className="adm-card" style={{ ...sty.card, animation: "fadeInUp 0.5s ease 0.3s both" }}>
-          <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk', sans-serif" }}>User Growth</div>
+          <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk', sans-serif" }}>User Growth</div>
           {growthData.length === 0 ? <Empty msg="No signup data yet" /> : (
             <ResponsiveContainer width="100%" height={220}>
               <AreaChart data={growthData}>
@@ -509,7 +509,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="adm-card" style={{ ...sty.card, animation: "fadeInUp 0.5s ease 0.4s both" }}>
-          <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk', sans-serif" }}>Plan Distribution</div>
+          <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk', sans-serif" }}>Plan Distribution</div>
           {totalUsers === 0 ? <Empty msg="No users yet" /> : (
             <ResponsiveContainer width="100%" height={220}>
               <PieChart>
@@ -536,7 +536,7 @@ export default function AdminDashboard() {
               <span style={{ fontSize: 12, color: T.muted }}>{s.label}</span>
               <span style={{ fontSize: 14 }}>{s.icon}</span>
             </div>
-            <div style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk', sans-serif" }}>{s.value}</div>
+            <div style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>{s.value}</div>
             <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6 }}>
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: s.color, boxShadow: `0 0 8px ${s.color}` }} />
               <span style={{ fontSize: 11, color: s.color, fontWeight: 500 }}>{s.status}</span>
@@ -547,7 +547,7 @@ export default function AdminDashboard() {
 
       {/* Revenue trend chart */}
       <div className="adm-card" style={{ ...sty.card, animation: "fadeInUp 0.5s ease 0.45s both" }}>
-        <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk', sans-serif", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk', sans-serif", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <span>Revenue Trend (Last 12 Months)</span>
           <span style={{ fontSize: 12, fontWeight: 500, color: T.gold, fontFamily: "'JetBrains Mono', monospace" }}>{formatINR(totalRevenue)}</span>
         </div>
@@ -578,7 +578,7 @@ export default function AdminDashboard() {
             background: "rgba(99,102,241,0.06)", border: `1px solid ${T.border}`,
             color: T.white, fontSize: 13, fontWeight: 500, cursor: "pointer",
             display: "flex", alignItems: "center", gap: 10, justifyContent: "center",
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
             animation: `fadeInUp 0.4s ease ${0.7 + i * 0.06}s both`,
             transition: "all 0.3s ease",
           }}>
@@ -589,7 +589,7 @@ export default function AdminDashboard() {
       </div>
 
       <AniCard delay={0.5}>
-        <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk', sans-serif" }}>Recent Signups</div>
+        <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk', sans-serif" }}>Recent Signups</div>
         {recentUsers.length === 0 ? <Empty msg="No users have signed up yet" /> : (
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -729,7 +729,7 @@ export default function AdminDashboard() {
         <div style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center" }}>
           <div style={{ ...sty.card, padding: 16, display: "flex", alignItems: "center", gap: 12, flex: "0 0 auto" }}>
             <HiOutlineCurrencyRupee size={20} color={T.gold} />
-            <div><div style={{ fontSize: 11, color: T.muted }}>Filtered Revenue</div><div style={{ fontSize: 20, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk', sans-serif" }}>{formatINR(payRev)}</div></div>
+            <div><div style={{ fontSize: 11, color: T.muted }}>Filtered Revenue</div><div style={{ fontSize: 20, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>{formatINR(payRev)}</div></div>
           </div>
           <select value={methodFilter} onChange={e => setMethodFilter(e.target.value)} style={{ ...sty.input, width: "auto", minWidth: 130 }}>
             {["all", "cashfree", "razorpay", "upi", "crypto", "card"].map(v => <option key={v} value={v} style={{ background: T.surface }}>{v === "all" ? "All Methods" : v.charAt(0).toUpperCase() + v.slice(1)}</option>)}
@@ -787,7 +787,7 @@ export default function AdminDashboard() {
       <AniTab>
         <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 700 }}>
           <AniCard delay={0}>
-            <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk', sans-serif" }}>Email Broadcast</div>
+            <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk', sans-serif" }}>Email Broadcast</div>
             <p style={{ fontSize: 12, color: T.muted, marginBottom: 16, lineHeight: 1.6 }}>
               Send a custom email to filtered users. Goes through EmailJS with a 250ms delay between sends to respect rate limits.
             </p>
@@ -885,7 +885,7 @@ export default function AdminDashboard() {
     <AniTab>
     <div style={{ display: "flex", flexDirection: "column", gap: 24, maxWidth: 600 }}>
       <AniCard delay={0}>
-        <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk', sans-serif" }}>Site Configuration</div>
+        <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk', sans-serif" }}>Site Configuration</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <label style={{ fontSize: 12, color: T.muted }}>Site Name</label>
           <input value={settings.siteName} onChange={e => setSettings(s => ({ ...s, siteName: e.target.value }))} style={sty.input} />
@@ -897,7 +897,7 @@ export default function AdminDashboard() {
       </AniCard>
 
       <AniCard delay={0.15}>
-        <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Space Grotesk', sans-serif" }}>Payment Configuration</div>
+        <div style={{ fontSize: 15, fontWeight: 600, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk', sans-serif" }}>Payment Configuration</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           <label style={{ fontSize: 12, color: T.muted }}>Razorpay Key</label>
           <input value={settings.razorpayKey} onChange={e => setSettings(s => ({ ...s, razorpayKey: e.target.value }))} placeholder="rzp_live_..." style={{ ...sty.input, fontFamily: "'JetBrains Mono', monospace" }} />
@@ -912,7 +912,7 @@ export default function AdminDashboard() {
       </AniCard>
 
       <div className="adm-card" style={{ ...sty.card, borderColor: T.red + "30", animation: "fadeInUp 0.5s ease 0.3s both" }}>
-        <div style={{ fontSize: 15, fontWeight: 600, color: T.red, marginBottom: 16, fontFamily: "'Space Grotesk', sans-serif" }}>Danger Zone</div>
+        <div style={{ fontSize: 15, fontWeight: 600, color: T.red, marginBottom: 16, fontFamily: "'Hanken Grotesk', sans-serif" }}>Danger Zone</div>
         <button onClick={handleExportUsers} className="adm-btn" style={sty.btn(T.orange + "18", T.orange)}><HiOutlineDownload size={16} />Export All Users as JSON</button>
       </div>
     </div>
@@ -956,14 +956,14 @@ export default function AdminDashboard() {
         .adm-side-nav::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.3) }
       `}</style>
 
-      <div style={{ display: "flex", minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+      <div style={{ display: "flex", minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
         {/* Sidebar */}
         <aside style={{
           width: sideOpen ? 240 : 0, height: "100vh", background: "linear-gradient(180deg, #0a0f1e 0%, #070b14 100%)", borderRight: `1px solid ${T.border}`,
           display: "flex", flexDirection: "column", transition: "width 0.25s", overflowX: "hidden", overflowY: "hidden", position: "fixed", top: 0, left: 0, zIndex: 50,
         }}>
           <div style={{ padding: "24px 20px 16px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ fontSize: 18, fontWeight: 800, fontFamily: "'Space Grotesk', sans-serif", color: T.cyan, letterSpacing: 1 }}>VRIKAAN</div>
+            <div style={{ fontSize: 18, fontWeight: 800, fontFamily: "'Hanken Grotesk', sans-serif", color: T.cyan, letterSpacing: 1 }}>VRIKAAN</div>
             <button onClick={() => setSideOpen(false)} style={{ background: "none", border: "none", color: T.muted, cursor: "pointer", display: "flex" }}><HiOutlineChevronLeft size={18} /></button>
           </div>
           <div style={{ fontSize: 10, color: T.muted, padding: "0 20px 12px", textTransform: "uppercase", letterSpacing: 2 }}>Admin Panel</div>
@@ -972,7 +972,7 @@ export default function AdminDashboard() {
           <button onClick={() => navigate("/")} style={{
             width: "calc(100% - 20px)", margin: "0 10px 10px", display: "flex", alignItems: "center", gap: 10, padding: "10px 14px",
             background: "linear-gradient(135deg, rgba(99,102,241,0.15), rgba(20,227,197,0.1))", border: `1px solid ${T.border}`,
-            borderRadius: 8, color: T.cyan, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Plus Jakarta Sans', sans-serif", textAlign: "left",
+            borderRadius: 8, color: T.cyan, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", textAlign: "left",
           }}>
             <HiOutlineHome size={18} /> Home
           </button>
@@ -981,7 +981,7 @@ export default function AdminDashboard() {
             <p style={{ fontSize: 10, color: T.muted, textTransform: "uppercase", letterSpacing: 1.5, padding: "0 4px", margin: "4px 0 4px" }}>Admin</p>
             {TABS.map((t, i) => (
               <button key={t.id} className={`adm-side-link ${tab === t.id ? "active" : ""}`} onClick={() => { setTab(t.id); if (isMobile) setSideOpen(false); }}
-                style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", border: "none", background: "transparent", color: tab === t.id ? T.cyan : T.muted, fontSize: 13, fontWeight: 500, cursor: "pointer", borderRadius: 8, textAlign: "left", fontFamily: "'Plus Jakarta Sans', sans-serif", width: "100%", animation: `slideInLeft 0.3s ease ${i * 0.05}s both` }}>
+                style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", border: "none", background: "transparent", color: tab === t.id ? T.cyan : T.muted, fontSize: 13, fontWeight: 500, cursor: "pointer", borderRadius: 8, textAlign: "left", fontFamily: "'Hanken Grotesk', sans-serif", width: "100%", animation: `slideInLeft 0.3s ease ${i * 0.05}s both` }}>
                 <t.icon size={18} />{t.label}
               </button>
             ))}
@@ -989,7 +989,7 @@ export default function AdminDashboard() {
             <p style={{ fontSize: 10, color: T.muted, textTransform: "uppercase", letterSpacing: 1.5, padding: "0 4px", margin: "4px 0 4px" }}>Tools & Features</p>
             {TOOL_LINKS.map((t, i) => (
               <button key={t.path} className="adm-tool-link" onClick={() => { navigate(t.path); if (isMobile) setSideOpen(false); }}
-                style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 14px", border: "none", background: "transparent", color: T.muted, fontSize: 12, fontWeight: 400, cursor: "pointer", borderRadius: 8, textAlign: "left", fontFamily: "'Plus Jakarta Sans', sans-serif", width: "100%", animation: `slideInLeft 0.3s ease ${0.2 + i * 0.03}s both` }}>
+                style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 14px", border: "none", background: "transparent", color: T.muted, fontSize: 12, fontWeight: 400, cursor: "pointer", borderRadius: 8, textAlign: "left", fontFamily: "'Hanken Grotesk', sans-serif", width: "100%", animation: `slideInLeft 0.3s ease ${0.2 + i * 0.03}s both` }}>
                 <t.icon size={16} />{t.label}
               </button>
             ))}
@@ -1003,7 +1003,7 @@ export default function AdminDashboard() {
                 <div style={{ fontSize: 10, color: T.muted }}>{user?.role || "admin"}</div>
               </div>
             </div>
-            <button onClick={handleLogout} className="adm-side-link" style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", border: "none", background: "transparent", color: T.red, fontSize: 13, cursor: "pointer", borderRadius: 8, width: "100%", fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            <button onClick={handleLogout} className="adm-side-link" style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", border: "none", background: "transparent", color: T.red, fontSize: 13, cursor: "pointer", borderRadius: 8, width: "100%", fontFamily: "'Hanken Grotesk', sans-serif" }}>
               <HiOutlineLogout size={18} />Logout
             </button>
           </div>
@@ -1024,7 +1024,7 @@ export default function AdminDashboard() {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
               {!sideOpen && <button onClick={() => setSideOpen(true)} style={{ background: "none", border: "none", color: T.muted, cursor: "pointer", display: "flex" }}><HiOutlineMenu size={22} /></button>}
-              <h1 style={{ fontSize: 22, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif", margin: 0 }}>
+              <h1 style={{ fontSize: 22, fontWeight: 700, fontFamily: "'Hanken Grotesk', sans-serif", margin: 0 }}>
                 <span className="adm-gradient-text">{TABS.find(t => t.id === tab)?.label}</span>
               </h1>
             </div>
@@ -1072,10 +1072,10 @@ export default function AdminDashboard() {
               boxShadow: "-12px 0 40px rgba(0,0,0,0.5)",
               zIndex: 100, overflowY: "auto",
               animation: "slideInRight 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
-              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontFamily: "'Hanken Grotesk', sans-serif",
             }}>
               <div style={{ padding: "20px", borderBottom: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'" }}>User Details</h3>
+                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'" }}>User Details</h3>
                 <button onClick={() => setDetailUser(null)} style={{ background: "transparent", border: "none", color: T.muted, cursor: "pointer", padding: 4 }}>
                   <HiOutlineX size={20} />
                 </button>
@@ -1085,7 +1085,7 @@ export default function AdminDashboard() {
                 <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 20 }}>
                   <Avatar name={detailUser.name} photo={detailUser.avatar || detailUser.photoURL} size={56} />
                   <div style={{ minWidth: 0 }}>
-                    <div style={{ fontSize: 17, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'" }}>{detailUser.name || "Unnamed"}</div>
+                    <div style={{ fontSize: 17, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'" }}>{detailUser.name || "Unnamed"}</div>
                     <div style={{ fontSize: 12, color: T.muted, fontFamily: "'JetBrains Mono', monospace", wordBreak: "break-all" }}>{detailUser.email}</div>
                   </div>
                 </div>
@@ -1148,7 +1148,7 @@ export default function AdminDashboard() {
         {showBulkPlanModal && (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 200, animation: "fadeIn 0.2s ease" }}>
             <div style={{ ...sty.card, maxWidth: 420, width: "90%", animation: "scaleIn 0.3s ease both" }}>
-              <h3 style={{ margin: "0 0 8px", fontSize: 17, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'" }}>
+              <h3 style={{ margin: "0 0 8px", fontSize: 17, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'" }}>
                 Change plan for {selectedUserIds.length} users
               </h3>
               <p style={{ fontSize: 12, color: T.muted, marginBottom: 16, lineHeight: 1.6 }}>

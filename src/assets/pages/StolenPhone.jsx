@@ -81,7 +81,7 @@ export default function StolenPhone() {
   const flow = os ? OS_FLOWS[os] : null;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="Stolen Phone Recovery — India Action Plan"
         description="Phone lost or stolen? 7-step recovery flow for Android + iPhone. SIM block helplines, CEIR IMEI block, FIR steps, bank freeze. Free, India-first."
@@ -99,7 +99,7 @@ export default function StolenPhone() {
             color: T.red, marginBottom: 14,
           }}>🚨 EMERGENCY · Free Action Plan</span>
           <h1 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Phone lost or stolen?<br/>
@@ -145,7 +145,7 @@ export default function StolenPhone() {
               <a href={flow.findTool.url} target="_blank" rel="noopener noreferrer" style={{
                 padding: "13px 22px", borderRadius: 10,
                 background: flow.color, color: T.bg, textDecoration: "none",
-                fontWeight: 800, fontSize: 14, fontFamily: "'Space Grotesk', sans-serif",
+                fontWeight: 800, fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif",
               }}>🔓 Open {flow.findTool.label} →</a>
             </div>
 
@@ -154,7 +154,7 @@ export default function StolenPhone() {
               background: T.card, border: `1px solid ${T.border}`, borderRadius: 14,
               padding: 22, marginBottom: 18,
             }}>
-              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
+              <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
                 📋 7-step recovery flow ({flow.label})
               </h2>
               <ol style={{ margin: 0, paddingLeft: 0, listStyle: "none" }}>
@@ -168,7 +168,7 @@ export default function StolenPhone() {
                       width: 28, height: 28, borderRadius: 999,
                       background: i === 0 ? T.red : flow.color, color: T.bg,
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      fontWeight: 800, fontSize: 13, fontFamily: "'Space Grotesk', sans-serif",
+                      fontWeight: 800, fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif",
                     }}>{i + 1}</div>
                     <div style={{ color: T.muted, fontSize: 14, lineHeight: 1.6, flex: 1 }}>{s}</div>
                   </li>
@@ -181,7 +181,7 @@ export default function StolenPhone() {
               background: T.card, border: `1px solid ${T.border}`, borderRadius: 14,
               padding: 20, marginBottom: 18,
             }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
                 ☎️ SIM block helplines — call BEFORE thief uses your number for OTP
               </h3>
               <div style={{ display: "grid", gap: 8 }}>
@@ -207,7 +207,7 @@ export default function StolenPhone() {
               background: `linear-gradient(135deg, ${T.cyan}1a, ${T.accent}1a)`,
               border: `1px solid ${T.cyan}33`,
             }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 8px" }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 8px" }}>
                 🔒 Permanent IMEI block — CEIR (Govt of India)
               </h3>
               <p style={{ color: T.muted, fontSize: 13, margin: "0 0 12px", lineHeight: 1.6 }}>
@@ -218,7 +218,7 @@ export default function StolenPhone() {
                 display: "inline-block",
                 padding: "10px 22px", borderRadius: 10,
                 background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 13,
-                textDecoration: "none", fontFamily: "'Space Grotesk', sans-serif",
+                textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
               }}>Open ceir.gov.in →</a>
             </div>
 
@@ -236,7 +236,7 @@ export default function StolenPhone() {
           background: T.card, border: `1px solid ${T.border}`, borderRadius: 14,
           padding: 20, marginBottom: 18,
         }}>
-          <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
+          <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
             ☎️ Universal helplines
           </h3>
           <div style={{ display: "grid", gap: 8 }}>
@@ -262,7 +262,7 @@ export default function StolenPhone() {
           padding: 20, borderRadius: 14, marginBottom: 24,
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
-          <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
+          <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
             📦 Pre-loss checklist — do this NOW so you're ready
           </h3>
           <ul style={{ margin: 0, paddingLeft: 18, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>
@@ -284,7 +284,7 @@ export default function StolenPhone() {
           <Link to="/scam-recovery" style={{
             display: "inline-block", padding: "10px 22px", borderRadius: 10,
             background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 13,
-            textDecoration: "none", fontFamily: "'Space Grotesk', sans-serif",
+            textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
           }}>📋 Full financial recovery hotline →</Link>
         </div>
 

@@ -8,7 +8,7 @@ const styles = {
   page: {
     minHeight: "100vh", background: "#030712", display: "flex", alignItems: "center",
     justifyContent: "center", position: "relative", overflow: "hidden",
-    fontFamily: "'Plus Jakarta Sans', sans-serif", padding: "80px 16px 40px",
+    fontFamily: "'Hanken Grotesk', sans-serif", padding: "80px 16px 40px",
   },
   gridBg: {
     position: "absolute", inset: 0,
@@ -37,7 +37,7 @@ const styles = {
   },
   title: {
     fontSize: 28, fontWeight: 700, color: "#14e3c5", marginBottom: 4,
-    fontFamily: "'Space Grotesk', sans-serif",
+    fontFamily: "'Hanken Grotesk', sans-serif",
   },
   subtitle: {
     fontSize: 14, color: "#94a3b8", marginBottom: 32, textAlign: "center", lineHeight: 1.6,
@@ -47,12 +47,12 @@ const styles = {
     width: "100%", padding: "12px 16px", background: "rgba(15,23,42,0.6)",
     border: "1px solid rgba(148,163,184,0.2)", borderRadius: 10, color: "#f1f5f9",
     fontSize: 14, outline: "none", marginBottom: 20, transition: "border-color 0.2s",
-    boxSizing: "border-box", fontFamily: "'Plus Jakarta Sans', sans-serif",
+    boxSizing: "border-box", fontFamily: "'Hanken Grotesk', sans-serif",
   },
   btn: {
     width: "100%", padding: "14px", background: "linear-gradient(135deg, #14e3c5, #0ea5e9)",
     border: "none", borderRadius: 10, color: "#030712", fontSize: 15, fontWeight: 700,
-    cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif",
+    cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif",
     letterSpacing: 0.5, transition: "opacity 0.2s, transform 0.2s",
   },
   error: {
@@ -73,7 +73,7 @@ const styles = {
   },
   successTitle: {
     fontSize: 22, fontWeight: 700, color: "#22c55e", marginBottom: 12,
-    fontFamily: "'Space Grotesk', sans-serif",
+    fontFamily: "'Hanken Grotesk', sans-serif",
   },
   successText: {
     fontSize: 14, color: "#94a3b8", lineHeight: 1.6, marginBottom: 8,
@@ -88,7 +88,7 @@ const styles = {
   resendBtn: {
     background: "none", border: "none", color: "#14e3c5", fontSize: 13,
     fontWeight: 600, cursor: "pointer", textDecoration: "underline",
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontFamily: "'Hanken Grotesk', sans-serif",
   },
 };
 

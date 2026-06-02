@@ -223,7 +223,7 @@ export default function DeviceScanner() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="Device Scanner — VRIKAAN"
         description="Scan files, folders, downloads, or USB drives for malware. SHA-256 hashes checked against malware databases. Free up to 10 files / day, Pro unlocks bulk."
@@ -242,7 +242,7 @@ export default function DeviceScanner() {
             color: T.cyan, marginBottom: 14,
           }}>Device Scanner · Free</span>
           <h1 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 52px)",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 52px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Scan your files for malware.<br />
@@ -374,7 +374,7 @@ export default function DeviceScanner() {
               borderRadius: 12,
             }}>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 1.5, color: riskColor, textTransform: "uppercase" }}>Risk</div>
-              <div style={{ fontSize: 22, fontWeight: 800, color: riskColor, fontFamily: "'Space Grotesk', sans-serif" }}>{riskLevel}</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: riskColor, fontFamily: "'Hanken Grotesk', sans-serif" }}>{riskLevel}</div>
             </div>
 
             {[
@@ -385,7 +385,7 @@ export default function DeviceScanner() {
               { l: "Unknown", v: summary.unknown, c: T.muted },
             ].map(s => (
               <div key={s.l} style={{ textAlign: "center", padding: "10px 8px" }}>
-                <div style={{ fontSize: 20, fontWeight: 800, color: s.c, fontFamily: "'Space Grotesk', sans-serif" }}>{s.v}</div>
+                <div style={{ fontSize: 20, fontWeight: 800, color: s.c, fontFamily: "'Hanken Grotesk', sans-serif" }}>{s.v}</div>
                 <div style={{ fontSize: 10, color: T.muted, textTransform: "uppercase", letterSpacing: 1 }}>{s.l}</div>
               </div>
             ))}
@@ -457,7 +457,7 @@ export default function DeviceScanner() {
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
           <h2 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 18px",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 18px",
           }}>What this scan can (and can't) do — honestly</h2>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }} className="capability-grid">
             <div>
@@ -496,7 +496,7 @@ export default function DeviceScanner() {
           border: `1px solid ${T.cyan}33`,
         }}>
           <h2 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 8px",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 8px",
           }}>Want real device-wide scan?</h2>
           <p style={{ color: T.muted, fontSize: 14, margin: "0 0 22px", lineHeight: 1.6 }}>
             Web apps can't scan your whole disk in real-time. We're building native apps that can.
@@ -598,7 +598,7 @@ function NativeStat({ label, value, color }) {
       background: "rgba(2,6,23,0.5)", border: `1px solid rgba(148,163,184,0.12)`,
       textAlign: "center",
     }}>
-      <div style={{ fontSize: 20, fontWeight: 800, color, fontFamily: "'Space Grotesk', sans-serif" }}>{value}</div>
+      <div style={{ fontSize: 20, fontWeight: 800, color, fontFamily: "'Hanken Grotesk', sans-serif" }}>{value}</div>
       <div style={{ fontSize: 10, color: T.muted, textTransform: "uppercase", letterSpacing: 1, marginTop: 2 }}>{label}</div>
     </div>
   );
@@ -608,7 +608,7 @@ function btnPrimary(opacity = 1) {
     padding: "11px 22px", background: T.cyan, color: T.bg,
     border: 0, borderRadius: 10, fontWeight: 800, fontSize: 14,
     cursor: opacity === 1 ? "pointer" : "not-allowed",
-    fontFamily: "'Space Grotesk', sans-serif", letterSpacing: 0.3,
+    fontFamily: "'Hanken Grotesk', sans-serif", letterSpacing: 0.3,
     opacity, transition: "transform 0.15s",
   };
 }

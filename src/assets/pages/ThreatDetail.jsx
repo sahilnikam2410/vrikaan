@@ -56,7 +56,7 @@ export default function ThreatDetail() {
   ]);
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title={`${threat.title}: Signs, Examples & Prevention`}
         description={threat.lede}

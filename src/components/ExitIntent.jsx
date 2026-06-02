@@ -67,7 +67,7 @@ export default function ExitIntent() {
       style={{
         position: "fixed", inset: 0, background: T.bg, backdropFilter: "blur(6px)",
         zIndex: 99997, display: "flex", alignItems: "center", justifyContent: "center",
-        padding: 24, fontFamily: "'Plus Jakarta Sans', sans-serif",
+        padding: 24, fontFamily: "'Hanken Grotesk', sans-serif",
         animation: "ei-fade 0.25s ease",
       }}
     >
@@ -105,7 +105,7 @@ export default function ExitIntent() {
         <h2 style={{
           fontSize: 24, fontWeight: 800, color: T.white,
           textAlign: "center", margin: "0 0 8px",
-          fontFamily: "'Space Grotesk', sans-serif",
+          fontFamily: "'Hanken Grotesk', sans-serif",
           lineHeight: 1.2,
         }}>
           Wait — 20% off your first month
@@ -156,7 +156,7 @@ export default function ExitIntent() {
             background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
             border: "none", borderRadius: 10,
             color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer",
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
             boxShadow: "0 4px 16px rgba(99,102,241,0.3)",
           }}
         >

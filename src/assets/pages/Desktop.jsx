@@ -148,7 +148,7 @@ export default function Desktop() {
   const isPreRelease = true;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="VRIKAAN Desktop — Native AI Cyber Defense"
         description="Whole-disk malware scan + real-time download watcher + USB auto-scan for Windows / macOS / Linux. India-built, privacy-first. Free."
@@ -167,7 +167,7 @@ export default function Desktop() {
             color: T.cyan, marginBottom: 14,
           }}>{isPreRelease ? "🚧 Coming Q2 2026 · Join waitlist" : "✓ Live · Free · India-built"}</span>
           <h1 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(36px, 5vw, 60px)",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(36px, 5vw, 60px)",
             fontWeight: 800, color: T.white, margin: "0 0 14px", lineHeight: 1.1,
           }}>
             VRIKAAN <span style={{ color: T.cyan }}>Desktop</span><br />
@@ -198,14 +198,14 @@ export default function Desktop() {
                 display: "inline-block",
                 padding: "14px 32px", borderRadius: 12,
                 background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 16,
-                textDecoration: "none", fontFamily: "'Space Grotesk', sans-serif",
+                textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
               }}>📧 Notify me when ready ({primary.eta}) →</a>
             ) : (
               <a href={primary.url} style={{
                 display: "inline-block",
                 padding: "14px 32px", borderRadius: 12,
                 background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 16,
-                textDecoration: "none", fontFamily: "'Space Grotesk', sans-serif",
+                textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
               }}>⬇ Download {primary.label} · {primary.size}</a>
             )}
           </div>
@@ -249,7 +249,7 @@ export default function Desktop() {
             border: `1px solid ${T.cyan}33`, textAlign: "center",
           }}>
             <h2 style={{
-              fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, color: T.white,
+              fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white,
               margin: "0 0 8px",
             }}>📧 Get the link when it ships</h2>
             <p style={{ color: T.muted, fontSize: 13, margin: "0 0 18px" }}>
@@ -279,7 +279,7 @@ export default function Desktop() {
                   padding: "13px 24px", borderRadius: 10,
                   background: T.cyan, color: T.bg, border: 0,
                   fontWeight: 800, fontSize: 14, cursor: "pointer",
-                  fontFamily: "'Space Grotesk', sans-serif",
+                  fontFamily: "'Hanken Grotesk', sans-serif",
                 }}>Join waitlist →</button>
               </form>
             )}
@@ -289,7 +289,7 @@ export default function Desktop() {
         {/* FEATURE GRID */}
         <section style={{ marginBottom: 50 }}>
           <h2 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, color: T.white,
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 28, color: T.white,
             textAlign: "center", margin: "0 0 26px",
           }}>What desktop adds on top of the web app</h2>
           <div style={{
@@ -312,7 +312,7 @@ export default function Desktop() {
         {/* COMPARISON TABLE */}
         <section style={{ marginBottom: 50 }}>
           <h2 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, color: T.white,
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 28, color: T.white,
             textAlign: "center", margin: "0 0 26px",
           }}>Web · Desktop · Android — what's where</h2>
           <div style={{
@@ -357,7 +357,7 @@ export default function Desktop() {
         {/* FAQ */}
         <section style={{ marginBottom: 50 }}>
           <h2 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, color: T.white,
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 28, color: T.white,
             textAlign: "center", margin: "0 0 26px",
           }}>Questions you probably have</h2>
           <div style={{ display: "grid", gap: 10 }}>
@@ -394,7 +394,7 @@ export default function Desktop() {
           padding: 26, borderRadius: 18, marginBottom: 36,
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 14px" }}>
+          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 14px" }}>
             🛠 Tech specs (for the curious)
           </h2>
           <div style={{

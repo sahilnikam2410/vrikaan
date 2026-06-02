@@ -7,7 +7,7 @@ const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 
 export default function Terms() {
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="Terms of Service"
         description="Read the VRIKAAN Terms of Service. Rules governing your use of our AI-powered cybersecurity platform, subscription plans, acceptable use, and legal terms."
@@ -20,7 +20,7 @@ export default function Terms() {
         </div>
 
         <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>Legal</span>
-        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 44, fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 12px" }}>Terms of Service</h1>
+        <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 44, fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 12px" }}>Terms of Service</h1>
         <p style={{ color: T.mutedDark, fontSize: 14, marginBottom: 48 }}>Last updated: March 26, 2026</p>
 
         {[
@@ -37,7 +37,7 @@ export default function Terms() {
           { title: "11. Contact", content: "For questions about these Terms of Service, contact us at hello@vrikaan.com or call +91 8329935878." },
         ].map((s, i) => (
           <div key={i} style={{ marginBottom: 36 }}>
-            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, color: T.white, margin: "0 0 12px" }}>{s.title}</h2>
+            <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, fontWeight: 600, color: T.white, margin: "0 0 12px" }}>{s.title}</h2>
             <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.8, margin: 0 }}>{s.content}</p>
           </div>
         ))}

@@ -36,7 +36,7 @@ const FAQS = [
 
 const inputBase = {
   width: "100%", padding: "14px 18px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`,
-  borderRadius: 10, color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14,
+  borderRadius: 10, color: T.white, fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14,
   outline: "none", transition: "border-color 0.3s", boxSizing: "border-box",
 };
 
@@ -116,11 +116,11 @@ export default function Contact() {
     borderColor: errors[key] ? T.red : T.border,
   });
 
-  const heading = (size) => ({ fontFamily: "'Space Grotesk', sans-serif", fontSize: size, fontWeight: 700, letterSpacing: "-0.03em", color: T.white, margin: 0 });
+  const heading = (size) => ({ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: size, fontWeight: 700, letterSpacing: "-0.03em", color: T.white, margin: 0 });
   const cardStyle = { background: T.card, border: `1px solid ${T.border}`, backdropFilter: "blur(10px)", borderRadius: 14, padding: 28 };
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO title="Contact Us - VRIKAAN" description="Get in touch with the VRIKAAN team for support, partnerships, security reports, or general inquiries." path="/contact" />
       <Navbar />
 
@@ -152,7 +152,7 @@ export default function Contact() {
                 <div style={{ width: 72, height: 72, borderRadius: "50%", background: `${T.green}14`, border: `2px solid ${T.green}30`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px", fontSize: 32, color: T.green }}>&#10003;</div>
                 <h3 style={{ ...heading(24), marginBottom: 10 }}>Message Sent Successfully</h3>
                 <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.7, maxWidth: 360, margin: "0 auto 28px" }}>Thank you for reaching out. Our team will review your message and respond within 24 hours.</p>
-                <button onClick={resetForm} style={{ padding: "12px 28px", background: `${T.accent}10`, border: `1px solid ${T.accent}25`, borderRadius: 10, color: T.accentSoft, cursor: "pointer", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, fontWeight: 600, transition: "all 0.3s" }}>
+                <button onClick={resetForm} style={{ padding: "12px 28px", background: `${T.accent}10`, border: `1px solid ${T.accent}25`, borderRadius: 10, color: T.accentSoft, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 600, transition: "all 0.3s" }}>
                   Send Another Message
                 </button>
               </div>
@@ -194,7 +194,7 @@ export default function Contact() {
                   </div>
                   {/* Submit */}
                   <button type="submit" disabled={sending}
-                    style={{ padding: "15px 36px", background: sending ? T.mutedDark : `linear-gradient(135deg, ${T.accent}, ${T.accentSoft})`, color: "#fff", border: "none", borderRadius: 10, fontSize: 15, fontWeight: 600, cursor: sending ? "not-allowed" : "pointer", fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "all 0.3s", opacity: sending ? 0.7 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
+                    style={{ padding: "15px 36px", background: sending ? T.mutedDark : `linear-gradient(135deg, ${T.accent}, ${T.accentSoft})`, color: "#fff", border: "none", borderRadius: 10, fontSize: 15, fontWeight: 600, cursor: sending ? "not-allowed" : "pointer", fontFamily: "'Hanken Grotesk', sans-serif", transition: "all 0.3s", opacity: sending ? 0.7 : 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 10 }}>
                     {sending ? (
                       <>
                         <span style={{ width: 18, height: 18, border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "#fff", borderRadius: "50%", display: "inline-block", animation: "spin 0.8s linear infinite" }} />
@@ -314,7 +314,7 @@ export default function Contact() {
                     onFocus={e => { e.target.style.borderColor = T.red + "50"; }} onBlur={e => { e.target.style.borderColor = T.border; }} />
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
                     <span style={{ fontSize: 12, color: T.mutedDark, fontFamily: "'JetBrains Mono', monospace" }}>PGP key available at /security.txt</span>
-                    <button type="submit" style={{ padding: "12px 28px", background: `${T.red}14`, border: `1px solid ${T.red}30`, borderRadius: 10, color: T.red, cursor: "pointer", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 14, fontWeight: 600, transition: "all 0.3s" }}
+                    <button type="submit" style={{ padding: "12px 28px", background: `${T.red}14`, border: `1px solid ${T.red}30`, borderRadius: 10, color: T.red, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 600, transition: "all 0.3s" }}
                       onMouseEnter={e => { e.currentTarget.style.background = `${T.red}22`; }} onMouseLeave={e => { e.currentTarget.style.background = `${T.red}14`; }}>
                       Submit Report
                     </button>
@@ -345,7 +345,7 @@ export default function Contact() {
                 <input placeholder="Enter your email address" type="email" value={newsletter} onChange={e => setNewsletter(e.target.value)}
                   style={{ ...inputBase, flex: 1, minWidth: 220 }}
                   onFocus={e => { e.target.style.borderColor = T.accent + "50"; }} onBlur={e => { e.target.style.borderColor = T.border; }} />
-                <button type="submit" style={{ padding: "14px 32px", background: `linear-gradient(135deg, ${T.accent}, ${T.accentSoft})`, color: "#fff", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "all 0.3s", whiteSpace: "nowrap" }}>
+                <button type="submit" style={{ padding: "14px 32px", background: `linear-gradient(135deg, ${T.accent}, ${T.accentSoft})`, color: "#fff", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", transition: "all 0.3s", whiteSpace: "nowrap" }}>
                   Subscribe
                 </button>
               </form>
@@ -371,7 +371,7 @@ export default function Contact() {
             <div key={i} style={{ ...cardStyle, textAlign: "center", padding: "28px 20px" }}>
               <div style={{ fontSize: 32, marginBottom: 10 }}>{r.flag}</div>
               <h4 style={{ ...heading(16), marginBottom: 4 }}>{r.region}</h4>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 800, color: T.cyan, margin: "8px 0 4px" }}>{r.users}</div>
+              <div style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 24, fontWeight: 800, color: T.cyan, margin: "8px 0 4px" }}>{r.users}</div>
               <div style={{ fontSize: 12, color: T.muted }}>Active Users</div>
               <span style={{ display: "inline-block", marginTop: 10, padding: "3px 10px", borderRadius: 6, background: `${T.accent}0a`, border: `1px solid ${T.accent}18`, fontSize: 10, fontWeight: 600, color: T.accent }}>{r.status}</span>
             </div>

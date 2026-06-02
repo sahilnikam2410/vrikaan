@@ -466,7 +466,7 @@ export default function AIChatbot() {
       boxShadow: "0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.1)",
       display: "flex", flexDirection: "column",
       animation: "slideUp 0.3s ease",
-      fontFamily: "'Plus Jakarta Sans', sans-serif",
+      fontFamily: "'Hanken Grotesk', sans-serif",
       overflow: "hidden",
     }}>
       {/* Header */}
@@ -477,7 +477,7 @@ export default function AIChatbot() {
       }}>
         <img src="/wolf-mark.png?v=2" alt="VRIKAAN" style={{ width: 36, height: 36, borderRadius: 10 }} />
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 14, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'" }}>VRIKAAN AI</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'" }}>VRIKAAN AI</div>
           <div style={{ fontSize: 11, color: T.green, display: "flex", alignItems: "center", gap: 4 }}>
             <div style={{ width: 6, height: 6, borderRadius: "50%", background: T.green }} />
             Powered by VRIKAAN AI
@@ -500,7 +500,7 @@ export default function AIChatbot() {
       {/* ─── Setup View ─── */}
       {view === "setup" && (
         <div style={{ flex: 1, padding: 20, overflowY: "auto" }}>
-          <h3 style={{ fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'", marginBottom: 8 }}>Settings</h3>
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 8 }}>Settings</h3>
 
           <div style={{ background: "rgba(34,197,94,0.06)", border: `1px solid rgba(34,197,94,0.15)`, borderRadius: 10, padding: 14, marginBottom: 16 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
@@ -532,7 +532,7 @@ export default function AIChatbot() {
       {/* ─── Credits View ─── */}
       {view === "credits" && (
         <div style={{ flex: 1, padding: 20, overflowY: "auto" }}>
-          <h3 style={{ fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Space Grotesk'", marginBottom: 16 }}>AI Credits</h3>
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 16 }}>AI Credits</h3>
 
           {/* Current usage */}
           <div style={{ background: "rgba(99,102,241,0.06)", borderRadius: 12, padding: 16, marginBottom: 20, border: `1px solid ${T.border}` }}>
@@ -683,7 +683,7 @@ export default function AIChatbot() {
                   <button key={i} onClick={() => { setInput(q); setTimeout(() => { setInput(q); }, 50); }} style={{
                     padding: "7px 12px", borderRadius: 20, border: `1px solid rgba(99,102,241,0.2)`,
                     background: "rgba(99,102,241,0.06)", color: T.accent, fontSize: 11, cursor: "pointer",
-                    fontFamily: "'Plus Jakarta Sans'", transition: "all 0.2s",
+                    fontFamily: "'Hanken Grotesk'", transition: "all 0.2s",
                   }}>
                     {q}
                   </button>
@@ -752,7 +752,7 @@ export default function AIChatbot() {
                   background: "rgba(20,227,197,0.08)",
                   border: `1px solid ${T.cyan}33`,
                   color: T.cyan, fontSize: 11, fontWeight: 600,
-                  cursor: "pointer", fontFamily: "'Plus Jakarta Sans'",
+                  cursor: "pointer", fontFamily: "'Hanken Grotesk'",
                   whiteSpace: "nowrap",
                 }}>{q}</button>
               ))}
@@ -789,7 +789,7 @@ export default function AIChatbot() {
               style={{
                 flex: 1, padding: "10px 14px", borderRadius: 10, border: `1px solid ${T.border}`,
                 background: "rgba(3,7,18,0.6)", color: T.white, fontSize: 13,
-                fontFamily: "'Plus Jakarta Sans'", outline: "none",
+                fontFamily: "'Hanken Grotesk'", outline: "none",
               }}
             />
             <button onClick={handleSend} disabled={!input.trim() || typing} style={{
@@ -814,7 +814,7 @@ export default function AIChatbot() {
           padding: 24, borderRadius: 16,
         }}>
           <div style={{ fontSize: 32, marginBottom: 12 }}>💎</div>
-          <h3 style={{ fontSize: 18, fontWeight: 800, color: T.white, fontFamily: "'Space Grotesk'", marginBottom: 4 }}>
+          <h3 style={{ fontSize: 18, fontWeight: 800, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 4 }}>
             Upgrade to {PLANS[selectedPlan]?.name}
           </h3>
           <div style={{ fontSize: 28, fontWeight: 800, color: T.cyan, marginBottom: 4 }}>

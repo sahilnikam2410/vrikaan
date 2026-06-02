@@ -16,7 +16,7 @@ export default function NotFound() {
   }, []);
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif", position: "relative", overflow: "hidden" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif", position: "relative", overflow: "hidden" }}>
       <SEO title="404 — Page Not Found" description="The page you're looking for doesn't exist. Return to VRIKAAN to access our AI-powered cybersecurity tools." noindex />
       <Navbar />
 
@@ -53,7 +53,7 @@ export default function NotFound() {
 
         {/* Error code */}
         <div style={{
-          fontFamily: "'Space Grotesk', sans-serif",
+          fontFamily: "'Hanken Grotesk', sans-serif",
           fontSize: "clamp(100px, 18vw, 180px)",
           fontWeight: 900, lineHeight: 1, marginBottom: 8,
           background: "linear-gradient(135deg, #6366f1, #8b5cf6, #14e3c5)",
@@ -78,7 +78,7 @@ export default function NotFound() {
           ERROR: ROUTE_NOT_FOUND
         </div>
 
-        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 700, margin: "0 0 14px", letterSpacing: "-0.03em" }}>
+        <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 700, margin: "0 0 14px", letterSpacing: "-0.03em" }}>
           Breach in Navigation
         </h1>
         <p style={{ color: T.muted, fontSize: 16, lineHeight: 1.8, marginBottom: 40, maxWidth: 500, margin: "0 auto 40px" }}>

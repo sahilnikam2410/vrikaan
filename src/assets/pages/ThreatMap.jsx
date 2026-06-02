@@ -60,14 +60,14 @@ export default function ThreatMap() {
   const threatColor = THREAT_LEVEL_COLORS[threatLevel] || T.ember;
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO title="Live Threat Map" description="Real-time global cyber threat visualization with live intelligence from abuse.ch, URLhaus, and Feodo Tracker." path="/threat-map" />
       <Navbar />
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "120px 24px 80px" }}>
         <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.red}0c`, border: `1px solid ${T.red}20`, fontSize: 11, fontWeight: 600, color: T.red, marginBottom: 16, letterSpacing: 0.5 }}>Live Intelligence</span>
-          <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Global Cyber Threat Map</h1>
+          <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Global Cyber Threat Map</h1>
           <p style={{ color: T.muted, fontSize: 16, maxWidth: 600, margin: "0 auto", lineHeight: 1.7 }}>Real-time visualization powered by live threat intelligence feeds from URLhaus & Feodo Tracker.</p>
         </div>
 
@@ -81,7 +81,7 @@ export default function ThreatMap() {
             )}
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", color: T.white, fontWeight: 700, fontSize: 16 }}>{count.toLocaleString()}</span>
+            <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", color: T.white, fontWeight: 700, fontSize: 16 }}>{count.toLocaleString()}</span>
             <span style={{ color: T.mutedDark, fontSize: 12 }}>attacks today</span>
           </div>
         </div>
@@ -103,7 +103,7 @@ export default function ThreatMap() {
           <button onClick={() => setActiveFilters(activeFilters.size === types.length ? new Set() : new Set(types))} style={{
             padding: "6px 14px", borderRadius: 8, fontSize: 11, fontWeight: 600, cursor: "pointer",
             background: "rgba(148,163,184,0.04)", border: `1px solid ${T.border}`, color: T.muted,
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
           }}>
             {activeFilters.size === types.length ? "Clear All" : "Select All"}
           </button>
@@ -125,7 +125,7 @@ export default function ThreatMap() {
             ].map((s, i) => (
               <div key={i} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: "16px 18px", textAlign: "center" }}>
                 <div style={{ fontSize: 18, marginBottom: 6 }}>{s.icon}</div>
-                <div style={{ fontFamily: "'Space Grotesk'", fontSize: 24, fontWeight: 800, color: s.color }}>{s.value}</div>
+                <div style={{ fontFamily: "'Hanken Grotesk'", fontSize: 24, fontWeight: 800, color: s.color }}>{s.value}</div>
                 <div style={{ fontSize: 10, color: T.mutedDark, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5 }}>{s.label}</div>
               </div>
             ))}
@@ -136,7 +136,7 @@ export default function ThreatMap() {
         <div className="resp-grid-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
           {/* Attack Vectors */}
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24 }}>
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 18px" }}>Attack Vectors</h3>
+            <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 18px" }}>Attack Vectors</h3>
             {types.map(t => {
               const pct = [0.3, 0.25, 0.18, 0.12, 0.15][types.indexOf(t)];
               const val = Math.floor(count * pct);
@@ -160,7 +160,7 @@ export default function ThreatMap() {
           {/* Live Feed */}
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24 }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 18 }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: 0 }}>Live Feed</h3>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: 0 }}>Live Feed</h3>
               <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: T.red, fontWeight: 500 }}>
                 <span style={{ width: 5, height: 5, borderRadius: "50%", background: T.red, animation: "tm-blink 1.5s infinite" }} />Live
               </span>
@@ -191,7 +191,7 @@ export default function ThreatMap() {
           {/* Top Targeted Countries (real data) */}
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: 0 }}>Top Countries</h3>
+              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: 0 }}>Top Countries</h3>
               {realData && <span style={{ fontSize: 10, color: T.cyan, fontWeight: 600 }}>REAL DATA</span>}
             </div>
             {realData?.topCountries?.length > 0 ? (
@@ -233,7 +233,7 @@ export default function ThreatMap() {
         {realData?.recentMalware?.length > 0 && (
           <div style={{ marginTop: 24, background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-              <h3 style={{ fontFamily: "'Space Grotesk'", fontSize: 16, fontWeight: 600, margin: 0, display: "flex", alignItems: "center", gap: 8 }}>
+              <h3 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 16, fontWeight: 600, margin: 0, display: "flex", alignItems: "center", gap: 8 }}>
                 🦠 Real-Time Malware Feed
               </h3>
               <span style={{ fontSize: 10, color: T.cyan, fontWeight: 600, padding: "3px 10px", borderRadius: 6, background: `${T.cyan}10`, border: `1px solid ${T.cyan}20` }}>URLhaus — LIVE</span>

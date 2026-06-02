@@ -124,13 +124,13 @@ function CircularProgress({ percentage, size = 200, strokeWidth = 10, color }) {
         transform={`rotate(-90 ${size / 2} ${size / 2})`}
         style={{ transition: "stroke-dashoffset 1s ease, stroke 0.5s ease" }}
       />
-      <text x={size / 2} y={size / 2 - 14} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontSize="52" fontWeight="800" fill={color}>
+      <text x={size / 2} y={size / 2 - 14} textAnchor="middle" fontFamily="'Hanken Grotesk', sans-serif" fontSize="52" fontWeight="800" fill={color}>
         {Math.round(percentage)}
       </text>
       <text x={size / 2} y={size / 2 + 12} textAnchor="middle" fontFamily="'JetBrains Mono', monospace" fontSize="10" fill={T.muted} letterSpacing="2">
         PERCENT
       </text>
-      <text x={size / 2} y={size / 2 + 36} textAnchor="middle" fontFamily="'Space Grotesk', sans-serif" fontSize="22" fontWeight="700" fill={color}>
+      <text x={size / 2} y={size / 2 + 36} textAnchor="middle" fontFamily="'Hanken Grotesk', sans-serif" fontSize="22" fontWeight="700" fill={color}>
         {grade}
       </text>
     </svg>
@@ -154,7 +154,7 @@ function CategoryProgress({ category, checked, onToggle, expanded, onExpand }) {
         <span style={{ fontSize: 24, lineHeight: 1, flexShrink: 0 }}>{category.icon}</span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600 }}>{category.name}</span>
+            <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 600 }}>{category.name}</span>
             <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
               <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: gradeColor, fontWeight: 700 }}>{grade}</span>
               <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: T.muted }}>{checkedCount}/{category.items.length}</span>
@@ -261,7 +261,7 @@ export default function SecurityChecklist() {
   const weakestCategory = categoryStats.reduce((a, b) => a.pct < b.pct ? a : b, categoryStats[0]);
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO title="Security Checklist" description="Interactive personal security checklist to assess and improve your cybersecurity posture." path="/security-checklist" />
       <Navbar />
       <div style={{ maxWidth: 880, margin: "0 auto", padding: "120px 24px 80px" }}>
@@ -274,7 +274,7 @@ export default function SecurityChecklist() {
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.cyan}0c`, border: `1px solid ${T.cyan}20`, fontSize: 11, fontWeight: 600, color: T.cyan, marginBottom: 16, letterSpacing: 0.5 }}>
             Checklist
           </span>
-          <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>
+          <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>
             Personal Security Checklist
           </h1>
           <p style={{ color: T.muted, fontSize: 16, maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>
@@ -286,7 +286,7 @@ export default function SecurityChecklist() {
         <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 18, padding: "40px 32px", backdropFilter: "blur(8px)", textAlign: "center", marginBottom: 32 }}>
           <CircularProgress percentage={overallPct} size={200} strokeWidth={10} color={overallColor} />
           <div style={{ marginTop: 16 }}>
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: overallColor }}>
+            <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: overallColor }}>
               {overallPct >= 90 ? "Excellent" : overallPct >= 70 ? "Good" : overallPct >= 50 ? "Moderate" : overallPct > 0 ? "Needs Work" : "Get Started"}
             </span>
           </div>
@@ -313,14 +313,14 @@ export default function SecurityChecklist() {
         {/* Controls */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 10 }}>
           <div style={{ display: "flex", gap: 8 }}>
-            <button onClick={expandAll} style={{ padding: "8px 16px", background: "transparent", border: `1px solid ${T.border}`, borderRadius: 8, color: T.muted, cursor: "pointer", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, fontWeight: 600, transition: "all 0.25s" }}>
+            <button onClick={expandAll} style={{ padding: "8px 16px", background: "transparent", border: `1px solid ${T.border}`, borderRadius: 8, color: T.muted, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, fontWeight: 600, transition: "all 0.25s" }}>
               Expand All
             </button>
-            <button onClick={collapseAll} style={{ padding: "8px 16px", background: "transparent", border: `1px solid ${T.border}`, borderRadius: 8, color: T.muted, cursor: "pointer", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, fontWeight: 600, transition: "all 0.25s" }}>
+            <button onClick={collapseAll} style={{ padding: "8px 16px", background: "transparent", border: `1px solid ${T.border}`, borderRadius: 8, color: T.muted, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, fontWeight: 600, transition: "all 0.25s" }}>
               Collapse All
             </button>
           </div>
-          <button onClick={resetAll} style={{ padding: "8px 16px", background: "rgba(239,68,68,0.08)", border: `1px solid rgba(239,68,68,0.15)`, borderRadius: 8, color: T.red, cursor: "pointer", fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 12, fontWeight: 600, transition: "all 0.25s" }}>
+          <button onClick={resetAll} style={{ padding: "8px 16px", background: "rgba(239,68,68,0.08)", border: `1px solid rgba(239,68,68,0.15)`, borderRadius: 8, color: T.red, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, fontWeight: 600, transition: "all 0.25s" }}>
             Reset Progress
           </button>
         </div>
@@ -340,7 +340,7 @@ export default function SecurityChecklist() {
         {/* Recommendations */}
         {uncheckedItems.length > 0 && (
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 18, padding: "32px 28px", backdropFilter: "blur(8px)", marginTop: 32 }}>
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700, margin: "0 0 6px" }}>
+            <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, fontWeight: 700, margin: "0 0 6px" }}>
               Recommended Actions
             </h3>
             <p style={{ color: T.mutedDark, fontSize: 13, margin: "0 0 20px", lineHeight: 1.6 }}>
@@ -375,7 +375,7 @@ export default function SecurityChecklist() {
                     style={{
                       padding: "6px 14px", borderRadius: 6, fontSize: 11, fontWeight: 600, cursor: "pointer",
                       background: `${cat.color}12`, border: `1px solid ${cat.color}25`, color: cat.color,
-                      fontFamily: "'Plus Jakarta Sans', sans-serif", transition: "all 0.25s", flexShrink: 0,
+                      fontFamily: "'Hanken Grotesk', sans-serif", transition: "all 0.25s", flexShrink: 0,
                     }}
                   >
                     Mark Done
@@ -390,7 +390,7 @@ export default function SecurityChecklist() {
         {uncheckedItems.length === 0 && checkedCount > 0 && (
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 18, padding: "40px 32px", backdropFilter: "blur(8px)", textAlign: "center", marginTop: 32 }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>{"\u{1F389}"}</div>
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, margin: "0 0 12px", color: T.green }}>
+            <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 24, fontWeight: 700, margin: "0 0 12px", color: T.green }}>
               Perfect Score!
             </h3>
             <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.7, maxWidth: 400, margin: "0 auto" }}>

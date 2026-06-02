@@ -361,7 +361,7 @@ export default function CinematicLoader({ onComplete }) {
 
         {/* VRIKAAN wordmark — cinematic type-in */}
         <div style={{
-          fontFamily: "'Orbitron', 'Space Grotesk', monospace",
+          fontFamily: "'Orbitron', 'Hanken Grotesk', monospace",
           fontSize: "clamp(28px, 5vw, 42px)",
           fontWeight: 700,
           letterSpacing: phase >= 4 ? 10 : 22,
@@ -378,7 +378,7 @@ export default function CinematicLoader({ onComplete }) {
 
         {/* Tagline */}
         <div style={{
-          fontFamily: "'Rajdhani', 'Space Grotesk', sans-serif",
+          fontFamily: "'Rajdhani', 'Hanken Grotesk', sans-serif",
           fontSize: 11,
           fontWeight: 400,
           letterSpacing: 4,
@@ -394,7 +394,7 @@ export default function CinematicLoader({ onComplete }) {
 
         {/* Subtitle */}
         <div style={{
-          fontFamily: "'Rajdhani', 'Space Grotesk', sans-serif",
+          fontFamily: "'Rajdhani', 'Hanken Grotesk', sans-serif",
           fontSize: 10,
           fontWeight: 300,
           letterSpacing: 5,
@@ -417,7 +417,7 @@ export default function CinematicLoader({ onComplete }) {
           transition: "all 0.5s ease 0.3s",
         }}>
           <span style={{
-            fontFamily: "'Rajdhani', 'Space Grotesk', sans-serif",
+            fontFamily: "'Rajdhani', 'Hanken Grotesk', sans-serif",
             fontSize: 9, letterSpacing: 2, color: "#534AB7",
           }}>SHIELD ACTIVE</span>
           <div style={{
@@ -434,7 +434,7 @@ export default function CinematicLoader({ onComplete }) {
             }} />
           </div>
           <span style={{
-            fontFamily: "'Rajdhani', 'Space Grotesk', sans-serif",
+            fontFamily: "'Rajdhani', 'Hanken Grotesk', sans-serif",
             fontSize: 9, letterSpacing: 2, color: "#534AB7",
           }}>100%</span>
         </div>

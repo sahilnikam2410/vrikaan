@@ -37,7 +37,7 @@ export default function QuotaBanner({
       background: exhausted ? "rgba(239,68,68,0.06)" : "rgba(99,102,241,0.06)",
       border: `1px solid ${color}33`,
       borderRadius: 14,
-      fontFamily: "var(--font-body), 'Plus Jakarta Sans', sans-serif",
+      fontFamily: "var(--font-body), 'Hanken Grotesk', sans-serif",
       color: "#cbd5e1", display: "flex", alignItems: "center", gap: 14,
       flexWrap: "wrap",
     }}>
@@ -76,7 +76,7 @@ export default function QuotaBanner({
           padding: "9px 16px", borderRadius: 10,
           background: color, color: "#030712",
           fontWeight: 800, fontSize: 13, textDecoration: "none",
-          fontFamily: "'Space Grotesk', sans-serif",
+          fontFamily: "'Hanken Grotesk', sans-serif",
           flexShrink: 0, transition: "transform 0.15s",
         }}
         onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}

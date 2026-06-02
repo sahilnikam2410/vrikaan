@@ -73,11 +73,11 @@ export default function DeepfakeAudio() {
   const meta = result ? (VERDICT_META[result.verdict] || VERDICT_META.uncertain) : null;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO title="Deepfake / Vishing Audio Detector — VRIKAAN" description="Upload a suspicious phone-call recording. AI analyzes it for synthetic voice, vishing scripts, and India-specific scam patterns." path="/deepfake-audio" />
       <Navbar />
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "120px 20px 80px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, margin: 0, marginBottom: 8, fontFamily: "'Space Grotesk', sans-serif" }}>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, margin: 0, marginBottom: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
           Deepfake & Vishing Audio Detector
         </h1>
         <p style={{ color: T.muted, fontSize: 14, margin: "0 0 24px" }}>
@@ -145,7 +145,7 @@ export default function DeepfakeAudio() {
               style={{
                 width: "100%", padding: 12, borderRadius: 10,
                 background: T.card, border: `1px solid ${T.border}`,
-                color: T.white, fontSize: 13, fontFamily: "'Plus Jakarta Sans'",
+                color: T.white, fontSize: 13, fontFamily: "'Hanken Grotesk'",
                 resize: "vertical", boxSizing: "border-box",
               }}
             />
@@ -158,7 +158,7 @@ export default function DeepfakeAudio() {
             flex: 1, padding: "14px 24px", borderRadius: 10, border: "none", fontSize: 16, fontWeight: 700,
             background: loading || !file ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
             color: "#fff", cursor: loading || !file ? "not-allowed" : "pointer",
-            fontFamily: "'Space Grotesk', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
           }}>{loading ? "Analyzing audio…" : "Analyze for deepfake / vishing"}</button>
         </div>
 
@@ -172,7 +172,7 @@ export default function DeepfakeAudio() {
             <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18, paddingBottom: 18, borderBottom: `1px solid ${T.border}` }}>
               <span style={{ fontSize: 48 }}>{meta.emoji}</span>
               <div style={{ flex: 1 }}>
-                <h2 style={{ color: meta.color, fontSize: 22, fontWeight: 700, margin: 0, fontFamily: "'Space Grotesk', sans-serif" }}>{meta.label}</h2>
+                <h2 style={{ color: meta.color, fontSize: 22, fontWeight: 700, margin: 0, fontFamily: "'Hanken Grotesk', sans-serif" }}>{meta.label}</h2>
                 <p style={{ color: T.muted, fontSize: 12, margin: "4px 0 0" }}>
                   Risk score: <span style={{ color: meta.color, fontWeight: 700 }}>{result.score}/100</span>
                   {result.scamCategory && result.scamCategory !== "none" && <> · Category: <span style={{ color: T.white, fontWeight: 600 }}>{result.scamCategory}</span></>}

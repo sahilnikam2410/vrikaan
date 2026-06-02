@@ -133,7 +133,7 @@ export default function UpiHoneypot() {
     : { label: "LOOKS NORMAL", color: T.green };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <SEO
         title="UPI Scam Lookup — Check Before You Pay"
         description="Paste any UPI ID before sending money. We check format, red flags, and a crowdsourced scam database. Free, India-built."
@@ -152,7 +152,7 @@ export default function UpiHoneypot() {
             color: T.cyan, marginBottom: 14,
           }}>FREE · India-first · Community DB</span>
           <h1 style={{
-            fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Check that UPI ID<br />
@@ -195,7 +195,7 @@ export default function UpiHoneypot() {
                   textTransform: "uppercase", marginBottom: 4,
                 }}>Verdict</div>
                 <div style={{
-                  fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 800,
+                  fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 28, fontWeight: 800,
                   color: verdict.color, lineHeight: 1.1,
                 }}>{verdict.label}</div>
                 <div style={{ color: T.muted, fontSize: 13, marginTop: 4 }}>Risk score: {riskScore}/100</div>
@@ -300,7 +300,7 @@ export default function UpiHoneypot() {
           padding: 22, borderRadius: 14, marginBottom: 24,
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
-          <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
+          <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
             ✅ Before you pay any UPI ID, always:
           </h3>
           <ol style={{ margin: 0, paddingLeft: 20, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>

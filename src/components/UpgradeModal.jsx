@@ -78,7 +78,7 @@ export default function UpgradeModal({ open, onClose, toolName, toolPath, tier, 
           borderRadius: 20,
           boxShadow: `0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px ${color}18`,
           color: "#f1f5f9",
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
+          fontFamily: "'Hanken Grotesk', sans-serif",
           animation: "vrk-modal-in 0.25s ease",
         }}
       >
@@ -113,7 +113,7 @@ export default function UpgradeModal({ open, onClose, toolName, toolPath, tier, 
           }}>🔒 {tierLabel(tier)} TOOL</div>
 
           <h2 id="vrk-upgrade-title" style={{
-            margin: 0, fontFamily: "'Space Grotesk', sans-serif",
+            margin: 0, fontFamily: "'Hanken Grotesk', sans-serif",
             fontSize: 26, fontWeight: 800, color: "#f1f5f9", lineHeight: 1.2,
           }}>
             Unlock <span style={{ color }}>{toolName || "this tool"}</span>
@@ -165,7 +165,7 @@ export default function UpgradeModal({ open, onClose, toolName, toolPath, tier, 
             justifyContent: "center",
           }}>
             <span style={{
-              fontFamily: "'Space Grotesk', sans-serif",
+              fontFamily: "'Hanken Grotesk', sans-serif",
               fontSize: 28, fontWeight: 800, color: "#f1f5f9",
             }}>{tier === "enterprise" ? "Custom" : "₹990"}</span>
             <span style={{ fontSize: 13, color: "#94a3b8" }}>
@@ -184,7 +184,7 @@ export default function UpgradeModal({ open, onClose, toolName, toolPath, tier, 
                 background: color, color: "#030712",
                 border: 0, cursor: "pointer",
                 fontSize: 15, fontWeight: 800,
-                fontFamily: "'Space Grotesk', sans-serif",
+                fontFamily: "'Hanken Grotesk', sans-serif",
                 letterSpacing: 0.3, transition: "transform 0.15s",
               }}
               onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-1px)"; }}
@@ -204,7 +204,7 @@ export default function UpgradeModal({ open, onClose, toolName, toolPath, tier, 
                   border: "1px solid rgba(148,163,184,0.18)",
                   fontSize: 13, fontWeight: 600,
                   textDecoration: "none", textAlign: "center",
-                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  fontFamily: "'Hanken Grotesk', sans-serif",
                 }}
               >Start 7-day free trial · no card</Link>
             )}
