@@ -29,7 +29,7 @@ const SEVERITY_COLOR = { critical: T.red, high: "#F97316", medium: T.yellow, low
 
 export default function HallOfFame() {
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="Security Hall of Fame · VRIKAAN"
         description="Researchers who helped make VRIKAAN safer through responsible disclosure. Thank you for keeping Indian users protected."
@@ -47,7 +47,7 @@ export default function HallOfFame() {
             color: T.gold, marginBottom: 14,
           }}>🏆 Hall of Fame</span>
           <h1 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Researchers who made<br/>
@@ -65,7 +65,7 @@ export default function HallOfFame() {
           }}>
             <div style={{ fontSize: 56, marginBottom: 14, opacity: 0.4 }}>🛡</div>
             <h2 style={{
-              fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white,
+              fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, color: T.white,
               margin: "0 0 10px",
             }}>Be the first.</h2>
             <p style={{ color: T.muted, fontSize: 14, margin: "0 0 18px", lineHeight: 1.7, maxWidth: 460, marginLeft: "auto", marginRight: "auto" }}>
@@ -75,7 +75,7 @@ export default function HallOfFame() {
             <Link to="/responsible-disclosure" style={{
               display: "inline-block", padding: "12px 26px", borderRadius: 10,
               background: T.gold, color: T.bg, fontWeight: 800, fontSize: 14,
-              textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
+              textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
             }}>📋 Read disclosure policy →</Link>
           </div>
         ) : (
@@ -93,7 +93,7 @@ export default function HallOfFame() {
                     width: 56, height: 56, borderRadius: "50%",
                     background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`,
                     color: T.bg, display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 22, fontWeight: 800, fontFamily: "'Hanken Grotesk', sans-serif",
+                    fontSize: 22, fontWeight: 800, fontFamily: "'Vrikaan Sans', sans-serif",
                   }}>{r.name.charAt(0).toUpperCase()}</div>
                   <div>
                     <div style={{ color: T.white, fontWeight: 700, fontSize: 16 }}>{r.name}</div>
@@ -139,7 +139,7 @@ export default function HallOfFame() {
             }}>
               <div style={{
                 fontSize: 22, fontWeight: 800, color: T.cyan,
-                fontFamily: "'Hanken Grotesk', sans-serif",
+                fontFamily: "'Vrikaan Sans', sans-serif",
               }}>{s.v}</div>
               <div style={{ fontSize: 10, color: T.muted, marginTop: 4, letterSpacing: 1, textTransform: "uppercase" }}>{s.l}</div>
             </div>

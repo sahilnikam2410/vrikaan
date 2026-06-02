@@ -41,8 +41,7 @@
          brand-consistent w/ VRIKAAN's privacy stance. -->
 
     <link rel="canonical" href="https://vrikaan.com/" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Google Fonts preconnect removed — fonts now self-hosted from /fonts/ -->
     <link rel="preconnect" href="https://firestore.googleapis.com" />
     <link rel="preconnect" href="https://identitytoolkit.googleapis.com" />
     <link rel="dns-prefetch" href="https://api.groq.com" />
@@ -53,7 +52,8 @@
          Each page that uses /wolf-mark.webp now loads it via a normal <img> tag
          with fetchpriority="high"; preload removed here to silence the
          "preloaded but not used" Lighthouse warning. -->
-    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..900;1,300..900&family=Lora:ital,wght@0,400..700;1,400..700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Self-hosted Vrikaan brand fonts (no Google Fonts request). @font-face in src/styles/fonts.css -->
+    <link rel="preload" href="/fonts/vrikaan-sans.woff2" as="font" type="font/woff2" crossorigin />
     <title>VRIKAAN — AI-Powered Cyber Defense Platform</title>
 
     <!-- JSON-LD Structured Data -->

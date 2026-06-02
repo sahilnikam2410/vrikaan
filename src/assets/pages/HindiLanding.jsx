@@ -51,7 +51,7 @@ export default function HindiLanding() {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="VRIKAAN · भारत का फ्री AI साइबर डिफेंस"
         description="UPI धोखाधड़ी, deepfake कॉल, Aadhaar leak, loan app harassment — 60+ tools बिल्कुल मुफ्त। हिन्दी में। SOC analysts द्वारा भारत में बनाया।"
@@ -80,7 +80,7 @@ export default function HindiLanding() {
           }}>🇮🇳 हिन्दी में · नाशिक से · बिल्कुल फ्री</span>
 
           <h1 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(36px, 6vw, 64px)",
+            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 6vw, 64px)",
             fontWeight: 800, color: T.white, margin: "0 0 18px", lineHeight: 1.1,
             letterSpacing: "-0.02em",
           }}>
@@ -105,20 +105,20 @@ export default function HindiLanding() {
               display: "inline-flex", alignItems: "center", gap: 8,
               padding: "14px 26px", borderRadius: 12,
               background: T.red, color: "#fff", textDecoration: "none",
-              fontWeight: 800, fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif",
+              fontWeight: 800, fontSize: 15, fontFamily: "'Vrikaan Sans', sans-serif",
             }}>🚨 अभी ठगा गया?</Link>
             <Link to="/scam-check" style={{
               display: "inline-flex", alignItems: "center", gap: 8,
               padding: "14px 26px", borderRadius: 12,
               background: T.cyan, color: T.bg, textDecoration: "none",
-              fontWeight: 800, fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif",
+              fontWeight: 800, fontSize: 15, fontFamily: "'Vrikaan Sans', sans-serif",
             }}>📝 स्कैम मैसेज चेक करो</Link>
             <Link to="/signup" style={{
               display: "inline-flex", alignItems: "center", gap: 8,
               padding: "14px 26px", borderRadius: 12,
               background: "transparent", color: T.white, textDecoration: "none",
               border: `1px solid ${T.border}`,
-              fontWeight: 700, fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif",
+              fontWeight: 700, fontSize: 15, fontFamily: "'Vrikaan Sans', sans-serif",
             }}>⚡ साइन अप</Link>
           </div>
 
@@ -145,7 +145,7 @@ export default function HindiLanding() {
             letterSpacing: 2, textTransform: "uppercase", marginBottom: 14,
           }}>12 ज़रूरी tools</span>
           <h2 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(28px, 4vw, 40px)",
+            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(28px, 4vw, 40px)",
             fontWeight: 800, color: T.white, margin: 0,
           }}>हर भारतीय परिवार को चाहिए।</h2>
         </div>
@@ -180,7 +180,7 @@ export default function HindiLanding() {
                   fontSize: 24, marginBottom: 16,
                 }}>{t.icon}</div>
                 <h3 style={{
-                  fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 17, fontWeight: 700,
+                  fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 17, fontWeight: 700,
                   color: T.white, margin: "0 0 8px",
                 }}>{t.title}</h3>
                 <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.65, margin: 0 }}>{t.desc}</p>
@@ -199,7 +199,7 @@ export default function HindiLanding() {
             display: "inline-block", padding: "11px 22px", borderRadius: 10,
             background: "transparent", color: T.white,
             border: `1px solid ${T.border}`, fontSize: 14, fontWeight: 600,
-            textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
+            textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
           }}>सभी 60+ tools देखो →</Link>
         </div>
       </section>
@@ -208,7 +208,7 @@ export default function HindiLanding() {
       <section style={{ maxWidth: 1000, margin: "60px auto 0", padding: "0 24px 60px" }}>
         <div style={{ textAlign: "center", marginBottom: 30 }}>
           <h2 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(28px, 4vw, 38px)",
+            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(28px, 4vw, 38px)",
             fontWeight: 800, color: T.white, margin: "0 0 10px",
           }}>Norton vs McAfee vs <span style={{ color: T.cyan }}>VRIKAAN</span></h2>
           <p style={{ color: T.muted, fontSize: 14 }}>विदेशी company भारत के लिए नहीं बनी। हम भारत के लिए बने हैं।</p>
@@ -247,7 +247,7 @@ export default function HindiLanding() {
       <section style={{ maxWidth: 1100, margin: "30px auto 0", padding: "0 24px 60px" }}>
         <div style={{ textAlign: "center", marginBottom: 30 }}>
           <h2 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(26px, 4vw, 36px)",
+            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(26px, 4vw, 36px)",
             fontWeight: 800, color: T.white, margin: 0,
           }}>हमारे users क्या कहते हैं</h2>
         </div>
@@ -262,7 +262,7 @@ export default function HindiLanding() {
             }}>
               <div style={{
                 color: T.cyan, fontSize: 32, lineHeight: 1, marginBottom: 8,
-                fontFamily: "'Hanken Grotesk', sans-serif",
+                fontFamily: "'Vrikaan Sans', sans-serif",
               }}>"</div>
               <p style={{ color: T.white, fontSize: 14, lineHeight: 1.7, margin: "0 0 16px" }}>{t.text}</p>
               <div style={{
@@ -279,7 +279,7 @@ export default function HindiLanding() {
       {/* FAQ */}
       <section style={{ maxWidth: 820, margin: "30px auto 0", padding: "0 24px 60px" }}>
         <h2 style={{
-          fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(26px, 4vw, 36px)",
+          fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(26px, 4vw, 36px)",
           fontWeight: 800, color: T.white, margin: "0 0 24px", textAlign: "center",
         }}>आम सवाल</h2>
         <div style={{ display: "grid", gap: 12 }}>
@@ -314,7 +314,7 @@ export default function HindiLanding() {
           border: `1px solid ${T.cyan}55`,
         }}>
           <h2 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 30, fontWeight: 800,
+            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 30, fontWeight: 800,
             color: T.white, margin: "0 0 12px",
           }}>आज ही शुरू करो</h2>
           <p style={{ color: T.muted, fontSize: 15, margin: "0 0 24px", lineHeight: 1.7 }}>
@@ -325,13 +325,13 @@ export default function HindiLanding() {
             <Link to="/signup" style={{
               padding: "14px 30px", borderRadius: 12,
               background: T.cyan, color: T.bg, textDecoration: "none",
-              fontWeight: 800, fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif",
+              fontWeight: 800, fontSize: 15, fontFamily: "'Vrikaan Sans', sans-serif",
             }}>⚡ Free साइन अप</Link>
             <Link to="/" style={{
               padding: "14px 30px", borderRadius: 12,
               background: "transparent", color: T.white, textDecoration: "none",
               border: `1px solid ${T.border}`,
-              fontWeight: 600, fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif",
+              fontWeight: 600, fontSize: 15, fontFamily: "'Vrikaan Sans', sans-serif",
             }}>English version →</Link>
           </div>
         </div>

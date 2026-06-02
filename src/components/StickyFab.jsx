@@ -50,7 +50,7 @@ export default function StickyFab() {
           color: "#030712",
           borderRadius: 999,
           fontWeight: 800, fontSize: 14, textDecoration: "none",
-          fontFamily: "'Hanken Grotesk', 'Hanken Grotesk', sans-serif",
+          fontFamily: "'Vrikaan Sans', 'Vrikaan Sans', sans-serif",
           boxShadow: "0 12px 32px rgba(20,227,197,0.35), 0 0 0 1px rgba(255,255,255,0.08) inset",
           animation: "vrk-fab-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), vrk-fab-pulse-ring 2.4s ease infinite",
           transition: "padding 0.25s, transform 0.15s",

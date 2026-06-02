@@ -139,11 +139,11 @@ export default function SecurityAudit() {
   const gradeColor = { A: T.green, B: T.cyan, C: T.yellow, D: "#f97316", F: T.red };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk',sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans',sans-serif" }}>
       <SEO title="Security Audit" description="Run a comprehensive security audit on your email and website." path="/security-audit" />
       <Navbar />
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "120px 20px 60px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Hanken Grotesk',sans-serif" }}>Security Audit</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Vrikaan Sans',sans-serif" }}>Security Audit</h1>
         <p style={{ color: T.muted, fontSize: 14, marginBottom: 28 }}>Run a comprehensive security check on your email and website in one click.</p>
 
         {!results && (
@@ -163,7 +163,7 @@ export default function SecurityAudit() {
                 <a href="/pricing" style={{ fontSize: 13, color: T.accent, marginLeft: 8 }}>Upgrade</a>
               </div>
             )}
-            <button onClick={runAudit} disabled={running || (!email.trim() && !domain.trim())} style={{ width: "100%", padding: "16px", borderRadius: 10, border: "none", background: running ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 16, fontWeight: 700, cursor: running ? "wait" : "pointer", fontFamily: "'Hanken Grotesk',sans-serif" }}>
+            <button onClick={runAudit} disabled={running || (!email.trim() && !domain.trim())} style={{ width: "100%", padding: "16px", borderRadius: 10, border: "none", background: running ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 16, fontWeight: 700, cursor: running ? "wait" : "pointer", fontFamily: "'Vrikaan Sans',sans-serif" }}>
               {running ? `Running Audit... ${progress}%` : "Run Security Audit"}
             </button>
 
@@ -183,10 +183,10 @@ export default function SecurityAudit() {
             {/* Score card */}
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, textAlign: "center", marginBottom: 24 }}>
               <div style={{ width: 100, height: 100, borderRadius: "50%", border: `4px solid ${gradeColor[results.grade]}`, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", margin: "0 auto 16px" }}>
-                <span style={{ fontSize: 36, fontWeight: 800, color: gradeColor[results.grade], fontFamily: "'Hanken Grotesk',sans-serif", lineHeight: 1 }}>{results.grade}</span>
+                <span style={{ fontSize: 36, fontWeight: 800, color: gradeColor[results.grade], fontFamily: "'Vrikaan Sans',sans-serif", lineHeight: 1 }}>{results.grade}</span>
                 <span style={{ fontSize: 11, color: T.muted }}>{results.score}/100</span>
               </div>
-              <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk',sans-serif", marginBottom: 8 }}>
+              <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans',sans-serif", marginBottom: 8 }}>
                 {results.score >= 70 ? "Good Security Posture" : results.score >= 40 ? "Needs Improvement" : "Critical Issues Found"}
               </h2>
               <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
@@ -198,7 +198,7 @@ export default function SecurityAudit() {
                 <div style={{ marginTop: 20, padding: "16px 18px", background: "rgba(20,227,197,0.05)", border: "1px solid rgba(20,227,197,0.15)", borderRadius: 12, textAlign: "left" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
                     <span style={{ fontSize: 14 }}>🤖</span>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: T.cyan, fontFamily: "'JetBrains Mono', monospace", letterSpacing: 0.5 }}>AI ANALYSIS</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: T.cyan, fontFamily: "'Vrikaan Mono', monospace", letterSpacing: 0.5 }}>AI ANALYSIS</span>
                   </div>
                   {aiError ? <div style={{ fontSize: 13, color: T.red }}>{aiError}</div>
                     : <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.7 }}>{renderMarkdown(aiExplanation)}</div>}

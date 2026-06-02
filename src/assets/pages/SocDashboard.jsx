@@ -72,7 +72,7 @@ function Donut({ data, size = 130 }) {
         const large = end - start > Math.PI ? 1 : 0;
         return <path key={i} d={`M ${x1} ${y1} A ${r} ${r} 0 ${large} 1 ${x2} ${y2}`} stroke={d.color} strokeWidth="14" fill="none" />;
       })}
-      <text x={cx} y={cy + 6} textAnchor="middle" fill={T.white} fontSize="22" fontWeight="700" fontFamily="'Hanken Grotesk'">{total}</text>
+      <text x={cx} y={cy + 6} textAnchor="middle" fill={T.white} fontSize="22" fontWeight="700" fontFamily="'Vrikaan Sans'">{total}</text>
     </svg>
   );
 }
@@ -83,7 +83,7 @@ function HBar({ items, color = T.cyan }) {
     <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
       {items.map((i) => (
         <div key={i.label} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 11 }}>
-          <span style={{ width: 110, color: T.muted, fontFamily: "'JetBrains Mono'", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{i.label}</span>
+          <span style={{ width: 110, color: T.muted, fontFamily: "'Vrikaan Mono'", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{i.label}</span>
           <div style={{ flex: 1, height: 12, background: "rgba(15,23,42,0.6)", borderRadius: 4, overflow: "hidden" }}>
             <div style={{ width: `${(i.value / max) * 100}%`, height: "100%", background: color }} />
           </div>
@@ -113,7 +113,7 @@ function TopBar({ range, setRange, sevFilter, setSevFilter, agentFilter, setAgen
             padding: "5px 10px", borderRadius: 4, border: "none", fontSize: 11, fontWeight: 600,
             background: range === r.id ? T.cyan : "transparent",
             color: range === r.id ? T.bg : T.muted,
-            cursor: "pointer", fontFamily: "'JetBrains Mono'",
+            cursor: "pointer", fontFamily: "'Vrikaan Mono'",
           }}>{r.label}</button>
         ))}
       </div>
@@ -132,7 +132,7 @@ function TopBar({ range, setRange, sevFilter, setSevFilter, agentFilter, setAgen
 
       {/* Agent filter */}
       <select value={agentFilter} onChange={(e) => setAgentFilter(e.target.value)} style={{
-        padding: "6px 10px", borderRadius: 6, fontSize: 11, fontFamily: "'JetBrains Mono'",
+        padding: "6px 10px", borderRadius: 6, fontSize: 11, fontFamily: "'Vrikaan Mono'",
         background: "rgba(15,23,42,0.6)", border: `1px solid ${T.cardBorder}`, color: T.white,
       }}>
         <option value="all">All agents ({agents.length})</option>
@@ -161,7 +161,7 @@ function OverviewTab({ events, summary, sparkline }) {
       <div style={{ ...panelStyle(), padding: 18 }}>
         <div style={tileLabel}>Events</div>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-          <span style={{ fontSize: 36, fontWeight: 800, color: T.cyan, fontFamily: "'Hanken Grotesk'" }}>{summary.total}</span>
+          <span style={{ fontSize: 36, fontWeight: 800, color: T.cyan, fontFamily: "'Vrikaan Sans'" }}>{summary.total}</span>
           <span style={{ fontSize: 12, color: T.muted }}>in window</span>
         </div>
         <Sparkline values={sparkline} color={T.cyan} />
@@ -188,8 +188,8 @@ function OverviewTab({ events, summary, sparkline }) {
           <div style={tileLabel}>Top MITRE Tactic</div>
           {top ? (
             <>
-              <div style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginTop: 4 }}>{top.short}</div>
-              <div style={{ fontSize: 11, color: T.muted, fontFamily: "'JetBrains Mono'", marginTop: 2 }}>{top.id} · {top.count} event{top.count === 1 ? "" : "s"}</div>
+              <div style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'", marginTop: 4 }}>{top.short}</div>
+              <div style={{ fontSize: 11, color: T.muted, fontFamily: "'Vrikaan Mono'", marginTop: 2 }}>{top.id} · {top.count} event{top.count === 1 ? "" : "s"}</div>
             </>
           ) : <div style={{ color: T.muted, fontSize: 12, marginTop: 6 }}>No tactic activity in window.</div>}
         </div>
@@ -231,7 +231,7 @@ function EventsTab({ events }) {
   return (
     <div style={panelStyle()}>
       <div style={{ padding: "12px 16px", borderBottom: `1px solid ${T.cardBorder}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Hanken Grotesk'" }}>Security Events ({events.length})</h3>
+        <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Vrikaan Sans'" }}>Security Events ({events.length})</h3>
         <span style={{ color: T.muted, fontSize: 11 }}>Newest first · click row to expand</span>
       </div>
       <div style={{ maxHeight: 600, overflowY: "auto" }}>
@@ -256,19 +256,19 @@ function EventsTab({ events }) {
                 return (
                   <>
                     <tr key={e.id} onClick={() => setExpanded(open ? null : e.id)} style={{ borderTop: `1px solid ${T.cardBorder}`, cursor: "pointer", background: open ? "rgba(20,227,197,0.04)" : "transparent" }}>
-                      <td style={{ padding: "8px 12px", color: T.muted, fontFamily: "'JetBrains Mono'", whiteSpace: "nowrap" }}>{e.timestamp.toLocaleTimeString("en-IN")}</td>
+                      <td style={{ padding: "8px 12px", color: T.muted, fontFamily: "'Vrikaan Mono'", whiteSpace: "nowrap" }}>{e.timestamp.toLocaleTimeString("en-IN")}</td>
                       <td style={{ padding: "8px 12px" }}>
-                        <span style={{ display: "inline-block", padding: "1px 7px", borderRadius: 3, fontSize: 10, fontWeight: 800, background: `${band.color}25`, color: band.color, fontFamily: "'JetBrains Mono'" }}>{e.rule.level}</span>
+                        <span style={{ display: "inline-block", padding: "1px 7px", borderRadius: 3, fontSize: 10, fontWeight: 800, background: `${band.color}25`, color: band.color, fontFamily: "'Vrikaan Mono'" }}>{e.rule.level}</span>
                       </td>
-                      <td style={{ padding: "8px 12px", color: T.cyan, fontFamily: "'JetBrains Mono'" }}>{e.rule.id}</td>
-                      <td style={{ padding: "8px 12px", color: T.muted, fontFamily: "'JetBrains Mono'" }}>{e.tactic}</td>
+                      <td style={{ padding: "8px 12px", color: T.cyan, fontFamily: "'Vrikaan Mono'" }}>{e.rule.id}</td>
+                      <td style={{ padding: "8px 12px", color: T.muted, fontFamily: "'Vrikaan Mono'" }}>{e.tactic}</td>
                       <td style={{ padding: "8px 12px", color: T.white, maxWidth: 360, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{e.rule.description}</td>
-                      <td style={{ padding: "8px 12px", color: T.muted, fontFamily: "'JetBrains Mono'" }}>{(e.agent || "").slice(0, 10)}</td>
+                      <td style={{ padding: "8px 12px", color: T.muted, fontFamily: "'Vrikaan Mono'" }}>{(e.agent || "").slice(0, 10)}</td>
                     </tr>
                     {open && (
                       <tr key={`${e.id}-details`}>
                         <td colSpan={6} style={{ padding: 12, background: "rgba(3,7,18,0.6)", borderTop: `1px solid ${T.cardBorder}` }}>
-                          <pre style={{ margin: 0, color: T.cyan, fontFamily: "'JetBrains Mono'", fontSize: 11, lineHeight: 1.6, whiteSpace: "pre-wrap", wordBreak: "break-all" }}>
+                          <pre style={{ margin: 0, color: T.cyan, fontFamily: "'Vrikaan Mono'", fontSize: 11, lineHeight: 1.6, whiteSpace: "pre-wrap", wordBreak: "break-all" }}>
 {JSON.stringify({
   timestamp: e.timestamp.toISOString(),
   rule: e.rule,
@@ -313,7 +313,7 @@ function VulnsTab({ events }) {
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
       <div style={{ ...panelStyle(), padding: 18 }}>
         <div style={tileLabel}>Vulnerability Events</div>
-        <div style={{ fontSize: 28, fontWeight: 800, color: T.orange, fontFamily: "'Hanken Grotesk'", marginBottom: 12 }}>{vulnEvents.length}</div>
+        <div style={{ fontSize: 28, fontWeight: 800, color: T.orange, fontFamily: "'Vrikaan Sans'", marginBottom: 12 }}>{vulnEvents.length}</div>
         {SEVERITY_BANDS.map((b) => {
           const n = vulnEvents.filter((e) => e.severity === b.label).length;
           return (
@@ -342,7 +342,7 @@ function VulnsTab({ events }) {
               <tbody>
                 {agentRows.map(([agent, counts]) => (
                   <tr key={agent} style={{ borderTop: `1px solid ${T.cardBorder}` }}>
-                    <td style={{ padding: "6px 10px", fontFamily: "'JetBrains Mono'", color: T.cyan }}>{agent.slice(0, 14)}</td>
+                    <td style={{ padding: "6px 10px", fontFamily: "'Vrikaan Mono'", color: T.cyan }}>{agent.slice(0, 14)}</td>
                     <td style={{ padding: "6px 10px", color: T.red }}>{counts.critical || ""}</td>
                     <td style={{ padding: "6px 10px", color: T.orange }}>{counts.high || ""}</td>
                     <td style={{ padding: "6px 10px", color: T.yellow }}>{counts.medium || ""}</td>
@@ -369,7 +369,7 @@ function MitreTab({ events }) {
   return (
     <div style={panelStyle()}>
       <div style={{ padding: "14px 16px", borderBottom: `1px solid ${T.cardBorder}` }}>
-        <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Hanken Grotesk'" }}>MITRE ATT&CK — Enterprise Matrix</h3>
+        <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Vrikaan Sans'" }}>MITRE ATT&CK — Enterprise Matrix</h3>
         <p style={{ color: T.muted, fontSize: 11, margin: "4px 0 0" }}>Cells light up by event count. Click a tactic header for the full MITRE definition.</p>
       </div>
       <div style={{ overflowX: "auto", padding: 16 }}>
@@ -428,10 +428,10 @@ function ComplianceTab({ state }) {
           <div key={f.id} style={{ ...panelStyle(), padding: 18, borderColor: `${color}40` }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
               <div>
-                <h4 style={{ margin: 0, color: T.white, fontSize: 14, fontFamily: "'Hanken Grotesk'" }}>{f.name}</h4>
+                <h4 style={{ margin: 0, color: T.white, fontSize: 14, fontFamily: "'Vrikaan Sans'" }}>{f.name}</h4>
                 <span style={{ color: T.muted, fontSize: 11 }}>{f.jurisdiction} · {f.total} controls</span>
               </div>
-              <div style={{ fontSize: 32, fontWeight: 800, color, fontFamily: "'Hanken Grotesk'", lineHeight: 1 }}>{f.score}<span style={{ fontSize: 14, color: T.muted, fontWeight: 500 }}>/100</span></div>
+              <div style={{ fontSize: 32, fontWeight: 800, color, fontFamily: "'Vrikaan Sans'", lineHeight: 1 }}>{f.score}<span style={{ fontSize: 14, color: T.muted, fontWeight: 500 }}>/100</span></div>
             </div>
             <div style={{ height: 6, background: "rgba(15,23,42,0.6)", borderRadius: 3, overflow: "hidden", marginBottom: 12 }}>
               <div style={{ width: `${f.score}%`, height: "100%", background: color, transition: "width 0.4s ease" }} />
@@ -442,7 +442,7 @@ function ComplianceTab({ state }) {
                   {f.gaps.length} control gap{f.gaps.length === 1 ? "" : "s"}
                 </summary>
                 <ul style={{ margin: "8px 0 0", paddingLeft: 18, fontSize: 11, color: T.muted, lineHeight: 1.6 }}>
-                  {f.gaps.slice(0, 6).map((g) => <li key={g.id}><span style={{ color: T.red, fontFamily: "'JetBrains Mono'" }}>{g.id}</span> — {g.title}</li>)}
+                  {f.gaps.slice(0, 6).map((g) => <li key={g.id}><span style={{ color: T.red, fontFamily: "'Vrikaan Mono'" }}>{g.id}</span> — {g.title}</li>)}
                 </ul>
               </details>
             ) : (
@@ -463,7 +463,7 @@ function AgentsTab({ agents, events }) {
   return (
     <div style={panelStyle()}>
       <div style={{ padding: "12px 16px", borderBottom: `1px solid ${T.cardBorder}` }}>
-        <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Hanken Grotesk'" }}>Agents · {agents.length}</h3>
+        <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Vrikaan Sans'" }}>Agents · {agents.length}</h3>
         <p style={{ color: T.muted, fontSize: 11, margin: "4px 0 0" }}>Each registered device acts as a Wazuh-style agent. Last-seen derived from event activity.</p>
       </div>
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
@@ -488,7 +488,7 @@ function AgentsTab({ agents, events }) {
             const topSev = own.reduce((acc, e) => severityBand(e.rule.level).color === acc ? acc : (severityBand(e.rule.level).color === T.red ? T.red : acc), T.muted);
             return (
               <tr key={id} style={{ borderTop: `1px solid ${T.cardBorder}` }}>
-                <td style={{ padding: "10px 14px", color: T.cyan, fontFamily: "'JetBrains Mono'" }}>{id.slice(0, 28)}</td>
+                <td style={{ padding: "10px 14px", color: T.cyan, fontFamily: "'Vrikaan Mono'" }}>{id.slice(0, 28)}</td>
                 <td style={{ padding: "10px 14px" }}>
                   <span style={{ display: "inline-flex", alignItems: "center", gap: 6, color: statusColor, fontSize: 11, fontWeight: 700, textTransform: "uppercase" }}>
                     <span style={{ width: 7, height: 7, borderRadius: "50%", background: statusColor, boxShadow: `0 0 6px ${statusColor}` }} />
@@ -646,7 +646,7 @@ export default function SocDashboard() {
   if (!user || !isAdmin) return null;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="SOC Dashboard — VRIKAAN" description="Wazuh-style Security Operations Center for VRIKAAN — live events, MITRE ATT&CK heat-map, vulnerabilities, compliance posture, agent inventory." path="/admin/soc" />
       <Navbar />
 
@@ -654,9 +654,9 @@ export default function SocDashboard() {
         {/* Header */}
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 18, flexWrap: "wrap", gap: 12 }}>
           <div>
-            <h1 style={{ fontSize: 28, fontWeight: 700, color: T.white, margin: 0, fontFamily: "'Hanken Grotesk'" }}>
+            <h1 style={{ fontSize: 28, fontWeight: 700, color: T.white, margin: 0, fontFamily: "'Vrikaan Sans'" }}>
               <span style={{ color: T.cyan }}>SOC</span> Dashboard
-              <span style={{ marginLeft: 12, fontSize: 11, color: T.muted, fontWeight: 400, fontFamily: "'JetBrains Mono'" }}>v1 · Wazuh-style</span>
+              <span style={{ marginLeft: 12, fontSize: 11, color: T.muted, fontWeight: 400, fontFamily: "'Vrikaan Mono'" }}>v1 · Wazuh-style</span>
             </h1>
             <p style={{ color: T.muted, fontSize: 12, margin: "4px 0 0" }}>
               Real-time event correlation · MITRE ATT&CK mapping · Compliance posture · Agent inventory
@@ -673,7 +673,7 @@ export default function SocDashboard() {
               color: tab === t.id ? T.cyan : T.muted,
               fontSize: 12, fontWeight: 700, cursor: "pointer", whiteSpace: "nowrap",
               borderBottom: tab === t.id ? `2px solid ${T.cyan}` : "2px solid transparent",
-              fontFamily: "'Hanken Grotesk'", letterSpacing: 0.3,
+              fontFamily: "'Vrikaan Sans'", letterSpacing: 0.3,
             }}>
               <span style={{ marginRight: 6 }}>{t.icon}</span>{t.label}
             </button>

@@ -91,7 +91,7 @@ export default function PhishingTrainer() {
   const grade = accuracy >= 90 ? "A" : accuracy >= 75 ? "B" : accuracy >= 60 ? "C" : accuracy >= 40 ? "D" : "F";
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk',sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans',sans-serif" }}>
       <SEO title="Phishing URL Trainer" description="Test your ability to spot phishing URLs in this gamified security trainer." path="/phishing-trainer" />
       <Navbar />
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "120px 20px 60px" }}>
@@ -100,10 +100,10 @@ export default function PhishingTrainer() {
         {screen === "start" && (
           <div style={{ textAlign: "center", padding: "40px 0" }}>
             <div style={{ fontSize: 60, marginBottom: 16 }}>&#x1F3A3;</div>
-            <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk',sans-serif", marginBottom: 10 }}>Phishing URL Trainer</h1>
+            <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans',sans-serif", marginBottom: 10 }}>Phishing URL Trainer</h1>
             <p style={{ color: T.muted, fontSize: 15, marginBottom: 8, maxWidth: 480, margin: "0 auto 8px" }}>Can you spot the difference between real and phishing URLs?</p>
             <p style={{ color: T.muted, fontSize: 13, marginBottom: 32 }}>{ROUNDS} rounds | 15 seconds each | +10 pts correct, +5 streak bonus</p>
-            <button onClick={startGame} style={{ padding: "16px 48px", borderRadius: 12, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 18, fontWeight: 700, cursor: "pointer", fontFamily: "'Hanken Grotesk',sans-serif" }}>Start Training</button>
+            <button onClick={startGame} style={{ padding: "16px 48px", borderRadius: 12, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 18, fontWeight: 700, cursor: "pointer", fontFamily: "'Vrikaan Sans',sans-serif" }}>Start Training</button>
           </div>
         )}
 
@@ -126,22 +126,22 @@ export default function PhishingTrainer() {
                 <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: "32px 24px", textAlign: "center", marginBottom: 28 }}>
                   <p style={{ fontSize: 13, color: T.muted, marginBottom: 12 }}>Is this URL legitimate or phishing?</p>
                   <div style={{ padding: "16px 20px", background: "rgba(15,23,42,0.8)", borderRadius: 10, border: `1px solid ${T.border}`, wordBreak: "break-all" }}>
-                    <span style={{ fontSize: 16, fontFamily: "'JetBrains Mono',monospace", color: T.white, lineHeight: 1.6 }}>{q.url}</span>
+                    <span style={{ fontSize: 16, fontFamily: "'Vrikaan Mono',monospace", color: T.white, lineHeight: 1.6 }}>{q.url}</span>
                   </div>
                 </div>
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                  <button onClick={() => answer(false)} style={{ padding: "18px", borderRadius: 12, border: `2px solid rgba(34,197,94,0.3)`, background: "rgba(34,197,94,0.06)", color: T.green, fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "'Hanken Grotesk',sans-serif" }}>&#x2705; Legitimate</button>
-                  <button onClick={() => answer(true)} style={{ padding: "18px", borderRadius: 12, border: `2px solid rgba(239,68,68,0.3)`, background: "rgba(239,68,68,0.06)", color: T.red, fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "'Hanken Grotesk',sans-serif" }}>&#x1F6A8; Phishing</button>
+                  <button onClick={() => answer(false)} style={{ padding: "18px", borderRadius: 12, border: `2px solid rgba(34,197,94,0.3)`, background: "rgba(34,197,94,0.06)", color: T.green, fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "'Vrikaan Sans',sans-serif" }}>&#x2705; Legitimate</button>
+                  <button onClick={() => answer(true)} style={{ padding: "18px", borderRadius: 12, border: `2px solid rgba(239,68,68,0.3)`, background: "rgba(239,68,68,0.06)", color: T.red, fontSize: 16, fontWeight: 700, cursor: "pointer", fontFamily: "'Vrikaan Sans',sans-serif" }}>&#x1F6A8; Phishing</button>
                 </div>
               </>
             ) : (
               <div style={{ background: T.card, border: `1px solid ${feedback.correct ? "rgba(34,197,94,0.3)" : "rgba(239,68,68,0.3)"}`, borderRadius: 16, padding: 28 }}>
                 <div style={{ fontSize: 40, textAlign: "center", marginBottom: 12 }}>{feedback.correct ? "\u2705" : "\u274C"}</div>
-                <h3 style={{ textAlign: "center", fontSize: 20, fontWeight: 700, color: feedback.correct ? T.green : T.red, marginBottom: 12, fontFamily: "'Hanken Grotesk',sans-serif" }}>
+                <h3 style={{ textAlign: "center", fontSize: 20, fontWeight: 700, color: feedback.correct ? T.green : T.red, marginBottom: 12, fontFamily: "'Vrikaan Sans',sans-serif" }}>
                   {feedback.correct ? "Correct!" : answers[answers.length - 1]?.timedOut ? "Time's Up!" : "Wrong!"}
                 </h3>
                 <div style={{ padding: "12px 16px", background: "rgba(15,23,42,0.6)", borderRadius: 8, marginBottom: 12, wordBreak: "break-all" }}>
-                  <span style={{ fontFamily: "'JetBrains Mono',monospace", fontSize: 14, color: T.white }}>{feedback.q.url}</span>
+                  <span style={{ fontFamily: "'Vrikaan Mono',monospace", fontSize: 14, color: T.white }}>{feedback.q.url}</span>
                 </div>
                 <p style={{ fontSize: 13, color: T.white, marginBottom: 8 }}>This URL is <strong style={{ color: feedback.q.isPhishing ? T.red : T.green }}>{feedback.q.isPhishing ? "PHISHING" : "LEGITIMATE"}</strong></p>
                 <p style={{ fontSize: 13, color: T.muted, marginBottom: feedback.q.redFlags.length ? 12 : 16 }}>{feedback.q.explanation}</p>
@@ -150,7 +150,7 @@ export default function PhishingTrainer() {
                     {feedback.q.redFlags.map(f => <span key={f} style={{ padding: "4px 10px", borderRadius: 4, background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", fontSize: 12, color: T.red }}>{f}</span>)}
                   </div>
                 )}
-                <button onClick={nextRound} style={{ width: "100%", padding: "14px", borderRadius: 10, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Hanken Grotesk',sans-serif" }}>
+                <button onClick={nextRound} style={{ width: "100%", padding: "14px", borderRadius: 10, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Vrikaan Sans',sans-serif" }}>
                   {round + 1 >= ROUNDS ? "See Results" : "Next Question"}
                 </button>
               </div>
@@ -162,26 +162,26 @@ export default function PhishingTrainer() {
         {screen === "results" && (
           <div style={{ textAlign: "center" }}>
             <div style={{ fontSize: 60, marginBottom: 12 }}>{accuracy >= 80 ? "\uD83C\uDFC6" : accuracy >= 50 ? "\uD83D\uDC4D" : "\uD83D\uDCA1"}</div>
-            <h2 style={{ fontSize: 28, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk',sans-serif", marginBottom: 8 }}>Training Complete!</h2>
+            <h2 style={{ fontSize: 28, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans',sans-serif", marginBottom: 8 }}>Training Complete!</h2>
 
             <div className="phish-stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, maxWidth: 400, margin: "24px auto" }}>
               <div style={{ padding: 16, background: T.card, borderRadius: 12, border: `1px solid ${T.border}` }}>
-                <div style={{ fontSize: 28, fontWeight: 800, color: T.cyan, fontFamily: "'Hanken Grotesk',sans-serif" }}>{score}</div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: T.cyan, fontFamily: "'Vrikaan Sans',sans-serif" }}>{score}</div>
                 <div style={{ fontSize: 11, color: T.muted }}>Score</div>
               </div>
               <div style={{ padding: 16, background: T.card, borderRadius: 12, border: `1px solid ${T.border}` }}>
-                <div style={{ fontSize: 28, fontWeight: 800, color: accuracy >= 70 ? T.green : T.yellow, fontFamily: "'Hanken Grotesk',sans-serif" }}>{accuracy}%</div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: accuracy >= 70 ? T.green : T.yellow, fontFamily: "'Vrikaan Sans',sans-serif" }}>{accuracy}%</div>
                 <div style={{ fontSize: 11, color: T.muted }}>Accuracy</div>
               </div>
               <div style={{ padding: 16, background: T.card, borderRadius: 12, border: `1px solid ${T.border}` }}>
-                <div style={{ fontSize: 28, fontWeight: 800, color: T.accent, fontFamily: "'Hanken Grotesk',sans-serif" }}>{grade}</div>
+                <div style={{ fontSize: 28, fontWeight: 800, color: T.accent, fontFamily: "'Vrikaan Sans',sans-serif" }}>{grade}</div>
                 <div style={{ fontSize: 11, color: T.muted }}>Grade</div>
               </div>
             </div>
 
             <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 24 }}>
-              <button onClick={startGame} style={{ padding: "14px 32px", borderRadius: 10, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Hanken Grotesk',sans-serif" }}>Play Again</button>
-              <button onClick={share} style={{ padding: "14px 32px", borderRadius: 10, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.muted, fontSize: 15, fontWeight: 600, cursor: "pointer", fontFamily: "'Hanken Grotesk',sans-serif" }}>Share Score</button>
+              <button onClick={startGame} style={{ padding: "14px 32px", borderRadius: 10, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", fontFamily: "'Vrikaan Sans',sans-serif" }}>Play Again</button>
+              <button onClick={share} style={{ padding: "14px 32px", borderRadius: 10, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.muted, fontSize: 15, fontWeight: 600, cursor: "pointer", fontFamily: "'Vrikaan Sans',sans-serif" }}>Share Score</button>
             </div>
           </div>
         )}

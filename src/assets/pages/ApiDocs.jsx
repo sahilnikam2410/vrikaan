@@ -132,7 +132,7 @@ function CodeBlock({ children, lang = "json" }) {
 
 export default function ApiDocs() {
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="VRIKAAN API — AI cybersecurity endpoints for developers & SMBs"
         description="12 production endpoints: scam detection, deepfake audio, breach lookup, vulnerability scan, file-hash check. Free tier 100 calls/day · paid tier from ₹99/mo. cURL + REST docs."
@@ -151,7 +151,7 @@ export default function ApiDocs() {
             fontSize: 11, fontWeight: 700, color: T.accent, marginBottom: 18, letterSpacing: 0.5,
           }}>API · v1 · Production</span>
           <h1 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontFamily: "'Vrikaan Sans', sans-serif",
             fontSize: "clamp(36px, 4vw, 52px)", fontWeight: 800,
             letterSpacing: "-0.03em", margin: "0 0 18px", lineHeight: 1.1,
           }}>
@@ -169,7 +169,7 @@ export default function ApiDocs() {
               padding: "14px 26px",
               background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
               color: "#fff", borderRadius: 10, textDecoration: "none",
-              fontSize: 14, fontWeight: 700, fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 14, fontWeight: 700, fontFamily: "'Vrikaan Sans', sans-serif",
               boxShadow: `0 8px 24px ${T.accent}33`,
             }}>
               Get free API key →
@@ -195,7 +195,7 @@ export default function ApiDocs() {
         {/* Quickstart */}
         <section style={{ marginBottom: 60 }}>
           <h2 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontFamily: "'Vrikaan Sans', sans-serif",
             fontSize: 26, fontWeight: 700, margin: "0 0 14px", letterSpacing: "-0.02em",
           }}>Quickstart</h2>
           <p style={{ color: T.muted, fontSize: 14, margin: "0 0 18px" }}>
@@ -213,7 +213,7 @@ export default function ApiDocs() {
         {/* Auth */}
         <section style={{ marginBottom: 60 }}>
           <h2 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontFamily: "'Vrikaan Sans', sans-serif",
             fontSize: 26, fontWeight: 700, margin: "0 0 14px", letterSpacing: "-0.02em",
           }}>Authentication</h2>
           <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.8, margin: "0 0 14px" }}>
@@ -240,7 +240,7 @@ export default function ApiDocs() {
         {/* Endpoints */}
         <section id="endpoints" style={{ marginBottom: 60 }}>
           <h2 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontFamily: "'Vrikaan Sans', sans-serif",
             fontSize: 26, fontWeight: 700, margin: "0 0 18px", letterSpacing: "-0.02em",
           }}>Endpoints</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -273,7 +273,7 @@ export default function ApiDocs() {
         {/* SDK plug */}
         <section style={{ marginBottom: 60 }}>
           <h2 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontFamily: "'Vrikaan Sans', sans-serif",
             fontSize: 26, fontWeight: 700, margin: "0 0 14px", letterSpacing: "-0.02em",
           }}>SDKs</h2>
           <p style={{ color: T.muted, fontSize: 14, marginBottom: 18 }}>Official SDKs coming Q3. Until then, the REST API is one-line in any language:</p>
@@ -299,7 +299,7 @@ result = r.json()`}</CodeBlock>
         {/* Use cases */}
         <section style={{ marginBottom: 60 }}>
           <h2 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontFamily: "'Vrikaan Sans', sans-serif",
             fontSize: 26, fontWeight: 700, margin: "0 0 18px", letterSpacing: "-0.02em",
           }}>Built for</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
@@ -328,7 +328,7 @@ result = r.json()`}</CodeBlock>
           border: `1px solid ${T.accent}22`,
           borderRadius: 20,
         }}>
-          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 28, fontWeight: 700, margin: "0 0 12px", letterSpacing: "-0.02em" }}>
+          <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 28, fontWeight: 700, margin: "0 0 12px", letterSpacing: "-0.02em" }}>
             Start with 100 free calls/day
           </h2>
           <p style={{ color: T.muted, fontSize: 14, marginBottom: 22 }}>
@@ -339,7 +339,7 @@ result = r.json()`}</CodeBlock>
               display: "inline-block", padding: "13px 32px",
               background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
               color: "#fff", borderRadius: 10, textDecoration: "none",
-              fontSize: 14, fontWeight: 700, fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 14, fontWeight: 700, fontFamily: "'Vrikaan Sans', sans-serif",
               boxShadow: `0 8px 24px ${T.accent}33`,
             }}>
               Get API key (free)

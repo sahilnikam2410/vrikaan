@@ -63,7 +63,7 @@ export default function CookieConsent() {
           background: T.bg, backdropFilter: "blur(20px)",
           border: `1px solid ${T.border}`, borderRadius: 16,
           padding: "20px 22px", boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
-          fontFamily: "'Hanken Grotesk', sans-serif",
+          fontFamily: "'Vrikaan Sans', sans-serif",
           animation: "cookieSlideUp 0.4s ease both",
           transition: "max-width 0.3s ease",
         }}
@@ -73,7 +73,7 @@ export default function CookieConsent() {
           <div style={{ flex: 1, minWidth: 0 }}>
             <h4 style={{
               fontSize: 14, fontWeight: 700, color: T.white,
-              margin: "0 0 6px", fontFamily: "'Hanken Grotesk', sans-serif",
+              margin: "0 0 6px", fontFamily: "'Vrikaan Sans', sans-serif",
             }}>
               Your privacy, your choice
             </h4>
@@ -146,7 +146,7 @@ export default function CookieConsent() {
                   padding: "9px 22px", borderRadius: 8, border: "none",
                   background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                   color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer",
-                  fontFamily: "'Hanken Grotesk', sans-serif",
+                  fontFamily: "'Vrikaan Sans', sans-serif",
                 }}>
                   Save preferences
                 </button>
@@ -155,7 +155,7 @@ export default function CookieConsent() {
                   padding: "9px 22px", borderRadius: 8, border: "none",
                   background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                   color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer",
-                  fontFamily: "'Hanken Grotesk', sans-serif",
+                  fontFamily: "'Vrikaan Sans', sans-serif",
                 }}>
                   Accept all
                 </button>
@@ -164,7 +164,7 @@ export default function CookieConsent() {
                 padding: "9px 18px", borderRadius: 8,
                 background: "transparent", border: `1px solid ${T.border}`,
                 color: T.muted, fontSize: 13, fontWeight: 600, cursor: "pointer",
-                fontFamily: "'Hanken Grotesk', sans-serif",
+                fontFamily: "'Vrikaan Sans', sans-serif",
               }}>
                 Reject non-essential
               </button>
@@ -173,7 +173,7 @@ export default function CookieConsent() {
                 style={{
                   padding: "9px 4px", background: "transparent", border: "none",
                   color: T.cyan, fontSize: 12, fontWeight: 600, cursor: "pointer",
-                  fontFamily: "'Hanken Grotesk', sans-serif", marginLeft: "auto",
+                  fontFamily: "'Vrikaan Sans', sans-serif", marginLeft: "auto",
                 }}
               >
                 {expanded ? "Less" : "Customize"}

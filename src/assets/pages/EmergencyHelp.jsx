@@ -17,7 +17,7 @@ const protocols = [
 export default function EmergencyHelp() {
   const [open, setOpen] = useState(null);
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="Emergency Help — Cyber Incident Recovery"
         description="Immediate recovery steps for bank fraud, account takeover, phishing, identity theft, and ransomware incidents. Step-by-step protocols to limit damage."
@@ -33,23 +33,23 @@ export default function EmergencyHelp() {
         </div>
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.red}0c`, border: `1px solid ${T.red}20`, fontSize: 11, fontWeight: 600, color: T.red, marginBottom: 16, letterSpacing: 0.5 }}>Emergency Response</span>
-          <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Incident Recovery Protocols</h1>
+          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Incident Recovery Protocols</h1>
           <p style={{ color: T.muted, fontSize: 16, maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>Select your situation for immediate, actionable recovery steps.</p>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {protocols.map((p, i) => (
             <div key={i} style={{ background: T.card, border: `1px solid ${open === i ? p.color + "20" : T.border}`, borderRadius: 14, overflow: "hidden", transition: "all 0.3s", cursor: "pointer" }} onClick={() => setOpen(open === i ? null : i)}>
               <div style={{ padding: "22px 28px", display: "flex", alignItems: "center", gap: 14 }}>
-                <span style={{ padding: "4px 10px", borderRadius: 6, background: `${p.color}0a`, border: `1px solid ${p.color}18`, fontFamily: "'JetBrains Mono', monospace", fontSize: 10, fontWeight: 700, color: p.color, letterSpacing: 1.5, flexShrink: 0 }}>{p.code}</span>
-                <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 17, fontWeight: 600, margin: 0, flex: 1 }}>{p.title}</h3>
-                <span style={{ padding: "3px 10px", borderRadius: 6, background: `${p.color}08`, fontSize: 10, fontWeight: 600, color: p.color, fontFamily: "'JetBrains Mono', monospace", flexShrink: 0 }}>{p.urgency}</span>
+                <span style={{ padding: "4px 10px", borderRadius: 6, background: `${p.color}0a`, border: `1px solid ${p.color}18`, fontFamily: "'Vrikaan Mono', monospace", fontSize: 10, fontWeight: 700, color: p.color, letterSpacing: 1.5, flexShrink: 0 }}>{p.code}</span>
+                <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 17, fontWeight: 600, margin: 0, flex: 1 }}>{p.title}</h3>
+                <span style={{ padding: "3px 10px", borderRadius: 6, background: `${p.color}08`, fontSize: 10, fontWeight: 600, color: p.color, fontFamily: "'Vrikaan Mono', monospace", flexShrink: 0 }}>{p.urgency}</span>
                 <span style={{ color: T.accent, fontSize: 20, transition: "transform 0.4s", transform: open === i ? "rotate(45deg)" : "none", fontWeight: 300 }}>+</span>
               </div>
               {open === i && (
                 <div style={{ padding: "0 28px 28px", borderTop: `1px solid ${T.border}`, paddingTop: 20 }}>
                   {p.steps.map((s, j) => (
                     <div key={j} style={{ display: "flex", gap: 16, padding: "12px 0", borderBottom: j < p.steps.length - 1 ? `1px solid ${T.border}` : "none" }}>
-                      <span style={{ fontFamily: "'JetBrains Mono', monospace", color: p.color, fontSize: 13, fontWeight: 700, minWidth: 24 }}>0{j + 1}</span>
+                      <span style={{ fontFamily: "'Vrikaan Mono', monospace", color: p.color, fontSize: 13, fontWeight: 700, minWidth: 24 }}>0{j + 1}</span>
                       <span style={{ color: T.white, fontSize: 14, lineHeight: 1.7 }}>{s}</span>
                     </div>
                   ))}
@@ -59,11 +59,11 @@ export default function EmergencyHelp() {
           ))}
         </div>
         <div style={{ marginTop: 56, background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 36 }}>
-          <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, fontWeight: 600, margin: "0 0 24px" }}>Emergency Helplines</h3>
+          <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 20, fontWeight: 600, margin: "0 0 24px" }}>Emergency Helplines</h3>
           <div className="resp-grid-2" style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
             {[{ name: "Cyber Crime Helpline (India)", num: "1930", sub: "cybercrime.gov.in" }, { name: "National Emergency", num: "112", sub: "Police, Fire, Ambulance" }, { name: "Women Helpline", num: "181", sub: "For online harassment" }, { name: "Banking Fraud", num: "14440", sub: "RBI fraud reports" }].map((h, i) => (
               <div key={i} style={{ padding: "16px 20px", background: "rgba(0,0,0,0.2)", borderRadius: 10, border: `1px solid ${T.border}` }}>
-                <div style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: T.cyan }}>{h.num}</div>
+                <div style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 24, fontWeight: 700, color: T.cyan }}>{h.num}</div>
                 <div style={{ fontSize: 14, color: T.white, fontWeight: 500, marginTop: 4 }}>{h.name}</div>
                 <div style={{ fontSize: 12, color: T.mutedDark, marginTop: 2 }}>{h.sub}</div>
               </div>

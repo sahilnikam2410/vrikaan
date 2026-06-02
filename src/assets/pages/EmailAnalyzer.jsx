@@ -264,12 +264,12 @@ export default function EmailAnalyzer() {
   };
 
   const card = { background: T.card, border: `1px solid ${T.border}`, borderRadius: 18, padding: "32px 28px", backdropFilter: "blur(8px)", marginBottom: 28 };
-  const mono = { fontFamily: "'JetBrains Mono', monospace" };
+  const mono = { fontFamily: "'Vrikaan Mono', monospace" };
   const labelStyle = { fontSize: 11, color: T.mutedDark, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 };
   const valStyle = { fontSize: 13, color: T.white, wordBreak: "break-all", lineHeight: 1.5 };
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="Email Header Analyzer" description="Analyze raw email headers to trace email routes, verify SPF/DKIM/DMARC authentication, and detect spoofing with Vrikaan." path="/email-analyzer" />
       <Navbar />
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "120px 24px 80px" }}>
@@ -278,20 +278,20 @@ export default function EmailAnalyzer() {
         {/* Hero */}
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>Email Forensics</span>
-          <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Email Header <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Analyzer</span></h1>
+          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Email Header <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Analyzer</span></h1>
           <p style={{ color: T.muted, fontSize: 16, maxWidth: 540, margin: "0 auto", lineHeight: 1.7 }}>Paste raw email headers to trace the delivery route, verify authentication records, and detect spoofing attempts.</p>
         </div>
 
         {/* Input Card */}
         <div style={card}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-            <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 15, fontWeight: 600 }}>Raw Email Headers</span>
-            <button onClick={loadSample} style={{ padding: "6px 14px", background: "rgba(99,102,241,0.08)", border: `1px solid rgba(99,102,241,0.15)`, borderRadius: 8, color: T.accent, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", transition: "all 0.3s" }}>Load Sample Headers</button>
+            <span style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 15, fontWeight: 600 }}>Raw Email Headers</span>
+            <button onClick={loadSample} style={{ padding: "6px 14px", background: "rgba(99,102,241,0.08)", border: `1px solid rgba(99,102,241,0.15)`, borderRadius: 8, color: T.accent, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "'Vrikaan Sans', sans-serif", transition: "all 0.3s" }}>Load Sample Headers</button>
           </div>
           <textarea value={input} onChange={(e) => setInput(e.target.value)} placeholder="Paste full email headers here... (View Original / Show Original in your email client)" rows={12}
-            style={{ width: "100%", padding: "14px 18px", background: "rgba(0,0,0,0.3)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontFamily: "'JetBrains Mono', monospace", fontSize: 12, outline: "none", resize: "vertical", lineHeight: 1.6, transition: "border-color 0.3s", boxSizing: "border-box" }}
+            style={{ width: "100%", padding: "14px 18px", background: "rgba(0,0,0,0.3)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontFamily: "'Vrikaan Mono', monospace", fontSize: 12, outline: "none", resize: "vertical", lineHeight: 1.6, transition: "border-color 0.3s", boxSizing: "border-box" }}
             onFocus={(e) => (e.target.style.borderColor = "rgba(99,102,241,0.3)")} onBlur={(e) => (e.target.style.borderColor = T.border)} />
-          <button onClick={analyze} disabled={loading || !input.trim()} style={{ marginTop: 16, width: "100%", padding: "14px 0", background: loading ? T.mutedDark : T.accent, color: "#fff", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: loading || !input.trim() ? "default" : "pointer", fontFamily: "'Hanken Grotesk', sans-serif", transition: "all 0.3s", opacity: !input.trim() && !loading ? 0.5 : 1 }}>
+          <button onClick={analyze} disabled={loading || !input.trim()} style={{ marginTop: 16, width: "100%", padding: "14px 0", background: loading ? T.mutedDark : T.accent, color: "#fff", border: "none", borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: loading || !input.trim() ? "default" : "pointer", fontFamily: "'Vrikaan Sans', sans-serif", transition: "all 0.3s", opacity: !input.trim() && !loading ? 0.5 : 1 }}>
             {loading ? "Analyzing Headers..." : "Analyze Headers"}
           </button>
         </div>
@@ -312,14 +312,14 @@ export default function EmailAnalyzer() {
               <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
                 <div style={{ width: 56, height: 56, borderRadius: 14, border: `1.5px solid ${result.assessment.color}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, color: result.assessment.color, flexShrink: 0, background: `${result.assessment.color}08` }}>{result.assessment.icon}</div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, fontWeight: 700, color: result.assessment.color, marginBottom: 4 }}>{result.assessment.label}</div>
+                  <div style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, fontWeight: 700, color: result.assessment.color, marginBottom: 4 }}>{result.assessment.label}</div>
                   <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.6, margin: 0 }}>{result.assessment.desc}</p>
                 </div>
-                <button onClick={explainWithAI} disabled={aiLoading} style={{ padding: "8px 14px", background: "rgba(20,227,197,0.1)", border: "1px solid rgba(20,227,197,0.25)", borderRadius: 8, color: T.cyan, fontSize: 12, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", fontFamily: "'Hanken Grotesk'", flexShrink: 0, opacity: aiLoading ? 0.6 : 1 }}>{aiLoading ? "…" : "🤖 AI"}</button>
+                <button onClick={explainWithAI} disabled={aiLoading} style={{ padding: "8px 14px", background: "rgba(20,227,197,0.1)", border: "1px solid rgba(20,227,197,0.25)", borderRadius: 8, color: T.cyan, fontSize: 12, fontWeight: 600, cursor: aiLoading ? "default" : "pointer", fontFamily: "'Vrikaan Sans'", flexShrink: 0, opacity: aiLoading ? 0.6 : 1 }}>{aiLoading ? "…" : "🤖 AI"}</button>
               </div>
               {(aiExplanation || aiError) && (
                 <div style={{ marginTop: 16, padding: "14px 16px", background: "rgba(20,227,197,0.05)", border: "1px solid rgba(20,227,197,0.15)", borderRadius: 10 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: T.cyan, fontFamily: "'JetBrains Mono', monospace", letterSpacing: 0.5, marginBottom: 8 }}>🤖 AI ANALYSIS</div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: T.cyan, fontFamily: "'Vrikaan Mono', monospace", letterSpacing: 0.5, marginBottom: 8 }}>🤖 AI ANALYSIS</div>
                   {aiError ? <div style={{ fontSize: 13, color: T.red }}>{aiError}</div>
                     : <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.7 }}>{renderMarkdown(aiExplanation)}</div>}
                 </div>
@@ -336,7 +336,7 @@ export default function EmailAnalyzer() {
 
             {/* Basic Info */}
             <div style={card}>
-              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 20px" }}>Message Details</h3>
+              <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 20px" }}>Message Details</h3>
               <div className="ea-detail-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                 {[
                   { label: "From", val: result.from },
@@ -360,7 +360,7 @@ export default function EmailAnalyzer() {
             {/* Email Route */}
             {result.hops.length > 0 && (
               <div style={card}>
-                <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 24px" }}>Email Route ({result.hops.length} hops)</h3>
+                <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 24px" }}>Email Route ({result.hops.length} hops)</h3>
                 <div style={{ position: "relative", paddingLeft: 28 }}>
                   {/* Vertical line */}
                   <div style={{ position: "absolute", left: 9, top: 8, bottom: 8, width: 2, background: `linear-gradient(to bottom, ${T.accent}, ${T.cyan})`, borderRadius: 1 }} />
@@ -406,7 +406,7 @@ export default function EmailAnalyzer() {
             {/* Route Summary Bar */}
             {result.hops.length > 1 && (
               <div style={card}>
-                <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 20px" }}>Route Summary</h3>
+                <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 20px" }}>Route Summary</h3>
                 <div style={{ display: "flex", alignItems: "center", gap: 0, overflowX: "auto", padding: "8px 0" }}>
                   {result.hops.map((hop, i) => (
                     <div key={i} style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
@@ -428,7 +428,7 @@ export default function EmailAnalyzer() {
             {/* Suspicious Indicators */}
             {result.suspiciousFlags.length > 0 && (
               <div style={{ ...card, background: `${T.red}06`, border: `1px solid ${T.red}15` }}>
-                <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 20px", color: T.red }}>
+                <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 20px", color: T.red }}>
                   {"\u26A0"} Suspicious Indicators ({result.suspiciousFlags.length})
                 </h3>
                 {result.suspiciousFlags.map((flag, i) => (
@@ -458,7 +458,7 @@ export default function EmailAnalyzer() {
 
             {/* Tips */}
             <div style={card}>
-              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 18px" }}>How to Find Email Headers</h3>
+              <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 18px" }}>How to Find Email Headers</h3>
               <div className="ea-tips-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
                 {[
                   { client: "Gmail", steps: 'Open email > Three dots menu > "Show original"' },

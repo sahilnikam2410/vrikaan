@@ -53,7 +53,7 @@ export default function OtpDecay() {
   const urgencyLabel = remaining > 60 ? "GOOD WINDOW" : remaining > 30 ? "HURRY" : remaining > 10 ? "CRITICAL" : remaining > 0 ? "LAST CHANCE" : "WINDOW CLOSED";
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="OTP Decay — Just Shared an OTP? Block Card NOW"
         description="If you just shared an OTP with a scammer, you have ~90 seconds before they drain your account. This page gives you the bank helpline + 1-tap call buttons + checklist. India-first. Free."
@@ -73,7 +73,7 @@ export default function OtpDecay() {
             color: T.red, marginBottom: 14,
           }}>🚨 EMERGENCY · Every Second Counts</span>
           <h1 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Just shared an OTP?<br />
@@ -104,7 +104,7 @@ export default function OtpDecay() {
           <a href="tel:1930" style={{
             padding: "14px 26px", borderRadius: 12,
             background: T.red, color: "#fff", textDecoration: "none",
-            fontWeight: 800, fontSize: 17, fontFamily: "'Hanken Grotesk', sans-serif",
+            fontWeight: 800, fontSize: 17, fontFamily: "'Vrikaan Sans', sans-serif",
           }}>📞 Call 1930</a>
         </div>
 
@@ -122,7 +122,7 @@ export default function OtpDecay() {
               padding: "13px 26px", borderRadius: 12,
               background: T.cyan, color: T.bg, border: 0,
               fontWeight: 800, fontSize: 15, cursor: "pointer",
-              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontFamily: "'Vrikaan Sans', sans-serif",
             }}>⏱ Start 90-second countdown</button>
           </div>
         ) : (
@@ -136,7 +136,7 @@ export default function OtpDecay() {
               textTransform: "uppercase", marginBottom: 6,
             }}>{urgencyLabel}</div>
             <div style={{
-              fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 80, fontWeight: 800,
+              fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 80, fontWeight: 800,
               color: urgencyColor, lineHeight: 1, fontVariantNumeric: "tabular-nums",
             }}>{remaining}<span style={{ fontSize: 24 }}>s</span></div>
             <div style={{ color: T.muted, fontSize: 13, marginTop: 8 }}>
@@ -156,7 +156,7 @@ export default function OtpDecay() {
           background: T.card, border: `1px solid ${T.border}`, borderRadius: 14,
           padding: 20, marginBottom: 24,
         }}>
-          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
+          <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
             🗣 Exact words to say when bank picks up
           </h2>
           <div style={{
@@ -180,7 +180,7 @@ export default function OtpDecay() {
           background: T.card, border: `1px solid ${T.border}`, borderRadius: 14,
           padding: 20, marginBottom: 24,
         }}>
-          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
+          <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
             🏦 Get your bank's 24×7 helpline
           </h2>
           <input
@@ -238,7 +238,7 @@ export default function OtpDecay() {
           background: T.card, border: `1px solid ${T.border}`, borderRadius: 14,
           padding: 20, marginBottom: 24,
         }}>
-          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
+          <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
             ☎️ Backup helplines
           </h2>
           <div style={{ display: "grid", gap: 8 }}>
@@ -267,7 +267,7 @@ export default function OtpDecay() {
           padding: 18, borderRadius: 14, marginBottom: 24,
           background: `${T.red}0a`, border: `1px solid ${T.red}33`,
         }}>
-          <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, color: T.red, margin: "0 0 10px" }}>
+          <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 16, color: T.red, margin: "0 0 10px" }}>
             ❌ Don't waste time on these
           </h3>
           <ul style={{ margin: 0, paddingLeft: 18, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>
@@ -291,7 +291,7 @@ export default function OtpDecay() {
           <Link to="/scam-recovery" style={{
             display: "inline-block", padding: "12px 24px", borderRadius: 10,
             background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 14,
-            textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
+            textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
           }}>📋 Full Recovery Hotline →</Link>
         </div>
 

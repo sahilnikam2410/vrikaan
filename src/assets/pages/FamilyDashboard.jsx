@@ -283,7 +283,7 @@ export default function FamilyDashboard() {
   const canCreateFamily = userPlan === "family";
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="Family Dashboard — Manage Members, Kid Mode, Senior Mode"
         description="VRIKAAN Family — manage up to 5 members on one plan. Enable kid mode (safe browsing + scam-block) or senior mode (UPI guard + voice alerts) per member."
@@ -294,7 +294,7 @@ export default function FamilyDashboard() {
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "120px 24px 80px" }}>
         <div style={{ marginBottom: 36 }}>
           <h1 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontFamily: "'Vrikaan Sans', sans-serif",
             fontSize: "clamp(28px, 3.5vw, 40px)", fontWeight: 700,
             margin: "0 0 8px", letterSpacing: "-0.02em",
             background: `linear-gradient(135deg, ${T.pink}, ${T.accent})`,
@@ -497,7 +497,7 @@ export default function FamilyDashboard() {
                     padding: "8px 16px", borderRadius: 8, border: "none",
                     background: T.yellow, color: "#000",
                     fontSize: 12, fontWeight: 700, cursor: busy ? "wait" : "pointer",
-                    fontFamily: "'Hanken Grotesk', sans-serif",
+                    fontFamily: "'Vrikaan Sans', sans-serif",
                   }}
                 >
                   {busy ? "Opening Cashfree…" : "+ Add seat (₹49/mo)"}

@@ -121,11 +121,11 @@ export default function Team() {
   const memberList = team ? Object.entries(team.members || {}) : [];
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="Team — VRIKAAN" description="Manage your team members and invitations." path="/team" />
       <Navbar />
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "120px 20px 80px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, margin: 0, marginBottom: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>Team</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, margin: 0, marginBottom: 8, fontFamily: "'Vrikaan Sans', sans-serif" }}>Team</h1>
         <p style={{ color: T.muted, fontSize: 14, marginTop: 0, marginBottom: 28 }}>
           Add team members so they can collaborate on your VRIKAAN account. Members get their own login but share visibility on team-level data.
         </p>

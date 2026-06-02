@@ -94,7 +94,7 @@ const S = {
     justifyContent: "center",
     position: "relative",
     overflow: "hidden",
-    fontFamily: "'Hanken Grotesk', sans-serif",
+    fontFamily: "'Vrikaan Sans', sans-serif",
     padding: "80px 16px 40px",
   },
   gridBg: {
@@ -127,11 +127,11 @@ const S = {
     width: 48, height: 48, margin: "0 auto 12px",
     background: "linear-gradient(135deg, #14e3c5, #6366f1)", borderRadius: 12,
     display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: 22, fontWeight: 700, color: "#fff", fontFamily: "'Hanken Grotesk', sans-serif",
+    fontSize: 22, fontWeight: 700, color: "#fff", fontFamily: "'Vrikaan Sans', sans-serif",
   },
   title: {
     fontSize: 28, fontWeight: 700, color: "#14e3c5", marginBottom: 4,
-    fontFamily: "'Hanken Grotesk', sans-serif", textAlign: "center",
+    fontFamily: "'Vrikaan Sans', sans-serif", textAlign: "center",
   },
   subtitle: { fontSize: 14, color: "#94a3b8", marginBottom: 28, textAlign: "center" },
 
@@ -142,14 +142,14 @@ const S = {
   },
   tabActive: {
     flex: 1, padding: "10px 0", textAlign: "center", fontSize: 14, fontWeight: 600,
-    fontFamily: "'Hanken Grotesk', sans-serif", color: "#030712",
+    fontFamily: "'Vrikaan Sans', sans-serif", color: "#030712",
     background: "linear-gradient(135deg, #14e3c5, #0ea5e9)", border: "none", borderRadius: 8,
     cursor: "pointer", transition: "all 0.25s ease", display: "flex", alignItems: "center",
     justifyContent: "center", gap: 8,
   },
   tabInactive: {
     flex: 1, padding: "10px 0", textAlign: "center", fontSize: 14, fontWeight: 600,
-    fontFamily: "'Hanken Grotesk', sans-serif", color: "#94a3b8",
+    fontFamily: "'Vrikaan Sans', sans-serif", color: "#94a3b8",
     background: "transparent", border: "none", borderRadius: 8,
     cursor: "pointer", transition: "all 0.25s ease", display: "flex", alignItems: "center",
     justifyContent: "center", gap: 8,
@@ -161,13 +161,13 @@ const S = {
     width: "100%", padding: "12px 16px", background: "rgba(15,23,42,0.6)",
     border: "1px solid rgba(148,163,184,0.2)", borderRadius: 10, color: "#f1f5f9",
     fontSize: 14, outline: "none", marginBottom: 16, transition: "border-color 0.2s, box-shadow 0.2s",
-    boxSizing: "border-box", fontFamily: "'Hanken Grotesk', sans-serif",
+    boxSizing: "border-box", fontFamily: "'Vrikaan Sans', sans-serif",
   },
   inputWrap: { position: "relative", marginBottom: 16 },
   showBtn: {
     position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
     background: "none", border: "none", color: "#14e3c5", fontSize: 12,
-    cursor: "pointer", fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif",
+    cursor: "pointer", fontWeight: 600, fontFamily: "'Vrikaan Sans', sans-serif",
   },
   row: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 },
   remember: { display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#94a3b8", cursor: "pointer" },
@@ -179,14 +179,14 @@ const S = {
     width: "100%", padding: "14px", background: "linear-gradient(135deg, #14e3c5, #0ea5e9)",
     border: "none", borderRadius: 10, color: "#030712", fontSize: 15, fontWeight: 700,
     cursor: "pointer", transition: "opacity 0.2s, transform 0.15s",
-    fontFamily: "'Hanken Grotesk', sans-serif", letterSpacing: 0.5,
+    fontFamily: "'Vrikaan Sans', sans-serif", letterSpacing: 0.5,
     display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
   },
   btnGreen: {
     width: "100%", padding: "14px", background: "linear-gradient(135deg, #22c55e, #14b8a6)",
     border: "none", borderRadius: 10, color: "#030712", fontSize: 15, fontWeight: 700,
     cursor: "pointer", transition: "opacity 0.2s, transform 0.15s",
-    fontFamily: "'Hanken Grotesk', sans-serif", letterSpacing: 0.5,
+    fontFamily: "'Vrikaan Sans', sans-serif", letterSpacing: 0.5,
     display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
   },
 
@@ -200,19 +200,19 @@ const S = {
     padding: "11px 16px", background: "#ffffff", border: "none", borderRadius: 10,
     fontSize: 13, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center",
     justifyContent: "center", gap: 8, transition: "opacity 0.2s, transform 0.15s",
-    fontFamily: "'Hanken Grotesk', sans-serif", color: "#333333",
+    fontFamily: "'Vrikaan Sans', sans-serif", color: "#333333",
   },
   socialGithub: {
     padding: "11px 16px", background: "#333333", border: "none", borderRadius: 10,
     color: "#ffffff", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "flex",
     alignItems: "center", justifyContent: "center", gap: 8,
-    transition: "opacity 0.2s, transform 0.15s", fontFamily: "'Hanken Grotesk', sans-serif",
+    transition: "opacity 0.2s, transform 0.15s", fontFamily: "'Vrikaan Sans', sans-serif",
   },
   socialFacebook: {
     width: "100%", padding: "11px 16px", background: "#1877F2", border: "none", borderRadius: 10,
     color: "#ffffff", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "flex",
     alignItems: "center", justifyContent: "center", gap: 8,
-    transition: "opacity 0.2s, transform 0.15s", fontFamily: "'Hanken Grotesk', sans-serif",
+    transition: "opacity 0.2s, transform 0.15s", fontFamily: "'Vrikaan Sans', sans-serif",
     marginBottom: 10,
   },
 
@@ -221,13 +221,13 @@ const S = {
   countrySelect: {
     width: 120, padding: "12px 8px", background: "rgba(15,23,42,0.6)",
     border: "1px solid rgba(148,163,184,0.2)", borderRadius: 10, color: "#f1f5f9",
-    fontSize: 14, outline: "none", fontFamily: "'JetBrains Mono', monospace",
+    fontSize: 14, outline: "none", fontFamily: "'Vrikaan Mono', monospace",
     cursor: "pointer", flexShrink: 0, transition: "border-color 0.2s, box-shadow 0.2s",
   },
   otpContainer: { display: "flex", gap: 8, justifyContent: "center", marginBottom: 16 },
   otpInput: {
     width: 48, height: 56, textAlign: "center", fontSize: 22,
-    fontFamily: "'JetBrains Mono', monospace", fontWeight: 700,
+    fontFamily: "'Vrikaan Mono', monospace", fontWeight: 700,
     background: "rgba(15,23,42,0.6)", border: "1px solid rgba(148,163,184,0.2)",
     borderRadius: 10, color: "#14e3c5", outline: "none",
     transition: "border-color 0.2s, box-shadow 0.2s",
@@ -235,7 +235,7 @@ const S = {
   changePhoneBtn: {
     width: "100%", marginTop: 12, padding: "10px", background: "transparent",
     border: "1px solid rgba(148,163,184,0.2)", borderRadius: 10, color: "#94a3b8",
-    fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif",
+    fontSize: 13, cursor: "pointer", fontFamily: "'Vrikaan Sans', sans-serif",
     transition: "border-color 0.2s, color 0.2s",
   },
 
@@ -608,7 +608,7 @@ export default function Login() {
             padding: "6px 14px", borderRadius: 20,
             background: "rgba(20,227,197,0.08)", border: "1px solid rgba(20,227,197,0.2)",
             fontSize: 12, fontWeight: 600, color: "#14e3c5",
-            fontFamily: "'Hanken Grotesk', sans-serif", letterSpacing: 0.3,
+            fontFamily: "'Vrikaan Sans', sans-serif", letterSpacing: 0.3,
           }}>
             <span style={{ fontSize: 14 }}>{"\u2713"}</span>
             Built in India · Free tier forever
@@ -639,7 +639,7 @@ export default function Login() {
               value={totpInput}
               onChange={(e) => setTotpInput(e.target.value.toUpperCase().replace(/\s/g, ""))}
               placeholder="123 456"
-              style={{ padding: "14px 18px", borderRadius: 10, fontSize: 20, textAlign: "center", letterSpacing: 6, background: "rgba(15,23,42,0.5)", border: "1px solid rgba(99,102,241,0.4)", color: "#fff", fontFamily: "'JetBrains Mono', monospace" }}
+              style={{ padding: "14px 18px", borderRadius: 10, fontSize: 20, textAlign: "center", letterSpacing: 6, background: "rgba(15,23,42,0.5)", border: "1px solid rgba(99,102,241,0.4)", color: "#fff", fontFamily: "'Vrikaan Mono', monospace" }}
             />
             <button
               type="button"
@@ -723,7 +723,7 @@ export default function Login() {
                 width: "100%", marginTop: 8, padding: "10px 14px", borderRadius: 8,
                 border: "1px solid rgba(99,102,241,0.4)", background: "transparent",
                 color: "#a5b4fc", fontSize: 13, fontWeight: 600, cursor: magicSending || !email ? "not-allowed" : "pointer",
-                fontFamily: "'Hanken Grotesk'",
+                fontFamily: "'Vrikaan Sans'",
               }}
             >
               {magicSent ? "✓ Magic link sent" : magicSending ? "Sending..." : "Email me a sign-in link instead"}

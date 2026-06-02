@@ -25,7 +25,7 @@ export default function SeniorModeBanner({ tone = "warn" }) {
       border: `1.5px solid ${colors.border}`,
       borderRadius: 14,
       display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap",
-      fontFamily: "'Hanken Grotesk', sans-serif",
+      fontFamily: "'Vrikaan Sans', sans-serif",
     }}>
       <span style={{ fontSize: 28, flexShrink: 0 }}>🛡</span>
       <div style={{ flex: 1, minWidth: 240 }}>
@@ -44,7 +44,7 @@ export default function SeniorModeBanner({ tone = "warn" }) {
         padding: "8px 16px", borderRadius: 8,
         background: colors.border, color: "#020617",
         textDecoration: "none", fontSize: 12, fontWeight: 700,
-        fontFamily: "'Hanken Grotesk', sans-serif",
+        fontFamily: "'Vrikaan Sans', sans-serif",
       }}>
         Get help now
       </a>

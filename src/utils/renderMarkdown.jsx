@@ -28,7 +28,7 @@ function renderInline(text) {
             background: "rgba(20,227,197,0.08)",
             padding: "1px 5px",
             borderRadius: 4,
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: "'Vrikaan Mono', monospace",
             fontSize: "0.9em",
           }}
         >

@@ -303,7 +303,7 @@ export default function Careers() {
   const jobSchemas = useMemo(() => OPENINGS.map(buildJobPostingSchema), []);
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="Careers"
         description="Open roles and internships at VRIKAAN — India's AI-powered cyber defense platform. SOC analysts, full-stack engineers, ML engineers, content marketers wanted."

@@ -44,7 +44,7 @@ export default function ThreatDirectory() {
   }, [query, category]);
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="Cybersecurity Threat Directory"
         description="A plain-English directory of the most common cybersecurity threats — phishing, ransomware, SIM swapping, romance scams and more. Signs, examples, and prevention for each."
@@ -59,7 +59,7 @@ export default function ThreatDirectory() {
 
       <main style={{ maxWidth: 1100, margin: "0 auto", padding: "120px 24px 80px" }}>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <div style={{ fontSize: 12, color: T.cyan, fontFamily: "'JetBrains Mono', monospace", letterSpacing: 2, marginBottom: 12 }}>
+          <div style={{ fontSize: 12, color: T.cyan, fontFamily: "'Vrikaan Mono', monospace", letterSpacing: 2, marginBottom: 12 }}>
             THREAT DIRECTORY
           </div>
           <h1 style={{ fontSize: 44, fontWeight: 800, letterSpacing: "-0.02em", margin: "0 0 16px" }}>
@@ -149,7 +149,7 @@ export default function ThreatDirectory() {
                     style={{
                       fontSize: 10,
                       color: T.mutedDark,
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontFamily: "'Vrikaan Mono', monospace",
                       letterSpacing: 1,
                       textTransform: "uppercase",
                     }}
@@ -160,7 +160,7 @@ export default function ThreatDirectory() {
                     style={{
                       fontSize: 10,
                       color: SEVERITY_COLOR[threat.severity],
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontFamily: "'Vrikaan Mono', monospace",
                       fontWeight: 700,
                       padding: "3px 8px",
                       background: `${SEVERITY_COLOR[threat.severity]}14`,

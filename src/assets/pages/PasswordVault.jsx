@@ -8,8 +8,8 @@ const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 
 const sty = {
   card: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24, backdropFilter: "blur(10px)" },
-  btn: (bg, clr) => ({ padding: "10px 20px", background: bg, border: "none", borderRadius: 8, color: clr || "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "'Hanken Grotesk'", transition: "all 0.2s" }),
-  input: { width: "100%", padding: "10px 14px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 13, outline: "none", boxSizing: "border-box", fontFamily: "'Hanken Grotesk'" },
+  btn: (bg, clr) => ({ padding: "10px 20px", background: bg, border: "none", borderRadius: 8, color: clr || "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "'Vrikaan Sans'", transition: "all 0.2s" }),
+  input: { width: "100%", padding: "10px 14px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 13, outline: "none", boxSizing: "border-box", fontFamily: "'Vrikaan Sans'" },
 };
 
 const STORAGE_KEY = "vrikaan_vault";
@@ -107,7 +107,7 @@ const StrengthBar = ({ score, color, label }) => (
     <div style={{ flex: 1, height: 6, borderRadius: 3, background: "rgba(148,163,184,0.1)" }}>
       <div style={{ width: `${score * 100}%`, height: "100%", borderRadius: 3, background: color, transition: "all 0.4s ease" }} />
     </div>
-    <span style={{ fontSize: 12, fontWeight: 600, color, minWidth: 70, fontFamily: "'Hanken Grotesk'" }}>{label}</span>
+    <span style={{ fontSize: 12, fontWeight: 600, color, minWidth: 70, fontFamily: "'Vrikaan Sans'" }}>{label}</span>
   </div>
 );
 
@@ -120,7 +120,7 @@ const CircularGauge = ({ value, size = 140 }) => {
     <svg width={size} height={size} style={{ transform: "rotate(-90deg)" }}>
       <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="rgba(148,163,184,0.1)" strokeWidth={8} />
       <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={8} strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={offset} style={{ transition: "stroke-dashoffset 0.8s ease" }} />
-      <text x={size / 2} y={size / 2} textAnchor="middle" dominantBaseline="central" fill={T.white} fontSize={28} fontWeight={700} fontFamily="'Hanken Grotesk'" style={{ transform: "rotate(90deg)", transformOrigin: "center" }}>{value}</text>
+      <text x={size / 2} y={size / 2} textAnchor="middle" dominantBaseline="central" fill={T.white} fontSize={28} fontWeight={700} fontFamily="'Vrikaan Sans'" style={{ transform: "rotate(90deg)", transformOrigin: "center" }}>{value}</text>
     </svg>
   );
 };
@@ -129,8 +129,8 @@ const StatCard = ({ icon, label, value, color }) => (
   <div style={{ ...sty.card, display: "flex", alignItems: "center", gap: 16, flex: 1, minWidth: 180 }}>
     <div style={{ width: 44, height: 44, borderRadius: 10, background: `${color}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>{icon}</div>
     <div>
-      <div style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'" }}>{value}</div>
-      <div style={{ fontSize: 12, color: T.muted, fontFamily: "'Hanken Grotesk'" }}>{label}</div>
+      <div style={{ fontSize: 22, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'" }}>{value}</div>
+      <div style={{ fontSize: 12, color: T.muted, fontFamily: "'Vrikaan Sans'" }}>{label}</div>
     </div>
   </div>
 );
@@ -259,31 +259,31 @@ export default function PasswordVault() {
         {/* ── Hero ── */}
         <section style={{ textAlign: "center", padding: "60px clamp(24px,5vw,80px) 40px" }}>
           <div style={{ width: 64, height: 64, borderRadius: 16, background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 28, marginBottom: 20 }}>{"\u{1F512}"}</div>
-          <h1 style={{ fontFamily: "'Hanken Grotesk'", fontSize: "clamp(32px,5vw,48px)", fontWeight: 700, color: T.white, margin: "0 0 12px" }}>Password Vault</h1>
-          <p style={{ fontFamily: "'Hanken Grotesk'", fontSize: 17, color: T.muted, maxWidth: 520, margin: "0 auto" }}>Generate, store, and manage your passwords securely</p>
+          <h1 style={{ fontFamily: "'Vrikaan Sans'", fontSize: "clamp(32px,5vw,48px)", fontWeight: 700, color: T.white, margin: "0 0 12px" }}>Password Vault</h1>
+          <p style={{ fontFamily: "'Vrikaan Sans'", fontSize: 17, color: T.muted, maxWidth: 520, margin: "0 auto" }}>Generate, store, and manage your passwords securely</p>
         </section>
 
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(24px,5vw,80px) 80px" }}>
 
           {/* ── Password Generator ── */}
           <section style={{ ...sty.card, marginBottom: 32 }}>
-            <h2 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 20, fontWeight: 700, color: T.white, margin: "0 0 20px", display: "flex", alignItems: "center", gap: 10 }}>{"\u2699\uFE0F"} Password Generator</h2>
+            <h2 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 20, fontWeight: 700, color: T.white, margin: "0 0 20px", display: "flex", alignItems: "center", gap: 10 }}>{"\u2699\uFE0F"} Password Generator</h2>
 
             {/* Generated display */}
             <div style={{ display: "flex", alignItems: "center", gap: 12, background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 10, padding: "12px 16px", marginBottom: 20 }}>
-              <code style={{ flex: 1, fontFamily: "'JetBrains Mono'", fontSize: 16, color: T.cyan, wordBreak: "break-all", letterSpacing: 1 }}>{genPw}</code>
+              <code style={{ flex: 1, fontFamily: "'Vrikaan Mono'", fontSize: 16, color: T.cyan, wordBreak: "break-all", letterSpacing: 1 }}>{genPw}</code>
               <button onClick={() => copyToClip(genPw, "gen")} style={{ ...sty.btn(copied === "gen" ? T.green : T.accent), padding: "8px 14px", fontSize: 12 }}>{copied === "gen" ? "\u2713 Copied" : "\u{1F4CB} Copy"}</button>
             </div>
 
             {/* Strength meter */}
             <StrengthBar score={genStr.score} color={genStr.color} label={genStr.label} />
-            <div style={{ fontSize: 12, color: T.muted, marginTop: 8, fontFamily: "'Hanken Grotesk'" }}>Estimated crack time: <span style={{ color: genStr.color, fontWeight: 600 }}>{estimateCrackTime(genPw)}</span></div>
+            <div style={{ fontSize: 12, color: T.muted, marginTop: 8, fontFamily: "'Vrikaan Sans'" }}>Estimated crack time: <span style={{ color: genStr.color, fontWeight: 600 }}>{estimateCrackTime(genPw)}</span></div>
 
             {/* Length slider */}
             <div style={{ marginTop: 20 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                <label style={{ fontSize: 13, color: T.muted, fontFamily: "'Hanken Grotesk'" }}>Length</label>
-                <span style={{ fontSize: 14, fontWeight: 700, color: T.white, fontFamily: "'JetBrains Mono'" }}>{genLen}</span>
+                <label style={{ fontSize: 13, color: T.muted, fontFamily: "'Vrikaan Sans'" }}>Length</label>
+                <span style={{ fontSize: 14, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Mono'" }}>{genLen}</span>
               </div>
               <input type="range" min={8} max={64} value={genLen} onChange={e => setGenLen(+e.target.value)}
                 style={{ width: "100%", accentColor: T.cyan, cursor: "pointer" }} />
@@ -292,7 +292,7 @@ export default function PasswordVault() {
             {/* Options */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: 16, marginTop: 16 }}>
               {[["upper", "Uppercase"], ["lower", "Lowercase"], ["numbers", "Numbers"], ["symbols", "Symbols"]].map(([k, label]) => (
-                <label key={k} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: T.white, fontFamily: "'Hanken Grotesk'" }}>
+                <label key={k} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13, color: T.white, fontFamily: "'Vrikaan Sans'" }}>
                   <div onClick={() => setGenOpts(p => ({ ...p, [k]: !p[k] }))}
                     style={{ width: 20, height: 20, borderRadius: 4, border: `2px solid ${genOpts[k] ? T.cyan : T.mutedDark}`, background: genOpts[k] ? T.cyan : "transparent", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.2s", cursor: "pointer" }}>
                     {genOpts[k] && <span style={{ color: T.bg, fontSize: 13, fontWeight: 700 }}>{"\u2713"}</span>}
@@ -311,8 +311,8 @@ export default function PasswordVault() {
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                 <div style={{ width: 44, height: 44, borderRadius: 10, background: `${T.red}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>{"\u26A0\uFE0F"}</div>
                 <div>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: T.red, fontFamily: "'Hanken Grotesk'" }}>{breachedPws} password{breachedPws > 1 ? "s" : ""} found in data breaches</div>
-                  <div style={{ fontSize: 13, color: T.muted, fontFamily: "'Hanken Grotesk'" }}>These passwords appear in known breach databases. Change them immediately.</div>
+                  <div style={{ fontSize: 16, fontWeight: 700, color: T.red, fontFamily: "'Vrikaan Sans'" }}>{breachedPws} password{breachedPws > 1 ? "s" : ""} found in data breaches</div>
+                  <div style={{ fontSize: 13, color: T.muted, fontFamily: "'Vrikaan Sans'" }}>These passwords appear in known breach databases. Change them immediately.</div>
                 </div>
               </div>
             </div>
@@ -320,11 +320,11 @@ export default function PasswordVault() {
 
           {/* ── Health Dashboard ── */}
           <section style={{ ...sty.card, marginBottom: 32 }}>
-            <h2 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 20, fontWeight: 700, color: T.white, margin: "0 0 20px", display: "flex", alignItems: "center", gap: 10 }}>{"\u{1F4CA}"} Password Health</h2>
+            <h2 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 20, fontWeight: 700, color: T.white, margin: "0 0 20px", display: "flex", alignItems: "center", gap: 10 }}>{"\u{1F4CA}"} Password Health</h2>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 24, alignItems: "center" }}>
               <div style={{ textAlign: "center" }}>
                 <CircularGauge value={healthScore} />
-                <div style={{ fontSize: 13, color: T.muted, marginTop: 8, fontFamily: "'Hanken Grotesk'" }}>Overall Health</div>
+                <div style={{ fontSize: 13, color: T.muted, marginTop: 8, fontFamily: "'Vrikaan Sans'" }}>Overall Health</div>
               </div>
               <div style={{ flex: 1, display: "flex", flexWrap: "wrap", gap: 12, minWidth: 300 }}>
                 <StatCard icon={"\u{1F511}"} label="Total Passwords" value={totalPws} color={T.cyan} />
@@ -344,7 +344,7 @@ export default function PasswordVault() {
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
               {CATEGORIES.map(c => (
                 <button key={c} onClick={() => setCategory(c)}
-                  style={{ padding: "7px 14px", borderRadius: 8, border: `1px solid ${category === c ? T.cyan : T.border}`, background: category === c ? `${T.cyan}15` : "transparent", color: category === c ? T.cyan : T.muted, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "'Hanken Grotesk'", transition: "all 0.2s" }}>{c}</button>
+                  style={{ padding: "7px 14px", borderRadius: 8, border: `1px solid ${category === c ? T.cyan : T.border}`, background: category === c ? `${T.cyan}15` : "transparent", color: category === c ? T.cyan : T.muted, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "'Vrikaan Sans'", transition: "all 0.2s" }}>{c}</button>
               ))}
             </div>
             <select value={sortBy} onChange={e => setSortBy(e.target.value)}
@@ -359,7 +359,7 @@ export default function PasswordVault() {
             {filtered.length === 0 && (
               <div style={{ ...sty.card, textAlign: "center", padding: 48 }}>
                 <div style={{ fontSize: 40, marginBottom: 12 }}>{"\u{1F50D}"}</div>
-                <div style={{ fontSize: 16, color: T.muted, fontFamily: "'Hanken Grotesk'" }}>No passwords found</div>
+                <div style={{ fontSize: 16, color: T.muted, fontFamily: "'Vrikaan Sans'" }}>No passwords found</div>
               </div>
             )}
             {filtered.map(entry => {
@@ -377,19 +377,19 @@ export default function PasswordVault() {
                   {/* Info */}
                   <div style={{ flex: 1, minWidth: 180 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                      <span style={{ fontSize: 15, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'" }}>{entry.site}</span>
+                      <span style={{ fontSize: 15, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'" }}>{entry.site}</span>
                       <Badge color={str.color}>{str.label}</Badge>
                       {breached && <Badge color={T.red}>Breached</Badge>}
                       {reused && <Badge color={T.yellow}>Reused</Badge>}
                     </div>
-                    <div style={{ fontSize: 12, color: T.mutedDark, fontFamily: "'Hanken Grotesk'", marginTop: 2 }}>
+                    <div style={{ fontSize: 12, color: T.mutedDark, fontFamily: "'Vrikaan Sans'", marginTop: 2 }}>
                       {entry.url} &middot; {entry.username.substring(0, 3)}{"***"} &middot; Updated {daysSince(entry.updatedAt)}d ago
                     </div>
                   </div>
 
                   {/* Password */}
                   <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 200 }}>
-                    <code style={{ fontFamily: "'JetBrains Mono'", fontSize: 13, color: isVisible ? T.white : T.mutedDark, letterSpacing: isVisible ? 0.5 : 2, minWidth: 120 }}>
+                    <code style={{ fontFamily: "'Vrikaan Mono'", fontSize: 13, color: isVisible ? T.white : T.mutedDark, letterSpacing: isVisible ? 0.5 : 2, minWidth: 120 }}>
                       {isVisible ? entry.password : "\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"}
                     </code>
                     <button onClick={() => togglePw(entry.id)} title={isVisible ? "Hide" : "Show"}
@@ -415,22 +415,22 @@ export default function PasswordVault() {
 
         {/* ── Add/Edit Modal ── */}
         <Modal open={showModal} onClose={() => setShowModal(false)}>
-          <h3 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 20, fontWeight: 700, color: T.white, margin: "0 0 24px" }}>{editId ? "Edit Password" : "Add New Password"}</h3>
+          <h3 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 20, fontWeight: 700, color: T.white, margin: "0 0 24px" }}>{editId ? "Edit Password" : "Add New Password"}</h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             <div>
-              <label style={{ fontSize: 12, color: T.muted, fontFamily: "'Hanken Grotesk'", display: "block", marginBottom: 6 }}>Site Name *</label>
+              <label style={{ fontSize: 12, color: T.muted, fontFamily: "'Vrikaan Sans'", display: "block", marginBottom: 6 }}>Site Name *</label>
               <input value={form.site} onChange={e => setForm(p => ({ ...p, site: e.target.value }))} style={sty.input} placeholder="e.g. Google" />
             </div>
             <div>
-              <label style={{ fontSize: 12, color: T.muted, fontFamily: "'Hanken Grotesk'", display: "block", marginBottom: 6 }}>URL</label>
+              <label style={{ fontSize: 12, color: T.muted, fontFamily: "'Vrikaan Sans'", display: "block", marginBottom: 6 }}>URL</label>
               <input value={form.url} onChange={e => setForm(p => ({ ...p, url: e.target.value }))} style={sty.input} placeholder="e.g. google.com" />
             </div>
             <div>
-              <label style={{ fontSize: 12, color: T.muted, fontFamily: "'Hanken Grotesk'", display: "block", marginBottom: 6 }}>Username</label>
+              <label style={{ fontSize: 12, color: T.muted, fontFamily: "'Vrikaan Sans'", display: "block", marginBottom: 6 }}>Username</label>
               <input value={form.username} onChange={e => setForm(p => ({ ...p, username: e.target.value }))} style={sty.input} placeholder="e.g. john@email.com" />
             </div>
             <div>
-              <label style={{ fontSize: 12, color: T.muted, fontFamily: "'Hanken Grotesk'", display: "block", marginBottom: 6 }}>Password *</label>
+              <label style={{ fontSize: 12, color: T.muted, fontFamily: "'Vrikaan Sans'", display: "block", marginBottom: 6 }}>Password *</label>
               <div style={{ display: "flex", gap: 8 }}>
                 <input value={form.password} onChange={e => setForm(p => ({ ...p, password: e.target.value }))} style={{ ...sty.input, flex: 1 }} placeholder="Enter password" />
                 <button onClick={() => setForm(p => ({ ...p, password: generatePassword(genLen, genOpts) }))} style={{ ...sty.btn(T.accent), padding: "8px 14px", fontSize: 12, whiteSpace: "nowrap" }}>Generate</button>
@@ -442,13 +442,13 @@ export default function PasswordVault() {
               )}
             </div>
             <div>
-              <label style={{ fontSize: 12, color: T.muted, fontFamily: "'Hanken Grotesk'", display: "block", marginBottom: 6 }}>Category</label>
+              <label style={{ fontSize: 12, color: T.muted, fontFamily: "'Vrikaan Sans'", display: "block", marginBottom: 6 }}>Category</label>
               <select value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))} style={{ ...sty.input, cursor: "pointer" }}>
                 {CATEGORIES.filter(c => c !== "All").map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
             <div>
-              <label style={{ fontSize: 12, color: T.muted, fontFamily: "'Hanken Grotesk'", display: "block", marginBottom: 6 }}>Notes</label>
+              <label style={{ fontSize: 12, color: T.muted, fontFamily: "'Vrikaan Sans'", display: "block", marginBottom: 6 }}>Notes</label>
               <textarea value={form.notes} onChange={e => setForm(p => ({ ...p, notes: e.target.value }))} style={{ ...sty.input, minHeight: 60, resize: "vertical" }} placeholder="Optional notes..." />
             </div>
             <button onClick={saveEntry} style={{ ...sty.btn(`linear-gradient(135deg, ${T.cyan}, ${T.accent})`), justifyContent: "center", marginTop: 8, padding: "12px 20px" }}>

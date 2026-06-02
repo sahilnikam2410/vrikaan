@@ -42,7 +42,7 @@ export default function FestivalFraud() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="Festival Fraud Forecast — India"
         description="Diwali / Holi / Rakhi / wedding season scam alerts — tailored to India. See top scam patterns + defense actions 7 days before each festival."
@@ -61,7 +61,7 @@ export default function FestivalFraud() {
             color: T.yellow, marginBottom: 14,
           }}>📅 India · Festival Fraud Calendar</span>
           <h1 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Scams spike before every<br />
@@ -138,7 +138,7 @@ export default function FestivalFraud() {
             }}>{selected.emoji}</div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <h2 style={{
-                margin: 0, fontFamily: "'Hanken Grotesk', sans-serif",
+                margin: 0, fontFamily: "'Vrikaan Sans', sans-serif",
                 fontSize: 24, fontWeight: 800, color: T.white,
               }}>{selected.name} <span style={{ color: T.muted, fontSize: 16, fontWeight: 500 }}>{selected.nameHi}</span></h2>
               <div style={{ color: T.muted, fontSize: 13, marginTop: 4 }}>
@@ -160,7 +160,7 @@ export default function FestivalFraud() {
           {/* Scams + defenses */}
           <div style={{ padding: 26 }}>
             <h3 style={{
-              fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white,
+              fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white,
               margin: "0 0 18px",
             }}>Top {selected.topScams.length} scams to watch this {selected.name}</h3>
             <div style={{ display: "grid", gap: 14 }}>
@@ -222,7 +222,7 @@ export default function FestivalFraud() {
                 padding: "11px 20px", borderRadius: 10,
                 background: "#25D366", color: "#fff",
                 border: 0, fontWeight: 800, fontSize: 14, cursor: "pointer",
-                fontFamily: "'Hanken Grotesk', sans-serif",
+                fontFamily: "'Vrikaan Sans', sans-serif",
                 display: "inline-flex", alignItems: "center", gap: 6,
               }}>📲 Share on WhatsApp</button>
               {shared && (
@@ -235,7 +235,7 @@ export default function FestivalFraud() {
         {/* All festivals at a glance */}
         <section style={{ marginTop: 50 }}>
           <h2 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 18px",
+            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, color: T.white, margin: "0 0 18px",
           }}>Full calendar — next 12 months</h2>
           <div style={{
             background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, overflow: "hidden",
@@ -281,7 +281,7 @@ export default function FestivalFraud() {
           background: `linear-gradient(135deg, ${T.accent}1a, ${T.cyan}1a)`,
           border: `1px solid ${T.cyan}33`,
         }}>
-          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 8px" }}>
+          <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, color: T.white, margin: "0 0 8px" }}>
             Got a suspicious festival message right now?
           </h2>
           <p style={{ color: T.muted, fontSize: 14, margin: "0 0 16px" }}>
@@ -291,7 +291,7 @@ export default function FestivalFraud() {
             display: "inline-block",
             padding: "12px 26px", borderRadius: 12,
             background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 15,
-            textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
+            textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
           }}>Check a scam message →</Link>
         </section>
 

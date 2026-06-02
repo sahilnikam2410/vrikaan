@@ -224,7 +224,7 @@ export default function Pricing() {
   }
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="Pricing — Free, Standard, Advanced & Enterprise Plans"
         description="VRIKAAN pricing: Free plan with daily usage limits, Standard (₹49/mo), Advanced (₹99/mo), Enterprise (₹199/mo). 30-day money-back guarantee. UPI/cards accepted."
@@ -261,7 +261,7 @@ export default function Pricing() {
             Simple Pricing
           </span>
           <h1 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontFamily: "'Vrikaan Sans', sans-serif",
             fontSize: "clamp(36px, 4vw, 52px)", fontWeight: 700,
             letterSpacing: "-0.03em", margin: "0 0 20px",
           }}>
@@ -366,7 +366,7 @@ export default function Pricing() {
           }}>
             <div style={{ flexShrink: 0, width: 56, height: 56, borderRadius: 14, background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28 }}>🎁</div>
             <div style={{ flex: 1, minWidth: 200 }}>
-              <div style={{ fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>Try Advanced free for 7 days</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>Try Advanced free for 7 days</div>
               <div style={{ fontSize: 13, color: T.muted, marginTop: 2 }}>No credit card. No auto-charge. Auto-reverts to Free after 7 days.</div>
               {trialMsg && <div style={{ fontSize: 12, color: trialMsg.startsWith("✓") ? T.green : "#ef4444", marginTop: 6 }}>{trialMsg}</div>}
             </div>
@@ -377,7 +377,7 @@ export default function Pricing() {
                 padding: "12px 24px", borderRadius: 10, border: "none",
                 background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                 color: "#fff", fontSize: 14, fontWeight: 700, cursor: trialBusy ? "wait" : "pointer",
-                fontFamily: "'Hanken Grotesk', sans-serif",
+                fontFamily: "'Vrikaan Sans', sans-serif",
                 whiteSpace: "nowrap", opacity: trialBusy ? 0.6 : 1,
                 boxShadow: "0 4px 16px rgba(99,102,241,0.25)",
               }}
@@ -462,7 +462,7 @@ export default function Pricing() {
                 {/* Plan header */}
                 <div style={{ marginBottom: 24 }}>
                   <h3 style={{
-                    fontFamily: "'Hanken Grotesk', sans-serif",
+                    fontFamily: "'Vrikaan Sans', sans-serif",
                     fontSize: 20, fontWeight: 700, color: T.white, margin: "0 0 6px",
                   }}>
                     {plan.name}
@@ -476,7 +476,7 @@ export default function Pricing() {
                 <div style={{ marginBottom: 28 }}>
                   <div style={{ display: "flex", alignItems: "flex-end", gap: 4 }}>
                     <span style={{
-                      fontFamily: "'Hanken Grotesk', sans-serif",
+                      fontFamily: "'Vrikaan Sans', sans-serif",
                       fontSize: 46, fontWeight: 800, letterSpacing: "-0.04em",
                       color: plan.highlight ? T.cyan : (plan.badge ? plan.accentColor : T.white),
                       lineHeight: 1,
@@ -486,7 +486,7 @@ export default function Pricing() {
                     {period && (
                       <span style={{
                         fontSize: 14, color: T.mutedDark,
-                        paddingBottom: 6, fontFamily: "'JetBrains Mono', monospace",
+                        paddingBottom: 6, fontFamily: "'Vrikaan Mono', monospace",
                       }}>
                         {period}
                       </span>
@@ -522,7 +522,7 @@ export default function Pricing() {
                       background: "transparent",
                       border: `1px solid rgba(148,163,184,0.2)`,
                       borderRadius: 10, color: T.white, fontSize: 14, fontWeight: 600,
-                      textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
+                      textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
                       transition: "border-color 0.2s, background 0.2s",
                     }}
                   >
@@ -543,7 +543,7 @@ export default function Pricing() {
                       borderRadius: 10,
                       color: plan.highlight ? "#fff" : T.accent,
                       fontSize: 14, fontWeight: 700, textDecoration: "none",
-                      fontFamily: "'Hanken Grotesk', sans-serif",
+                      fontFamily: "'Vrikaan Sans', sans-serif",
                       boxShadow: plan.highlight ? "0 4px 20px rgba(99,102,241,0.35)" : "none",
                       transition: "opacity 0.2s, box-shadow 0.2s",
                     }}
@@ -576,7 +576,7 @@ export default function Pricing() {
               FAQ
             </span>
             <h2 style={{
-              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontFamily: "'Vrikaan Sans', sans-serif",
               fontSize: "clamp(26px, 3vw, 36px)", fontWeight: 700,
               letterSpacing: "-0.02em", margin: "0 0 14px",
             }}>
@@ -613,7 +613,7 @@ export default function Pricing() {
                     }}
                   >
                     <span style={{
-                      fontFamily: "'Hanken Grotesk', sans-serif",
+                      fontFamily: "'Vrikaan Sans', sans-serif",
                       fontSize: 15, fontWeight: 600, color: T.white, lineHeight: 1.4,
                     }}>
                       {faq.q}
@@ -643,7 +643,7 @@ export default function Pricing() {
           borderRadius: 20,
         }}>
           <h2 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontFamily: "'Vrikaan Sans', sans-serif",
             fontSize: 32, fontWeight: 700, margin: "0 0 14px", letterSpacing: "-0.02em",
           }}>
             Not sure which plan?
@@ -656,7 +656,7 @@ export default function Pricing() {
               display: "inline-block", padding: "13px 32px",
               background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
               color: "#fff", borderRadius: 10, textDecoration: "none",
-              fontSize: 14, fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 14, fontWeight: 600, fontFamily: "'Vrikaan Sans', sans-serif",
               boxShadow: "0 4px 20px rgba(99,102,241,0.3)",
             }}>
               Start for Free
@@ -666,7 +666,7 @@ export default function Pricing() {
               background: "transparent",
               border: `1px solid ${T.border}`,
               color: T.muted, borderRadius: 10, textDecoration: "none",
-              fontSize: 14, fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif",
+              fontSize: 14, fontWeight: 600, fontFamily: "'Vrikaan Sans', sans-serif",
             }}>
               Talk to Sales
             </Link>

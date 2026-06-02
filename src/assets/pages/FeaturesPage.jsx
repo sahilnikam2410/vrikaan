@@ -29,7 +29,7 @@ export default function FeaturesPage() {
   ];
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="Features" description="Explore Vrikaan's AI-powered cybersecurity features including fraud detection, threat monitoring, and more." path="/features" />
       <Navbar />
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "120px 24px 80px" }}>
@@ -40,7 +40,7 @@ export default function FeaturesPage() {
         {/* Hero */}
         <div style={{ textAlign: "center", marginBottom: 80 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>Platform</span>
-          <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(36px, 4vw, 52px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 20px" }}>
+          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 52px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 20px" }}>
             Six Layers of <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>AI Protection</span>
           </h1>
           <p style={{ color: T.muted, fontSize: 17, maxWidth: 550, margin: "0 auto", lineHeight: 1.8 }}>
@@ -62,8 +62,8 @@ export default function FeaturesPage() {
               }}>
                 <span style={{ fontSize: 22 }}>{f.icon}</span>
                 <div>
-                  <div style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 600, color: activeFeature === i ? T.white : T.muted }}>{f.title}</div>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: features[i].color, marginTop: 2 }}>{f.stats}</div>
+                  <div style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 14, fontWeight: 600, color: activeFeature === i ? T.white : T.muted }}>{f.title}</div>
+                  <div style={{ fontFamily: "'Vrikaan Mono', monospace", fontSize: 10, color: features[i].color, marginTop: 2 }}>{f.stats}</div>
                 </div>
               </button>
             ))}
@@ -83,15 +83,15 @@ export default function FeaturesPage() {
                 display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28,
               }}>{features[activeFeature].icon}</div>
               <div>
-                <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 24, fontWeight: 700, margin: 0, color: T.white }}>{features[activeFeature].title}</h3>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: features[activeFeature].color }}>{features[activeFeature].stats}</span>
+                <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 24, fontWeight: 700, margin: 0, color: T.white }}>{features[activeFeature].title}</h3>
+                <span style={{ fontFamily: "'Vrikaan Mono', monospace", fontSize: 11, color: features[activeFeature].color }}>{features[activeFeature].stats}</span>
               </div>
             </div>
             <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.85, margin: "0 0 28px" }}>{features[activeFeature].desc}</p>
 
             {/* Mini demo visualization */}
             <div style={{ background: "rgba(3,7,18,0.5)", border: `1px solid ${T.border}`, borderRadius: 14, padding: 20, marginBottom: 20 }}>
-              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.mutedDark, marginBottom: 12 }}>LIVE PREVIEW</div>
+              <div style={{ fontFamily: "'Vrikaan Mono', monospace", fontSize: 11, color: T.mutedDark, marginBottom: 12 }}>LIVE PREVIEW</div>
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                 {["Scanning", "Analyzing", "Protected"].map((step, i) => (
                   <div key={i} style={{
@@ -99,7 +99,7 @@ export default function FeaturesPage() {
                     background: i === 2 ? "rgba(34,197,94,0.06)" : `${features[activeFeature].color}06`,
                     border: `1px solid ${i === 2 ? "rgba(34,197,94,0.12)" : `${features[activeFeature].color}12`}`,
                   }}>
-                    <div style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, fontWeight: 700, color: i === 2 ? "#22c55e" : features[activeFeature].color }}>{i + 1}</div>
+                    <div style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, fontWeight: 700, color: i === 2 ? "#22c55e" : features[activeFeature].color }}>{i + 1}</div>
                     <div style={{ fontSize: 11, color: T.muted, marginTop: 4 }}>{step}</div>
                   </div>
                 ))}
@@ -118,7 +118,7 @@ export default function FeaturesPage() {
 
         {/* Free Tools */}
         <div style={{ marginBottom: 80 }}>
-          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 32, fontWeight: 700, textAlign: "center", margin: "0 0 16px", letterSpacing: "-0.02em" }}>Free Security Tools</h2>
+          <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 32, fontWeight: 700, textAlign: "center", margin: "0 0 16px", letterSpacing: "-0.02em" }}>Free Security Tools</h2>
           <p style={{ textAlign: "center", color: T.muted, fontSize: 15, marginBottom: 48, maxWidth: 450, marginLeft: "auto", marginRight: "auto" }}>{user ? "Access all security tools from your dashboard." : "Sign up free to unlock all security tools."}</p>
           <div className="resp-grid-3" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
             {tools.map((t, i) => (
@@ -126,7 +126,7 @@ export default function FeaturesPage() {
                 <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: "28px 24px", height: "100%", transition: "all 0.3s ease", cursor: "pointer" }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(99,102,241,0.2)"; e.currentTarget.style.transform = "translateY(-4px)"; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = T.border; e.currentTarget.style.transform = "translateY(0)"; }}>
-                  <h4 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 17, fontWeight: 600, margin: "0 0 8px", color: T.white }}>{t.title}</h4>
+                  <h4 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 17, fontWeight: 600, margin: "0 0 8px", color: T.white }}>{t.title}</h4>
                   <p style={{ color: T.muted, fontSize: 13, lineHeight: 1.7, margin: "0 0 14px" }}>{t.desc}</p>
                   <span style={{ fontSize: 12, color: T.accent, fontWeight: 600 }}>Try it &rarr;</span>
                 </div>
@@ -137,7 +137,7 @@ export default function FeaturesPage() {
 
         {/* CTA */}
         <div style={{ textAlign: "center", padding: "56px 32px", background: "linear-gradient(135deg, rgba(99,102,241,0.06), rgba(20,227,197,0.03))", border: `1px solid rgba(99,102,241,0.1)`, borderRadius: 20 }}>
-          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 32, fontWeight: 700, margin: "0 0 14px" }}>Ready to Get Protected?</h2>
+          <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 32, fontWeight: 700, margin: "0 0 14px" }}>Ready to Get Protected?</h2>
           <p style={{ color: T.muted, fontSize: 16, marginBottom: 28, maxWidth: 420, margin: "0 auto 28px" }}>Start with our free plan. Upgrade anytime for full protection.</p>
           <div style={{ display: "flex", gap: 14, justifyContent: "center" }}>
             <Link to="/signup" style={{ display: "inline-block", padding: "14px 36px", background: T.accent, color: "#fff", borderRadius: 10, textDecoration: "none", fontSize: 14, fontWeight: 600 }}>Start Free</Link>

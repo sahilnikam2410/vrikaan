@@ -84,7 +84,7 @@ function FallbackGlobe({ size }) {
         ctx.save(); ctx.globalAlpha = breathe * 0.5; ctx.fillStyle = "#06ffd0"; ctx.shadowColor = "#06ffd0"; ctx.shadowBlur = 10; ctx.beginPath(); ctx.arc(nx, ny, 4, 0, Math.PI * 2); ctx.fill(); ctx.shadowBlur = 0; ctx.restore();
         ctx.save(); ctx.globalAlpha = 0.9; ctx.fillStyle = "#06ffd0"; ctx.beginPath(); ctx.arc(nx, ny, 2.5, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = "#fff"; ctx.globalAlpha = 0.8; ctx.beginPath(); ctx.arc(nx, ny, 1, 0, Math.PI * 2); ctx.fill();
-        ctx.globalAlpha = 0.4; ctx.fillStyle = "#8ba4be"; ctx.font = "600 7px 'JetBrains Mono', monospace"; ctx.fillText(n.label, nx + 7, ny + 2); ctx.restore();
+        ctx.globalAlpha = 0.4; ctx.fillStyle = "#8ba4be"; ctx.font = "600 7px 'Vrikaan Mono', monospace"; ctx.fillText(n.label, nx + 7, ny + 2); ctx.restore();
       }
       ctx.save(); ctx.strokeStyle = "#06ffd0"; ctx.lineWidth = 1; ctx.globalAlpha = 0.12; const pad = 10, len = 20;
       ctx.beginPath(); ctx.moveTo(pad, pad + len); ctx.lineTo(pad, pad); ctx.lineTo(pad + len, pad); ctx.stroke();

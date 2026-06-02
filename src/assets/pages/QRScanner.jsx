@@ -5,7 +5,7 @@ import SEO from "../../components/SEO";
 
 const T = { bg: "#030712", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", yellow: "#eab308", blue: "#38bdf8", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
-const fonts = { heading: "'Hanken Grotesk', sans-serif", body: "'Hanken Grotesk', sans-serif", mono: "'JetBrains Mono', monospace" };
+const fonts = { heading: "'Vrikaan Sans', sans-serif", body: "'Vrikaan Sans', sans-serif", mono: "'Vrikaan Mono', monospace" };
 
 // --- Deterministic analysis from URL string ---
 function hashStr(s) {

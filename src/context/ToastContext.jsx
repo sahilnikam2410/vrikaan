@@ -140,7 +140,7 @@ export function ToastProvider({ children }) {
               display: "flex",
               alignItems: "flex-start",
               gap: 12,
-              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontFamily: "'Vrikaan Sans', sans-serif",
               animation: `${t.visible ? "toastSlideIn" : "toastSlideOut"} ${ANIMATION_DURATION}ms ease forwards`,
             }}
           >

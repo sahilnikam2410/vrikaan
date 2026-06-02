@@ -46,19 +46,19 @@ export default function WhoisLookup() {
     });
   };
 
-  const s = { input: { width: "100%", padding: "14px 16px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "'Hanken Grotesk',sans-serif" } };
+  const s = { input: { width: "100%", padding: "14px 16px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "'Vrikaan Sans',sans-serif" } };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk',sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans',sans-serif" }}>
       <SEO title="WHOIS Lookup" description="Look up domain registration details, registrar, expiry and nameservers." path="/whois-lookup" />
       <Navbar />
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "120px 20px 60px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Hanken Grotesk',sans-serif" }}>WHOIS Lookup</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Vrikaan Sans',sans-serif" }}>WHOIS Lookup</h1>
         <p style={{ color: T.muted, fontSize: 14, marginBottom: 28 }}>Find domain registration details, registrar, expiry date and nameservers.</p>
 
         <div style={{ display: "flex", gap: 10, marginBottom: 28 }}>
           <input value={domain} onChange={e => setDomain(e.target.value)} onKeyDown={e => e.key === "Enter" && lookup()} placeholder="example.com" style={{ ...s.input, flex: 1 }} />
-          <button onClick={lookup} disabled={loading} style={{ padding: "14px 28px", borderRadius: 10, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 15, fontWeight: 700, cursor: loading ? "wait" : "pointer", fontFamily: "'Hanken Grotesk',sans-serif", whiteSpace: "nowrap" }}>
+          <button onClick={lookup} disabled={loading} style={{ padding: "14px 28px", borderRadius: 10, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 15, fontWeight: 700, cursor: loading ? "wait" : "pointer", fontFamily: "'Vrikaan Sans',sans-serif", whiteSpace: "nowrap" }}>
             {loading ? "Looking up..." : "Lookup"}
           </button>
         </div>
@@ -68,8 +68,8 @@ export default function WhoisLookup() {
         {result && (
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28, backdropFilter: "blur(10px)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-              <h2 style={{ fontSize: 22, fontWeight: 700, color: T.cyan, fontFamily: "'Hanken Grotesk',sans-serif", margin: 0 }}>{result.domain}</h2>
-              <button onClick={doExport} style={{ padding: "8px 16px", borderRadius: 8, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.muted, fontSize: 12, cursor: "pointer", fontFamily: "'Hanken Grotesk',sans-serif" }}>Export PDF</button>
+              <h2 style={{ fontSize: 22, fontWeight: 700, color: T.cyan, fontFamily: "'Vrikaan Sans',sans-serif", margin: 0 }}>{result.domain}</h2>
+              <button onClick={doExport} style={{ padding: "8px 16px", borderRadius: 8, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.muted, fontSize: 12, cursor: "pointer", fontFamily: "'Vrikaan Sans',sans-serif" }}>Export PDF</button>
             </div>
 
             {/* Info grid */}
@@ -95,7 +95,7 @@ export default function WhoisLookup() {
                 <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 10 }}>Nameservers</h3>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                   {result.nameservers.map(ns => (
-                    <span key={ns} style={{ padding: "6px 12px", borderRadius: 6, background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)", fontSize: 13, color: T.accent, fontFamily: "'JetBrains Mono',monospace" }}>{ns}</span>
+                    <span key={ns} style={{ padding: "6px 12px", borderRadius: 6, background: "rgba(99,102,241,0.1)", border: "1px solid rgba(99,102,241,0.2)", fontSize: 13, color: T.accent, fontFamily: "'Vrikaan Mono',monospace" }}>{ns}</span>
                   ))}
                 </div>
               </div>

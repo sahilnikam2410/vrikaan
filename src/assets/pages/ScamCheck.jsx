@@ -64,12 +64,12 @@ export default function ScamCheck() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="Scam SMS / Email Checker — VRIKAAN" description="Paste any suspicious SMS, email, or WhatsApp message. AI tells you if it's a scam in 5 seconds. Built for India." path="/scam-check" />
       <Navbar />
       <div style={{ maxWidth: 980, margin: '0 auto', padding: '0 24px' }}><SeniorModeBanner /></div>
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "120px 20px 80px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, margin: 0, marginBottom: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, margin: 0, marginBottom: 8, fontFamily: "'Vrikaan Sans', sans-serif" }}>
           Scam Message Checker
         </h1>
         <p style={{ color: T.muted, fontSize: 14, margin: "0 0 24px" }}>
@@ -108,7 +108,7 @@ export default function ScamCheck() {
           style={{
             width: "100%", padding: 14, borderRadius: 12,
             background: T.card, border: `1px solid ${T.border}`,
-            color: T.white, fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif",
+            color: T.white, fontSize: 14, fontFamily: "'Vrikaan Sans', sans-serif",
             resize: "vertical", boxSizing: "border-box",
           }}
         />
@@ -122,7 +122,7 @@ export default function ScamCheck() {
             flex: 1, padding: "14px 24px", borderRadius: 10, border: "none", fontSize: 16, fontWeight: 700,
             background: loading || text.length < 5 ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
             color: "#fff", cursor: loading || text.length < 5 ? "not-allowed" : "pointer",
-            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontFamily: "'Vrikaan Sans', sans-serif",
           }}>{loading ? "Analyzing…" : "Check this message"}</button>
           {result && <button onClick={() => { setResult(null); setText(""); }} style={{
             padding: "14px 18px", borderRadius: 10, border: `1px solid ${T.border}`, background: "transparent",
@@ -142,7 +142,7 @@ export default function ScamCheck() {
               <button key={i} onClick={() => { setText(s.text); setError(""); }} style={{
                 display: "block", width: "100%", textAlign: "left", padding: "10px 12px", marginBottom: 6,
                 background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 6,
-                color: T.white, fontSize: 12, cursor: "pointer", fontFamily: "'Hanken Grotesk'",
+                color: T.white, fontSize: 12, cursor: "pointer", fontFamily: "'Vrikaan Sans'",
               }}>
                 <span style={{ color: T.yellow, fontWeight: 600, marginRight: 8 }}>{s.tag}</span>
                 <span style={{ color: T.muted }}>{s.text.slice(0, 80)}…</span>
@@ -158,7 +158,7 @@ export default function ScamCheck() {
             <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18, paddingBottom: 18, borderBottom: `1px solid ${T.border}` }}>
               <span style={{ fontSize: 48 }}>{meta.emoji}</span>
               <div style={{ flex: 1 }}>
-                <h2 style={{ color: meta.color, fontSize: 22, fontWeight: 700, margin: 0, fontFamily: "'Hanken Grotesk', sans-serif" }}>{meta.label}</h2>
+                <h2 style={{ color: meta.color, fontSize: 22, fontWeight: 700, margin: 0, fontFamily: "'Vrikaan Sans', sans-serif" }}>{meta.label}</h2>
                 <p style={{ color: T.muted, fontSize: 12, margin: "4px 0 0" }}>
                   Risk score: <span style={{ color: meta.color, fontWeight: 700 }}>{result.score}/100</span> · Category: <span style={{ color: T.white, fontWeight: 600 }}>{result.category}</span>
                 </p>

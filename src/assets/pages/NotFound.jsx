@@ -16,7 +16,7 @@ export default function NotFound() {
   }, []);
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif", position: "relative", overflow: "hidden" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif", position: "relative", overflow: "hidden" }}>
       <SEO title="404 — Page Not Found" description="The page you're looking for doesn't exist. Return to VRIKAAN to access our AI-powered cybersecurity tools." noindex />
       <Navbar />
 
@@ -53,7 +53,7 @@ export default function NotFound() {
 
         {/* Error code */}
         <div style={{
-          fontFamily: "'Hanken Grotesk', sans-serif",
+          fontFamily: "'Vrikaan Sans', sans-serif",
           fontSize: "clamp(100px, 18vw, 180px)",
           fontWeight: 900, lineHeight: 1, marginBottom: 8,
           background: "linear-gradient(135deg, #6366f1, #8b5cf6, #14e3c5)",
@@ -69,7 +69,7 @@ export default function NotFound() {
 
         {/* Terminal error message */}
         <div style={{
-          fontFamily: "'JetBrains Mono', monospace", fontSize: 13,
+          fontFamily: "'Vrikaan Mono', monospace", fontSize: 13,
           color: T.red, background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.12)",
           borderRadius: 10, padding: "12px 20px", display: "inline-flex", alignItems: "center", gap: 8,
           marginBottom: 24,
@@ -78,7 +78,7 @@ export default function NotFound() {
           ERROR: ROUTE_NOT_FOUND
         </div>
 
-        <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 700, margin: "0 0 14px", letterSpacing: "-0.03em" }}>
+        <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 700, margin: "0 0 14px", letterSpacing: "-0.03em" }}>
           Breach in Navigation
         </h1>
         <p style={{ color: T.muted, fontSize: 16, lineHeight: 1.8, marginBottom: 40, maxWidth: 500, margin: "0 auto 40px" }}>
@@ -114,9 +114,9 @@ export default function NotFound() {
             <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ef4444" }} />
             <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#eab308" }} />
             <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#22c55e" }} />
-            <span style={{ flex: 1, textAlign: "center", fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.mutedDark }}>vrikaan-terminal</span>
+            <span style={{ flex: 1, textAlign: "center", fontFamily: "'Vrikaan Mono', monospace", fontSize: 11, color: T.mutedDark }}>vrikaan-terminal</span>
           </div>
-          <div style={{ padding: "20px 20px 16px", fontFamily: "'JetBrains Mono', monospace", fontSize: 12 }}>
+          <div style={{ padding: "20px 20px 16px", fontFamily: "'Vrikaan Mono', monospace", fontSize: 12 }}>
             <div style={{ color: T.mutedDark, marginBottom: 8 }}># Quick navigation — choose your destination:</div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }} className="notfound-grid">
               {[

@@ -139,7 +139,7 @@ export default function BulkScanner() {
   const failCount = Object.values(results).filter((r) => !r.ok).length;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="Bulk URL Scanner"
         description="Scan up to 100 URLs at once for phishing, malware, and reputation threats. CSV upload + export."
@@ -152,7 +152,7 @@ export default function BulkScanner() {
         <section style={{ maxWidth: 920, margin: "0 auto", padding: "0 24px" }}>
           <h1 style={{
             fontSize: 36, fontWeight: 800, color: T.white,
-            margin: "0 0 8px", fontFamily: "'Hanken Grotesk', sans-serif",
+            margin: "0 0 8px", fontFamily: "'Vrikaan Sans', sans-serif",
           }}>Bulk URL Scanner</h1>
           <p style={{ fontSize: 15, color: T.muted, marginBottom: 28, lineHeight: 1.7 }}>
             Paste a list of URLs or upload a CSV. We'll scan each for phishing, malware, and reputation threats.
@@ -189,7 +189,7 @@ export default function BulkScanner() {
                 width: "100%", padding: "12px 14px",
                 background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`,
                 borderRadius: 10, color: T.white, fontSize: 13,
-                fontFamily: "'JetBrains Mono', monospace", outline: "none", resize: "vertical",
+                fontFamily: "'Vrikaan Mono', monospace", outline: "none", resize: "vertical",
                 boxSizing: "border-box", marginBottom: 12,
               }}
             />
@@ -215,7 +215,7 @@ export default function BulkScanner() {
                   background: scanning || urls.length === 0 ? "rgba(99,102,241,0.4)" : `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                   border: "none", color: "#fff", fontSize: 14, fontWeight: 700,
                   cursor: scanning || urls.length === 0 ? "not-allowed" : "pointer",
-                  fontFamily: "'Hanken Grotesk', sans-serif",
+                  fontFamily: "'Vrikaan Sans', sans-serif",
                 }}
               >
                 {scanning ? `Scanning… ${progress}%` : `Scan ${urls.length} URLs`}
@@ -282,7 +282,7 @@ export default function BulkScanner() {
                       }} />
                       <span style={{
                         fontSize: 13, color: T.white,
-                        fontFamily: "'JetBrains Mono', monospace",
+                        fontFamily: "'Vrikaan Mono', monospace",
                         overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                       }}>{u}</span>
                     </div>

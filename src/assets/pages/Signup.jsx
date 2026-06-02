@@ -14,7 +14,7 @@ const styles = {
   page: {
     minHeight: "100vh", background: "#030712", display: "flex", alignItems: "center",
     justifyContent: "center", position: "relative", overflow: "hidden",
-    fontFamily: "'Hanken Grotesk', sans-serif", padding: "80px 16px 40px",
+    fontFamily: "'Vrikaan Sans', sans-serif", padding: "80px 16px 40px",
   },
   gridBg: {
     position: "absolute", inset: 0,
@@ -43,7 +43,7 @@ const styles = {
   },
   title: {
     fontSize: 28, fontWeight: 700, color: "#14e3c5", marginBottom: 4,
-    fontFamily: "'Hanken Grotesk', sans-serif",
+    fontFamily: "'Vrikaan Sans', sans-serif",
   },
   subtitle: { fontSize: 14, color: "#94a3b8", marginBottom: 28, textAlign: "center" },
   row2: { display: "flex", gap: 12 },
@@ -52,12 +52,12 @@ const styles = {
     width: "100%", padding: "12px 16px", background: "rgba(15,23,42,0.6)",
     border: "1px solid rgba(148,163,184,0.2)", borderRadius: 10, color: "#f1f5f9",
     fontSize: 14, outline: "none", marginBottom: 18, transition: "border-color 0.2s",
-    boxSizing: "border-box", fontFamily: "'Hanken Grotesk', sans-serif",
+    boxSizing: "border-box", fontFamily: "'Vrikaan Sans', sans-serif",
   },
   btn: {
     width: "100%", padding: "14px", background: "linear-gradient(135deg, #14e3c5, #0ea5e9)",
     border: "none", borderRadius: 10, color: "#ffffff", fontSize: 15, fontWeight: 700,
-    cursor: "pointer", marginTop: 4, fontFamily: "'Hanken Grotesk', sans-serif",
+    cursor: "pointer", marginTop: 4, fontFamily: "'Vrikaan Sans', sans-serif",
     letterSpacing: 0.5, transition: "opacity 0.2s, transform 0.2s",
     textShadow: "0 1px 2px rgba(0,0,0,0.35)",
   },
@@ -76,7 +76,7 @@ const styles = {
     fontSize: 14, cursor: "pointer", display: "flex", alignItems: "center",
     justifyContent: "center", gap: 10, marginBottom: 10,
     transition: "border-color 0.2s, background 0.2s",
-    fontFamily: "'Hanken Grotesk', sans-serif",
+    fontFamily: "'Vrikaan Sans', sans-serif",
   },
   footer: { textAlign: "center", marginTop: 24, fontSize: 14, color: "#94a3b8" },
   link: { color: "#14e3c5", textDecoration: "none", fontWeight: 600 },
@@ -96,7 +96,7 @@ const styles = {
     width: 90, padding: "12px 10px", background: "rgba(15,23,42,0.6)",
     border: "1px solid rgba(148,163,184,0.2)", borderRadius: 10, color: "#f1f5f9",
     fontSize: 14, outline: "none", marginBottom: 18, boxSizing: "border-box",
-    fontFamily: "'JetBrains Mono', monospace",
+    fontFamily: "'Vrikaan Mono', monospace",
   },
   inputWrap: { position: "relative" },
   showBtn: {
@@ -516,7 +516,7 @@ export default function Signup() {
                 style={{
                   ...styles.strengthLabel,
                   color: strengthColors[strength - 1] || "#64748b",
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Vrikaan Mono', monospace",
                 }}
               >
                 {strengthLabels[strength - 1] || "Too short"}

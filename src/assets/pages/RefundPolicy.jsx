@@ -7,7 +7,7 @@ const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 
 export default function RefundPolicy() {
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="Cancellation & Refund Policy" description="VRIKAAN cancellation and refund policy for subscriptions." path="/refund-policy" />
       <Navbar />
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "120px 24px 80px" }}>
@@ -16,7 +16,7 @@ export default function RefundPolicy() {
         </div>
 
         <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>Legal</span>
-        <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 44, fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 12px" }}>Cancellation & Refund Policy</h1>
+        <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 44, fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 12px" }}>Cancellation & Refund Policy</h1>
         <p style={{ color: T.mutedDark, fontSize: 14, marginBottom: 48 }}>Last updated: April 12, 2026</p>
 
         {[
@@ -32,7 +32,7 @@ export default function RefundPolicy() {
           { title: "10. Contact Us", content: "For any questions regarding cancellations or refunds, please reach out to us at hello@vrikaan.com or call +91 8329935878. Our support team is available 24/7 to assist you." },
         ].map((s, i) => (
           <div key={i} style={{ marginBottom: 36 }}>
-            <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 10, fontFamily: "'Hanken Grotesk', sans-serif" }}>{s.title}</h2>
+            <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 10, fontFamily: "'Vrikaan Sans', sans-serif" }}>{s.title}</h2>
             <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.8, margin: 0 }}>{s.content}</p>
           </div>
         ))}

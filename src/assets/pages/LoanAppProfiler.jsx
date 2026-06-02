@@ -44,7 +44,7 @@ export default function LoanAppProfiler() {
   }, [name, url, selectedPerms, apr, fee]);
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="Loan App Profiler — Check Before Install"
         description="Before installing any 'instant loan' app, paste its name here. We check against RBI's registered NBFC list, known predatory apps, permission red flags, and APR. India-first."
@@ -63,7 +63,7 @@ export default function LoanAppProfiler() {
             color: T.red, marginBottom: 14,
           }}>FREE · RBI-aware · 600+ predatory apps tracked</span>
           <h1 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             "Instant loan, 5 min approval"<br/>
@@ -93,7 +93,7 @@ export default function LoanAppProfiler() {
           background: T.card, border: `1px solid ${T.border}`, borderRadius: 16,
           padding: 22, marginBottom: 18,
         }}>
-          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
+          <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
             App details
           </h2>
 
@@ -141,7 +141,7 @@ export default function LoanAppProfiler() {
                 textTransform: "uppercase", marginBottom: 4,
               }}>Verdict</div>
               <div style={{
-                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 28, fontWeight: 800,
+                fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 28, fontWeight: 800,
                 color: result.verdict.color, lineHeight: 1.1,
               }}>{result.verdict.label}</div>
               <div style={{ color: T.muted, fontSize: 13, marginTop: 6 }}>
@@ -179,7 +179,7 @@ export default function LoanAppProfiler() {
           marginTop: 36, padding: 22, borderRadius: 14,
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
-          <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
+          <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
             🚫 Permissions no legit loan app needs
           </h3>
           <div style={{ display: "grid", gap: 8 }}>
@@ -199,7 +199,7 @@ export default function LoanAppProfiler() {
           marginTop: 18, padding: 22, borderRadius: 14,
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
-          <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
+          <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
             ✅ Sample of RBI-registered legit lenders ({RBI_REGISTERED.length})
           </h3>
           <p style={{ color: T.muted, fontSize: 12, margin: "0 0 12px" }}>
@@ -223,7 +223,7 @@ export default function LoanAppProfiler() {
           background: `linear-gradient(135deg, ${T.red}1a, ${T.orange}1a)`,
           border: `1px solid ${T.red}33`,
         }}>
-          <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 8px" }}>
+          <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 8px" }}>
             🚨 Already installed a predatory app + getting harassed?
           </h3>
           <p style={{ color: T.muted, fontSize: 13, margin: "0 0 14px", lineHeight: 1.6 }}>
@@ -232,7 +232,7 @@ export default function LoanAppProfiler() {
           <Link to="/scam-recovery" style={{
             display: "inline-block", padding: "11px 22px", borderRadius: 10,
             background: T.red, color: "#fff", fontWeight: 800, fontSize: 14,
-            textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
+            textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
           }}>📋 Scam Recovery Hotline →</Link>
         </section>
 

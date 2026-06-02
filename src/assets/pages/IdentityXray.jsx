@@ -17,8 +17,8 @@ const GRADE_COLORS = { A: T.green, B: T.cyan, C: T.yellow, D: T.orange, F: T.red
 
 const sty = {
   card: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24, backdropFilter: "blur(10px)" },
-  btn: (bg) => ({ padding: "14px 32px", background: bg, border: "none", borderRadius: 10, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "'Hanken Grotesk'", transition: "all 0.3s", letterSpacing: 0.3 }),
-  input: { width: "100%", padding: "16px 20px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "'Hanken Grotesk'" },
+  btn: (bg) => ({ padding: "14px 32px", background: bg, border: "none", borderRadius: 10, color: "#fff", fontSize: 15, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "'Vrikaan Sans'", transition: "all 0.3s", letterSpacing: 0.3 }),
+  input: { width: "100%", padding: "16px 20px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "'Vrikaan Sans'" },
   exportBtn: { padding: "8px 16px", background: "rgba(99,102,241,0.15)", border: `1px solid rgba(99,102,241,0.3)`, borderRadius: 8, color: T.accentSoft, fontSize: 12, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 },
 };
 
@@ -132,7 +132,7 @@ export default function IdentityXray() {
   const wrap = { maxWidth: 900, margin: "0 auto", padding: "0 24px" };
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="Digital Identity X-Ray" description="One-click complete digital identity security audit. Check breaches, domain security, attack paths, and get a personalized security action plan." path="/identity-xray" />
       <Navbar />
       <style>{`
@@ -154,7 +154,7 @@ export default function IdentityXray() {
             <span style={{ fontSize: 12, fontWeight: 600, color: T.cyan, letterSpacing: 0.5 }}>FREE SECURITY AUDIT</span>
           </div>
 
-          <h1 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 800, lineHeight: 1.1, margin: "0 0 16px", fontFamily: "'Hanken Grotesk', sans-serif" }}>
+          <h1 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 800, lineHeight: 1.1, margin: "0 0 16px", fontFamily: "'Vrikaan Sans', sans-serif" }}>
             Digital Identity{" "}
             <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>X-Ray</span>
           </h1>
@@ -230,14 +230,14 @@ export default function IdentityXray() {
               <div style={{ position: "relative" }}>
                 <RiskRing score={report.riskScore} />
                 <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%) rotate(0deg)", textAlign: "center" }}>
-                  <div style={{ fontSize: 48, fontWeight: 800, color: RISK_COLORS[report.riskLevel], fontFamily: "'Hanken Grotesk'", animation: "xray-count 0.8s ease" }}>
+                  <div style={{ fontSize: 48, fontWeight: 800, color: RISK_COLORS[report.riskLevel], fontFamily: "'Vrikaan Sans'", animation: "xray-count 0.8s ease" }}>
                     {report.riskScore}
                   </div>
                   <div style={{ fontSize: 12, color: T.mutedDark, fontWeight: 600 }}>/ 100</div>
                 </div>
               </div>
               <div style={{ textAlign: "left" }}>
-                <h2 style={{ fontSize: 28, fontWeight: 800, margin: "0 0 4px", fontFamily: "'Hanken Grotesk'" }}>
+                <h2 style={{ fontSize: 28, fontWeight: 800, margin: "0 0 4px", fontFamily: "'Vrikaan Sans'" }}>
                   <span style={{ color: RISK_COLORS[report.riskLevel] }}>{RISK_LABELS[report.riskLevel]}</span>
                 </h2>
                 <p style={{ color: T.muted, fontSize: 14, margin: "0 0 16px" }}>{report.email}</p>
@@ -259,7 +259,7 @@ export default function IdentityXray() {
             ].map((s, i) => (
               <div key={i} style={{ ...sty.card, textAlign: "center", animation: `xray-fadeUp ${0.4 + i * 0.1}s ease` }}>
                 <div style={{ fontSize: 11, color: T.mutedDark, fontWeight: 600, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8 }}>{s.label}</div>
-                <div style={{ fontSize: 36, fontWeight: 800, color: s.color, fontFamily: "'Hanken Grotesk'" }}>{s.value}</div>
+                <div style={{ fontSize: 36, fontWeight: 800, color: s.color, fontFamily: "'Vrikaan Sans'" }}>{s.value}</div>
                 <div style={{ fontSize: 12, color: T.muted }}>{s.sub}</div>
               </div>
             ))}
@@ -307,7 +307,7 @@ export default function IdentityXray() {
           <div style={{ ...sty.card, marginBottom: 24, animation: "xray-fadeUp 0.7s ease" }}>
             <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 16px", display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ fontSize: 22 }}>🌐</span> Email Domain Security
-              <span style={{ marginLeft: "auto", fontSize: 28, fontWeight: 800, color: GRADE_COLORS[report.domainSecurity.grade], fontFamily: "'Hanken Grotesk'" }}>
+              <span style={{ marginLeft: "auto", fontSize: 28, fontWeight: 800, color: GRADE_COLORS[report.domainSecurity.grade], fontFamily: "'Vrikaan Sans'" }}>
                 {report.domainSecurity.grade}
               </span>
             </h3>
@@ -365,7 +365,7 @@ export default function IdentityXray() {
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {report.actionPlan.map((action, i) => (
                 <div key={i} style={{ padding: "16px 18px", background: "rgba(15,23,42,0.4)", borderRadius: 10, border: `1px solid ${PRIORITY_COLORS[action.priority]}15`, display: "flex", alignItems: "flex-start", gap: 14 }}>
-                  <div style={{ width: 32, height: 32, borderRadius: 8, background: `${PRIORITY_COLORS[action.priority]}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 800, color: PRIORITY_COLORS[action.priority], flexShrink: 0, fontFamily: "'Hanken Grotesk'" }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 8, background: `${PRIORITY_COLORS[action.priority]}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 800, color: PRIORITY_COLORS[action.priority], flexShrink: 0, fontFamily: "'Vrikaan Sans'" }}>
                     {i + 1}
                   </div>
                   <div style={{ flex: 1 }}>
@@ -399,7 +399,7 @@ export default function IdentityXray() {
       {/* ── How It Works (when no results) ── */}
       {!report && !loading && (
         <div style={{ ...wrap, paddingBottom: 80 }}>
-          <h2 style={{ fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 700, textAlign: "center", marginBottom: 40, fontFamily: "'Hanken Grotesk'" }}>
+          <h2 style={{ fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 700, textAlign: "center", marginBottom: 40, fontFamily: "'Vrikaan Sans'" }}>
             What We <span style={{ color: T.cyan }}>Scan</span>
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 16 }}>

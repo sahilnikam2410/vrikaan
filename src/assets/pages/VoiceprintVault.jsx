@@ -100,7 +100,7 @@ export default function VoiceprintVault() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="Voiceprint Family Vault — Reference Audio for Deepfake Detection"
         description="Record your real voice once. Compare against any suspicious call recording later via Deepfake Audio Detector. Stored only in your browser."
@@ -118,7 +118,7 @@ export default function VoiceprintVault() {
             color: T.cyan, marginBottom: 14,
           }}>FREE · Mic-only · Stored in your browser</span>
           <h1 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Your REAL voice<br />
@@ -149,7 +149,7 @@ export default function VoiceprintVault() {
           background: T.card, border: `1px solid ${T.border}`, borderRadius: 16,
           padding: 22, marginBottom: 18,
         }}>
-          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
+          <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 20, color: T.white, margin: "0 0 16px" }}>
             🎙 Record a sample
           </h2>
 
@@ -197,14 +197,14 @@ export default function VoiceprintVault() {
                 color: name.trim() ? "#fff" : T.muted,
                 border: 0, fontWeight: 800, fontSize: 15,
                 cursor: name.trim() ? "pointer" : "not-allowed",
-                fontFamily: "'Hanken Grotesk', sans-serif",
+                fontFamily: "'Vrikaan Sans', sans-serif",
               }}>● Start recording (max 30s)</button>
             ) : (
               <button onClick={stopRecord} style={{
                 padding: "13px 24px", borderRadius: 12,
                 background: T.cyan, color: T.bg, border: 0,
                 fontWeight: 800, fontSize: 15, cursor: "pointer",
-                fontFamily: "'Hanken Grotesk', sans-serif",
+                fontFamily: "'Vrikaan Sans', sans-serif",
               }}>■ Stop · {recordedDuration}s</button>
             )}
             {recording && (
@@ -251,7 +251,7 @@ export default function VoiceprintVault() {
           background: T.card, border: `1px solid ${T.border}`, borderRadius: 14,
           padding: 20, marginBottom: 24,
         }}>
-          <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
+          <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
             📁 Saved voiceprints ({members.length})
           </h2>
           {members.length === 0 ? (
@@ -287,7 +287,7 @@ export default function VoiceprintVault() {
           background: `linear-gradient(135deg, ${T.accent}1a, ${T.cyan}1a)`,
           border: `1px solid ${T.cyan}33`,
         }}>
-          <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
+          <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 12px" }}>
             🎯 How to use these later
           </h3>
           <ol style={{ margin: 0, paddingLeft: 18, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>

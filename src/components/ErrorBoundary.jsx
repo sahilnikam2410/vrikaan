@@ -32,7 +32,7 @@ export default class ErrorBoundary extends Component {
         <div style={{
           minHeight: "100vh", background: T.bg, display: "flex",
           alignItems: "center", justifyContent: "center",
-          fontFamily: "'Hanken Grotesk', sans-serif", padding: 24,
+          fontFamily: "'Vrikaan Sans', sans-serif", padding: 24,
         }}>
           <div style={{ textAlign: "center", maxWidth: 520 }}>
             {/* Shield icon */}
@@ -50,7 +50,7 @@ export default class ErrorBoundary extends Component {
             </div>
 
             <h1 style={{
-              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontFamily: "'Vrikaan Sans', sans-serif",
               fontSize: 28, fontWeight: 700, color: T.white,
               margin: "0 0 12px", letterSpacing: "-0.02em",
             }}>
@@ -65,7 +65,7 @@ export default class ErrorBoundary extends Component {
               margin: "20px auto", padding: "12px 16px", maxWidth: 400,
               background: "rgba(239,68,68,0.06)", borderRadius: 10,
               border: "1px solid rgba(239,68,68,0.12)",
-              fontFamily: "'JetBrains Mono', monospace",
+              fontFamily: "'Vrikaan Mono', monospace",
               fontSize: 12, color: T.red, textAlign: "left",
               wordBreak: "break-word", lineHeight: 1.6,
             }}>
@@ -82,7 +82,7 @@ export default class ErrorBoundary extends Component {
                   padding: "13px 28px", borderRadius: 10, border: "none",
                   background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
                   color: "#fff", fontSize: 14, fontWeight: 700, cursor: "pointer",
-                  fontFamily: "'Hanken Grotesk', sans-serif",
+                  fontFamily: "'Vrikaan Sans', sans-serif",
                   boxShadow: "0 4px 20px rgba(99,102,241,0.3)",
                 }}
               >
@@ -94,7 +94,7 @@ export default class ErrorBoundary extends Component {
                   padding: "13px 28px", borderRadius: 10,
                   background: "transparent", border: `1px solid ${T.border}`,
                   color: T.muted, fontSize: 14, fontWeight: 600, cursor: "pointer",
-                  fontFamily: "'Hanken Grotesk', sans-serif",
+                  fontFamily: "'Vrikaan Sans', sans-serif",
                 }}
               >
                 Try Again

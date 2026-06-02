@@ -25,11 +25,11 @@ export default function TwoFactorGuide() {
   const filtered = SERVICES.filter(s => s.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk',sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans',sans-serif" }}>
       <SEO title="2FA Setup Guide" description="Step-by-step guides to enable two-factor authentication on popular services." path="/2fa-guide" />
       <Navbar />
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "120px 20px 60px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Hanken Grotesk',sans-serif" }}>2FA Setup Guide</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Vrikaan Sans',sans-serif" }}>2FA Setup Guide</h1>
         <p style={{ color: T.muted, fontSize: 14, marginBottom: 28 }}>Step-by-step guides to enable two-factor authentication on popular services.</p>
 
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search services..." style={{ width: "100%", padding: "14px 16px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontSize: 14, outline: "none", boxSizing: "border-box", marginBottom: 24 }} />
@@ -56,7 +56,7 @@ export default function TwoFactorGuide() {
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
               <div style={{ width: 40, height: 40, borderRadius: 10, background: selected.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 700, color: "#fff" }}>{selected.icon}</div>
               <div>
-                <h2 style={{ fontSize: 20, fontWeight: 700, color: T.white, margin: 0, fontFamily: "'Hanken Grotesk',sans-serif" }}>{selected.name}</h2>
+                <h2 style={{ fontSize: 20, fontWeight: 700, color: T.white, margin: 0, fontFamily: "'Vrikaan Sans',sans-serif" }}>{selected.name}</h2>
                 <p style={{ fontSize: 12, color: T.muted, margin: 0 }}>Two-Factor Authentication Setup</p>
               </div>
             </div>

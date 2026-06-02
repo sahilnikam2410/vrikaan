@@ -12,7 +12,7 @@ const T = {
 };
 
 const heading = (size) => ({
-  fontFamily: "'Hanken Grotesk', sans-serif", fontSize: size, fontWeight: 700,
+  fontFamily: "'Vrikaan Sans', sans-serif", fontSize: size, fontWeight: 700,
   letterSpacing: "-0.03em", margin: 0, color: T.white,
 });
 
@@ -123,7 +123,7 @@ function AnimatedStat({ val, label, color }) {
 
   return (
     <div ref={ref} style={{ ...cardBase, textAlign: "center", padding: "36px 16px" }}>
-      <div style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 38, fontWeight: 800, color, letterSpacing: "-0.03em", transition: "all 0.3s" }}>
+      <div style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 38, fontWeight: 800, color, letterSpacing: "-0.03em", transition: "all 0.3s" }}>
         {display}
       </div>
       <div style={{ fontSize: 13, color: T.mutedDark, marginTop: 8, fontWeight: 500 }}>{label}</div>
@@ -157,7 +157,7 @@ function RevealSection({ children, style = {} }) {
 
 export default function About() {
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="About VRIKAAN"
         description="Learn about VRIKAAN's mission to democratize AI-powered cybersecurity for everyone. Founded by Sahil Anil Nikam in Pune, India."
@@ -205,7 +205,7 @@ export default function About() {
                 India's families can't afford enterprise cyber prices.<br/>
                 <span style={gradientText}>We rebuilt the stack.</span>
               </h2>
-              <div style={{ fontSize: 16, color: T.muted, lineHeight: 1.85, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+              <div style={{ fontSize: 16, color: T.muted, lineHeight: 1.85, fontFamily: "'Vrikaan Sans', sans-serif" }}>
                 <p style={{ margin: "0 0 18px" }}>
                   Indian families lose <strong style={{ color: T.cyan }}>₹13,500 crore a year</strong> to cyber scams. The incumbent solution? Pay an Indian SOC services company ₹2-10 lakh per month for a Splunk dashboard, a 6-person team, and a 4-hour SLA that triggers after the money's already gone.
                 </p>
@@ -228,7 +228,7 @@ export default function About() {
                   padding: "12px 22px",
                   background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`,
                   color: "#020617", borderRadius: 10, textDecoration: "none",
-                  fontSize: 13, fontWeight: 700, fontFamily: "'Hanken Grotesk', sans-serif",
+                  fontSize: 13, fontWeight: 700, fontFamily: "'Vrikaan Sans', sans-serif",
                 }}>
                   See the Family Plan →
                 </Link>
@@ -238,7 +238,7 @@ export default function About() {
                   background: "transparent",
                   border: `1px solid ${T.cyan}40`,
                   color: T.cyan, borderRadius: 10, textDecoration: "none",
-                  fontSize: 13, fontWeight: 700, fontFamily: "'Hanken Grotesk', sans-serif",
+                  fontSize: 13, fontWeight: 700, fontFamily: "'Vrikaan Sans', sans-serif",
                 }}>
                   Read the Threat Report
                 </Link>
@@ -473,7 +473,7 @@ export default function About() {
             <div style={{ ...cardBase, borderRadius: 20, padding: "32px 28px" }}>
               <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 18 }}>
                 <div style={{ width: 72, height: 72, borderRadius: 18, background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(20,227,197,0.10))", border: `1px solid ${T.accent}30`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 32, fontWeight: 300, color: T.white }}>S</span>
+                  <span style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 32, fontWeight: 300, color: T.white }}>S</span>
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <span style={badge(T.accent)}>Founder &amp; CEO</span>
@@ -518,7 +518,7 @@ export default function About() {
             <div style={{ ...cardBase, borderRadius: 20, padding: "32px 28px" }}>
               <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 18 }}>
                 <div style={{ width: 72, height: 72, borderRadius: 18, background: "linear-gradient(135deg, rgba(20,227,197,0.18), rgba(99,102,241,0.10))", border: `1px solid ${T.cyan}30`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 32, fontWeight: 300, color: T.white }}>K</span>
+                  <span style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 32, fontWeight: 300, color: T.white }}>K</span>
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <span style={badge(T.cyan)}>Co-Founder</span>
@@ -613,7 +613,7 @@ export default function About() {
                     <div style={{ width: 14, height: 14, borderRadius: "50%", background: m.color, boxShadow: `0 0 12px ${m.color}40`, marginTop: 6 }} />
                   </div>
                   <div style={{ ...cardBase, flex: 1, padding: "24px 28px" }}>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, color: m.color, letterSpacing: "0.05em" }}>
+                    <span style={{ fontFamily: "'Vrikaan Mono', monospace", fontSize: 13, fontWeight: 700, color: m.color, letterSpacing: "0.05em" }}>
                       {m.year}
                     </span>
                     <h4 style={{ ...heading(18), margin: "6px 0 10px" }}>{m.title}</h4>
@@ -646,7 +646,7 @@ export default function About() {
               <Link to="/signup" style={{
                 display: "inline-block", padding: "14px 36px", background: T.accent,
                 color: "#fff", borderRadius: 10, textDecoration: "none", fontSize: 14,
-                fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif",
+                fontWeight: 600, fontFamily: "'Vrikaan Sans', sans-serif",
                 boxShadow: `0 4px 20px ${T.accent}30`,
               }}>
                 Get Started Free
@@ -655,7 +655,7 @@ export default function About() {
                 display: "inline-block", padding: "14px 36px",
                 background: "rgba(148,163,184,0.06)", border: `1px solid ${T.border}`,
                 color: T.white, borderRadius: 10, textDecoration: "none", fontSize: 14,
-                fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif",
+                fontWeight: 600, fontFamily: "'Vrikaan Sans', sans-serif",
               }}>
                 Explore Platform
               </Link>

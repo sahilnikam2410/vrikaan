@@ -54,13 +54,13 @@ export default function PWAInstallPrompt() {
       <style>{`@keyframes pwaSlideUp { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }`}</style>
       <img src="/wolf-mark.png?v=2" alt="VRIKAAN" style={{ width: 44, height: 44, flexShrink: 0 }} />
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Hanken Grotesk', sans-serif" }}>Install VRIKAAN</div>
-        <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2, fontFamily: "'Hanken Grotesk', sans-serif" }}>Get instant access from your home screen</div>
+        <div style={{ fontSize: 13, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Vrikaan Sans', sans-serif" }}>Install VRIKAAN</div>
+        <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2, fontFamily: "'Vrikaan Sans', sans-serif" }}>Get instant access from your home screen</div>
       </div>
       <button onClick={handleInstall} style={{
         padding: "8px 16px", background: "linear-gradient(135deg, #6366f1, #8b5cf6)", border: "none",
         borderRadius: 8, color: "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer",
-        fontFamily: "'Hanken Grotesk', sans-serif", whiteSpace: "nowrap"
+        fontFamily: "'Vrikaan Sans', sans-serif", whiteSpace: "nowrap"
       }}>Install</button>
       <button onClick={dismiss} style={{
         background: "none", border: "none", color: "#64748b", fontSize: 18, cursor: "pointer",

@@ -91,7 +91,7 @@ function UpgradeWall({ path, requiredTier, userPlan }) {
     <div style={{
       minHeight: "100vh", background: "#030712",
       display: "flex", alignItems: "center", justifyContent: "center",
-      padding: 24, fontFamily: "'Hanken Grotesk', sans-serif", color: "#f1f5f9",
+      padding: 24, fontFamily: "'Vrikaan Sans', sans-serif", color: "#f1f5f9",
     }}>
       <div style={{
         width: "min(560px, 100%)",
@@ -115,7 +115,7 @@ function UpgradeWall({ path, requiredTier, userPlan }) {
             fontFamily: "ui-monospace, Menlo, monospace",
           }}>🔒 {tierLabel(requiredTier)} TOOL</div>
           <h1 style={{
-            margin: 0, fontFamily: "'Hanken Grotesk', sans-serif",
+            margin: 0, fontFamily: "'Vrikaan Sans', sans-serif",
             fontSize: 32, fontWeight: 800, lineHeight: 1.2,
           }}>
             Unlock <span style={{ color }}>{name || "this tool"}</span>
@@ -162,7 +162,7 @@ function UpgradeWall({ path, requiredTier, userPlan }) {
             justifyContent: "center", marginBottom: 18,
           }}>
             <span style={{
-              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontFamily: "'Vrikaan Sans', sans-serif",
               fontSize: 32, fontWeight: 800,
             }}>{isEnterprise ? "Custom" : "₹990"}</span>
             <span style={{ fontSize: 14, color: "#94a3b8" }}>
@@ -177,7 +177,7 @@ function UpgradeWall({ path, requiredTier, userPlan }) {
                 padding: "15px 22px", borderRadius: 12,
                 background: color, color: "#030712",
                 fontSize: 16, fontWeight: 800,
-                fontFamily: "'Hanken Grotesk', sans-serif",
+                fontFamily: "'Vrikaan Sans', sans-serif",
                 textAlign: "center", textDecoration: "none",
                 letterSpacing: 0.3,
               }}

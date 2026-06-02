@@ -1,0 +1,47 @@
+/* ===================================================================
+   VRIKAAN BRAND FONTS — self-hosted, no third-party (Google) request.
+   Variable woff2: one file covers full weight range (300–900).
+   Forked from OFL-licensed faces (Hanken Grotesk, Lora, JetBrains Mono),
+   renamed to Vrikaan brand families. License: /fonts/OFL.txt
+   =================================================================== */
+
+/* Vrikaan Sans — UI / display (Styrene-like grotesk) */
+@font-face {
+  font-family: 'Vrikaan Sans';
+  font-style: normal;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url('/fonts/vrikaan-sans.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Vrikaan Sans';
+  font-style: italic;
+  font-weight: 300 900;
+  font-display: swap;
+  src: url('/fonts/vrikaan-sans-italic.woff2') format('woff2');
+}
+
+/* Vrikaan Serif — long-form prose (Tiempos-like) */
+@font-face {
+  font-family: 'Vrikaan Serif';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/vrikaan-serif.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Vrikaan Serif';
+  font-style: italic;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/vrikaan-serif-italic.woff2') format('woff2');
+}
+
+/* Vrikaan Mono — code / data */
+@font-face {
+  font-family: 'Vrikaan Mono';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/vrikaan-mono.woff2') format('woff2');
+}

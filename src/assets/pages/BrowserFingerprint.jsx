@@ -101,16 +101,16 @@ export default function BrowserFingerprint() {
   const riskColor = { low: T.green, medium: T.yellow, high: T.red };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk',sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans',sans-serif" }}>
       <SEO title="Browser Fingerprint Test" description="Check how unique and trackable your browser is." path="/browser-fingerprint" />
       <Navbar />
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "120px 20px 60px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Hanken Grotesk',sans-serif" }}>Browser Fingerprint Test</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Vrikaan Sans',sans-serif" }}>Browser Fingerprint Test</h1>
         <p style={{ color: T.muted, fontSize: 14, marginBottom: 28 }}>Discover how unique and trackable your browser is across the web.</p>
 
         {!result && (
           <div style={{ textAlign: "center", padding: "60px 20px" }}>
-            <button onClick={scan} disabled={scanning} style={{ padding: "16px 40px", borderRadius: 12, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 18, fontWeight: 700, cursor: scanning ? "wait" : "pointer", fontFamily: "'Hanken Grotesk',sans-serif" }}>
+            <button onClick={scan} disabled={scanning} style={{ padding: "16px 40px", borderRadius: 12, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 18, fontWeight: 700, cursor: scanning ? "wait" : "pointer", fontFamily: "'Vrikaan Sans',sans-serif" }}>
               {scanning ? "Scanning your browser..." : "Scan My Browser"}
             </button>
             {scanning && <div style={{ marginTop: 20, color: T.muted, fontSize: 14 }}>Collecting fingerprint data...</div>}
@@ -123,7 +123,7 @@ export default function BrowserFingerprint() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 28 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
                 <div style={{ width: 80, height: 80, borderRadius: "50%", border: `3px solid ${riskColor[result.level.toLowerCase()]}`, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
-                  <span style={{ fontSize: 28, fontWeight: 800, color: riskColor[result.level.toLowerCase()], fontFamily: "'Hanken Grotesk',sans-serif", lineHeight: 1 }}>{result.score}</span>
+                  <span style={{ fontSize: 28, fontWeight: 800, color: riskColor[result.level.toLowerCase()], fontFamily: "'Vrikaan Sans',sans-serif", lineHeight: 1 }}>{result.score}</span>
                   <span style={{ fontSize: 9, color: T.muted }}>/100</span>
                 </div>
                 <div>
@@ -146,7 +146,7 @@ export default function BrowserFingerprint() {
                     <div key={item.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 14px", background: "rgba(15,23,42,0.5)", borderRadius: 8, border: `1px solid ${T.border}` }}>
                       <span style={{ fontSize: 13, color: T.muted }}>{item.label}</span>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <span style={{ fontSize: 13, color: T.white, fontFamily: "'JetBrains Mono',monospace", maxWidth: 300, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", textAlign: "right" }}>{item.value}</span>
+                        <span style={{ fontSize: 13, color: T.white, fontFamily: "'Vrikaan Mono',monospace", maxWidth: 300, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", textAlign: "right" }}>{item.value}</span>
                         <span style={{ width: 8, height: 8, borderRadius: "50%", background: riskColor[item.risk], flexShrink: 0 }} />
                       </div>
                     </div>

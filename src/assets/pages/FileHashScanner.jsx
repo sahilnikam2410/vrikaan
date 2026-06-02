@@ -61,17 +61,17 @@ export default function FileHashScanner() {
   const fmtSize = (b) => b > 1048576 ? `${(b / 1048576).toFixed(1)} MB` : b > 1024 ? `${(b / 1024).toFixed(1)} KB` : `${b} B`;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk',sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans',sans-serif" }}>
       <SEO title="File Hash Scanner" description="Check if a file is malicious by scanning its hash against malware databases." path="/file-hash-scanner" />
       <Navbar />
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "120px 20px 60px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Hanken Grotesk',sans-serif" }}>File Hash Scanner</h1>
+        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Vrikaan Sans',sans-serif" }}>File Hash Scanner</h1>
         <p style={{ color: T.muted, fontSize: 14, marginBottom: 28 }}>Upload a file or paste a hash to check against malware databases. Your file never leaves your browser.</p>
 
         {/* Mode toggle */}
         <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
           {["file", "hash"].map(m => (
-            <button key={m} onClick={() => { setMode(m); setResult(null); setError(""); }} style={{ padding: "10px 24px", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", background: mode === m ? `linear-gradient(135deg,${T.accent},${T.cyan})` : "transparent", border: mode === m ? "none" : `1px solid ${T.border}`, color: mode === m ? "#fff" : T.muted, fontFamily: "'Hanken Grotesk',sans-serif" }}>
+            <button key={m} onClick={() => { setMode(m); setResult(null); setError(""); }} style={{ padding: "10px 24px", borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: "pointer", background: mode === m ? `linear-gradient(135deg,${T.accent},${T.cyan})` : "transparent", border: mode === m ? "none" : `1px solid ${T.border}`, color: mode === m ? "#fff" : T.muted, fontFamily: "'Vrikaan Sans',sans-serif" }}>
               {m === "file" ? "Upload File" : "Paste Hash"}
             </button>
           ))}
@@ -94,17 +94,17 @@ export default function FileHashScanner() {
         )}
 
         {mode === "hash" && (
-          <input value={hash} onChange={e => setHash(e.target.value)} placeholder="Paste MD5, SHA-1, or SHA-256 hash" style={{ width: "100%", padding: "14px 16px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontSize: 14, outline: "none", boxSizing: "border-box", fontFamily: "'JetBrains Mono',monospace", marginBottom: 20, letterSpacing: 0.5 }} />
+          <input value={hash} onChange={e => setHash(e.target.value)} placeholder="Paste MD5, SHA-1, or SHA-256 hash" style={{ width: "100%", padding: "14px 16px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontSize: 14, outline: "none", boxSizing: "border-box", fontFamily: "'Vrikaan Mono',monospace", marginBottom: 20, letterSpacing: 0.5 }} />
         )}
 
         {hash && (
           <div style={{ padding: "10px 14px", background: "rgba(15,23,42,0.5)", borderRadius: 8, border: `1px solid ${T.border}`, marginBottom: 20, wordBreak: "break-all" }}>
             <span style={{ fontSize: 11, color: T.muted }}>SHA-256: </span>
-            <span style={{ fontSize: 12, color: T.cyan, fontFamily: "'JetBrains Mono',monospace" }}>{hash}</span>
+            <span style={{ fontSize: 12, color: T.cyan, fontFamily: "'Vrikaan Mono',monospace" }}>{hash}</span>
           </div>
         )}
 
-        <button onClick={checkHash} disabled={!hash || loading} style={{ width: "100%", padding: "16px", borderRadius: 10, border: "none", background: !hash ? "rgba(99,102,241,0.3)" : `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 16, fontWeight: 700, cursor: !hash || loading ? "not-allowed" : "pointer", fontFamily: "'Hanken Grotesk',sans-serif", marginBottom: 24 }}>
+        <button onClick={checkHash} disabled={!hash || loading} style={{ width: "100%", padding: "16px", borderRadius: 10, border: "none", background: !hash ? "rgba(99,102,241,0.3)" : `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 16, fontWeight: 700, cursor: !hash || loading ? "not-allowed" : "pointer", fontFamily: "'Vrikaan Sans',sans-serif", marginBottom: 24 }}>
           {loading ? "Scanning..." : "Check Hash"}
         </button>
 
@@ -114,7 +114,7 @@ export default function FileHashScanner() {
           <div style={{ background: T.card, border: `1px solid ${result.status === "clean" ? "rgba(34,197,94,0.2)" : result.status === "malicious" ? "rgba(239,68,68,0.2)" : "rgba(251,191,36,0.2)"}`, borderRadius: 16, padding: 28 }}>
             <div style={{ textAlign: "center", marginBottom: 20 }}>
               <div style={{ fontSize: 48, marginBottom: 8 }}>{result.status === "clean" ? "\u2705" : result.status === "malicious" ? "\u26D4" : "\u2753"}</div>
-              <h3 style={{ fontSize: 22, fontWeight: 700, color: result.status === "clean" ? T.green : result.status === "malicious" ? T.red : T.yellow, fontFamily: "'Hanken Grotesk',sans-serif" }}>
+              <h3 style={{ fontSize: 22, fontWeight: 700, color: result.status === "clean" ? T.green : result.status === "malicious" ? T.red : T.yellow, fontFamily: "'Vrikaan Sans',sans-serif" }}>
                 {result.status === "clean" ? "No Threats Found" : result.status === "malicious" ? "Malware Detected!" : "Unknown"}
               </h3>
               <p style={{ fontSize: 13, color: T.muted }}>{result.message || (result.signature ? `Signature: ${result.signature}` : "")}</p>

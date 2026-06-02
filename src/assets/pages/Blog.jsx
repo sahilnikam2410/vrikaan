@@ -454,7 +454,7 @@ const Blog = () => {
               color: catColor,
               backdropFilter: "blur(8px)",
               border: `1px solid ${catColor}30`,
-              fontFamily: "'Hanken Grotesk'",
+              fontFamily: "'Vrikaan Sans'",
               letterSpacing: 0.5,
               textTransform: "uppercase",
             }}
@@ -467,7 +467,7 @@ const Blog = () => {
         <div style={{ padding: large ? "24px 28px" : "18px 20px", flex: 1, display: "flex", flexDirection: "column" }}>
           <h3
             style={{
-              fontFamily: "'Hanken Grotesk'",
+              fontFamily: "'Vrikaan Sans'",
               fontSize: large ? 22 : 16,
               fontWeight: 700,
               color: T.white,
@@ -479,7 +479,7 @@ const Blog = () => {
           </h3>
           <p
             style={{
-              fontFamily: "'Hanken Grotesk'",
+              fontFamily: "'Vrikaan Sans'",
               fontSize: 13,
               color: T.muted,
               margin: "0 0 16px 0",
@@ -510,19 +510,19 @@ const Blog = () => {
                   fontSize: 11,
                   fontWeight: 700,
                   color: article.author.color,
-                  fontFamily: "'Hanken Grotesk'",
+                  fontFamily: "'Vrikaan Sans'",
                 }}
               >
                 {article.author.initials}
               </div>
               <div>
-                <div style={{ fontSize: 12, fontWeight: 600, color: T.white, fontFamily: "'Hanken Grotesk'" }}>{article.author.name}</div>
-                <div style={{ fontSize: 11, color: T.mutedDark, fontFamily: "'Hanken Grotesk'" }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: T.white, fontFamily: "'Vrikaan Sans'" }}>{article.author.name}</div>
+                <div style={{ fontSize: 11, color: T.mutedDark, fontFamily: "'Vrikaan Sans'" }}>
                   {article.date} &middot; {article.readTime}
                 </div>
               </div>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 12, color: T.mutedDark, fontFamily: "'Hanken Grotesk'" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 12, color: T.mutedDark, fontFamily: "'Vrikaan Sans'" }}>
               <span onClick={(e) => toggleLike(article.id, e)} style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 4, color: liked ? T.red : T.mutedDark, transition: "color 0.2s" }}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill={liked ? T.red : "none"} stroke="currentColor" strokeWidth="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>
                 {article.likes + (liked ? 1 : 0)}
@@ -541,7 +541,7 @@ const Blog = () => {
 
   // ─── Grid View ───
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Hanken Grotesk'" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Vrikaan Sans'" }}>
       <SEO title="Cybersecurity Blog - VRIKAAN" description="Stay informed with the latest cybersecurity news, tips, tutorials, and insights from industry experts." />
       <Navbar />
 
@@ -564,12 +564,12 @@ const Blog = () => {
       {/* Hero */}
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "110px 24px 0", textAlign: "center" }}>
         <div style={{ marginBottom: 12 }}>
-          <span style={{ padding: "5px 14px", borderRadius: 20, fontSize: 12, fontWeight: 600, background: `${T.cyan}12`, color: T.cyan, border: `1px solid ${T.cyan}20`, fontFamily: "'Hanken Grotesk'" }}>VRIKAAN Blog</span>
+          <span style={{ padding: "5px 14px", borderRadius: 20, fontSize: 12, fontWeight: 600, background: `${T.cyan}12`, color: T.cyan, border: `1px solid ${T.cyan}20`, fontFamily: "'Vrikaan Sans'" }}>VRIKAAN Blog</span>
         </div>
         <h1
           className="blog-hero-title"
           style={{
-            fontFamily: "'Hanken Grotesk'",
+            fontFamily: "'Vrikaan Sans'",
             fontSize: 48,
             fontWeight: 800,
             background: `linear-gradient(135deg, ${T.white} 0%, ${T.cyan} 50%, ${T.accent} 100%)`,
@@ -604,7 +604,7 @@ const Blog = () => {
               color: T.white,
               fontSize: 14,
               outline: "none",
-              fontFamily: "'Hanken Grotesk'",
+              fontFamily: "'Vrikaan Sans'",
               boxSizing: "border-box",
               backdropFilter: "blur(10px)",
             }}
@@ -633,7 +633,7 @@ const Blog = () => {
                   color: active ? catColor : isHov ? T.white : T.muted,
                   cursor: "pointer",
                   transition: "all 0.2s",
-                  fontFamily: "'Hanken Grotesk'",
+                  fontFamily: "'Vrikaan Sans'",
                 }}
               >
                 {cat}
@@ -672,7 +672,7 @@ const Blog = () => {
           {filteredArticles.length === 0 && (
             <div style={{ textAlign: "center", padding: "60px 0" }}>
               <div style={{ fontSize: 48, marginBottom: 16, opacity: 0.3 }}>&#x1F50D;</div>
-              <h3 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 20, color: T.white, marginBottom: 8 }}>No articles found</h3>
+              <h3 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 20, color: T.white, marginBottom: 8 }}>No articles found</h3>
               <p style={{ fontSize: 14, color: T.muted }}>Try adjusting your search or category filter.</p>
             </div>
           )}
@@ -681,14 +681,14 @@ const Blog = () => {
           <div className="blog-sidebar-mobile" style={{ display: "none", marginTop: 40 }}>
             {/* Popular articles */}
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 22, marginBottom: 20 }}>
-              <h4 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 16px 0" }}>Popular Articles</h4>
+              <h4 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 16px 0" }}>Popular Articles</h4>
               {popularArticles.map((a, i) => (
                 <Link
                   key={a.id}
                   to={`/blog/${slugify(a.title)}`}
                   style={{ textDecoration: "none", display: "flex", gap: 12, padding: "10px 0", borderBottom: i < 4 ? `1px solid ${T.border}` : "none", cursor: "pointer", alignItems: "flex-start" }}
                 >
-                  <span style={{ fontFamily: "'Hanken Grotesk'", fontSize: 20, fontWeight: 800, color: `${T.cyan}30`, minWidth: 28 }}>{String(i + 1).padStart(2, "0")}</span>
+                  <span style={{ fontFamily: "'Vrikaan Sans'", fontSize: 20, fontWeight: 800, color: `${T.cyan}30`, minWidth: 28 }}>{String(i + 1).padStart(2, "0")}</span>
                   <div>
                     <div style={{ fontSize: 13, fontWeight: 600, color: T.white, lineHeight: 1.4, marginBottom: 4 }}>{a.title}</div>
                     <div style={{ fontSize: 11, color: T.mutedDark }}>{a.likes} likes &middot; {a.readTime}</div>
@@ -698,7 +698,7 @@ const Blog = () => {
             </div>
             {/* Tags */}
             <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 22 }}>
-              <h4 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 14px 0" }}>Tags</h4>
+              <h4 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 14px 0" }}>Tags</h4>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {tags.map((tag) => (
                   <span
@@ -718,7 +718,7 @@ const Blog = () => {
         <aside className="blog-sidebar" style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           {/* Popular articles */}
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 22, backdropFilter: "blur(10px)" }}>
-            <h4 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 16px 0" }}>Popular Articles</h4>
+            <h4 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 16px 0" }}>Popular Articles</h4>
             {popularArticles.map((a, i) => (
               <Link
                 key={a.id}
@@ -727,7 +727,7 @@ const Blog = () => {
                 onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.8")}
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
               >
-                <span style={{ fontFamily: "'Hanken Grotesk'", fontSize: 20, fontWeight: 800, color: `${T.cyan}30`, minWidth: 28 }}>{String(i + 1).padStart(2, "0")}</span>
+                <span style={{ fontFamily: "'Vrikaan Sans'", fontSize: 20, fontWeight: 800, color: `${T.cyan}30`, minWidth: 28 }}>{String(i + 1).padStart(2, "0")}</span>
                 <div>
                   <div style={{ fontSize: 13, fontWeight: 600, color: T.white, lineHeight: 1.4, marginBottom: 4 }}>{a.title}</div>
                   <div style={{ fontSize: 11, color: T.mutedDark }}>{a.likes} likes &middot; {a.readTime}</div>
@@ -738,7 +738,7 @@ const Blog = () => {
 
           {/* Newsletter */}
           <div style={{ background: `linear-gradient(135deg, ${T.accent}15 0%, ${T.cyan}10 100%)`, border: `1px solid ${T.accent}25`, borderRadius: 14, padding: 22 }}>
-            <h4 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 6px 0" }}>Newsletter</h4>
+            <h4 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 6px 0" }}>Newsletter</h4>
             <p style={{ fontSize: 12, color: T.muted, margin: "0 0 14px 0", lineHeight: 1.5 }}>Get the latest cybersecurity insights delivered to your inbox every week.</p>
             {newsletterSubmitted ? (
               <div style={{ fontSize: 13, color: T.green, fontWeight: 600, textAlign: "center", padding: "8px 0" }}>
@@ -762,7 +762,7 @@ const Blog = () => {
                     fontSize: 13,
                     outline: "none",
                     boxSizing: "border-box",
-                    fontFamily: "'Hanken Grotesk'",
+                    fontFamily: "'Vrikaan Sans'",
                   }}
                 />
                 <button
@@ -777,7 +777,7 @@ const Blog = () => {
                     fontSize: 13,
                     fontWeight: 700,
                     cursor: "pointer",
-                    fontFamily: "'Hanken Grotesk'",
+                    fontFamily: "'Vrikaan Sans'",
                     transition: "opacity 0.2s",
                   }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.85")}
@@ -791,7 +791,7 @@ const Blog = () => {
 
           {/* Tags */}
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 22, backdropFilter: "blur(10px)" }}>
-            <h4 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 14px 0" }}>Tags</h4>
+            <h4 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 15, fontWeight: 700, color: T.white, margin: "0 0 14px 0" }}>Tags</h4>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
               {tags.map((tag) => {
                 const isHov = hoveredTag === tag;

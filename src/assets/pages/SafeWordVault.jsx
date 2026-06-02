@@ -91,7 +91,7 @@ export default function SafeWordVault() {
   }, [word]);
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="Family Safe-Word Vault — Beat AI Voice Clones"
         description="Set a family safe-word that AI voice clones can't fake. India's #1 defense against deepfake-voice scams targeting parents and grandparents. Free, no signup, stored on your device."
@@ -110,7 +110,7 @@ export default function SafeWordVault() {
             color: T.cyan, marginBottom: 14,
           }}>🆕 FREE · India-First · Stored On Device</span>
           <h1 style={{
-            fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
+            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Beat AI voice clones with<br />
@@ -146,7 +146,7 @@ export default function SafeWordVault() {
             background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24,
             marginBottom: 24,
           }}>
-            <h2 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, color: T.white, margin: "0 0 18px" }}>
+            <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, color: T.white, margin: "0 0 18px" }}>
               {data.word ? "Edit your family safe-word" : "Set your family safe-word"}
             </h2>
 
@@ -224,7 +224,7 @@ export default function SafeWordVault() {
               color: word.trim().length >= 4 ? T.bg : T.muted,
               border: 0, fontWeight: 800, fontSize: 15,
               cursor: word.trim().length >= 4 ? "pointer" : "not-allowed",
-              fontFamily: "'Hanken Grotesk', sans-serif", width: "100%", marginTop: 10,
+              fontFamily: "'Vrikaan Sans', sans-serif", width: "100%", marginTop: 10,
             }}>🔒 Save safe-word</button>
 
             <div style={{ fontSize: 11, color: T.muted, marginTop: 12, textAlign: "center", lineHeight: 1.6 }}>
@@ -268,7 +268,7 @@ export default function SafeWordVault() {
             background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 20,
             marginBottom: 24,
           }}>
-            <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
+            <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
               📲 Send the briefing to each family member
             </h3>
             <p style={{ color: T.muted, fontSize: 13, margin: "0 0 14px", lineHeight: 1.6 }}>
@@ -290,7 +290,7 @@ export default function SafeWordVault() {
                     padding: "8px 14px", borderRadius: 8,
                     background: "#25D366", color: "#fff", border: 0,
                     fontWeight: 700, fontSize: 12, cursor: "pointer",
-                    fontFamily: "'Hanken Grotesk', sans-serif",
+                    fontFamily: "'Vrikaan Sans', sans-serif",
                   }}>📲 Send briefing</button>
                 </div>
               ))}
@@ -303,7 +303,7 @@ export default function SafeWordVault() {
           padding: 22, borderRadius: 14, marginBottom: 24,
           background: T.card, border: `1px solid ${T.border}`,
         }}>
-          <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
+          <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
             🎯 How the safe-word works in a scam call
           </h3>
           <ol style={{ margin: 0, paddingLeft: 22, color: T.muted, fontSize: 13, lineHeight: 1.9 }}>
@@ -320,7 +320,7 @@ export default function SafeWordVault() {
           padding: 22, borderRadius: 14, marginBottom: 24,
           background: "rgba(2,6,23,0.6)", border: `1px solid ${T.border}`,
         }}>
-          <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
+          <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 18, color: T.white, margin: "0 0 14px" }}>
             ✅ Rules of a good safe-word
           </h3>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }} className="rules-grid">
@@ -360,7 +360,7 @@ export default function SafeWordVault() {
             display: "inline-block",
             padding: "11px 22px", borderRadius: 10,
             background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 14,
-            textDecoration: "none", fontFamily: "'Hanken Grotesk', sans-serif",
+            textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
           }}>🎙 Deepfake Audio Detector →</Link>
         </div>
 

@@ -8,8 +8,8 @@ const T = { bg: "#030712", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 
 const sty = {
   card: { background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24, backdropFilter: "blur(10px)" },
-  btn: (bg, clr) => ({ padding: "10px 20px", background: bg, border: "none", borderRadius: 8, color: clr || "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "'Hanken Grotesk'", transition: "all 0.2s" }),
-  input: { width: "100%", padding: "10px 14px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 13, outline: "none", boxSizing: "border-box", fontFamily: "'Hanken Grotesk'" },
+  btn: (bg, clr) => ({ padding: "10px 20px", background: bg, border: "none", borderRadius: 8, color: clr || "#fff", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "'Vrikaan Sans'", transition: "all 0.2s" }),
+  input: { width: "100%", padding: "10px 14px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 8, color: T.white, fontSize: 13, outline: "none", boxSizing: "border-box", fontFamily: "'Vrikaan Sans'" },
 };
 
 const Badge = ({ children, color }) => (
@@ -843,7 +843,7 @@ function VideoPlayer({ title, lessonDesc, duration }) {
         <div style={{ width: 56, height: 56, borderRadius: 14, background: "linear-gradient(135deg, #22c55e, #14e3c5)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, animation: "pulse 2s infinite" }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </div>
-        <div style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Hanken Grotesk'", marginBottom: 6, textAlign: "center" }}>Opening YouTube...</div>
+        <div style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Vrikaan Sans'", marginBottom: 6, textAlign: "center" }}>Opening YouTube...</div>
         <div style={{ fontSize: 13, color: "#94a3b8", textAlign: "center" }}>Video is playing in a new tab</div>
         <style>{`@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }`}</style>
       </div>
@@ -861,10 +861,10 @@ function VideoPlayer({ title, lessonDesc, duration }) {
           <polygon points="5 3 19 12 5 21 5 3" fill="rgba(20,227,197,0.3)"/>
         </svg>
       </div>
-      <div style={{ position: "relative", fontSize: 17, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Hanken Grotesk'", marginBottom: 6, textAlign: "center" }}>{title}</div>
+      <div style={{ position: "relative", fontSize: 17, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Vrikaan Sans'", marginBottom: 6, textAlign: "center" }}>{title}</div>
       <div style={{ position: "relative", fontSize: 13, color: "#94a3b8", marginBottom: 16, textAlign: "center", maxWidth: 420, lineHeight: 1.6 }}>{lessonDesc}</div>
       <div style={{ position: "relative", display: "flex", gap: 12, alignItems: "center" }}>
-        <div style={{ padding: "10px 24px", background: "linear-gradient(135deg, #ef4444, #dc2626)", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 700, fontFamily: "'Hanken Grotesk'", display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ padding: "10px 24px", background: "linear-gradient(135deg, #ef4444, #dc2626)", borderRadius: 8, color: "#fff", fontSize: 13, fontWeight: 700, fontFamily: "'Vrikaan Sans'", display: "flex", alignItems: "center", gap: 8 }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.45.029 5.804 0 12c.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0C23.512 20.55 23.971 18.196 24 12c-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/></svg>
           Watch on YouTube
         </div>
@@ -978,7 +978,7 @@ export default function Learn() {
     <>
       <div style={{ textAlign: "center", marginBottom: 48 }}>
         <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>VRIKAAN ACADEMY</span>
-        <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>
+        <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>
           Learn Cybersecurity. <span style={{ background: "linear-gradient(135deg, #6366f1, #14e3c5)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Get Certified.</span>
         </h1>
         <p style={{ color: T.muted, fontSize: 16, maxWidth: 560, margin: "0 auto", lineHeight: 1.7 }}>
@@ -997,14 +997,14 @@ export default function Learn() {
             width: 64, height: 64, borderRadius: 18, flexShrink: 0,
             background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
             display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-            color: "#02131a", fontFamily: "'Hanken Grotesk'",
+            color: "#02131a", fontFamily: "'Vrikaan Sans'",
           }}>
             <span style={{ fontSize: 10, fontWeight: 700, opacity: 0.7, lineHeight: 1 }}>LVL</span>
             <span style={{ fontSize: 26, fontWeight: 800, lineHeight: 1 }}>{stats.level}</span>
           </div>
           <div style={{ flex: 1, minWidth: 200 }}>
             <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 6 }}>
-              <span style={{ fontFamily: "'Hanken Grotesk'", fontSize: 18, fontWeight: 800, color: T.white }}>{levelTitle(stats.level)}</span>
+              <span style={{ fontFamily: "'Vrikaan Sans'", fontSize: 18, fontWeight: 800, color: T.white }}>{levelTitle(stats.level)}</span>
               <span style={{ fontSize: 12, color: T.cyan, fontWeight: 700 }}>{stats.xp.toLocaleString()} XP</span>
             </div>
             <div style={{ height: 8, borderRadius: 4, background: "rgba(148,163,184,0.12)", overflow: "hidden" }}>
@@ -1013,7 +1013,7 @@ export default function Learn() {
             <div style={{ fontSize: 11, color: T.mutedDark, marginTop: 4 }}>{stats.levelNeed - stats.intoLevel} XP to Level {stats.level + 1}</div>
           </div>
           <div style={{ textAlign: "center", flexShrink: 0, padding: "0 8px" }}>
-            <div style={{ fontSize: 26, fontWeight: 800, color: streak.count > 0 ? "#f97316" : T.mutedDark, fontFamily: "'Hanken Grotesk'" }}>
+            <div style={{ fontSize: 26, fontWeight: 800, color: streak.count > 0 ? "#f97316" : T.mutedDark, fontFamily: "'Vrikaan Sans'" }}>
               {streak.count > 0 ? "🔥" : "·"} {streak.count}
             </div>
             <div style={{ fontSize: 11, color: T.muted }}>day streak{streak.best > streak.count ? ` · best ${streak.best}` : ""}</div>
@@ -1029,7 +1029,7 @@ export default function Learn() {
             { v: badges.filter(b => b.earned).length + "/" + badges.length, l: "Badges" },
           ].map(s => (
             <div key={s.l} style={{ flex: "1 1 120px", textAlign: "center", padding: "12px 8px", background: "rgba(2,6,23,0.3)", border: `1px solid ${T.border}`, borderRadius: 12 }}>
-              <div style={{ fontSize: 22, fontWeight: 800, color: T.cyan, fontFamily: "'Hanken Grotesk'" }}>{s.v}</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: T.cyan, fontFamily: "'Vrikaan Sans'" }}>{s.v}</div>
               <div style={{ fontSize: 11, color: T.muted }}>{s.l}</div>
             </div>
           ))}
@@ -1078,7 +1078,7 @@ export default function Learn() {
           { label: "My Certificates", v: "mycerts" },
         ].map(tab => (
           <button key={tab.v} onClick={() => setView(tab.v)} style={{
-            padding: "10px 24px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Hanken Grotesk'",
+            padding: "10px 24px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Vrikaan Sans'",
             background: view === tab.v ? `${T.accent}15` : "transparent",
             border: `1px solid ${view === tab.v ? T.accent + "30" : T.border}`,
             color: view === tab.v ? T.accent : T.muted,
@@ -1092,7 +1092,7 @@ export default function Learn() {
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           {categories.map(c => (
             <button key={c} onClick={() => setCategoryFilter(c)} style={{
-              padding: "8px 16px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "'Hanken Grotesk'",
+              padding: "8px 16px", borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: "'Vrikaan Sans'",
               background: categoryFilter === c ? `${T.accent}15` : "rgba(148,163,184,0.04)",
               border: `1px solid ${categoryFilter === c ? T.accent + "30" : T.border}`,
               color: categoryFilter === c ? T.accent : T.muted,
@@ -1117,7 +1117,7 @@ export default function Learn() {
                 <Badge color={c.color}>{c.level}</Badge>
                 <Badge color={T.muted}>{c.category}</Badge>
               </div>
-              <h3 style={{ fontSize: 17, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 8 }}>{c.title}</h3>
+              <h3 style={{ fontSize: 17, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'", marginBottom: 8 }}>{c.title}</h3>
               <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.6, marginBottom: 16 }}>{c.desc}</p>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12, color: T.mutedDark }}>
                 <span>{c.lessons} lessons · {c.duration}</span>
@@ -1162,7 +1162,7 @@ export default function Learn() {
                 <Badge color={T.muted}>{c.category}</Badge>
                 <Badge color={T.gold}>★ {c.rating}</Badge>
               </div>
-              <h1 style={{ fontSize: 28, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 8 }}>{c.icon} {c.title}</h1>
+              <h1 style={{ fontSize: 28, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'", marginBottom: 8 }}>{c.icon} {c.title}</h1>
               <p style={{ fontSize: 14, color: T.muted, maxWidth: 600 }}>{c.desc}</p>
             </div>
             <div style={{ textAlign: "right" }}>
@@ -1200,7 +1200,7 @@ export default function Learn() {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
                 <div>
                   <div style={{ fontSize: 12, color: T.muted, marginBottom: 4 }}>Lesson {activeLesson + 1} of {c.chapters.length}</div>
-                  <h2 style={{ fontSize: 20, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'" }}>{ch.title}</h2>
+                  <h2 style={{ fontSize: 20, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'" }}>{ch.title}</h2>
                 </div>
                 <span style={{ fontSize: 12, color: T.mutedDark }}>{ch.duration}</span>
               </div>
@@ -1222,7 +1222,7 @@ export default function Learn() {
                   padding: "11px 20px", marginBottom: 20, textDecoration: "none",
                   background: `linear-gradient(135deg, ${c.color}, ${T.accent})`,
                   color: "#fff", borderRadius: 10, fontSize: 13, fontWeight: 700,
-                  fontFamily: "'Hanken Grotesk'",
+                  fontFamily: "'Vrikaan Sans'",
                 }}>
                   🔧 Practice: {ch.practiceTool.label} →
                 </Link>
@@ -1251,7 +1251,7 @@ export default function Learn() {
 
           {/* Lesson sidebar */}
           <div style={sty.card}>
-            <h3 style={{ fontSize: 15, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Hanken Grotesk'" }}>Course Content</h3>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Vrikaan Sans'" }}>Course Content</h3>
             {c.chapters.map((ch, i) => (
               <div key={i} onClick={() => setActiveLesson(i)} style={{
                 display: "flex", alignItems: "flex-start", gap: 10, padding: "12px 10px", borderRadius: 8, cursor: "pointer", marginBottom: 4,
@@ -1303,7 +1303,7 @@ export default function Learn() {
         </button>
 
         <div style={{ ...sty.card, marginBottom: 24, textAlign: "center" }}>
-          <h1 style={{ fontSize: 28, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 8 }}>Final Quiz: {c.title}</h1>
+          <h1 style={{ fontSize: 28, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'", marginBottom: 8 }}>Final Quiz: {c.title}</h1>
           <p style={{ fontSize: 14, color: T.muted }}>Score at least 60% to earn your certificate. {total} questions.</p>
         </div>
 
@@ -1328,7 +1328,7 @@ export default function Learn() {
                   <button key={j} onClick={() => !quizSubmitted && setQuizAnswers({ ...quizAnswers, [i]: j })} disabled={quizSubmitted} style={{
                     padding: "12px 16px", borderRadius: 8, background: bg, border: `1px solid ${border}`,
                     color, fontSize: 14, cursor: quizSubmitted ? "default" : "pointer", textAlign: "left",
-                    fontFamily: "'Hanken Grotesk'", transition: "all 0.2s", display: "flex", alignItems: "center", gap: 10,
+                    fontFamily: "'Vrikaan Sans'", transition: "all 0.2s", display: "flex", alignItems: "center", gap: 10,
                   }}>
                     <span style={{ width: 20, height: 20, borderRadius: "50%", border: `2px solid ${quizAnswers[i] === j ? color : "rgba(148,163,184,0.2)"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                       {quizAnswers[i] === j && <span style={{ width: 10, height: 10, borderRadius: "50%", background: color }} />}
@@ -1352,7 +1352,7 @@ export default function Learn() {
           </div>
         ) : (
           <div style={{ ...sty.card, marginTop: 24, textAlign: "center", background: passed ? "rgba(34,197,94,0.06)" : "rgba(239,68,68,0.06)", border: `1px solid ${passed ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)"}` }}>
-            <div style={{ fontSize: 48, fontWeight: 800, color: passed ? T.green : T.red, fontFamily: "'Hanken Grotesk'" }}>{score}/{total}</div>
+            <div style={{ fontSize: 48, fontWeight: 800, color: passed ? T.green : T.red, fontFamily: "'Vrikaan Sans'" }}>{score}/{total}</div>
             <div style={{ fontSize: 18, fontWeight: 600, color: passed ? T.green : T.red, marginBottom: 8 }}>
               {passed ? "Congratulations! You Passed!" : "Not quite — try again!"}
             </div>
@@ -1383,7 +1383,7 @@ export default function Learn() {
       <>
         <div style={{ ...sty.card, textAlign: "center", marginBottom: 24 }}>
           <div style={{ fontSize: 48, marginBottom: 12 }}>🎓</div>
-          <h1 style={{ fontSize: 28, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 8 }}>Claim Your Certificate</h1>
+          <h1 style={{ fontSize: 28, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'", marginBottom: 8 }}>Claim Your Certificate</h1>
           <p style={{ fontSize: 14, color: T.muted }}>Enter your full name as it should appear on the certificate.</p>
         </div>
         <div style={{ maxWidth: 500, margin: "0 auto" }}>
@@ -1436,7 +1436,7 @@ export default function Learn() {
     return (
       <>
         <div style={{ textAlign: "center", marginBottom: 32 }}>
-          <h2 style={{ fontSize: 24, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 8 }}>My Certificates</h2>
+          <h2 style={{ fontSize: 24, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'", marginBottom: 8 }}>My Certificates</h2>
           <p style={{ fontSize: 14, color: T.muted }}>All certificates you have earned are listed below.</p>
         </div>
         {certs.length === 0 ? (
@@ -1455,7 +1455,7 @@ export default function Learn() {
                   <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
                     <span style={{ fontSize: 28 }}>{course?.icon || "🎓"}</span>
                     <div>
-                      <h3 style={{ fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'" }}>{cert.course}</h3>
+                      <h3 style={{ fontSize: 16, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'" }}>{cert.course}</h3>
                       <div style={{ fontSize: 12, color: T.muted }}>Issued to: {cert.name}</div>
                     </div>
                   </div>
@@ -1487,7 +1487,7 @@ export default function Learn() {
     return (
       <>
         <div style={{ textAlign: "center", marginBottom: 32 }}>
-          <h2 style={{ fontSize: 24, fontWeight: 700, color: T.white, fontFamily: "'Hanken Grotesk'", marginBottom: 8 }}>Knowledge Base</h2>
+          <h2 style={{ fontSize: 24, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'", marginBottom: 8 }}>Knowledge Base</h2>
           <p style={{ fontSize: 14, color: T.muted }}>Quick, practical guides to protect yourself online.</p>
         </div>
 
@@ -1500,7 +1500,7 @@ export default function Learn() {
             { label: "My Certificates", v: "mycerts" },
           ].map(tab => (
             <button key={tab.v} onClick={() => setView(tab.v)} style={{
-              padding: "10px 24px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Hanken Grotesk'",
+              padding: "10px 24px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Vrikaan Sans'",
               background: view === tab.v ? `${T.accent}15` : "transparent",
               border: `1px solid ${view === tab.v ? T.accent + "30" : T.border}`,
               color: view === tab.v ? T.accent : T.muted,
@@ -1510,15 +1510,15 @@ export default function Learn() {
 
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center", marginBottom: 28 }}>
           {kbTags.map(t => (
-            <button key={t} onClick={() => setKbFilter(t)} style={{ padding: "8px 18px", borderRadius: 100, fontFamily: "'Hanken Grotesk'", fontSize: 12, fontWeight: 600, cursor: "pointer", background: kbFilter === t ? `${T.accent}15` : "rgba(148,163,184,0.04)", border: `1px solid ${kbFilter === t ? T.accent + "30" : T.border}`, color: kbFilter === t ? T.accent : T.mutedDark }}>{t}</button>
+            <button key={t} onClick={() => setKbFilter(t)} style={{ padding: "8px 18px", borderRadius: 100, fontFamily: "'Vrikaan Sans'", fontSize: 12, fontWeight: 600, cursor: "pointer", background: kbFilter === t ? `${T.accent}15` : "rgba(148,163,184,0.04)", border: `1px solid ${kbFilter === t ? T.accent + "30" : T.border}`, color: kbFilter === t ? T.accent : T.mutedDark }}>{t}</button>
           ))}
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {kbFiltered.map(m => (
             <div key={m.id} style={{ background: T.card, border: `1px solid ${kbActive === m.id ? m.color + "20" : T.border}`, borderRadius: 14, overflow: "hidden", transition: "all 0.3s", cursor: "pointer" }} onClick={() => setKbActive(kbActive === m.id ? null : m.id)}>
               <div style={{ padding: "20px 28px", display: "flex", alignItems: "center", gap: 16 }}>
-                <span style={{ padding: "4px 10px", borderRadius: 6, background: `${m.color}0a`, border: `1px solid ${m.color}15`, fontFamily: "'JetBrains Mono', monospace", fontSize: 9, fontWeight: 700, color: m.color, letterSpacing: 1, flexShrink: 0 }}>{m.tag}</span>
-                <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 17, fontWeight: 600, margin: 0, flex: 1 }}>{m.title}</h3>
+                <span style={{ padding: "4px 10px", borderRadius: 6, background: `${m.color}0a`, border: `1px solid ${m.color}15`, fontFamily: "'Vrikaan Mono', monospace", fontSize: 9, fontWeight: 700, color: m.color, letterSpacing: 1, flexShrink: 0 }}>{m.tag}</span>
+                <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 17, fontWeight: 600, margin: 0, flex: 1 }}>{m.title}</h3>
                 <span style={{ fontSize: 12, color: T.mutedDark, flexShrink: 0 }}>{m.time}</span>
                 <span style={{ color: T.accent, fontSize: 18, transition: "transform 0.4s", transform: kbActive === m.id ? "rotate(45deg)" : "none", fontWeight: 300 }}>+</span>
               </div>
@@ -1553,7 +1553,7 @@ export default function Learn() {
           { label: "My Certificates", v: "mycerts" },
         ].map(tab => (
           <button key={tab.v} onClick={() => setView(tab.v)} style={{
-            padding: "10px 24px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Hanken Grotesk'",
+            padding: "10px 24px", borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "'Vrikaan Sans'",
             background: view === tab.v ? `${T.accent}15` : "transparent",
             border: `1px solid ${view === tab.v ? T.accent + "30" : T.border}`,
             color: view === tab.v ? T.accent : T.muted,
@@ -1562,7 +1562,7 @@ export default function Learn() {
       </div>
 
       <div style={{ textAlign: "center", marginBottom: 32 }}>
-        <h2 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 26, fontWeight: 700, marginBottom: 8 }}>Learning Paths</h2>
+        <h2 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 26, fontWeight: 700, marginBottom: 8 }}>Learning Paths</h2>
         <p style={{ color: T.muted, fontSize: 14, maxWidth: 520, margin: "0 auto" }}>
           Guided tracks — finish every course in a path to earn a Path Certificate and master the whole domain.
         </p>
@@ -1583,7 +1583,7 @@ export default function Learn() {
                 <div style={{ width: 56, height: 56, borderRadius: 16, flexShrink: 0, background: `${p.color}1a`, border: `1px solid ${p.color}44`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26 }}>{p.icon}</div>
                 <div style={{ flex: 1, minWidth: 240 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4, flexWrap: "wrap" }}>
-                    <h3 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 18, fontWeight: 700, color: T.white, margin: 0 }}>{p.title}</h3>
+                    <h3 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 18, fontWeight: 700, color: T.white, margin: 0 }}>{p.title}</h3>
                     {complete && <Badge color={T.green}>✓ Complete</Badge>}
                   </div>
                   <p style={{ fontSize: 13, color: T.muted, lineHeight: 1.6, marginBottom: 12 }}>{p.desc}</p>
@@ -1640,7 +1640,7 @@ export default function Learn() {
   };
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="Learn Cybersecurity" description="Free cybersecurity courses with video lessons, quizzes, and certificates. Master ethical hacking, network defense, malware analysis, and more." path="/learn" />
       <Navbar />
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "120px 24px 80px" }}>

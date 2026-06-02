@@ -56,7 +56,7 @@ export default function ThreatDetail() {
   ]);
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title={`${threat.title}: Signs, Examples & Prevention`}
         description={threat.lede}
@@ -88,7 +88,7 @@ export default function ThreatDetail() {
               style={{
                 fontSize: 11,
                 color: T.mutedDark,
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "'Vrikaan Mono', monospace",
                 letterSpacing: 1,
                 padding: "4px 10px",
                 background: "rgba(148,163,184,0.06)",
@@ -102,7 +102,7 @@ export default function ThreatDetail() {
               style={{
                 fontSize: 11,
                 color: SEVERITY_COLOR[threat.severity],
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "'Vrikaan Mono', monospace",
                 fontWeight: 700,
                 letterSpacing: 1,
                 padding: "4px 10px",
@@ -176,7 +176,7 @@ export default function ThreatDetail() {
                 style={{
                   fontSize: 11,
                   color: T.cyan,
-                  fontFamily: "'JetBrains Mono', monospace",
+                  fontFamily: "'Vrikaan Mono', monospace",
                   letterSpacing: 1.5,
                   marginBottom: 6,
                 }}
@@ -215,7 +215,7 @@ export default function ThreatDetail() {
               style={{
                 fontSize: 12,
                 color: T.mutedDark,
-                fontFamily: "'JetBrains Mono', monospace",
+                fontFamily: "'Vrikaan Mono', monospace",
                 letterSpacing: 2,
                 marginBottom: 16,
               }}

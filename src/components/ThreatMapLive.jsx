@@ -386,7 +386,7 @@ export default function ThreatMapLive() {
         ctx.save();
         ctx.globalAlpha = node.major ? 0.6 : 0.35;
         ctx.fillStyle = node.active ? "#f87171" : C.labelColor;
-        ctx.font = `${node.major ? 700 : 500} ${fontSize}px 'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace`;
+        ctx.font = `${node.major ? 700 : 500} ${fontSize}px 'Vrikaan Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace`;
         ctx.textBaseline = "middle";
 
         // Offset label to avoid overlaps (shift left if city is far right)
@@ -522,7 +522,7 @@ export default function ThreatMapLive() {
           position: "absolute",
           top: 16,
           left: 20,
-          fontFamily: "'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace",
+          fontFamily: "'Vrikaan Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace",
           fontSize: 10,
           color: C.cyan,
           opacity: 0.5,
@@ -541,7 +541,7 @@ export default function ThreatMapLive() {
           position: "absolute",
           top: 16,
           right: 20,
-          fontFamily: "'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace",
+          fontFamily: "'Vrikaan Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace",
           fontSize: 10,
           fontWeight: 700,
           color: C.red,
@@ -573,7 +573,7 @@ export default function ThreatMapLive() {
           position: "absolute",
           bottom: 14,
           left: 20,
-          fontFamily: "'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace",
+          fontFamily: "'Vrikaan Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace",
           fontSize: 9,
           color: C.muted,
           opacity: 0.55,
@@ -602,7 +602,7 @@ export default function ThreatMapLive() {
           position: "absolute",
           bottom: 14,
           right: 20,
-          fontFamily: "'JetBrains Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace",
+          fontFamily: "'Vrikaan Mono', 'SF Mono', 'Cascadia Code', 'Consolas', monospace",
           fontSize: 9,
           color: C.cyan,
           opacity: 0.45,

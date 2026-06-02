@@ -118,7 +118,7 @@ export default function NewsletterSignup({
       textAlign: "center",
     }}>
       <h3 style={{
-        fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, fontWeight: 800,
+        fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, fontWeight: 800,
         color: "#f1f5f9", margin: "0 0 8px",
       }}>{title}</h3>
       <p style={{ color: "#94a3b8", fontSize: 14, lineHeight: 1.6, margin: "0 0 20px" }}>
@@ -153,7 +153,7 @@ export default function NewsletterSignup({
             padding: "13px 26px", borderRadius: 12,
             background: accent, color: "#030712", border: 0,
             fontWeight: 800, fontSize: 14, cursor: state === "submitting" ? "wait" : "pointer",
-            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontFamily: "'Vrikaan Sans', sans-serif",
           }}>
             {state === "submitting" ? "Subscribing..." : `${cta} →`}
           </button>

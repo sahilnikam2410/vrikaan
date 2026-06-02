@@ -53,7 +53,7 @@ export default function Press() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="Press Kit"
         description="Brand assets, founder bio, fact sheet, and quotes for journalists, analysts, and partners covering VRIKAAN."
@@ -71,7 +71,7 @@ export default function Press() {
           }}>Press & Media</span>
           <h1 style={{
             fontSize: "clamp(34px, 5vw, 52px)", fontWeight: 800, color: T.white,
-            margin: "0 0 16px", fontFamily: "'Hanken Grotesk', sans-serif", lineHeight: 1.1,
+            margin: "0 0 16px", fontFamily: "'Vrikaan Sans', sans-serif", lineHeight: 1.1,
           }}>
             Press Kit
           </h1>
@@ -84,13 +84,13 @@ export default function Press() {
               background: `linear-gradient(135deg, ${T.accent}, ${T.cyan})`,
               color: "#fff", fontSize: 14, fontWeight: 700, textDecoration: "none",
               boxShadow: "0 4px 16px rgba(99,102,241,0.3)",
-              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontFamily: "'Vrikaan Sans', sans-serif",
             }}>📧 Press inquiries</a>
             <a href="#assets" style={{
               padding: "12px 24px", borderRadius: 10,
               background: "rgba(148,163,184,0.06)", border: `1px solid ${T.border}`,
               color: T.white, fontSize: 14, fontWeight: 600, textDecoration: "none",
-              fontFamily: "'Hanken Grotesk', sans-serif",
+              fontFamily: "'Vrikaan Sans', sans-serif",
             }}>Download brand assets ↓</a>
           </div>
         </section>
@@ -111,7 +111,7 @@ export default function Press() {
                 <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2, color: T.cyan, marginBottom: 10, textTransform: "uppercase" }}>
                   Featured Story · Embargoed available
                 </div>
-                <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 24, fontWeight: 800, color: T.white, margin: "0 0 12px", letterSpacing: "-0.02em" }}>
+                <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 24, fontWeight: 800, color: T.white, margin: "0 0 12px", letterSpacing: "-0.02em" }}>
                   VRIKAAN India Threat Report 2026
                 </h3>
                 <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.7, margin: "0 0 14px" }}>
@@ -134,7 +134,7 @@ export default function Press() {
 
         {/* Quotable stats — pre-written for journalists */}
         <section style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 48px" }}>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>Quotable Stats</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Vrikaan Sans', sans-serif" }}>Quotable Stats</h2>
           <p style={{ fontSize: 13, color: T.muted, marginBottom: 20 }}>
             Drop-in lines for your article. Attribution: <code style={{ background: "rgba(148,163,184,0.08)", padding: "2px 6px", borderRadius: 4, fontSize: 12 }}>VRIKAAN India Threat Report 2026</code>
           </p>
@@ -153,7 +153,7 @@ export default function Press() {
                 border: `1px solid ${T.border}`,
                 borderRadius: 12,
               }}>
-                <div style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 22, fontWeight: 800, color: T.cyan, marginBottom: 6, letterSpacing: "-0.02em" }}>
+                <div style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, fontWeight: 800, color: T.cyan, marginBottom: 6, letterSpacing: "-0.02em" }}>
                   {q.stat}
                 </div>
                 <div style={{ fontSize: 13, color: T.muted, lineHeight: 1.6 }}>{q.line}</div>
@@ -164,7 +164,7 @@ export default function Press() {
 
         {/* Fact sheet */}
         <section style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 48px" }}>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 20, fontFamily: "'Hanken Grotesk', sans-serif" }}>Fact Sheet</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 20, fontFamily: "'Vrikaan Sans', sans-serif" }}>Fact Sheet</h2>
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
@@ -184,7 +184,7 @@ export default function Press() {
 
         {/* Boilerplate */}
         <section style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 48px" }}>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 20, fontFamily: "'Hanken Grotesk', sans-serif" }}>Company Boilerplate</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 20, fontFamily: "'Vrikaan Sans', sans-serif" }}>Company Boilerplate</h2>
           <div style={{
             background: T.card, border: `1px solid ${T.border}`,
             borderRadius: 14, padding: 24, position: "relative",
@@ -217,7 +217,7 @@ export default function Press() {
 
         {/* Founder quote */}
         <section style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 48px" }}>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 20, fontFamily: "'Hanken Grotesk', sans-serif" }}>Founder Quote</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 20, fontFamily: "'Vrikaan Sans', sans-serif" }}>Founder Quote</h2>
           {QUOTES.map((q, i) => (
             <div key={i} style={{
               background: T.card, border: `1px solid ${T.border}`,
@@ -240,7 +240,7 @@ export default function Press() {
 
         {/* Brand assets */}
         <section id="assets" style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 48px" }}>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>Brand Assets</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Vrikaan Sans', sans-serif" }}>Brand Assets</h2>
           <p style={{ fontSize: 13, color: T.muted, marginBottom: 20, lineHeight: 1.6 }}>
             Right-click → Save image, or click any tile to download. Maintain ample padding around the wolf mark and avoid recoloring the gradient.
           </p>
@@ -288,7 +288,7 @@ export default function Press() {
 
         {/* Brand colors */}
         <section style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 48px" }}>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 20, fontFamily: "'Hanken Grotesk', sans-serif" }}>Brand Colors</h2>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 20, fontFamily: "'Vrikaan Sans', sans-serif" }}>Brand Colors</h2>
           <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
@@ -314,7 +314,7 @@ export default function Press() {
                 <div style={{ width: "100%", height: 56, borderRadius: 8, background: c.hex, marginBottom: 10, border: `1px solid ${T.border}` }} />
                 <div style={{ fontSize: 13, fontWeight: 700, color: T.white }}>{c.name}</div>
                 <div style={{ fontSize: 11, color: T.muted, marginTop: 2 }}>{c.desc}</div>
-                <div style={{ fontSize: 11, color: copied === c.hex ? T.green : T.cyan, fontFamily: "'JetBrains Mono', monospace", marginTop: 4 }}>
+                <div style={{ fontSize: 11, color: copied === c.hex ? T.green : T.cyan, fontFamily: "'Vrikaan Mono', monospace", marginTop: 4 }}>
                   {copied === c.hex ? "✓ Copied" : c.hex}
                 </div>
               </button>
@@ -329,7 +329,7 @@ export default function Press() {
             border: `1px solid ${T.accent}30`,
             borderRadius: 16, padding: 32,
           }}>
-            <h3 style={{ fontSize: 20, fontWeight: 700, color: T.white, margin: "0 0 8px", fontFamily: "'Hanken Grotesk', sans-serif" }}>
+            <h3 style={{ fontSize: 20, fontWeight: 700, color: T.white, margin: "0 0 8px", fontFamily: "'Vrikaan Sans', sans-serif" }}>
               Need anything else?
             </h3>
             <p style={{ fontSize: 14, color: T.muted, margin: "0 0 20px" }}>

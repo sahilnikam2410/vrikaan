@@ -178,7 +178,7 @@ export default function CommandPalette() {
           background: T.card, border: `1px solid ${T.border}`,
           borderRadius: 14, boxShadow: "0 24px 80px rgba(0,0,0,0.5)",
           overflow: "hidden", animation: "cp-pop 0.18s cubic-bezier(0.22,1,0.36,1)",
-          fontFamily: "'Hanken Grotesk', sans-serif",
+          fontFamily: "'Vrikaan Sans', sans-serif",
         }}
       >
         {/* Search input */}

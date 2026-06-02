@@ -60,14 +60,14 @@ export default function ThreatMap() {
   const threatColor = THREAT_LEVEL_COLORS[threatLevel] || T.ember;
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="Live Threat Map" description="Real-time global cyber threat visualization with live intelligence from abuse.ch, URLhaus, and Feodo Tracker." path="/threat-map" />
       <Navbar />
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "120px 24px 80px" }}>
         <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>
         <div style={{ textAlign: "center", marginBottom: 48 }}>
           <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.red}0c`, border: `1px solid ${T.red}20`, fontSize: 11, fontWeight: 600, color: T.red, marginBottom: 16, letterSpacing: 0.5 }}>Live Intelligence</span>
-          <h1 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Global Cyber Threat Map</h1>
+          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Global Cyber Threat Map</h1>
           <p style={{ color: T.muted, fontSize: 16, maxWidth: 600, margin: "0 auto", lineHeight: 1.7 }}>Real-time visualization powered by live threat intelligence feeds from URLhaus & Feodo Tracker.</p>
         </div>
 
@@ -81,7 +81,7 @@ export default function ThreatMap() {
             )}
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", color: T.white, fontWeight: 700, fontSize: 16 }}>{count.toLocaleString()}</span>
+            <span style={{ fontFamily: "'Vrikaan Sans', sans-serif", color: T.white, fontWeight: 700, fontSize: 16 }}>{count.toLocaleString()}</span>
             <span style={{ color: T.mutedDark, fontSize: 12 }}>attacks today</span>
           </div>
         </div>
@@ -91,7 +91,7 @@ export default function ThreatMap() {
           {types.map(t => (
             <button key={t} onClick={() => toggleFilter(t)} style={{
               padding: "6px 14px", borderRadius: 8, fontSize: 11, fontWeight: 700, cursor: "pointer",
-              fontFamily: "'JetBrains Mono', monospace", letterSpacing: 0.5, transition: "all 0.2s",
+              fontFamily: "'Vrikaan Mono', monospace", letterSpacing: 0.5, transition: "all 0.2s",
               background: activeFilters.has(t) ? `${typeColors[t]}18` : "rgba(148,163,184,0.04)",
               border: `1px solid ${activeFilters.has(t) ? `${typeColors[t]}40` : T.border}`,
               color: activeFilters.has(t) ? typeColors[t] : T.mutedDark,
@@ -103,7 +103,7 @@ export default function ThreatMap() {
           <button onClick={() => setActiveFilters(activeFilters.size === types.length ? new Set() : new Set(types))} style={{
             padding: "6px 14px", borderRadius: 8, fontSize: 11, fontWeight: 600, cursor: "pointer",
             background: "rgba(148,163,184,0.04)", border: `1px solid ${T.border}`, color: T.muted,
-            fontFamily: "'Hanken Grotesk', sans-serif",
+            fontFamily: "'Vrikaan Sans', sans-serif",
           }}>
             {activeFilters.size === types.length ? "Clear All" : "Select All"}
           </button>
@@ -125,7 +125,7 @@ export default function ThreatMap() {
             ].map((s, i) => (
               <div key={i} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 12, padding: "16px 18px", textAlign: "center" }}>
                 <div style={{ fontSize: 18, marginBottom: 6 }}>{s.icon}</div>
-                <div style={{ fontFamily: "'Hanken Grotesk'", fontSize: 24, fontWeight: 800, color: s.color }}>{s.value}</div>
+                <div style={{ fontFamily: "'Vrikaan Sans'", fontSize: 24, fontWeight: 800, color: s.color }}>{s.value}</div>
                 <div style={{ fontSize: 10, color: T.mutedDark, fontWeight: 600, textTransform: "uppercase", letterSpacing: 0.5 }}>{s.label}</div>
               </div>
             ))}
@@ -136,7 +136,7 @@ export default function ThreatMap() {
         <div className="resp-grid-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
           {/* Attack Vectors */}
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24 }}>
-            <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 18px" }}>Attack Vectors</h3>
+            <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 16, fontWeight: 600, margin: "0 0 18px" }}>Attack Vectors</h3>
             {types.map(t => {
               const pct = [0.3, 0.25, 0.18, 0.12, 0.15][types.indexOf(t)];
               const val = Math.floor(count * pct);
@@ -145,9 +145,9 @@ export default function ThreatMap() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ width: 8, height: 8, borderRadius: "50%", background: typeColors[t] }} />
-                      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: T.white }}>{t}</span>
+                      <span style={{ fontFamily: "'Vrikaan Mono', monospace", fontSize: 12, color: T.white }}>{t}</span>
                     </div>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, color: typeColors[t], fontWeight: 600 }}>{val.toLocaleString()}</span>
+                    <span style={{ fontFamily: "'Vrikaan Mono', monospace", fontSize: 12, color: typeColors[t], fontWeight: 600 }}>{val.toLocaleString()}</span>
                   </div>
                   <div style={{ height: 3, background: "rgba(148,163,184,0.06)", borderRadius: 2 }}>
                     <div style={{ height: "100%", width: `${pct * 333}%`, background: typeColors[t], borderRadius: 2, opacity: 0.6 }} />
@@ -160,7 +160,7 @@ export default function ThreatMap() {
           {/* Live Feed */}
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24 }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 18 }}>
-              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: 0 }}>Live Feed</h3>
+              <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 16, fontWeight: 600, margin: 0 }}>Live Feed</h3>
               <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: T.red, fontWeight: 500 }}>
                 <span style={{ width: 5, height: 5, borderRadius: "50%", background: T.red, animation: "tm-blink 1.5s infinite" }} />Live
               </span>
@@ -171,10 +171,10 @@ export default function ThreatMap() {
                   style={{ padding: "8px 0", borderBottom: `1px solid ${T.border}`, cursor: "pointer", transition: "background 0.2s" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
                     <span style={{ width: 6, height: 6, borderRadius: "50%", background: typeColors[e.type] }} />
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 9, color: typeColors[e.type], fontWeight: 700, letterSpacing: 1 }}>{e.type}</span>
-                    <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 8, color: T.mutedDark, marginLeft: "auto" }}>{e.time}</span>
+                    <span style={{ fontFamily: "'Vrikaan Mono', monospace", fontSize: 9, color: typeColors[e.type], fontWeight: 700, letterSpacing: 1 }}>{e.type}</span>
+                    <span style={{ fontFamily: "'Vrikaan Mono', monospace", fontSize: 8, color: T.mutedDark, marginLeft: "auto" }}>{e.time}</span>
                   </div>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: T.mutedDark, paddingLeft: 12 }}>
+                  <div style={{ fontFamily: "'Vrikaan Mono', monospace", fontSize: 11, color: T.mutedDark, paddingLeft: 12 }}>
                     <span style={{ color: T.white }}>{e.from.n}</span> <span style={{ color: T.red }}>&rarr;</span> <span style={{ color: T.white }}>{e.to.n}</span>
                   </div>
                   {selectedEvent?.id === e.id && (
@@ -191,7 +191,7 @@ export default function ThreatMap() {
           {/* Top Targeted Countries (real data) */}
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-              <h3 style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, fontWeight: 600, margin: 0 }}>Top Countries</h3>
+              <h3 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 16, fontWeight: 600, margin: 0 }}>Top Countries</h3>
               {realData && <span style={{ fontSize: 10, color: T.cyan, fontWeight: 600 }}>REAL DATA</span>}
             </div>
             {realData?.topCountries?.length > 0 ? (
@@ -204,7 +204,7 @@ export default function ThreatMap() {
                         <span style={{ color: T.mutedDark, fontSize: 10, marginRight: 8 }}>#{i + 1}</span>
                         {c.country || "Unknown"}
                       </span>
-                      <span style={{ fontFamily: "'JetBrains Mono'", fontSize: 12, color: T.red, fontWeight: 600 }}>{c.count}</span>
+                      <span style={{ fontFamily: "'Vrikaan Mono'", fontSize: 12, color: T.red, fontWeight: 600 }}>{c.count}</span>
                     </div>
                     <div style={{ height: 3, background: "rgba(148,163,184,0.06)", borderRadius: 2 }}>
                       <div style={{ height: "100%", width: `${(c.count / maxCount) * 100}%`, background: `linear-gradient(90deg, ${T.red}, ${T.ember})`, borderRadius: 2 }} />
@@ -218,7 +218,7 @@ export default function ThreatMap() {
             {realData?.recentMalware?.length > 0 && (
               <div style={{ marginTop: 16, padding: "10px 14px", background: "rgba(239,68,68,0.05)", borderRadius: 8, border: `1px solid ${T.red}15` }}>
                 <div style={{ fontSize: 10, color: T.red, fontWeight: 700, marginBottom: 6, letterSpacing: 0.5 }}>LATEST MALWARE URL</div>
-                <div style={{ fontFamily: "'JetBrains Mono'", fontSize: 10, color: T.muted, wordBreak: "break-all" }}>
+                <div style={{ fontFamily: "'Vrikaan Mono'", fontSize: 10, color: T.muted, wordBreak: "break-all" }}>
                   {realData.recentMalware[0]?.url?.substring(0, 60)}...
                 </div>
                 <div style={{ fontSize: 10, color: T.mutedDark, marginTop: 4 }}>
@@ -233,7 +233,7 @@ export default function ThreatMap() {
         {realData?.recentMalware?.length > 0 && (
           <div style={{ marginTop: 24, background: T.card, border: `1px solid ${T.border}`, borderRadius: 14, padding: 24 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-              <h3 style={{ fontFamily: "'Hanken Grotesk'", fontSize: 16, fontWeight: 600, margin: 0, display: "flex", alignItems: "center", gap: 8 }}>
+              <h3 style={{ fontFamily: "'Vrikaan Sans'", fontSize: 16, fontWeight: 600, margin: 0, display: "flex", alignItems: "center", gap: 8 }}>
                 🦠 Real-Time Malware Feed
               </h3>
               <span style={{ fontSize: 10, color: T.cyan, fontWeight: 600, padding: "3px 10px", borderRadius: 6, background: `${T.cyan}10`, border: `1px solid ${T.cyan}20` }}>URLhaus — LIVE</span>
@@ -245,7 +245,7 @@ export default function ThreatMap() {
                     <span style={{ fontSize: 10, fontWeight: 700, color: T.red, textTransform: "uppercase" }}>{m.threat || "malware"}</span>
                     <span style={{ fontSize: 10, color: m.status === "online" ? T.red : T.green, fontWeight: 600 }}>{m.status}</span>
                   </div>
-                  <div style={{ fontFamily: "'JetBrains Mono'", fontSize: 10, color: T.muted, wordBreak: "break-all", marginBottom: 6 }}>
+                  <div style={{ fontFamily: "'Vrikaan Mono'", fontSize: 10, color: T.muted, wordBreak: "break-all", marginBottom: 6 }}>
                     {m.url?.substring(0, 70)}{m.url?.length > 70 ? "..." : ""}
                   </div>
                   <div style={{ display: "flex", gap: 12, fontSize: 10, color: T.mutedDark }}>

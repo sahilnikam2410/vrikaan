@@ -169,12 +169,12 @@ function TrustBadge({ label, value, color, sub }) {
         background: `${color}18`, color,
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 20, fontWeight: 800, flexShrink: 0,
-        fontFamily: "'Hanken Grotesk', sans-serif",
+        fontFamily: "'Vrikaan Sans', sans-serif",
       }}>✓</div>
       <div style={{ minWidth: 0 }}>
         <div style={{
           fontSize: 18, fontWeight: 800, color: T.white,
-          fontFamily: "'Hanken Grotesk', sans-serif",
+          fontFamily: "'Vrikaan Sans', sans-serif",
           letterSpacing: -0.3, lineHeight: 1.1,
         }}>{value}</div>
         <div style={{
@@ -240,7 +240,7 @@ export default function Status() {
   }, [results]);
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Hanken Grotesk', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="System Status"
         description="Real-time uptime + 90-day history for every VRIKAAN service. Live pings of each API endpoint, aggregate uptime, p50 latency."
@@ -269,7 +269,7 @@ export default function Status() {
             </div>
             <h1 style={{
               fontSize: 40, fontWeight: 800, color: T.white,
-              margin: "0 0 8px", fontFamily: "'Hanken Grotesk', sans-serif",
+              margin: "0 0 8px", fontFamily: "'Vrikaan Sans', sans-serif",
             }}>System Status</h1>
             <p style={{ fontSize: 14, color: T.muted, margin: 0 }}>
               Live health of every public endpoint. Auto-refreshes every 60s.
@@ -376,7 +376,7 @@ export default function Status() {
                       }} />
                       <div style={{ minWidth: 0 }}>
                         <div style={{ fontSize: 14, fontWeight: 600, color: T.white }}>{ep.name}</div>
-                        <div style={{ fontSize: 11, color: T.muted, fontFamily: "'JetBrains Mono', monospace", overflow: "hidden", textOverflow: "ellipsis" }}>{ep.path}</div>
+                        <div style={{ fontSize: 11, color: T.muted, fontFamily: "'Vrikaan Mono', monospace", overflow: "hidden", textOverflow: "ellipsis" }}>{ep.path}</div>
                       </div>
                     </div>
                     <div style={{ textAlign: "right", flexShrink: 0 }}>
@@ -394,7 +394,7 @@ export default function Status() {
                     </div>
                     <div style={{
                       fontSize: 11, fontWeight: 700, color: pctColor,
-                      fontFamily: "'JetBrains Mono', monospace",
+                      fontFamily: "'Vrikaan Mono', monospace",
                       minWidth: 56, textAlign: "right",
                     }}>
                       {pct == null ? "—" : `${pct.toFixed(2)}%`}

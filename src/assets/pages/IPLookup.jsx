@@ -7,7 +7,7 @@ import { exportReport } from "../../utils/exportPDF";
 
 const T = { bg: "#030712", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14e3c5", green: "#22c55e", red: "#ef4444", gold: "#eab308", blue: "#38bdf8", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
-const fonts = { heading: "'Hanken Grotesk', sans-serif", body: "'Hanken Grotesk', sans-serif", mono: "'JetBrains Mono', monospace" };
+const fonts = { heading: "'Vrikaan Sans', sans-serif", body: "'Vrikaan Sans', sans-serif", mono: "'Vrikaan Mono', monospace" };
 
 const COUNTRY_FLAGS = {
   US: "\u{1F1FA}\u{1F1F8}", GB: "\u{1F1EC}\u{1F1E7}", DE: "\u{1F1E9}\u{1F1EA}", FR: "\u{1F1EB}\u{1F1F7}", JP: "\u{1F1EF}\u{1F1F5}",
@@ -155,7 +155,7 @@ function MiniMap({ lat, lon }) {
 
     // Coordinate label
     ctx.fillStyle = T.cyan;
-    ctx.font = "10px 'JetBrains Mono', monospace";
+    ctx.font = "10px 'Vrikaan Mono', monospace";
     const label = `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
     const labelX = Math.min(px + 8, w - ctx.measureText(label).width - 4);
     const labelY = Math.max(py - 8, 12);
@@ -443,7 +443,7 @@ export default function IPLookup() {
                       }))},
                     ],
                   })}
-                  style={{ padding: "8px 16px", background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 8, color: "#818cf8", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Hanken Grotesk'" }}
+                  style={{ padding: "8px 16px", background: "rgba(99,102,241,0.15)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 8, color: "#818cf8", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6, fontFamily: "'Vrikaan Sans'" }}
                 >
                   📄 Export Report
                 </button>
