@@ -195,7 +195,7 @@ const S = {
   dividerLine: { flex: 1, height: 1, background: "rgba(148,163,184,0.15)" },
 
   /* Social buttons */
-  socialGrid: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 10 },
+  socialGrid: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10, marginBottom: 10 },
   socialGoogle: {
     padding: "11px 16px", background: "#ffffff", border: "none", borderRadius: 10,
     fontSize: 13, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center",

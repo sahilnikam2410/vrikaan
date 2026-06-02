@@ -107,7 +107,7 @@ export default function DnsLeakTest() {
 
             {/* Connection info */}
             <h3 style={{ fontSize: 14, fontWeight: 600, color: T.white, marginBottom: 10 }}>Your Connection</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 24 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, marginBottom: 24 }}>
               {[
                 { label: "Public IP", value: result.publicIP },
                 { label: "Location", value: result.location },

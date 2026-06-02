@@ -1090,7 +1090,7 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20 }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10, marginBottom: 20 }}>
                   {[
                     { label: "Plan", value: (detailUser.plan || "free").toUpperCase(), color: T.cyan },
                     { label: "Role", value: (detailUser.role || "user").toUpperCase(), color: detailUser.role === "admin" ? T.gold : T.muted },

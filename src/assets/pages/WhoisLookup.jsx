@@ -73,7 +73,7 @@ export default function WhoisLookup() {
             </div>
 
             {/* Info grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16, marginBottom: 24 }}>
               {[
                 { label: "Registrar", value: result.registrar },
                 { label: "Domain Age", value: result.creationDate ? `${Math.floor(daysBetween(result.creationDate, new Date()) / 365)} years, ${daysBetween(result.creationDate, new Date()) % 365} days` : "Unknown" },

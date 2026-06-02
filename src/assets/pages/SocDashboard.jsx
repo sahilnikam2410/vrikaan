@@ -310,7 +310,7 @@ function VulnsTab({ events }) {
   const agentRows = Object.entries(byAgent);
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
       <div style={{ ...panelStyle(), padding: 18 }}>
         <div style={tileLabel}>Vulnerability Events</div>
         <div style={{ fontSize: 28, fontWeight: 800, color: T.orange, fontFamily: "'Hanken Grotesk'", marginBottom: 12 }}>{vulnEvents.length}</div>

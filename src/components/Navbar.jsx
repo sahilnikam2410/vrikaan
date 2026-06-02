@@ -232,7 +232,7 @@ const Navbar = () => {
                     position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)",
                     background: mode === "dark" ? "rgba(10,15,30,0.98)" : "rgba(241,245,249,0.98)", backdropFilter: "blur(20px)",
                     border: `1px solid rgba(99,102,241,0.15)`, borderRadius: 14,
-                    padding: 16, minWidth: 740, boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+                    padding: 16, minWidth: "min(92vw, 740px)", maxWidth: "92vw", boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
                     display: "flex", gap: 20, animation: "dropIn 0.2s ease",
                   }}>
                     {toolsMenu.map((group, gi) => (
@@ -392,7 +392,7 @@ const Navbar = () => {
 
             {searchOpen && (
               <div style={{
-                position: "absolute", top: "calc(100% + 10px)", right: 0, width: 360,
+                position: "absolute", top: "calc(100% + 10px)", right: 0, width: "min(90vw, 360px)",
                 background: mode === "dark" ? "rgba(10,15,30,0.98)" : "rgba(241,245,249,0.98)", backdropFilter: "blur(20px)",
                 border: `1px solid rgba(99,102,241,0.15)`, borderRadius: 14,
                 boxShadow: "0 20px 60px rgba(0,0,0,0.4)", overflow: "hidden",
@@ -484,7 +484,7 @@ const Navbar = () => {
                 {notifOpen && (
                   <div style={{
                     position: "absolute", top: "calc(100% + 12px)", right: -40,
-                    width: 340, background: mode === "dark" ? "rgba(10,15,30,0.98)" : "rgba(241,245,249,0.98)", backdropFilter: "blur(20px)",
+                    width: "min(90vw, 340px)", background: mode === "dark" ? "rgba(10,15,30,0.98)" : "rgba(241,245,249,0.98)", backdropFilter: "blur(20px)",
                     border: `1px solid rgba(99,102,241,0.15)`, borderRadius: 14,
                     boxShadow: "0 20px 60px rgba(0,0,0,0.4)", overflow: "hidden",
                     animation: "dropIn 0.2s ease",

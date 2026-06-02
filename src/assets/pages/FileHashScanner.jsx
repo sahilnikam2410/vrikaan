@@ -121,7 +121,7 @@ export default function FileHashScanner() {
             </div>
 
             {result.status === "malicious" && (
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, marginBottom: 16 }}>
                 {[
                   { label: "File Name", value: result.fileName },
                   { label: "File Type", value: result.fileType },
