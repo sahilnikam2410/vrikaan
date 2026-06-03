@@ -1,9 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
+import ToolShell from "../../components/ToolShell";
 import SeniorModeBanner from "../../components/SeniorModeBanner";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
 import { LuTriangleAlert, LuCircleCheck, LuLock } from "react-icons/lu";
 
 const T = {
@@ -134,35 +131,19 @@ export default function UpiHoneypot() {
     : { label: "LOOKS NORMAL", color: T.green };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="UPI Scam Lookup — Check Before You Pay"
-        description="Paste any UPI ID before sending money. We check format, red flags, and a crowdsourced scam database. Free, India-built."
-        path="/upi-lookup"
-        keywords="upi scam check, fake upi id india, upi fraud lookup, check upi before pay"
-      />
-      <Navbar />
-      <div style={{ maxWidth: 980, margin: '0 auto', padding: '0 24px' }}><SeniorModeBanner /></div>
+    <ToolShell
+      route="/upi-lookup" eyebrow="UPI Safety"
+      title="Check that UPI ID" titleAccent="before you pay."
+      subtitle="Paste any UPI / VPA → instant red-flag analysis + community scam database lookup. Saves lakhs."
+      width={900}
+      seoTitle="UPI Scam Lookup — Check Before You Pay"
+      seoDesc="Paste any UPI ID before sending money. We check format, red flags, and a crowdsourced scam database. Free, India-built."
+      path="/upi-lookup"
+      topSlot={<SeniorModeBanner />}
+      footer
+    >
 
-      <main style={{ maxWidth: 900, margin: "0 auto", padding: "100px 24px 80px" }}>
-        <header style={{ textAlign: "center", marginBottom: 32 }}>
-          <span style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}40`,
-            fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
-            color: T.cyan, marginBottom: 14,
-          }}>FREE · India-first · Community DB</span>
-          <h1 style={{
-            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
-            fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
-          }}>
-            Check that UPI ID<br />
-            <span style={{ color: T.cyan }}>before you pay.</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 620, margin: "0 auto", lineHeight: 1.7 }}>
-            Paste any UPI / VPA → instant red-flag analysis + community scam database lookup. Saves lakhs.
-          </p>
-        </header>
+      <main style={{ maxWidth: 900, margin: "0 auto", padding: "0" }}>
 
         {/* Lookup field */}
         <div style={{
@@ -324,8 +305,7 @@ export default function UpiHoneypot() {
         </p>
       </main>
 
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }
 

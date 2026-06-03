@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { LuTriangleAlert, LuMic, LuActivity, LuDownload, LuX, LuCircleAlert, LuFile, LuList, LuLock, LuCircleCheck } from "react-icons/lu";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 
 const T = {
   bg: "#060a14", card: "rgba(17,24,39,0.7)",
@@ -101,36 +99,18 @@ export default function VoiceprintVault() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Voiceprint Family Vault — Reference Audio for Deepfake Detection"
-        description="Record your real voice once. Compare against any suspicious call recording later via Deepfake Audio Detector. Stored only in your browser."
-        path="/voiceprint"
-        keywords="voice clone defense, deepfake voice india, family voice samples, ai voice scam parents"
-      />
-      <Navbar />
+    <ToolShell
+      route="/voiceprint" eyebrow="Voice Vault"
+      title="Your REAL voice" titleAccent="as the truth source."
+      subtitle="Record one 20-30 second sample of each family member's voice today. Next time a suspicious 'Beta, send money urgent' call lands, compare its audio against the real sample via our Deepfake Audio Detector."
+      width={900}
+      seoTitle="Voiceprint Family Vault — Reference Audio for Deepfake Detection"
+      seoDesc="Record your real voice once. Compare against any suspicious call recording later via Deepfake Audio Detector. Stored only in your browser."
+      path="/voiceprint"
+      footer
+    >
 
-      <main style={{ maxWidth: 900, margin: "0 auto", padding: "100px 24px 80px" }}>
-        <header style={{ textAlign: "center", marginBottom: 32 }}>
-          <span style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}40`,
-            fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
-            color: T.cyan, marginBottom: 14,
-          }}>FREE · Mic-only · Stored in your browser</span>
-          <h1 style={{
-            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
-            fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
-          }}>
-            Your REAL voice<br />
-            <span style={{ color: T.cyan }}>as the truth source.</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 660, margin: "0 auto", lineHeight: 1.7 }}>
-            Record one 20-30 second sample of each family member's voice today. Next time a suspicious
-            "Beta, send money urgent" call lands, compare its audio against the real sample via our
-            <Link to="/deepfake-audio" style={{ color: T.cyan, marginLeft: 4 }}>Deepfake Audio Detector</Link>.
-          </p>
-        </header>
+      <main style={{ maxWidth: 900, margin: "0 auto", padding: "0" }}>
 
         {/* Threat reminder */}
         <div style={{
@@ -310,14 +290,13 @@ export default function VoiceprintVault() {
         </p>
       </main>
 
-      <Footer />
       <style>{`
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         @media (max-width: 720px) {
           .vp-name-row { grid-template-columns: 1fr !important; }
         }
       `}</style>
-    </div>
+    </ToolShell>
   );
 }
 

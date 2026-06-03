@@ -1,7 +1,5 @@
 import { useState, useRef } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { useAuth } from "../../context/AuthContext";
 import { LuUpload, LuDownload, LuTriangleAlert, LuCheck, LuX } from "react-icons/lu";
 
@@ -140,25 +138,16 @@ export default function BulkScanner() {
   const failCount = Object.values(results).filter((r) => !r.ok).length;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Bulk URL Scanner"
-        description="Scan up to 100 URLs at once for phishing, malware, and reputation threats. CSV upload + export."
-        path="/bulk-scanner"
-        keywords="bulk URL scanner, mass phishing check, CSV malware scanner, batch threat scan"
-      />
-      <Navbar />
-
-      <main style={{ paddingTop: 100, paddingBottom: 80 }}>
-        <section style={{ maxWidth: 920, margin: "0 auto", padding: "0 24px" }}>
-          <h1 style={{
-            fontSize: 36, fontWeight: 800, color: T.white,
-            margin: "0 0 8px", fontFamily: "'Vrikaan Sans', sans-serif",
-          }}>Bulk URL Scanner</h1>
-          <p style={{ fontSize: 15, color: T.muted, marginBottom: 28, lineHeight: 1.7 }}>
-            Paste a list of URLs or upload a CSV. We'll scan each for phishing, malware, and reputation threats.
-            Free tier: up to {MAX_FREE} URLs. Paid plans: {MAX_PRO}.
-          </p>
+    <ToolShell
+      route="/bulk-scanner" eyebrow="Security Tool"
+      title="Bulk URL" titleAccent="Scanner"
+      subtitle="Paste a list of URLs or upload a CSV. We'll scan each for phishing, malware, and reputation threats. Free tier: up to 5 URLs. Paid plans: 100."
+      width={920}
+      seoTitle="Bulk URL Scanner"
+      seoDesc="Scan up to 100 URLs at once for phishing, malware, and reputation threats. CSV upload + export."
+      path="/bulk-scanner"
+      footer
+    >
 
           {/* Plan badge */}
           <div style={{
@@ -314,10 +303,6 @@ export default function BulkScanner() {
               }}>See Plans →</a>
             </div>
           )}
-        </section>
-      </main>
-
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

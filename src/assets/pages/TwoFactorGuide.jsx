@@ -1,7 +1,5 @@
 import { useState } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
@@ -25,12 +23,16 @@ export default function TwoFactorGuide() {
   const filtered = SERVICES.filter(s => s.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans',sans-serif" }}>
-      <SEO title="2FA Setup Guide" description="Step-by-step guides to enable two-factor authentication on popular services." path="/2fa-guide" />
-      <Navbar />
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "120px 20px 60px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Vrikaan Sans',sans-serif" }}>2FA Setup Guide</h1>
-        <p style={{ color: T.muted, fontSize: 14, marginBottom: 28 }}>Step-by-step guides to enable two-factor authentication on popular services.</p>
+    <ToolShell
+      route="/2fa-guide" eyebrow="Security Guide"
+      title="2FA Setup" titleAccent="Guide"
+      subtitle="Step-by-step guides to enable two-factor authentication on popular services."
+      width={760}
+      seoTitle="2FA Setup Guide"
+      seoDesc="Step-by-step guides to enable two-factor authentication on popular services."
+      path="/2fa-guide"
+      footer
+    >
 
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search services..." style={{ width: "100%", padding: "14px 16px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontSize: 14, outline: "none", boxSizing: "border-box", marginBottom: 24 }} />
 
@@ -94,8 +96,6 @@ export default function TwoFactorGuide() {
             </div>
           </div>
         )}
-      </div>
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+import ToolShell from "../../components/ToolShell";
 import ThreatMapLive from "../../components/ThreatMapLive";
-import SEO from "../../components/SEO";
 import { LuCircleAlert, LuRadar, LuActivity, LuGlobe, LuTag } from "react-icons/lu";
 
 const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", ember: "#f97316", red: "#ef4444", gold: "#eab308", purple: "#a78bfa", blue: "#38bdf8", green: "#22c55e", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
@@ -61,16 +59,18 @@ export default function ThreatMap() {
   const threatColor = THREAT_LEVEL_COLORS[threatLevel] || T.ember;
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO title="Live Threat Map" description="Real-time global cyber threat visualization with live intelligence from abuse.ch, URLhaus, and Feodo Tracker." path="/threat-map" />
-      <Navbar />
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "120px 24px 80px" }}>
+    <ToolShell
+      route="/threat-map" eyebrow="Live Intelligence"
+      title="Global Cyber" titleAccent="Threat Map"
+      subtitle="Real-time visualization powered by live threat intelligence feeds from URLhaus & Feodo Tracker."
+      width={1200}
+      seoTitle="Live Threat Map"
+      seoDesc="Real-time global cyber threat visualization with live intelligence from abuse.ch, URLhaus, and Feodo Tracker."
+      path="/threat-map"
+      footer
+    >
+      <div>
         <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.red}0c`, border: `1px solid ${T.red}20`, fontSize: 11, fontWeight: 600, color: T.red, marginBottom: 16, letterSpacing: 0.5 }}>Live Intelligence</span>
-          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Global Cyber Threat Map</h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 600, margin: "0 auto", lineHeight: 1.7 }}>Real-time visualization powered by live threat intelligence feeds from URLhaus & Feodo Tracker.</p>
-        </div>
 
         {/* Status bar */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", marginBottom: 12, borderRadius: 12, background: `${threatColor}08`, border: `1px solid ${threatColor}18`, flexWrap: "wrap", gap: 12 }}>
@@ -259,7 +259,6 @@ export default function ThreatMap() {
           </div>
         )}
       </div>
-      <Footer />
       <style>{`
   @keyframes tm-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
   @media (max-width: 960px) {
@@ -270,6 +269,6 @@ export default function ThreatMap() {
     .resp-grid-4 { grid-template-columns: 1fr !important; }
   }
 `}</style>
-    </div>
+    </ToolShell>
   );
 }

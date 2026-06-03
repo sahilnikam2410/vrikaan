@@ -1,8 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { LuLock, LuFileText, LuSparkles, LuCalendar, LuChartBar, LuTriangleAlert, LuKeyRound, LuShield, LuCreditCard, LuKey } from "react-icons/lu";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { exportReport } from "../../utils/exportPDF";
 import AIExplainButton from "../../components/AIExplainButton";
 
@@ -191,12 +189,19 @@ export default function DarkWebMonitor() {
   const lastScan = results ? now.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) + " at " + now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) : "Never";
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO title="Dark Web Monitor — VRIKAAN" description="Check if your personal data has been exposed in data breaches on the dark web." />
-      <Navbar />
+    <ToolShell
+      route="/dark-web-monitor" eyebrow="Dark Web"
+      title="Dark Web" titleAccent="Monitor"
+      subtitle="Check if your personal data has been exposed in data breaches across the dark web and underground forums."
+      width={1100}
+      seoTitle="Dark Web Monitor — VRIKAAN"
+      seoDesc="Check if your personal data has been exposed in data breaches on the dark web."
+      path="/dark-web-monitor"
+      footer
+    >
 
       {/* ── Hero ── */}
-      <section style={{ padding: "120px 20px 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+      <section style={{ padding: "0 20px 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
         {/* Ambient glow */}
         <div style={{ position: "absolute", top: -120, left: "50%", transform: "translateX(-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(20, 184, 166,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
 
@@ -205,13 +210,6 @@ export default function DarkWebMonitor() {
             <span style={{ width: 8, height: 8, borderRadius: "50%", background: T.cyan, animation: "dwm-pulse 2s infinite" }} />
             <span style={{ fontSize: 12, fontWeight: 600, color: T.cyan }}>Dark Web Intelligence Active</span>
           </div>
-
-          <h1 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 800, fontFamily: "'Vrikaan Sans'", margin: "0 0 16px", background: `linear-gradient(135deg, ${T.cyan}, ${T.accent}, ${T.cyan})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-            Dark Web Monitor
-          </h1>
-          <p style={{ fontSize: 17, color: T.muted, maxWidth: 540, margin: "0 auto 40px", lineHeight: 1.7 }}>
-            Check if your personal data has been exposed in data breaches across the dark web and underground forums.
-          </p>
 
           {/* Search bar */}
           <div style={{ maxWidth: 520, margin: "0 auto", display: "flex", gap: 10 }}>
@@ -485,7 +483,6 @@ export default function DarkWebMonitor() {
         </div>
       </section>
 
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

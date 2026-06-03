@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { LuTriangleAlert, LuCircleCheck } from "react-icons/lu";
 
 /**
@@ -77,26 +75,16 @@ export default function RiskScore() {
   };
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Free Cyber Risk Score — How exposed are you? | VRIKAAN"
-        description="Take the free 2-minute VRIKAAN cyber risk assessment. AI scores your exposure to UPI fraud, scams, deepfakes, password leaks — and gives a personalized fix plan. No login."
-        path="/risk-score"
-        keywords="cyber risk score, security checkup india, am i hacked, password risk, upi fraud risk test"
-      />
-      <Navbar />
-
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "120px 24px 80px" }}>
-        {/* Hero */}
-        <div style={{ textAlign: "center", marginBottom: 44 }}>
-          <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.cyan}10`, border: `1px solid ${T.cyan}30`, fontSize: 11, fontWeight: 700, color: T.cyan, marginBottom: 16, letterSpacing: 0.5 }}>FREE · 2 MIN · NO LOGIN</span>
-          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 800, letterSpacing: "-0.03em", margin: "0 0 16px" }}>
-            What's your <span style={{ background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>cyber risk score?</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, lineHeight: 1.7, maxWidth: 520, margin: "0 auto" }}>
-            Answer 9 quick questions. Our AI scores your real exposure to UPI fraud, scams, deepfakes + leaks — and gives you a personalized fix plan.
-          </p>
-        </div>
+    <ToolShell
+      route="/risk-score" eyebrow="AI Tool"
+      title="Cyber Risk" titleAccent="Score"
+      subtitle="Answer 9 quick questions. Our AI scores your real exposure to UPI fraud, scams, deepfakes + leaks — and gives you a personalized fix plan."
+      width={760}
+      seoTitle="Free Cyber Risk Score — How exposed are you? | VRIKAAN"
+      seoDesc="Take the free 2-minute VRIKAAN cyber risk assessment. AI scores your exposure to UPI fraud, scams, deepfakes, password leaks — and gives a personalized fix plan. No login."
+      path="/risk-score"
+      footer
+    >
 
         {/* Quiz */}
         <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 18, padding: "28px 26px", marginBottom: 24 }}>
@@ -214,8 +202,6 @@ export default function RiskScore() {
             </p>
           </div>
         )}
-      </div>
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

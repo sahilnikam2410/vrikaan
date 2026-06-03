@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { LuTriangleAlert, LuPhone, LuRadio, LuLockOpen, LuClipboard, LuLock, LuPackage, LuBot, LuSmartphone } from "react-icons/lu";
 
 const T = {
@@ -82,35 +80,16 @@ export default function StolenPhone() {
   const flow = os ? OS_FLOWS[os] : null;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Stolen Phone Recovery — India Action Plan"
-        description="Phone lost or stolen? 7-step recovery flow for Android + iPhone. SIM block helplines, CEIR IMEI block, FIR steps, bank freeze. Free, India-first."
-        path="/stolen-phone"
-        keywords="phone stolen india, ceir imei block, sim block jio airtel, lost phone fir, android find my device, iphone icloud find"
-      />
-      <Navbar />
-
-      <main style={{ maxWidth: 900, margin: "0 auto", padding: "100px 24px 80px" }}>
-        <header style={{ textAlign: "center", marginBottom: 28 }}>
-          <span style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: `${T.red}1a`, border: `1px solid ${T.red}55`,
-            fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
-            color: T.red, marginBottom: 14,
-          }}><LuTriangleAlert size={11} style={{ verticalAlign: "-1px" }} /> EMERGENCY · Free Action Plan</span>
-          <h1 style={{
-            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
-            fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
-          }}>
-            Phone lost or stolen?<br/>
-            <span style={{ color: T.red }}>First 60 minutes decide everything.</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 640, margin: "0 auto", lineHeight: 1.7 }}>
-            Pick your OS below → get the exact 7-step recovery flow. Includes SIM-block telco numbers,
-            CEIR IMEI blacklist, find-my-device link, bank freeze flow, FIR steps.
-          </p>
-        </header>
+    <ToolShell
+      route="/stolen-phone" eyebrow="Emergency Plan"
+      title="Stolen Phone" titleAccent="Recovery"
+      subtitle="Pick your OS below → get the exact 7-step recovery flow. Includes SIM-block telco numbers, CEIR IMEI blacklist, find-my-device link, bank freeze flow, FIR steps."
+      width={900}
+      seoTitle="Stolen Phone Recovery — India Action Plan"
+      seoDesc="Phone lost or stolen? 7-step recovery flow for Android + iPhone. SIM block helplines, CEIR IMEI block, FIR steps, bank freeze. Free, India-first."
+      path="/stolen-phone"
+      footer
+    >
 
         {/* OS picker */}
         {!os ? (
@@ -296,14 +275,11 @@ export default function StolenPhone() {
           <LuPhone size={12} style={{ verticalAlign: "-2px" }} /> Telecom + CEIR procedures verified Mar 2026. Verify current process at telco's official help section.<br/>
           🇮🇳 Built in Nashik · Free forever
         </p>
-      </main>
-
-      <Footer />
       <style>{`
         @media (max-width: 720px) {
           .os-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
-    </div>
+    </ToolShell>
   );
 }
