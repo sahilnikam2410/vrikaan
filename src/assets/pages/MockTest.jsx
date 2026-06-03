@@ -4,6 +4,7 @@ import {
   LuShield, LuBanknote, LuFish, LuLock, LuClock, LuTrophy, LuCircleCheck,
   LuCircleX, LuArrowRight, LuArrowLeft, LuRotateCcw, LuChevronRight,
 } from "react-icons/lu";
+import { Card, Button } from "../../components/ui";
 import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
 import { useAuth } from "../../context/AuthContext";
@@ -77,7 +78,7 @@ function TestList({ results, onStart }) {
           const Icon = ICONS[t.icon] || LuShield;
           const r = results[t.id];
           return (
-            <div key={t.id} style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 22, display: "flex", flexDirection: "column" }}>
+            <Card key={t.id} hover padding={22} style={{ display: "flex", flexDirection: "column" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
                 <span style={{ width: 44, height: 44, borderRadius: 11, background: `${T.cyan}1f`, color: T.cyan, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <Icon size={22} />
@@ -95,10 +96,10 @@ function TestList({ results, onStart }) {
                   Best: {r.best}% · {r.attempts} attempt{r.attempts > 1 ? "s" : ""}{r.best >= t.pass ? " · Passed ✓" : ""}
                 </div>
               )}
-              <button onClick={() => onStart(t.id)} style={btn(T.cyan)}>
-                {r ? "Retake" : "Start test"} <LuArrowRight size={16} />
-              </button>
-            </div>
+              <Button onClick={() => onStart(t.id)} iconRight={<LuArrowRight size={16} />}>
+                {r ? "Retake" : "Start test"}
+              </Button>
+            </Card>
           );
         })}
       </div>

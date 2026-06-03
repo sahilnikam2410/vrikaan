@@ -4,6 +4,7 @@ import {
   LuVenetianMask, LuSend, LuCopy, LuCheck, LuShieldAlert, LuDna,
   LuTriangleAlert, LuUserRound, LuBot,
 } from "react-icons/lu";
+import { Card, Button } from "../../components/ui";
 import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
 
@@ -124,7 +125,7 @@ export default function ScamBait() {
         )}
 
         {/* Chat */}
-        <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 18, minHeight: 240 }}>
+        <Card padding={18} style={{ minHeight: 240 }}>
           {messages.length === 0 && !loading && (
             <div style={{ textAlign: "center", color: T.dim, padding: "40px 16px" }}>
               <LuVenetianMask size={40} style={{ marginBottom: 12, opacity: 0.6 }} />
@@ -159,7 +160,7 @@ export default function ScamBait() {
             {loading && <div style={{ color: T.dim, fontSize: 13, fontStyle: "italic" }}>AI is crafting a time-wasting reply…</div>}
             <div ref={endRef} />
           </div>
-        </div>
+        </Card>
 
         {error && <div style={{ color: T.red, fontSize: 13, marginTop: 10 }}>{error}</div>}
 
@@ -173,9 +174,7 @@ export default function ScamBait() {
             rows={2}
             style={{ flex: 1, background: T.card, border: `1px solid ${T.border}`, borderRadius: 11, color: T.white, padding: "12px 14px", fontSize: 15, fontFamily: "inherit", resize: "vertical", outline: "none" }}
           />
-          <button onClick={getReply} disabled={loading} style={{ padding: "13px 18px", borderRadius: 11, border: "none", background: loading ? "rgba(20,184,166,0.4)" : T.cyan, color: "#04110e", fontWeight: 800, fontSize: 14.5, cursor: loading ? "wait" : "pointer", fontFamily: "inherit", display: "inline-flex", alignItems: "center", gap: 7, flexShrink: 0 }}>
-            <LuSend size={16} /> Get reply
-          </button>
+          <Button onClick={getReply} loading={loading} icon={<LuSend size={16} />} style={{ flexShrink: 0 }}>Get reply</Button>
         </div>
         <p style={{ fontSize: 12, color: T.dim, marginTop: 12 }}>
           Tip: copy the AI's reply, send it to the scammer, then paste their next message here to keep them busy. Their details auto-feed Scam DNA to warn others.

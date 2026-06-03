@@ -6,6 +6,7 @@ import SEO from "../../components/SEO";
 import { useAuth } from "../../context/AuthContext";
 import { getTopScores, submitScore } from "../../services/leaderboardService";
 import { totalMockXp, getMockResults } from "../../lib/mockTests";
+import { Card, Button } from "../../components/ui";
 
 const T = {
   bg: "#060a14", card: "#0b1220", border: "rgba(148,163,184,0.12)",
@@ -58,13 +59,9 @@ export default function Leaderboard() {
         <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.6, margin: "0 0 8px" }}>
           XP from courses, certificates and mock tests. Keep learning to climb.
         </p>
-        <div style={{ display: "flex", gap: 14, alignItems: "center", marginBottom: 26, flexWrap: "wrap" }}>
-          <Link to="/mock-test" style={{ display: "inline-flex", alignItems: "center", gap: 7, color: T.cyan, textDecoration: "none", fontWeight: 700, fontSize: 14 }}>
-            Take a mock test <LuArrowRight size={15} />
-          </Link>
-          <button onClick={load} style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "none", border: "none", color: T.muted, cursor: "pointer", fontSize: 13, fontFamily: "inherit" }}>
-            <LuRefreshCw size={13} /> Refresh
-          </button>
+        <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 26, flexWrap: "wrap" }}>
+          <Button to="/mock-test" variant="secondary" size="sm" iconRight={<LuArrowRight size={15} />} style={{ color: T.cyan, borderColor: `${T.cyan}40` }}>Take a mock test</Button>
+          <Button onClick={load} variant="ghost" size="sm" icon={<LuRefreshCw size={13} />}>Refresh</Button>
         </div>
 
         {!user && (
@@ -89,10 +86,9 @@ export default function Leaderboard() {
               const me = user?.uid === r.uid;
               const medal = rank === 1 ? T.gold : rank === 2 ? T.silver : rank === 3 ? T.bronze : null;
               return (
-                <div key={r.uid} style={{
-                  display: "flex", alignItems: "center", gap: 14, padding: "13px 18px", borderRadius: 12,
-                  background: me ? `${T.cyan}14` : T.card,
-                  border: `1px solid ${me ? `${T.cyan}55` : T.border}`,
+                <Card key={r.uid} hover padding="13px 18px" style={{
+                  display: "flex", alignItems: "center", gap: 14,
+                  ...(me ? { background: `${T.cyan}14`, borderColor: `${T.cyan}55` } : null),
                 }}>
                   <span style={{ width: 30, textAlign: "center", fontWeight: 800, fontSize: 16, color: medal || T.dim, display: "flex", justifyContent: "center" }}>
                     {rank === 1 ? <LuCrown size={20} color={T.gold} /> : rank <= 3 ? <LuMedal size={18} color={medal} /> : rank}
@@ -104,7 +100,7 @@ export default function Leaderboard() {
                     <div style={{ fontSize: 12, color: T.dim }}>Lvl {r.level || 1} · {levelTitle(r.level)}{r.bestMock ? ` · best test ${r.bestMock}%` : ""}</div>
                   </div>
                   <span style={{ fontWeight: 800, fontSize: 16, color: T.cyan }}>{r.xp || 0}<span style={{ fontSize: 11, color: T.dim, fontWeight: 600 }}> XP</span></span>
-                </div>
+                </Card>
               );
             })}
           </div>
