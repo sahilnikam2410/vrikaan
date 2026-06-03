@@ -129,8 +129,13 @@ export default function ScamDna() {
 
             {/* Community intel — the killer feature */}
             <div style={{ background: `${T.accent}10`, border: `1px solid ${T.accent}33`, borderRadius: 12, padding: "16px 18px", marginBottom: 16 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, fontWeight: 800, letterSpacing: 1, color: T.accent, textTransform: "uppercase", marginBottom: 10 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, fontWeight: 800, letterSpacing: 1, color: T.accent, textTransform: "uppercase", marginBottom: 10, flexWrap: "wrap" }}>
                 <LuUsers size={14} /> Community intelligence
+                {result.community?.verified && (
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4, letterSpacing: 0, textTransform: "none", padding: "2px 8px", borderRadius: 999, background: `${T.green}1f`, border: `1px solid ${T.green}55`, color: T.green, fontSize: 11 }}>
+                    <LuShieldCheck size={12} /> Known scam · VRIKAAN verified
+                  </span>
+                )}
               </div>
               {result.community?.isNew ? (
                 <div style={{ fontSize: 15, color: T.white, lineHeight: 1.6 }}>
@@ -217,7 +222,10 @@ export default function ScamDna() {
                     <LuTriangleAlert size={18} />
                   </span>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontWeight: 700, fontSize: 14, textTransform: "capitalize" }}>{(f.category || "scam").replace(/-/g, " ")}{f.tactic ? ` — ${f.tactic}` : ""}</div>
+                    <div style={{ fontWeight: 700, fontSize: 14, textTransform: "capitalize", display: "flex", alignItems: "center", gap: 6 }}>
+                      {(f.category || "scam").replace(/-/g, " ")}{f.tactic ? ` — ${f.tactic}` : ""}
+                      {f.verified && <LuShieldCheck size={13} color={T.green} title="VRIKAAN verified" />}
+                    </div>
                     <div style={{ fontSize: 12, color: T.dim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{f.sample}</div>
                   </div>
                   <div style={{ textAlign: "right", flexShrink: 0 }}>

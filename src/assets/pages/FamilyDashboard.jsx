@@ -43,6 +43,7 @@ export default function FamilyDashboard() {
   const [inviteEmail, setInviteEmail] = useState("");
   const [inviteRole, setInviteRole] = useState("member");
   const [pendingMyInvites, setPendingMyInvites] = useState([]);
+  const [alerts, setAlerts] = useState([]);
 
   const flash = (text, kind = "info") => { setMsg(text); setMsgKind(kind); };
 
@@ -64,6 +65,7 @@ export default function FamilyDashboard() {
     try {
       const r = await apiCall("family-info", {});
       setFamily(r.family);
+      try { const a = await apiCall("family-alerts", {}); setAlerts(Array.isArray(a.alerts) ? a.alerts : []); } catch { /* ignore */ }
     } catch (e) {
       // Not in a family yet — fine, owner can create
       setFamily(null);
@@ -406,6 +408,28 @@ export default function FamilyDashboard() {
         {/* Family exists — members list */}
         {family && (
           <>
+            {/* Family scam-alert feed (mesh) */}
+            {alerts.length > 0 && (
+              <div style={{ marginBottom: 24, background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 14, padding: "16px 18px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 800, color: "#f87171", marginBottom: 12, letterSpacing: 0.5 }}>
+                  🛡 Recent family scam alerts
+                </div>
+                <div style={{ display: "grid", gap: 8 }}>
+                  {alerts.slice(0, 6).map((a) => (
+                    <div key={a.id} style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 13.5, color: "#e2e8f0", lineHeight: 1.5 }}>
+                      <span style={{ width: 7, height: 7, borderRadius: 99, background: "#ef4444", flexShrink: 0 }} />
+                      <span>
+                        <strong>{a.mine ? "You" : (a.byName || "A member")}</strong> flagged a{" "}
+                        <strong style={{ textTransform: "capitalize" }}>{(a.category || "scam").replace(/-/g, " ")}</strong>
+                        {a.tactic ? ` — ${a.tactic}` : ""}
+                        {a.createdAt ? <span style={{ color: T.muted }}> · {new Date(a.createdAt).toLocaleDateString()}</span> : null}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Seats summary */}
             <div style={{
               display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 28,

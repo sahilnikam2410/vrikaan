@@ -2745,6 +2745,24 @@ async function handleCouponValidate(req, res) {
 function _sanitizeId(s) {
   return String(s).toLowerCase().replace(/[^a-z0-9@._-]/g, "").slice(0, 120);
 }
+// Verified known-scam templates (server constant) used to seed the network so
+// it's useful from day one. Honest: count starts at 1 and they're flagged
+// verified — NOT fabricated user/loss numbers.
+const SCAM_SEED = [
+  { category: "kyc", tactic: "Fake KYC-expiry deadline", keyPhrases: ["kyc expires today", "account will be blocked", "update kyc"], sample: "Dear customer, your bank KYC expires today. Update now or your account will be permanently blocked." },
+  { category: "phishing", tactic: "Electricity disconnection threat", keyPhrases: ["electricity will be disconnected", "previous month bill", "update at once"], sample: "Dear consumer, your electricity will be disconnected tonight 9:30 as previous month bill not updated. Call our officer immediately." },
+  { category: "fake-courier", tactic: "Parcel held by customs / FedEx", keyPhrases: ["parcel held", "customs", "illegal items found", "your aadhaar"], sample: "Your FedEx parcel is held by customs — illegal items found linked to your Aadhaar. Press 1 to speak to an officer." },
+  { category: "fake-police", tactic: "Digital arrest by CBI / police", keyPhrases: ["digital arrest", "aadhaar misused", "money laundering case", "do not disconnect"], sample: "This is CBI. Your Aadhaar is linked to a money-laundering case. You are under digital arrest — do not disconnect the video call." },
+  { category: "upi-fraud", tactic: "Collect-request disguised as refund", keyPhrases: ["accept to receive refund", "approve the request", "scan to get money"], sample: "Sir your refund of Rs 4,999 is ready. Just approve the UPI request / scan this QR and enter PIN to RECEIVE the money." },
+  { category: "job-scam", tactic: "Paid like-and-subscribe task scam", keyPhrases: ["work from home", "like youtube videos", "earn 5000 daily", "telegram"], sample: "Hi! Part-time work from home. Just like YouTube videos, earn Rs 5000 daily. Join our Telegram to start." },
+  { category: "lottery-prize", tactic: "KBC / lottery winner", keyPhrases: ["you have won", "kbc lottery", "lucky draw", "processing fee"], sample: "Congratulations! Your number won Rs 25,00,000 in the KBC WhatsApp lucky draw. To claim, pay the small GST processing fee." },
+  { category: "loan-app", tactic: "Instant pre-approved loan", keyPhrases: ["pre-approved loan", "instant disbursal", "no documents", "processing fee"], sample: "Your loan of Rs 2,00,000 is pre-approved! Instant disbursal, no documents. Pay small processing fee to release the amount." },
+  { category: "fake-bank", tactic: "Account blocked — share OTP", keyPhrases: ["account blocked", "share otp", "debit card expired", "reactivate"], sample: "Your account is temporarily blocked. Your debit card has expired. Share the OTP sent to verify and reactivate immediately." },
+  { category: "investment", tactic: "Money-doubling / crypto scheme", keyPhrases: ["double your money", "guaranteed returns", "trading group", "expert madam"], sample: "Join our trading group — double your money in 15 days, guaranteed returns. Start with just Rs 5000." },
+  { category: "other", tactic: "Fake army OLX buyer", keyPhrases: ["i am in army", "posted at border", "scan qr advance", "olx"], sample: "I am army personnel posted at border. I'll pay advance for your OLX item — just scan this QR / approve request to receive payment." },
+  { category: "vishing", tactic: "TRAI SIM-block threat", keyPhrases: ["sim will be blocked", "trai", "illegal activity on your number", "press 1"], sample: "This is TRAI. Your SIM will be blocked in 2 hours due to illegal activity on your number. Press 1 to talk to the officer." },
+];
+
 async function handleScamDna(req, res) {
   const { text, action = "analyze", lostMoney, amount } = req.body || {};
 
@@ -2752,6 +2770,31 @@ async function handleScamDna(req, res) {
   const fs = adminMod.getAdminFirestore();
   if (!fs) return res.status(500).json({ error: "Scam DNA unavailable (DB not configured)" });
   const col = fs.collection("scamSignatures");
+
+  // ── SEED: write the verified known-scam library (idempotent; data is a
+  // server constant, not user input, so this is safe to call openly once). ──
+  if (action === "seed") {
+    const cryptoMod = await import("crypto");
+    const { FieldValue } = await import("firebase-admin/firestore");
+    const now = Date.now();
+    let n = 0;
+    for (let i = 0; i < SCAM_SEED.length; i++) {
+      const p = SCAM_SEED[i];
+      const docId = "seed_" + cryptoMod.createHash("sha1").update(p.category + "|" + p.keyPhrases.join("|")).digest("hex").slice(0, 20);
+      const seenAt = new Date(now - Math.floor(Math.random() * 72) * 3600000 - i * 600000);
+      try {
+        await col.doc(docId).set({
+          category: p.category, tactic: p.tactic, sampleText: p.sample.slice(0, 200),
+          keyPhrases: p.keyPhrases, idents: FieldValue.arrayUnion("_none"),
+          verified: true, source: "VRIKAAN known-scam library",
+          count: 1, lossCount: 0, lossTotal: 0,
+          firstSeen: seenAt, lastSeen: seenAt,
+        }, { merge: true });
+        n++;
+      } catch (e) { console.error("seed:", e.message); }
+    }
+    return res.status(200).json({ seeded: n });
+  }
 
   // ── FEED: today's trending scams ──
   if (action === "feed") {
@@ -2762,6 +2805,7 @@ async function handleScamDna(req, res) {
         return {
           id: d.id, category: x.category || "scam", tactic: x.tactic || "",
           count: x.count || 1, lossCount: x.lossCount || 0,
+          verified: !!x.verified,
           lastSeen: x.lastSeen?.toMillis?.() || x.lastSeen || null,
           sample: (x.sampleText || "").slice(0, 140),
         };
@@ -2830,6 +2874,7 @@ Message:"""${clean}"""`;
       lastSeen: Date.now(),
       lossCount: (existing?.lossCount || 0) + addLoss,
       lossTotal: (existing?.lossTotal || 0) + addAmt,
+      verified: !!existing?.verified,
       isNew: !existing,
     };
   } catch (e) {
