@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useUsageLimit } from "../../hooks/useUsageLimit";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { exportReport } from "../../utils/exportPDF";
 import { saveToolResult } from "../../services/toolHistoryService";
 import renderMarkdown from "../../utils/renderMarkdown";
@@ -140,13 +138,16 @@ export default function SecurityAudit() {
   const gradeColor = { A: T.green, B: T.cyan, C: T.yellow, D: "#f97316", F: T.red };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans',sans-serif" }}>
-      <SEO title="Security Audit" description="Run a comprehensive security audit on your email and website." path="/security-audit" />
-      <Navbar />
-      <div style={{ maxWidth: 700, margin: "0 auto", padding: "120px 20px 60px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Vrikaan Sans',sans-serif" }}>Security Audit</h1>
-        <p style={{ color: T.muted, fontSize: 14, marginBottom: 28 }}>Run a comprehensive security check on your email and website in one click.</p>
-
+    <ToolShell
+      route="/security-audit" eyebrow="Security Tool"
+      title="Security" titleAccent="Audit"
+      subtitle="Run a comprehensive security check on your email and website in one click."
+      width={700}
+      seoTitle="Security Audit"
+      seoDesc="Run a comprehensive security audit on your email and website."
+      path="/security-audit"
+      footer
+    >
         {!results && (
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 28 }}>
             <div style={{ marginBottom: 20 }}>
@@ -247,8 +248,6 @@ export default function SecurityAudit() {
             )}
           </div>
         )}
-      </div>
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

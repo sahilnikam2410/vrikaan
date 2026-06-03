@@ -1,9 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { useAuth } from "../../context/AuthContext";
-import ToolIcon from "../../lib/toolIcons.jsx";
 
 const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", red: "#ef4444", orange: "#f97316", yellow: "#eab308", green: "#22c55e", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
@@ -252,17 +249,16 @@ export default function PasswordVault() {
   const genStr = calcStrength(genPw);
 
   return (
-    <>
-      <SEO title="Password Vault" description="Generate, store, and manage your passwords securely with VRIKAAN's Password Vault." path="/password-vault" />
-      <Navbar />
-      <div style={{ minHeight: "100vh", background: T.bg, paddingTop: 80 }}>
-
-        {/* ── Hero ── */}
-        <section style={{ textAlign: "center", padding: "60px clamp(24px,5vw,80px) 40px" }}>
-          <div style={{ width: 64, height: 64, borderRadius: 16, background: `linear-gradient(135deg, ${T.cyan}, ${T.accent})`, display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 28, marginBottom: 20 }}><ToolIcon to="/password-vault" size={34} color="#14b8a6" /></div>
-          <h1 style={{ fontFamily: "'Vrikaan Sans'", fontSize: "clamp(32px,5vw,48px)", fontWeight: 700, color: T.white, margin: "0 0 12px" }}>Password Vault</h1>
-          <p style={{ fontFamily: "'Vrikaan Sans'", fontSize: 17, color: T.muted, maxWidth: 520, margin: "0 auto" }}>Generate, store, and manage your passwords securely</p>
-        </section>
+    <ToolShell
+      route="/password-vault" eyebrow="Security Tool"
+      title="Password" titleAccent="Vault"
+      subtitle="Generate, store, and manage your passwords securely"
+      width={1200}
+      seoTitle="Password Vault"
+      seoDesc="Generate, store, and manage your passwords securely with VRIKAAN's Password Vault."
+      path="/password-vault"
+      footer
+    >
 
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(24px,5vw,80px) 80px" }}>
 
@@ -457,8 +453,6 @@ export default function PasswordVault() {
             </button>
           </div>
         </Modal>
-      </div>
-      <Footer />
-    </>
+    </ToolShell>
   );
 }

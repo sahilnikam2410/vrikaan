@@ -1,8 +1,6 @@
 import { useState, useRef, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import QuotaBanner from "../../components/QuotaBanner";
 import { useToolQuota } from "../../hooks/useToolQuota";
 import {
@@ -227,36 +225,16 @@ export default function DeviceScanner() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Device Scanner — VRIKAAN"
-        description="Scan files, folders, downloads, or USB drives for malware. SHA-256 hashes checked against malware databases. Free up to 10 files / day, Pro unlocks bulk."
-        path="/device-scan"
-        keywords="malware scanner india, free virus scan, file scanner online, alternative to mcafee, npav alternative"
-      />
-      <Navbar />
-
-      <main style={{ maxWidth: 1100, margin: "0 auto", padding: "100px 24px 80px" }}>
-        {/* Hero */}
-        <header style={{ textAlign: "center", marginBottom: 32 }}>
-          <span style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}40`,
-            fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
-            color: T.cyan, marginBottom: 14,
-          }}>Device Scanner · Free</span>
-          <h1 style={{
-            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 52px)",
-            fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
-          }}>
-            Scan your files for malware.<br />
-            <span style={{ color: T.cyan }}>Hash-based. Private. Free.</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 680, margin: "0 auto", lineHeight: 1.6 }}>
-            Drag files, folders, or your Downloads folder. We compute SHA-256 locally in your browser
-            (files never leave your device) and check each hash against malware databases.
-          </p>
-        </header>
+    <ToolShell
+      route="/device-scan" eyebrow="Device Scanner"
+      title="Scan your files for malware." titleAccent="Hash-based. Private. Free."
+      subtitle="Drag files, folders, or your Downloads folder. We compute SHA-256 locally in your browser (files never leave your device) and check each hash against malware databases."
+      width={1100}
+      seoTitle="Device Scanner — VRIKAAN"
+      seoDesc="Scan files, folders, downloads, or USB drives for malware. SHA-256 hashes checked against malware databases. Free up to 10 files / day, Pro unlocks bulk."
+      path="/device-scan"
+      footer
+    >
 
         <QuotaBanner
           unlimited={quota.unlimited}
@@ -577,9 +555,7 @@ export default function DeviceScanner() {
           <br />
           🇮🇳 Built in Nashik · Free tier for everyone · No card required
         </p>
-      </main>
 
-      <Footer />
       <style>{`
         @media (max-width: 720px) {
           .scan-summary { grid-template-columns: 1fr 1fr 1fr !important; }
@@ -590,7 +566,7 @@ export default function DeviceScanner() {
           .roadmap-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
-    </div>
+    </ToolShell>
   );
 }
 

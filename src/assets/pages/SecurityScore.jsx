@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { saveToolResult } from "../../services/toolHistoryService";
 
 const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
@@ -41,16 +39,17 @@ export default function SecurityScore() {
   const answered = Object.keys(answers).length;
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO title="Security Score" description="Assess your cybersecurity posture with Vrikaan's free security score assessment." path="/security-score" />
-      <Navbar />
-      <div style={{ maxWidth: 800, margin: "0 auto", padding: "120px 24px 80px" }}>
+    <ToolShell
+      route="/security-score" eyebrow="Assessment"
+      title="Cyber Safety" titleAccent="Score"
+      subtitle="Answer 10 questions to assess your cybersecurity posture. Takes under 2 minutes."
+      width={800}
+      seoTitle="Security Score"
+      seoDesc="Assess your cybersecurity posture with Vrikaan's free security score assessment."
+      path="/security-score"
+      footer
+    >
         <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>
-        <div style={{ textAlign: "center", marginBottom: 56 }}>
-          <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.cyan}0c`, border: `1px solid ${T.cyan}20`, fontSize: 11, fontWeight: 600, color: T.cyan, marginBottom: 16, letterSpacing: 0.5 }}>Assessment</span>
-          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Cyber Safety Score</h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 480, margin: "0 auto", lineHeight: 1.7 }}>Answer 10 questions to assess your cybersecurity posture. Takes under 2 minutes.</p>
-        </div>
 
         {score === null ? (
           <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 18, padding: "36px 32px", backdropFilter: "blur(8px)" }}>
@@ -113,8 +112,6 @@ export default function SecurityScore() {
             </div>
           </div>
         )}
-      </div>
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

@@ -1,9 +1,7 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { LuMail, LuMicroscope, LuLock, LuShield, LuZap, LuChartColumn, LuLockOpen, LuGlobe, LuSwords, LuUserSearch, LuFileText, LuUpload, LuSearch, LuKey, LuTriangleAlert, LuFish, LuUser } from "react-icons/lu";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { exportReport } from "../../utils/exportPDF";
 
 const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", accentSoft: "#818cf8", cyan: "#14b8a6", red: "#ef4444", orange: "#f97316", green: "#22c55e", yellow: "#eab308", purple: "#a78bfa", blue: "#38bdf8", pink: "#ec4899", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
@@ -133,9 +131,16 @@ export default function IdentityXray() {
   const wrap = { maxWidth: 900, margin: "0 auto", padding: "0 24px" };
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO title="Digital Identity X-Ray" description="One-click complete digital identity security audit. Check breaches, domain security, attack paths, and get a personalized security action plan." path="/identity-xray" />
-      <Navbar />
+    <ToolShell
+      route="/identity-xray" eyebrow="Free Security Audit"
+      title="Digital Identity" titleAccent="X-Ray"
+      subtitle="One email. 30 seconds. Complete digital identity security audit. See what hackers see — before they do."
+      width={900}
+      seoTitle="Digital Identity X-Ray"
+      seoDesc="One-click complete digital identity security audit. Check breaches, domain security, attack paths, and get a personalized security action plan."
+      path="/identity-xray"
+      footer
+    >
       <style>{`
         @keyframes xray-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.3); } 50% { box-shadow: 0 0 0 20px rgba(99,102,241,0); } }
         @keyframes xray-glow { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
@@ -145,25 +150,11 @@ export default function IdentityXray() {
       `}</style>
 
       {/* ── Hero Section ── */}
-      <div style={{ padding: "140px 24px 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+      <div style={{ padding: "0 0 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
         {/* Background glow */}
         <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)", pointerEvents: "none" }} />
 
         <div style={wrap}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 16px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, marginBottom: 20 }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: T.cyan, animation: "xray-glow 2s infinite" }} />
-            <span style={{ fontSize: 12, fontWeight: 600, color: T.cyan, letterSpacing: 0.5 }}>FREE SECURITY AUDIT</span>
-          </div>
-
-          <h1 style={{ fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 800, lineHeight: 1.1, margin: "0 0 16px", fontFamily: "'Vrikaan Sans', sans-serif" }}>
-            Digital Identity{" "}
-            <span style={{ background: "linear-gradient(135deg, #6366f1, #14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>X-Ray</span>
-          </h1>
-          <p style={{ fontSize: "clamp(15px, 2vw, 18px)", color: T.muted, maxWidth: 600, margin: "0 auto 40px", lineHeight: 1.6 }}>
-            One email. 30 seconds. Complete digital identity security audit.<br />
-            See what hackers see — before they do.
-          </p>
-
           {/* Input */}
           <div style={{ maxWidth: 520, margin: "0 auto", display: "flex", gap: 12, flexWrap: "wrap" }}>
             <div style={{ flex: 1, minWidth: 240, position: "relative" }}>
@@ -438,7 +429,6 @@ export default function IdentityXray() {
         </div>
       )}
 
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

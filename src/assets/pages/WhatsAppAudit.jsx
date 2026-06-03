@@ -1,9 +1,7 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { LuMessageSquare, LuFolder, LuUpload, LuTrash2, LuFlag, LuUsers, LuGlobe, LuPencil, LuLock } from "react-icons/lu";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { audit } from "../../lib/whatsappAudit";
 
 const T = {
@@ -50,37 +48,16 @@ export default function WhatsAppAudit() {
   const clear = () => { setResult(null); setError(""); };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="WhatsApp Group Auditor — Detect Scam Groups"
-        description="Paste any WhatsApp group's chat export. AI flags pump-and-dump patterns, fake admins, hidden URLs, UPI drops, mass-adders. India-first. Free."
-        path="/whatsapp-audit"
-        keywords="whatsapp group scam, stock tip group fraud, investment scam whatsapp, telegram pump dump, crypto signal group"
-      />
-      <Navbar />
-
-      <main style={{ maxWidth: 1000, margin: "0 auto", padding: "100px 24px 80px" }}>
-        {/* Hero */}
-        <header style={{ textAlign: "center", marginBottom: 32 }}>
-          <span style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: "rgba(34,197,94,0.1)", border: `1px solid #25D366`,
-            fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
-            color: "#25D366", marginBottom: 14,
-          }}>FREE · No upload · India-first</span>
-          <h1 style={{
-            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
-            fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
-          }}>
-            That investment group?<br />
-            <span style={{ color: T.red }}>Check before you trust.</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 660, margin: "0 auto", lineHeight: 1.7 }}>
-            Export any WhatsApp group's chat → drop here → AI flags pump-and-dump patterns,
-            fake admins, hidden URLs, UPI dumps, mass-adders. India-built.
-            Files never leave your browser.
-          </p>
-        </header>
+    <ToolShell
+      route="/whatsapp-audit" eyebrow="WhatsApp Audit"
+      title="That investment group?" titleAccent="Check before you trust."
+      subtitle="Export any WhatsApp group's chat → drop here → AI flags pump-and-dump patterns, fake admins, hidden URLs, UPI dumps, mass-adders. India-built. Files never leave your browser."
+      width={1000}
+      seoTitle="WhatsApp Group Auditor — Detect Scam Groups"
+      seoDesc="Paste any WhatsApp group's chat export. AI flags pump-and-dump patterns, fake admins, hidden URLs, UPI drops, mass-adders. India-first. Free."
+      path="/whatsapp-audit"
+      footer
+    >
 
         {!result ? (
           <>
@@ -275,15 +252,13 @@ export default function WhatsAppAudit() {
           <br />
           🇮🇳 Built by SOC analysts in Pune · Free forever
         </p>
-      </main>
 
-      <Footer />
       <style>{`
         @media (max-width: 720px) {
           .member-header, .member-row { grid-template-columns: 1fr 40px 40px 40px !important; }
           .member-header > div:nth-child(4), .member-row > div:nth-child(4) { display: none !important; }
         }
       `}</style>
-    </div>
+    </ToolShell>
   );
 }
