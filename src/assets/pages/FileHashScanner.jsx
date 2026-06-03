@@ -1,8 +1,6 @@
 import { useState, useRef } from "react";
 import { useUsageLimit } from "../../hooks/useUsageLimit";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { exportReport } from "../../utils/exportPDF";
 
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
@@ -61,13 +59,15 @@ export default function FileHashScanner() {
   const fmtSize = (b) => b > 1048576 ? `${(b / 1048576).toFixed(1)} MB` : b > 1024 ? `${(b / 1024).toFixed(1)} KB` : `${b} B`;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans',sans-serif" }}>
-      <SEO title="File Hash Scanner" description="Check if a file is malicious by scanning its hash against malware databases." path="/file-hash-scanner" />
-      <Navbar />
-      <div style={{ maxWidth: 700, margin: "0 auto", padding: "120px 20px 60px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Vrikaan Sans',sans-serif" }}>File Hash Scanner</h1>
-        <p style={{ color: T.muted, fontSize: 14, marginBottom: 28 }}>Upload a file or paste a hash to check against malware databases. Your file never leaves your browser.</p>
-
+    <ToolShell
+      route="/file-hash-scanner" eyebrow="Malware Tool"
+      title="File Hash" titleAccent="Scanner"
+      subtitle="Upload a file or paste a hash to check against malware databases. Your file never leaves your browser."
+      width={700}
+      seoTitle="File Hash Scanner" seoDesc="Check if a file is malicious by scanning its hash against malware databases."
+      path="/file-hash-scanner"
+      footer
+    >
         {/* Mode toggle */}
         <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
           {["file", "hash"].map(m => (
@@ -145,8 +145,6 @@ export default function FileHashScanner() {
             <button onClick={doExport} style={{ padding: "8px 16px", borderRadius: 8, border: `1px solid ${T.border}`, background: "rgba(15,23,42,0.6)", color: T.muted, fontSize: 12, cursor: "pointer" }}>Export Report</button>
           </div>
         )}
-      </div>
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

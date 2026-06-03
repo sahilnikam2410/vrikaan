@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { useUsageLimit } from "../../hooks/useUsageLimit";
 import { LuSparkles, LuCheck, LuCircleCheck, LuCircleX, LuTriangleAlert } from "react-icons/lu";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { exportReport } from "../../utils/exportPDF";
 
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
@@ -84,13 +82,15 @@ export default function SecurityHeaders() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans',sans-serif" }}>
-      <SEO title="Security Headers Checker" description="Analyze any website's HTTP security headers and get a security grade." path="/security-headers" />
-      <Navbar />
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "120px 20px 60px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Vrikaan Sans',sans-serif" }}>Security Headers Checker</h1>
-        <p style={{ color: T.muted, fontSize: 14, marginBottom: 28 }}>Analyze any website's HTTP security headers and get a security grade.</p>
-
+    <ToolShell
+      route="/security-headers" eyebrow="Security Tool"
+      title="Security Headers" titleAccent="Checker"
+      subtitle="Analyze any website's HTTP security headers and get a security grade."
+      width={760}
+      seoTitle="Security Headers Checker" seoDesc="Analyze any website's HTTP security headers and get a security grade."
+      path="/security-headers"
+      footer
+    >
         <div style={{ display: "flex", gap: 10, marginBottom: 28 }}>
           <input value={url} onChange={e => setUrl(e.target.value)} onKeyDown={e => e.key === "Enter" && scan()} placeholder="https://example.com" style={{ flex: 1, padding: "14px 16px", background: "rgba(15,23,42,0.6)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontSize: 15, outline: "none", boxSizing: "border-box", fontFamily: "'Vrikaan Sans',sans-serif" }} />
           <button onClick={scan} disabled={loading} style={{ padding: "14px 28px", borderRadius: 10, border: "none", background: `linear-gradient(135deg,${T.accent},${T.cyan})`, color: "#fff", fontSize: 15, fontWeight: 700, cursor: loading ? "wait" : "pointer", fontFamily: "'Vrikaan Sans',sans-serif", whiteSpace: "nowrap" }}>
@@ -175,8 +175,6 @@ export default function SecurityHeaders() {
             </div>
           </div>
         )}
-      </div>
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

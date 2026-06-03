@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { saveToolResult } from "../../services/toolHistoryService";
 import { exportReport } from "../../utils/exportPDF";
 import { LuSearch, LuGlobe, LuTriangleAlert, LuFileText, LuRadar, LuMapPin, LuMap, LuShield, LuClipboardList, LuClock, LuInfo } from "react-icons/lu";
@@ -307,23 +305,16 @@ export default function IPLookup() {
   const dots = ".".repeat(dotCount);
 
   return (
-    <>
-      <SEO title="IP Lookup - VRIKAAN" description="Look up any IP address or domain for geolocation, ISP, threat assessment and more." />
-      <div style={{ minHeight: "100vh", background: T.bg, color: T.white, fontFamily: fonts.body }}>
-        <Navbar />
-
+    <ToolShell
+      route="/ip-lookup" eyebrow="Intelligence Tool"
+      title="IP Address & Domain" titleAccent="Lookup"
+      subtitle="Investigate any IP address or domain name for geolocation, ISP details, and threat intelligence"
+      width={900}
+      seoTitle="IP Lookup - VRIKAAN" seoDesc="Look up any IP address or domain for geolocation, ISP, threat assessment and more." path="/ip-lookup"
+      footer
+    >
         {/* Hero */}
-        <div style={{ maxWidth: 900, margin: "0 auto", padding: "120px 20px 40px", textAlign: "center" }}>
-          <div style={{ display: "inline-block", padding: "4px 14px", background: `${T.accent}15`, border: `1px solid ${T.accent}30`, borderRadius: 20, marginBottom: 16 }}>
-            <span style={{ fontFamily: fonts.mono, fontSize: 12, color: T.accent }}>INTELLIGENCE TOOL</span>
-          </div>
-          <h1 style={{ fontFamily: fonts.heading, fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 700, margin: "0 0 12px", lineHeight: 1.1 }}>
-            IP Address & Domain <span style={{ color: T.accent }}>Lookup</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 560, margin: "0 auto 32px", lineHeight: 1.6 }}>
-            Investigate any IP address or domain name for geolocation, ISP details, and threat intelligence
-          </p>
-
+        <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 0 40px", textAlign: "center" }}>
           {/* Search Input */}
           <div style={{ display: "flex", gap: 10, maxWidth: 640, margin: "0 auto 12px", flexWrap: "wrap", justifyContent: "center" }}>
             <input
@@ -650,9 +641,6 @@ export default function IPLookup() {
             </div>
           </div>
         )}
-
-        <Footer />
-      </div>
-    </>
+    </ToolShell>
   );
 }

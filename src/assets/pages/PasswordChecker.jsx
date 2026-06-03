@@ -1,7 +1,5 @@
 import { useState } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 
 const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", red: "#ef4444", orange: "#f97316", green: "#22c55e", yellow: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
@@ -110,28 +108,20 @@ export default function PasswordChecker() {
   const sub = { fontSize: 14, color: T.muted, margin: 0, lineHeight: 1.6 };
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO title="Password Breach Checker — VRIKAAN" description="Check if your password has been exposed in data breaches. Uses k-anonymity so your password never leaves the browser." />
-      <Navbar />
+    <ToolShell
+      route="/password-checker" eyebrow="Privacy Tool"
+      title="Password Breach" titleAccent="Checker"
+      subtitle="Check if your password has appeared in known data breaches. Your password never leaves the browser — only the first 5 characters of its SHA-1 hash are sent."
+      width={1100}
+      seoTitle="Password Breach Checker — VRIKAAN"
+      seoDesc="Check if your password has been exposed in data breaches. Uses k-anonymity so your password never leaves the browser."
+      path="/password-checker"
+      footer
+    >
 
-      {/* ── Hero ── */}
-      <section style={{ padding: "120px 20px 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
-        {/* Ambient glow */}
-        <div style={{ position: "absolute", top: -120, left: "50%", transform: "translateX(-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
-
+      {/* ── Input ── */}
+      <section style={{ position: "relative", overflow: "hidden", marginBottom: 8 }}>
         <div style={wrap}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 16px", borderRadius: 20, background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.15)", marginBottom: 20 }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: T.accent, animation: "pwc-pulse 2s infinite" }} />
-            <span style={{ fontSize: 12, fontWeight: 600, color: T.accent }}>Secure Breach Lookup</span>
-          </div>
-
-          <h1 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 800, fontFamily: "'Vrikaan Sans'", margin: "0 0 16px", background: `linear-gradient(135deg, ${T.accent}, ${T.cyan}, ${T.accent})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-            Password Breach Checker
-          </h1>
-          <p style={{ fontSize: 17, color: T.muted, maxWidth: 560, margin: "0 auto 40px", lineHeight: 1.7 }}>
-            Check if your password has appeared in known data breaches. Your password never leaves the browser — only the first 5 characters of its SHA-1 hash are sent.
-          </p>
-
           {/* Password input */}
           <div style={{ maxWidth: 520, margin: "0 auto", display: "flex", gap: 10 }}>
             <div style={{ flex: 1, position: "relative" }}>
@@ -351,8 +341,6 @@ export default function PasswordChecker() {
           </div>
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 
 const T = { bg: "#060a14", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#eab308", blue: "#38bdf8", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
@@ -489,27 +487,24 @@ export default function QRScanner() {
   };
 
   return (
-    <>
-      <SEO title="QR Code Security Scanner - VRIKAAN" description="Scan QR code URLs for phishing, malware, and other threats. Generate safe QR codes." />
+    <ToolShell
+      route="/qr-scanner" eyebrow="Security Tool"
+      title="QR Code" titleAccent="Security Scanner"
+      subtitle="Analyze URLs from QR codes for phishing, malware, and other threats — or generate safe QR codes for your own links."
+      width={900}
+      seoTitle="QR Code Security Scanner - VRIKAAN"
+      seoDesc="Scan QR code URLs for phishing, malware, and other threats. Generate safe QR codes."
+      path="/qr-scanner"
+      footer
+    >
       <style>{`
         @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
         @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
         @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
-      <div style={{ minHeight: "100vh", background: T.bg, color: T.white, fontFamily: fonts.body }}>
-        <Navbar />
 
-        {/* Hero */}
-        <div style={{ maxWidth: 900, margin: "0 auto", padding: "120px 20px 40px", textAlign: "center" }}>
-          <div style={{ display: "inline-block", padding: "4px 14px", background: `${T.accent}15`, border: `1px solid ${T.accent}30`, borderRadius: 20, marginBottom: 16 }}>
-            <span style={{ fontFamily: fonts.mono, fontSize: 12, color: T.accent }}>SECURITY TOOL</span>
-          </div>
-          <h1 style={{ fontFamily: fonts.heading, fontSize: "clamp(32px, 5vw, 48px)", fontWeight: 700, margin: "0 0 12px", lineHeight: 1.1 }}>
-            QR Code <span style={{ color: T.cyan }}>Security Scanner</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 600, margin: "0 auto 32px", lineHeight: 1.6 }}>
-            Analyze URLs from QR codes for phishing, malware, and other threats — or generate safe QR codes for your own links.
-          </p>
+        {/* Mode + inputs */}
+        <div style={{ textAlign: "center", marginBottom: 8 }}>
 
           {/* Mode Tabs */}
           <div style={{ display: "flex", gap: 10, justifyContent: "center", marginBottom: 32, flexWrap: "wrap" }}>
@@ -1007,9 +1002,6 @@ export default function QRScanner() {
             ))}
           </div>
         </div>
-
-        <Footer />
-      </div>
-    </>
+    </ToolShell>
   );
 }
