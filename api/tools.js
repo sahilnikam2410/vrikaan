@@ -21,6 +21,7 @@ const ACTION_TIERS = {
   // PRO tier (AI, data-heavy, paid value)
   "scam-check":         "pro",
   "scam-dna":           "free",  // free → grows the community scam-intel network (the moat)
+  "scambait":           "free",  // free → viral + harvests scam intel into Scam DNA
   "risk-score":         "free",  // lead-gen — free to drive signups + upgrade intent
   "headers-fix":        "pro",
   "deepfake-audio":     "pro",
@@ -2848,6 +2849,102 @@ Message:"""${clean}"""`;
   });
 }
 
+// Shared: upsert a scam signal into the Scam DNA network (used by Scam DNA +
+// Scambaiter). Keys by the scammer's strongest reusable identifier, else a
+// signature hash. Returns the doc id.
+async function _recordScamSignal(fs, { idents, category, tactic, sample, keyPhrases }) {
+  const clean = (idents || []).map(_sanitizeId).filter((x) => x.length >= 4).slice(0, 8);
+  let docId;
+  if (clean[0]) {
+    docId = `id_${clean[0]}`.slice(0, 200);
+  } else {
+    const crypto = await import("crypto");
+    docId = "sig_" + crypto.createHash("sha1").update(`${category || "other"}|${(keyPhrases || []).join("|")}`).digest("hex").slice(0, 24);
+  }
+  const { FieldValue } = await import("firebase-admin/firestore");
+  const ref = fs.collection("scamSignatures").doc(docId);
+  try {
+    const snap = await ref.get();
+    const ex = snap.exists ? snap.data() : null;
+    await ref.set({
+      category: category || ex?.category || "other",
+      tactic: tactic || ex?.tactic || "",
+      sampleText: ex?.sampleText || (sample || "").slice(0, 200),
+      keyPhrases: ex?.keyPhrases || (keyPhrases || []).slice(0, 4),
+      idents: FieldValue.arrayUnion(...(clean.length ? clean : ["_none"])),
+      count: FieldValue.increment(1),
+      firstSeen: ex?.firstSeen || FieldValue.serverTimestamp(),
+      lastSeen: FieldValue.serverTimestamp(),
+      viaScambait: ex?.viaScambait || undefined,
+    }, { merge: true });
+  } catch (e) { console.error("recordScamSignal:", e.message); }
+  return docId;
+}
+
+// ─── AI SCAMBAITER — waste scammers' time, harvest their playbook ──────
+// Paste the scammer's message → an AI honeypot persona replies to keep them
+// talking and quietly extract their reusable identifiers + script, which feed
+// the Scam DNA network. HARD ethics: the persona never shares a real OTP /
+// PIN / money — only believable stalling.
+async function handleScambait(req, res) {
+  const { messages, persona } = req.body || {};
+  if (!Array.isArray(messages) || !messages.length) {
+    return res.status(400).json({ error: "Provide the conversation so far." });
+  }
+  const convo = messages.slice(-14).map((m) =>
+    `${m.role === "scammer" ? "SCAMMER" : "ME"}: ${String(m.text || "").slice(0, 800)}`
+  ).join("\n");
+
+  const prompt = `You run a cybersecurity HONEYPOT. Goal: waste a scammer's time and quietly extract their reusable identifiers (UPI IDs, phone numbers, bank account numbers, links) and their scam script — WITHOUT ever giving them anything real.
+
+Play a persona: a polite, slightly confused but cooperative Indian ${persona || "middle-aged person"} who looks like an easy target. Act interested, ask innocent clarifying questions, and STALL with believable excuses (phone hanging, asking your son/daughter, OTP not arriving, bank app slow, poor network). Keep replies SHORT, human, casual (Indian English; light Hinglish fine).
+
+HARD RULES — never break:
+- Never share a real OTP, PIN, password, CVV, card number, Aadhaar, or send real money. If pushed, deflect with a plausible fake problem ("OTP not coming yaar, network issue").
+- Stay safe + non-abusive. You are stalling, not threatening.
+
+Conversation so far:
+${convo}
+
+Return STRICT JSON (no markdown):
+{"reply":"the next short message I should send the scammer","extracted":{"paymentHandles":[],"phones":[],"urls":[],"bankAccounts":[]},"tactic":"short label of their scam","category":"upi-fraud|phishing|vishing|loan-app|job-scam|investment|lottery-prize|fake-bank|fake-courier|fake-police|kyc|other","wasted":"one short line on how this reply wastes their time"}`;
+
+  const r = await callGemini(prompt, { temperature: 0.75, maxOutputTokens: 700, json: true });
+  if (!r.ok) {
+    const transient = r.status === 503 || r.status === 429 || /high demand|overloaded|unavailable/i.test(r.detail || "");
+    return res.status(transient ? 503 : 502).json({ error: transient ? "AI is briefly busy — try again in a few seconds." : (r.detail || "AI unavailable"), retryable: transient });
+  }
+  const p = tryParseJson(r.text) || {};
+  const ex = p.extracted || {};
+  const idents = [
+    ...(ex.paymentHandles || []), ...(ex.phones || []), ...(ex.urls || []), ...(ex.bankAccounts || []),
+  ].filter(Boolean);
+
+  // Feed the Scam DNA network if the scammer revealed anything reusable.
+  let fedSigId = null;
+  if (idents.length) {
+    try {
+      const adminMod = await import("./_firebaseAdmin.js");
+      const fs = adminMod.getAdminFirestore();
+      if (fs) {
+        fedSigId = await _recordScamSignal(fs, {
+          idents, category: p.category || "other", tactic: p.tactic || "",
+          sample: messages.find((m) => m.role === "scammer")?.text || "",
+        });
+      }
+    } catch (e) { console.error("scambait feed:", e.message); }
+  }
+
+  return res.status(200).json({
+    reply: p.reply || "Sorry, my phone is hanging… one minute.",
+    extracted: { paymentHandles: ex.paymentHandles || [], phones: ex.phones || [], urls: ex.urls || [], bankAccounts: ex.bankAccounts || [] },
+    tactic: p.tactic || "",
+    category: p.category || "other",
+    wasted: p.wasted || "",
+    fedScamDna: !!fedSigId,
+  });
+}
+
 const HANDLERS = {
   whois: handleWhois,
   "newsletter-subscribe": handleNewsletterSubscribe,
@@ -2882,6 +2979,7 @@ const HANDLERS = {
   "family-info": handleFamilyInfo,
   "scam-check": handleScamCheck,
   "scam-dna": handleScamDna,
+  "scambait": handleScambait,
   "risk-score": handleRiskScore,
   "headers-fix": handleHeadersFix,
   "deepfake-audio": handleDeepfakeAudio,
