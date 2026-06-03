@@ -452,6 +452,21 @@ const Hero = () => {
             </div>
           </Reveal>
 
+          <Reveal delay={0.05}>
+            <Link to="/scam-dna" style={{
+              display: "inline-flex", alignItems: "center", gap: 10, padding: "9px 16px 9px 12px",
+              borderRadius: 100, marginBottom: 24, textDecoration: "none",
+              background: "linear-gradient(90deg, rgba(20,184,166,0.14), rgba(99,102,241,0.10))",
+              border: "1px solid rgba(20,184,166,0.35)",
+            }}>
+              <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1, padding: "3px 8px", borderRadius: 100, background: T.cyan, color: "#04110e" }}>NEW</span>
+              <span style={{ fontFamily: "var(--font-body)", fontSize: 13.5, color: T.white, fontWeight: 600 }}>
+                🧬 Scam DNA — India&apos;s live scam-immune network
+              </span>
+              <span style={{ color: T.cyan, fontWeight: 800 }}>&rarr;</span>
+            </Link>
+          </Reveal>
+
           <Reveal delay={0.1}>
             <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 5.5vw, 72px)", fontWeight: 700, color: T.white, margin: "0 0 24px", lineHeight: 1.05, letterSpacing: "-0.04em" }}>
               Cyber Defense<br />for the <GradientText>Modern World</GradientText>
@@ -476,7 +491,7 @@ const Hero = () => {
           <Reveal delay={0.3}>
             <div className="hero-buttons" style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 56 }}>
               <Btn primary to="/scam-recovery" icon="&#128680;">Just got scammed?</Btn>
-              <Btn to="/device-scan" icon="&#128737;">Scan files free</Btn>
+              <Btn to="/scam-dna" icon="&#129516;">Check a scam</Btn>
               <Btn to="/signup" icon="&#9889;">Sign up</Btn>
             </div>
           </Reveal>

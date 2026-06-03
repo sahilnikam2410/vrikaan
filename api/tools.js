@@ -2771,6 +2771,28 @@ async function handleScamDna(req, res) {
   if (!fs) return res.status(500).json({ error: "Scam DNA unavailable (DB not configured)" });
   const col = fs.collection("scamSignatures");
 
+  // ── PURGE: one-time pre-launch cleanup of unverified test entries. Deletes
+  // every signal NOT in the verified known-scam library. Safe pre-launch (no
+  // real user reports yet); after launch, do not call (would wipe real reports).
+  if (action === "purge-unverified") {
+    let deleted = 0;
+    try {
+      const snap = await col.where("verified", "!=", true).limit(500).get();
+      const batch = fs.batch();
+      snap.docs.forEach((d) => { batch.delete(d.ref); deleted++; });
+      await batch.commit();
+    } catch (e) {
+      // verified "!=" needs the field present; fall back to scanning all docs.
+      try {
+        const all = await col.limit(500).get();
+        const batch = fs.batch();
+        all.docs.forEach((d) => { if (d.data().verified !== true) { batch.delete(d.ref); deleted++; } });
+        await batch.commit();
+      } catch (e2) { return res.status(500).json({ error: e2.message }); }
+    }
+    return res.status(200).json({ deleted });
+  }
+
   // ── SEED: write the verified known-scam library (idempotent; data is a
   // server constant, not user input, so this is safe to call openly once). ──
   if (action === "seed") {
