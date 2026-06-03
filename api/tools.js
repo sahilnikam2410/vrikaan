@@ -20,6 +20,7 @@ const ACTION_TIERS = {
 
   // PRO tier (AI, data-heavy, paid value)
   "scam-check":         "pro",
+  "scam-dna":           "free",  // free → grows the community scam-intel network (the moat)
   "risk-score":         "free",  // lead-gen — free to drive signups + upgrade intent
   "headers-fix":        "pro",
   "deepfake-audio":     "pro",
@@ -2734,6 +2735,119 @@ async function handleCouponValidate(req, res) {
   }
 }
 
+// ─── SCAM DNA — crowdsourced live India scam-intelligence network ──────
+// Paste a suspicious message → Gemini fingerprints it → we group reports by
+// the scammer's reusable identifiers (UPI / phone / URL) or a signature hash,
+// and return real-time community intel: how many people hit this, when it was
+// first/last seen, how many reported losing money. Server-only Firestore
+// (Admin SDK), so no client rules needed. Free tier → grows the network.
+function _sanitizeId(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9@._-]/g, "").slice(0, 120);
+}
+async function handleScamDna(req, res) {
+  const { text, action = "analyze", lostMoney, amount } = req.body || {};
+
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "Scam DNA unavailable (DB not configured)" });
+  const col = fs.collection("scamSignatures");
+
+  // ── FEED: today's trending scams ──
+  if (action === "feed") {
+    try {
+      const snap = await col.orderBy("lastSeen", "desc").limit(12).get();
+      const items = snap.docs.map((d) => {
+        const x = d.data();
+        return {
+          id: d.id, category: x.category || "scam", tactic: x.tactic || "",
+          count: x.count || 1, lossCount: x.lossCount || 0,
+          lastSeen: x.lastSeen?.toMillis?.() || x.lastSeen || null,
+          sample: (x.sampleText || "").slice(0, 140),
+        };
+      });
+      return res.status(200).json({ items });
+    } catch (e) {
+      return res.status(200).json({ items: [] });
+    }
+  }
+
+  // ── ANALYZE: fingerprint + match + contribute ──
+  if (!text || typeof text !== "string" || text.trim().length < 8) {
+    return res.status(400).json({ error: "Paste the suspicious message (min 8 chars)." });
+  }
+  const clean = text.trim().slice(0, 4000);
+
+  const prompt = `You are an India-focused scam analyst. Analyze this message/transcript and return STRICT JSON (no markdown). Extract reusable scammer identifiers and a short fingerprint.
+{"verdict":"scam"|"likely-scam"|"suspicious"|"probably-safe","riskScore":0-100,"category":"upi-fraud"|"phishing"|"vishing"|"loan-app"|"job-scam"|"investment"|"lottery-prize"|"fake-bank"|"fake-courier"|"fake-police"|"kyc"|"other","tactic":"one short phrase","paymentHandles":["upi ids / wallet ids if any"],"phones":["phone numbers if any"],"urls":["links if any"],"keyPhrases":["2-4 short distinctive phrases that identify this scam template"],"advice":["2-3 short next steps"]}
+Message:"""${clean}"""`;
+
+  const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 900, json: true });
+  if (!r.ok) {
+    const transient = r.status === 503 || r.status === 429 || /high demand|overloaded|unavailable/i.test(r.detail || "");
+    return res.status(transient ? 503 : 502).json({ error: transient ? "AI is briefly busy — tap Check again in a few seconds." : (r.detail || "AI unavailable"), retryable: transient });
+  }
+  const p = tryParseJson(r.text) || {};
+  const idents = [
+    ...(Array.isArray(p.paymentHandles) ? p.paymentHandles : []),
+    ...(Array.isArray(p.phones) ? p.phones : []),
+    ...(Array.isArray(p.urls) ? p.urls : []),
+  ].map(_sanitizeId).filter((x) => x.length >= 4).slice(0, 8);
+
+  // Group key: strongest reusable identifier, else a signature hash of
+  // category + sorted key phrases (so the same scam template clusters).
+  const phrases = (Array.isArray(p.keyPhrases) ? p.keyPhrases : []).map((s) => String(s).toLowerCase().replace(/[^a-z0-9 ]/g, "").trim()).filter(Boolean).sort();
+  let sigBasis = idents[0] || `${p.category || "other"}|${phrases.join("|")}`;
+  const crypto = await import("crypto");
+  const docId = idents[0] ? `id_${idents[0]}`.slice(0, 200) : "sig_" + crypto.createHash("sha1").update(sigBasis).digest("hex").slice(0, 24);
+
+  const { FieldValue } = await import("firebase-admin/firestore");
+  const ref = col.doc(docId);
+
+  let community = { seenCount: 0, firstSeen: null, lastSeen: null, lossCount: 0, lossTotal: 0, isNew: true };
+  try {
+    const snap = await ref.get();
+    const existing = snap.exists ? snap.data() : null;
+    const addLoss = lostMoney ? 1 : 0;
+    const addAmt = lostMoney && Number(amount) > 0 ? Number(amount) : 0;
+
+    await ref.set({
+      category: p.category || (existing?.category) || "other",
+      tactic: p.tactic || existing?.tactic || "",
+      sampleText: existing?.sampleText || clean.slice(0, 200),
+      idents: FieldValue.arrayUnion(...(idents.length ? idents : ["_none"])),
+      keyPhrases: existing?.keyPhrases || phrases.slice(0, 4),
+      count: FieldValue.increment(1),
+      lossCount: FieldValue.increment(addLoss),
+      lossTotal: FieldValue.increment(addAmt),
+      firstSeen: existing?.firstSeen || FieldValue.serverTimestamp(),
+      lastSeen: FieldValue.serverTimestamp(),
+    }, { merge: true });
+
+    community = {
+      seenCount: (existing?.count || 0) + 1,
+      firstSeen: existing?.firstSeen?.toMillis?.() || null,
+      lastSeen: Date.now(),
+      lossCount: (existing?.lossCount || 0) + addLoss,
+      lossTotal: (existing?.lossTotal || 0) + addAmt,
+      isNew: !existing,
+    };
+  } catch (e) {
+    console.error("scam-dna db error:", e.message);
+  }
+
+  return res.status(200).json({
+    verdict: p.verdict || "suspicious",
+    riskScore: Number(p.riskScore) || 50,
+    category: p.category || "other",
+    tactic: p.tactic || "",
+    extracted: { paymentHandles: p.paymentHandles || [], phones: p.phones || [], urls: p.urls || [] },
+    advice: Array.isArray(p.advice) ? p.advice.slice(0, 3) : [],
+    community,
+    matchedBy: idents[0] ? (idents[0].includes("@") ? "UPI ID" : idents[0].match(/^[0-9]+$/) ? "phone number" : "link/identifier") : "scam pattern",
+    sigId: docId,
+  });
+}
+
 const HANDLERS = {
   whois: handleWhois,
   "newsletter-subscribe": handleNewsletterSubscribe,
@@ -2767,6 +2881,7 @@ const HANDLERS = {
   "family-add-seat": handleFamilyAddSeat,
   "family-info": handleFamilyInfo,
   "scam-check": handleScamCheck,
+  "scam-dna": handleScamDna,
   "risk-score": handleRiskScore,
   "headers-fix": handleHeadersFix,
   "deepfake-audio": handleDeepfakeAudio,

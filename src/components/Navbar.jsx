@@ -16,6 +16,7 @@ const TL = { bg: "#f8fafc", white: "#0f172a", muted: "#475569", accent: "#6366f1
 
 const toolsMenu = [
   { label: "Security Tools", items: [
+    { to: "/scam-dna", label: "🧬 Scam DNA", desc: "Live community scam check · NEW" },
     { to: "/scam-recovery", label: "🚨 Scam Recovery", desc: "Just got scammed? Help now" },
     { to: "/safe-word", label: "🛡️ Family Safe-Word", desc: "Beat AI voice clones" },
     { to: "/whatsapp-audit", label: "💬 WhatsApp Audit", desc: "Detect scam groups" },

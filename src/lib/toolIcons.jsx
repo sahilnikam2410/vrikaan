@@ -10,12 +10,13 @@ import {
   LuKey, LuRadar, LuGift, LuBookOpen, LuPenLine, LuNewspaper, LuCreditCard,
   LuInfo, LuPhone, LuSparkles, LuLayoutDashboard, LuUser, LuActivity, LuLock,
   LuDatabase, LuTriangleAlert, LuMegaphone, LuBriefcase, LuUserRound,
-  LuAudioLines, LuLayers,
+  LuAudioLines, LuLayers, LuDna,
 } from "react-icons/lu";
 
 // route → icon component
 export const TOOL_ICONS = {
   // Security Tools
+  "/scam-dna": LuDna,
   "/scam-recovery": LuSiren,
   "/safe-word": LuShieldCheck,
   "/whatsapp-audit": LuMessageSquare,
