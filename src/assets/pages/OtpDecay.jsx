@@ -1,10 +1,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { LuTriangleAlert, LuPhone, LuClock, LuMessageSquare, LuScale, LuLandmark, LuClipboard } from "react-icons/lu";
-import Navbar from "../../components/Navbar";
+import ToolShell from "../../components/ToolShell";
 import SeniorModeBanner from "../../components/SeniorModeBanner";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
 import { BANKS, UNIVERSAL, searchBanks } from "../../lib/bankHelplines";
 
 const T = {
@@ -54,38 +52,17 @@ export default function OtpDecay() {
   const urgencyLabel = remaining > 60 ? "GOOD WINDOW" : remaining > 30 ? "HURRY" : remaining > 10 ? "CRITICAL" : remaining > 0 ? "LAST CHANCE" : "WINDOW CLOSED";
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="OTP Decay — Just Shared an OTP? Block Card NOW"
-        description="If you just shared an OTP with a scammer, you have ~90 seconds before they drain your account. This page gives you the bank helpline + 1-tap call buttons + checklist. India-first. Free."
-        path="/otp-decay"
-        keywords="shared otp scammer, block card now, otp fraud india, instant bank block, upi fraud minutes count"
-      />
-      <Navbar />
-      <div style={{ maxWidth: 980, margin: '0 auto', padding: '0 24px' }}><SeniorModeBanner /></div>
-
-      <main style={{ maxWidth: 900, margin: "0 auto", padding: "100px 24px 80px" }}>
-        {/* Hero */}
-        <header style={{ textAlign: "center", marginBottom: 28 }}>
-          <span style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: `${T.red}1a`, border: `1px solid ${T.red}55`,
-            fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
-            color: T.red, marginBottom: 14,
-          }}><LuTriangleAlert size={13} style={{ verticalAlign: "-2px" }} /> EMERGENCY · Every Second Counts</span>
-          <h1 style={{
-            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
-            fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
-          }}>
-            Just shared an OTP?<br />
-            <span style={{ color: T.red }}>You have 90 seconds.</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 620, margin: "0 auto", lineHeight: 1.7 }}>
-            Scammers automate the drain. Once they have your OTP, they transfer in
-            <strong style={{ color: T.white }}> 60-180 seconds</strong>. This page gives you the exact 1-tap
-            helpline, your specific bank number, and the script to say.
-          </p>
-        </header>
+    <ToolShell
+      route="/otp-decay" eyebrow="Emergency"
+      title="OTP" titleAccent="Decay"
+      subtitle="Scammers automate the drain. Once they have your OTP, they transfer in 60-180 seconds. This page gives you the exact 1-tap helpline, your specific bank number, and the script to say."
+      width={900}
+      seoTitle="OTP Decay — Just Shared an OTP? Block Card NOW"
+      seoDesc="If you just shared an OTP with a scammer, you have ~90 seconds before they drain your account. This page gives you the bank helpline + 1-tap call buttons + checklist. India-first. Free."
+      path="/otp-decay"
+      topSlot={<SeniorModeBanner />}
+      footer
+    >
 
         {/* MEGA CTA — always visible */}
         <div style={{
@@ -304,9 +281,6 @@ export default function OtpDecay() {
           <LuPhone size={12} style={{ verticalAlign: "-2px" }} /> Bank numbers verified Mar 2026. Always check the back of YOUR card for the exact number.<br/>
           🇮🇳 Built in Nashik · Free forever · Share with anyone in trouble
         </p>
-      </main>
-
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

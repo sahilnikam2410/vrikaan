@@ -1,9 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { LuBot, LuCircleCheck, LuCircleX, LuTriangleAlert, LuInfo, LuMail, LuArrowLeftRight } from "react-icons/lu";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { saveToolResult } from "../../services/toolHistoryService";
 import renderMarkdown from "../../utils/renderMarkdown";
 
@@ -277,19 +274,16 @@ export default function EmailAnalyzer() {
   const valStyle = { fontSize: 13, color: T.white, wordBreak: "break-all", lineHeight: 1.5 };
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO title="Email Header Analyzer" description="Analyze raw email headers to trace email routes, verify SPF/DKIM/DMARC authentication, and detect spoofing with Vrikaan." path="/email-analyzer" />
-      <Navbar />
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "120px 24px 80px" }}>
-        <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>
-
-        {/* Hero */}
-        <div style={{ textAlign: "center", marginBottom: 56 }}>
-          <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>Email Forensics</span>
-          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Email Header <span style={{ background: "linear-gradient(135deg, #6366f1, #14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Analyzer</span></h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 540, margin: "0 auto", lineHeight: 1.7 }}>Paste raw email headers to trace the delivery route, verify authentication records, and detect spoofing attempts.</p>
-        </div>
-
+    <ToolShell
+      route="/email-analyzer" eyebrow="Email Forensics"
+      title="Email Header" titleAccent="Analyzer"
+      subtitle="Paste raw email headers to trace the delivery route, verify authentication records, and detect spoofing attempts."
+      width={900}
+      seoTitle="Email Header Analyzer"
+      seoDesc="Analyze raw email headers to trace email routes, verify SPF/DKIM/DMARC authentication, and detect spoofing with Vrikaan."
+      path="/email-analyzer"
+      footer
+    >
         {/* Input Card */}
         <div style={card}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
@@ -491,14 +485,12 @@ export default function EmailAnalyzer() {
             <div style={{ fontSize: 13, color: T.muted }}>Could not parse the provided headers. Please ensure you pasted complete, raw email headers.</div>
           </div>
         )}
-      </div>
-      <Footer />
       <style>{`
   @media (max-width: 768px) {
     .ea-detail-grid { grid-template-columns: 1fr !important; }
     .ea-tips-grid { grid-template-columns: 1fr !important; }
   }
 `}</style>
-    </div>
+    </ToolShell>
   );
 }

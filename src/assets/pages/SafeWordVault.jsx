@@ -1,8 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import {
   LuStar, LuTriangleAlert, LuShield, LuLock, LuEye, LuCircleCheck, LuX,
   LuMessageSquare, LuMic, LuInfo, LuZap, LuSend, LuTarget,
@@ -95,36 +93,16 @@ export default function SafeWordVault() {
   }, [word]);
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Family Safe-Word Vault — Beat AI Voice Clones"
-        description="Set a family safe-word that AI voice clones can't fake. India's #1 defense against deepfake-voice scams targeting parents and grandparents. Free, no signup, stored on your device."
-        path="/safe-word"
-        keywords="family safe word, voice clone scam, ai voice scam india, deepfake voice defense, vishing protection, parent scam india"
-      />
-      <Navbar />
-
-      <main style={{ maxWidth: 900, margin: "0 auto", padding: "100px 24px 80px" }}>
-        {/* Hero */}
-        <header style={{ textAlign: "center", marginBottom: 32 }}>
-          <span style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}40`,
-            fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
-            color: T.cyan, marginBottom: 14,
-          }}><LuStar size={13} style={{ verticalAlign: "-2px" }} /> FREE · India-First · Stored On Device</span>
-          <h1 style={{
-            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
-            fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
-          }}>
-            Beat AI voice clones with<br />
-            <span style={{ color: T.cyan }}>one shared family word.</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 660, margin: "0 auto", lineHeight: 1.7 }}>
-            Scammers use 3 seconds of your voice from Instagram to clone you, then call your mom asking for ₹50k.
-            <strong style={{ color: T.white }}> One pre-agreed family word stops them dead.</strong> Set it now, share via WhatsApp.
-          </p>
-        </header>
+    <ToolShell
+      route="/safe-word" eyebrow="Voice Defense"
+      title="Family Safe-Word" titleAccent="Vault"
+      subtitle="Scammers use 3 seconds of your voice from Instagram to clone you, then call your mom asking for ₹50k. One pre-agreed family word stops them dead. Set it now, share via WhatsApp."
+      width={900}
+      seoTitle="Family Safe-Word Vault — Beat AI Voice Clones"
+      seoDesc="Set a family safe-word that AI voice clones can't fake. India's #1 defense against deepfake-voice scams targeting parents and grandparents. Free, no signup, stored on your device."
+      path="/safe-word"
+      footer
+    >
 
         {/* Threat explainer */}
         <div style={{
@@ -377,16 +355,13 @@ export default function SafeWordVault() {
           Clear browser data → safe-word gone. <br />
           🇮🇳 Built by SOC analysts in Nashik · Free forever · Share with every family in India
         </p>
-      </main>
-
-      <Footer />
       <style>{`
         @media (max-width: 720px) {
           .member-form { grid-template-columns: 1fr !important; }
           .rules-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
-    </div>
+    </ToolShell>
   );
 }
 

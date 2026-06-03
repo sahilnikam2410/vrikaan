@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { upcoming, formatFestivalDate, isHighAlert } from "../../lib/festivalFraud";
 import { LuCalendar, LuTriangleAlert, LuList, LuMessageSquare, LuCircleCheck } from "react-icons/lu";
 
@@ -34,45 +32,23 @@ export default function FestivalFraud() {
 
   if (!selected) {
     return (
-      <div style={{ background: T.bg, minHeight: "100vh" }}>
-        <Navbar />
+      <ToolShell route="/festival-fraud" eyebrow="India" title="Festival Fraud" titleAccent="Forecast" path="/festival-fraud" footer>
         <div style={{ padding: 80, color: T.muted, textAlign: "center" }}>No upcoming festivals tracked.</div>
-        <Footer />
-      </div>
+      </ToolShell>
     );
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Festival Fraud Forecast — India"
-        description="Diwali / Holi / Rakhi / wedding season scam alerts — tailored to India. See top scam patterns + defense actions 7 days before each festival."
-        path="/festival-fraud"
-        keywords="diwali scam, holi scam, indian festival fraud, upi fraud diwali, wedding season scam, festival scam alerts india"
-      />
-      <Navbar />
-
-      <main style={{ maxWidth: 1100, margin: "0 auto", padding: "100px 24px 80px" }}>
-        {/* Hero */}
-        <header style={{ textAlign: "center", marginBottom: 36 }}>
-          <span style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: "rgba(245,158,11,0.12)", border: `1px solid ${T.yellow}40`,
-            fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
-            color: T.yellow, marginBottom: 14,
-          }}><LuCalendar size={13} style={{ verticalAlign: "-2px" }} /> India · Festival Fraud Calendar</span>
-          <h1 style={{
-            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
-            fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
-          }}>
-            Scams spike before every<br />
-            <span style={{ color: T.yellow }}>Indian festival.</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 680, margin: "0 auto", lineHeight: 1.7 }}>
-            7 days before Diwali / Holi / Raksha Bandhan / wedding season — fraud reports jump 140–380%.
-            Here's exactly what to watch for, and the 1-paragraph script to send your family.
-          </p>
-        </header>
+    <ToolShell
+      route="/festival-fraud" eyebrow="India"
+      title="Festival Fraud" titleAccent="Forecast"
+      subtitle="7 days before Diwali / Holi / Raksha Bandhan / wedding season — fraud reports jump 140–380%. Here's exactly what to watch for, and the 1-paragraph script to send your family."
+      width={1100}
+      seoTitle="Festival Fraud Forecast — India"
+      seoDesc="Diwali / Holi / Rakhi / wedding season scam alerts — tailored to India. See top scam patterns + defense actions 7 days before each festival."
+      path="/festival-fraud"
+      footer
+    >
 
         {/* Calendar strip — pickable */}
         <div style={{
@@ -305,9 +281,6 @@ export default function FestivalFraud() {
           aggregated reports by Indian banks, NPCI, and SOC analysts at VRIKAAN.<br />
           🇮🇳 Built in Nashik · Free forever · Share with your family before every festival
         </p>
-      </main>
-
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

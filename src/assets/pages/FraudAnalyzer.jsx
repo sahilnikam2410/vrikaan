@@ -1,9 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { LuBot, LuFileText } from "react-icons/lu";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { saveToolResult } from "../../services/toolHistoryService";
 import { exportReport } from "../../utils/exportPDF";
 import renderMarkdown from "../../utils/renderMarkdown";
@@ -155,17 +152,16 @@ export default function FraudAnalyzer() {
   const inputStyle = { flex: 1, padding: "14px 18px", background: "rgba(0,0,0,0.3)", border: `1px solid ${T.border}`, borderRadius: 10, color: T.white, fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 14, outline: "none", transition: "border-color 0.3s" };
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO title="Fraud Analyzer" description="Scan URLs, emails, phone numbers, and messages for fraud with Vrikaan's AI-powered analyzer." path="/fraud-analyzer" />
-      <Navbar />
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "120px 24px 80px" }}>
-        <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>
-        <div style={{ textAlign: "center", marginBottom: 56 }}>
-          <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.accent}0c`, border: `1px solid ${T.accent}20`, fontSize: 11, fontWeight: 600, color: T.accent, marginBottom: 16, letterSpacing: 0.5 }}>Threat Analysis</span>
-          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>AI Fraud <span style={{ background: "linear-gradient(135deg, #6366f1, #14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Analyzer</span></h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 500, margin: "0 auto", lineHeight: 1.7 }}>Paste any suspicious URL, email, phone number, or message for instant AI-powered threat analysis.</p>
-        </div>
-
+    <ToolShell
+      route="/fraud-analyzer" eyebrow="Threat Analysis"
+      title="AI Fraud" titleAccent="Analyzer"
+      subtitle="Paste any suspicious URL, email, phone number, or message for instant AI-powered threat analysis."
+      width={900}
+      seoTitle="Fraud Analyzer"
+      seoDesc="Scan URLs, emails, phone numbers, and messages for fraud with Vrikaan's AI-powered analyzer."
+      path="/fraud-analyzer"
+      footer
+    >
         {/* Analyzer */}
         <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 18, padding: "32px 28px", backdropFilter: "blur(8px)", marginBottom: 36 }}>
           <div style={{ display: "flex", gap: 4, marginBottom: 24, background: "rgba(0,0,0,0.3)", borderRadius: 10, padding: 4 }}>
@@ -278,13 +274,11 @@ export default function FraudAnalyzer() {
             ))}
           </div>
         )}
-      </div>
-      <Footer />
       <style>{`
   @media (max-width: 768px) {
     .resp-grid-2 { grid-template-columns: 1fr !important; }
   }
 `}</style>
-    </div>
+    </ToolShell>
   );
 }

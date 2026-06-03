@@ -1,8 +1,5 @@
 import { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { auditReceipt, validateGSTIN } from "../../lib/receiptAudit";
 import { LuTriangleAlert, LuLandmark, LuLock, LuCircleCheck, LuCircleAlert } from "react-icons/lu";
 
@@ -35,37 +32,16 @@ export default function ReceiptAudit() {
   }, [text, gstin, subtotal, cgst, sgst, igst, service, tip, total]);
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Receipt Authenticity Scanner — Verify Indian Bills"
-        description="Spot fake restaurant / fuel / parking receipts in India. Validates GSTIN, checks CGST+SGST math, flags overcharge tax, identifies non-mandatory service charge. Free."
-        path="/receipt-audit"
-        keywords="check restaurant bill india, gstin verify, fake bill check, service charge india, overcharge detect, cgst sgst math"
-      />
-      <Navbar />
-
-      <main style={{ maxWidth: 1000, margin: "0 auto", padding: "100px 24px 80px" }}>
-        {/* Hero */}
-        <header style={{ textAlign: "center", marginBottom: 32 }}>
-          <span style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}40`,
-            fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
-            color: T.cyan, marginBottom: 14,
-          }}>FREE · India-First · GSTIN-aware</span>
-          <h1 style={{
-            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
-            fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
-          }}>
-            Restaurant overcharging you?<br />
-            <span style={{ color: T.cyan }}>Check the bill in 10 seconds.</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 660, margin: "0 auto", lineHeight: 1.7 }}>
-            Validates GSTIN format, CGST+SGST math, flags fake "tax" line items, calls out
-            non-mandatory service charge (illegal to force per 2022 order). Built for India.
-          </p>
-        </header>
-
+    <ToolShell
+      route="/receipt-audit" eyebrow="Receipt Audit"
+      title="Restaurant overcharging you?" titleAccent="Check the bill in 10 seconds."
+      subtitle={'Validates GSTIN format, CGST+SGST math, flags fake "tax" line items, calls out non-mandatory service charge (illegal to force per 2022 order). Built for India.'}
+      width={1000}
+      seoTitle="Receipt Authenticity Scanner — Verify Indian Bills"
+      seoDesc="Spot fake restaurant / fuel / parking receipts in India. Validates GSTIN, checks CGST+SGST math, flags overcharge tax, identifies non-mandatory service charge. Free."
+      path="/receipt-audit"
+      footer
+    >
         <div style={{
           background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24,
           marginBottom: 18,
@@ -235,15 +211,12 @@ export default function ReceiptAudit() {
           <a href="https://www.gst.gov.in" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan, marginLeft: 4 }}>gst.gov.in</a>.<br />
           🇮🇳 Built in Nashik · Free forever
         </p>
-      </main>
-
-      <Footer />
       <style>{`
         @media (max-width: 720px) {
           .ed-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
-    </div>
+    </ToolShell>
   );
 }
 

@@ -1,9 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
+import ToolShell from "../../components/ToolShell";
 import SeniorModeBanner from "../../components/SeniorModeBanner";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
 import { profileLoanApp, RED_FLAG_PERMISSIONS, RBI_REGISTERED } from "../../lib/loanAppProfiler";
 import { LuTriangleAlert, LuCircleAlert, LuCircleCheck, LuList, LuFileText } from "react-icons/lu";
 
@@ -45,36 +43,17 @@ export default function LoanAppProfiler() {
   }, [name, url, selectedPerms, apr, fee]);
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Loan App Profiler — Check Before Install"
-        description="Before installing any 'instant loan' app, paste its name here. We check against RBI's registered NBFC list, known predatory apps, permission red flags, and APR. India-first."
-        path="/loan-app-check"
-        keywords="loan app safety check, rbi registered loan apps, predatory loan india, chinese loan app ban, instant loan harassment"
-      />
-      <Navbar />
-      <div style={{ maxWidth: 980, margin: '0 auto', padding: '0 24px' }}><SeniorModeBanner /></div>
-
-      <main style={{ maxWidth: 950, margin: "0 auto", padding: "100px 24px 80px" }}>
-        <header style={{ textAlign: "center", marginBottom: 32 }}>
-          <span style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: `${T.red}1a`, border: `1px solid ${T.red}55`,
-            fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
-            color: T.red, marginBottom: 14,
-          }}>FREE · RBI-aware · 600+ predatory apps tracked</span>
-          <h1 style={{
-            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
-            fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
-          }}>
-            "Instant loan, 5 min approval"<br/>
-            <span style={{ color: T.red }}>= 5 years of harassment.</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 660, margin: "0 auto", lineHeight: 1.7 }}>
-            Check any loan app BEFORE installing. We cross-check against RBI's registered NBFC list,
-            known predatory apps from 2020-2024 raids, and flag permissions no legit lender needs.
-          </p>
-        </header>
+    <ToolShell
+      route="/loan-app-check" eyebrow="Loan Safety"
+      title="Loan App" titleAccent="Profiler"
+      subtitle="Check any loan app BEFORE installing. We cross-check against RBI's registered NBFC list, known predatory apps from 2020-2024 raids, and flag permissions no legit lender needs."
+      width={950}
+      seoTitle="Loan App Profiler — Check Before Install"
+      seoDesc="Before installing any 'instant loan' app, paste its name here. We check against RBI's registered NBFC list, known predatory apps, permission red flags, and APR. India-first."
+      path="/loan-app-check"
+      topSlot={<SeniorModeBanner />}
+      footer
+    >
 
         {/* Threat reminder */}
         <div style={{
@@ -245,15 +224,12 @@ export default function LoanAppProfiler() {
           App lists current as of Mar 2026 — predatory app names rotate; do additional research.<br/>
           🇮🇳 Built in Nashik · Free forever
         </p>
-      </main>
-
-      <Footer />
       <style>{`
         @media (max-width: 720px) {
           .loan-row { grid-template-columns: 1fr !important; }
         }
       `}</style>
-    </div>
+    </ToolShell>
   );
 }
 

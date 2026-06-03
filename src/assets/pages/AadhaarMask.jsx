@@ -1,8 +1,6 @@
 import { useState, useRef, useMemo } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { maskText, maskImage, detect, PATTERN_TYPES } from "../../lib/aadhaarMask";
 import { LuFileText, LuImage, LuLock, LuClipboard, LuIdCard, LuFolderOpen, LuSave, LuTrash2, LuTriangleAlert } from "react-icons/lu";
 
@@ -92,37 +90,16 @@ export default function AadhaarMask() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Aadhaar Mask Tool — Free Redaction"
-        description="Mask Aadhaar / PAN / driving licence numbers in text or images. Free, no signup, files never leave your browser. Made for India."
-        path="/aadhaar-mask"
-        keywords="aadhaar mask, aadhaar redact, pan mask, indian id mask, free aadhaar tool, hide aadhaar number, redact aadhaar whatsapp"
-      />
-      <Navbar />
-
-      <main style={{ maxWidth: 1000, margin: "0 auto", padding: "100px 24px 80px" }}>
-        {/* Hero */}
-        <header style={{ textAlign: "center", marginBottom: 36 }}>
-          <span style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 999,
-            background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}40`,
-            fontSize: 11, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase",
-            color: T.cyan, marginBottom: 14,
-          }}>Free · No Signup · 100% Private</span>
-          <h1 style={{
-            fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
-            fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
-          }}>
-            Mask Aadhaar before<br />
-            <span style={{ color: T.cyan }}>you share it.</span>
-          </h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 640, margin: "0 auto", lineHeight: 1.7 }}>
-            Paste text or upload an image — VRIKAAN finds and redacts Aadhaar, PAN, driving licence,
-            voter ID, passport, phone, and UPI. Everything runs in your browser. Nothing uploaded.
-          </p>
-        </header>
-
+    <ToolShell
+      route="/aadhaar-mask" eyebrow="Aadhaar Mask"
+      title="Mask Aadhaar before" titleAccent="you share it."
+      subtitle="Paste text or upload an image — VRIKAAN finds and redacts Aadhaar, PAN, driving licence, voter ID, passport, phone, and UPI. Everything runs in your browser. Nothing uploaded."
+      width={1000}
+      seoTitle="Aadhaar Mask Tool — Free Redaction"
+      seoDesc="Mask Aadhaar / PAN / driving licence numbers in text or images. Free, no signup, files never leave your browser. Made for India."
+      path="/aadhaar-mask"
+      footer
+    >
         {/* Mode toggle */}
         <div style={{
           display: "flex", justifyContent: "center", gap: 10, marginBottom: 26,
@@ -421,14 +398,11 @@ export default function AadhaarMask() {
             textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
           }}>Check dark web for breaches →</Link>
         </div>
-      </main>
-
-      <Footer />
       <style>{`
         @media (max-width: 720px) {
           .image-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
-    </div>
+    </ToolShell>
   );
 }
