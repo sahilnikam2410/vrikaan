@@ -2906,8 +2906,10 @@ HARD RULES — never break:
 Conversation so far:
 ${convo}
 
+EXTRACTION (important): scan EVERY "SCAMMER:" line above and pull out ALL reusable identifiers the scammer mentioned — UPI IDs (anything like name@bank / name@paytm / name@okaxis), phone numbers, bank account numbers, and links — even if you are also stalling. Put them in the arrays. Empty arrays ONLY if the scammer truly gave none yet.
+
 Return STRICT JSON (no markdown):
-{"reply":"the next short message I should send the scammer","extracted":{"paymentHandles":[],"phones":[],"urls":[],"bankAccounts":[]},"tactic":"short label of their scam","category":"upi-fraud|phishing|vishing|loan-app|job-scam|investment|lottery-prize|fake-bank|fake-courier|fake-police|kyc|other","wasted":"one short line on how this reply wastes their time"}`;
+{"reply":"the next short message I should send the scammer","extracted":{"paymentHandles":["every UPI/wallet id the SCAMMER gave"],"phones":["every phone number the SCAMMER gave"],"urls":["every link the SCAMMER gave"],"bankAccounts":["every account number the SCAMMER gave"]},"tactic":"short label of their scam","category":"upi-fraud|phishing|vishing|loan-app|job-scam|investment|lottery-prize|fake-bank|fake-courier|fake-police|kyc|other","wasted":"one short line on how this reply wastes their time"}`;
 
   const r = await callGemini(prompt, { temperature: 0.75, maxOutputTokens: 700, json: true });
   if (!r.ok) {
