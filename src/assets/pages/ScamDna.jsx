@@ -5,6 +5,8 @@ import {
 } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
+import { useAuth } from "../../context/AuthContext";
+import { apiFetch } from "../../lib/apiFetch";
 
 const T = {
   bg: "#060a14", card: "#0b1220", border: "rgba(148,163,184,0.12)",
@@ -29,12 +31,26 @@ function ago(ms) {
 }
 
 export default function ScamDna() {
+  const { user } = useAuth();
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
   const [feed, setFeed] = useState([]);
   const [lossSent, setLossSent] = useState(false);
+  const [familyAlerted, setFamilyAlerted] = useState(false);
+  const inFamily = !!(user && (user.familyRole || user.plan === "family" || user.currentFamilyId));
+
+  async function alertFamily() {
+    if (!result) return;
+    try {
+      const r = await apiFetch("/api/tools?tool=family-alert", {
+        method: "POST",
+        body: JSON.stringify({ category: result.category, tactic: result.tactic, sample: text, sigId: result.sigId }),
+      });
+      if (r.ok) setFamilyAlerted(true);
+    } catch { /* ignore */ }
+  }
 
   useEffect(() => { loadFeed(); }, []);
   async function loadFeed() {
@@ -50,7 +66,7 @@ export default function ScamDna() {
 
   async function check(lostMoney = false, amount = 0) {
     if (text.trim().length < 8) { setError("Paste the suspicious message first (a bit longer)."); return; }
-    setLoading(true); setError(""); if (!lostMoney) { setResult(null); setLossSent(false); }
+    setLoading(true); setError(""); if (!lostMoney) { setResult(null); setLossSent(false); setFamilyAlerted(false); }
     try {
       const r = await fetch("/api/tools?tool=scam-dna", {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -152,6 +168,24 @@ export default function ScamDna() {
                   </li>
                 ))}
               </ul>
+            )}
+
+            {/* Family mesh — warn the whole family */}
+            {inFamily && (
+              <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 14, marginBottom: 14 }}>
+                {familyAlerted ? (
+                  <div style={{ fontSize: 13, color: T.green, display: "flex", alignItems: "center", gap: 7 }}>
+                    <LuUsers size={15} /> Your family has been alerted — they'll see a heads-up to stay safe.
+                  </div>
+                ) : (
+                  <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                    <span style={{ fontSize: 13, color: T.muted }}>Protect your family from this one?</span>
+                    <button onClick={alertFamily} style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "8px 14px", borderRadius: 9, border: `1px solid ${T.cyan}55`, background: `${T.cyan}15`, color: T.cyan, fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>
+                      <LuUsers size={15} /> Alert my family
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
 
             {/* Contribute loss */}

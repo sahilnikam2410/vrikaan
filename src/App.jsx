@@ -6,6 +6,7 @@ import { ToastProvider } from "./context/ToastContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { ProtectedRoute, DashboardRedirect } from "./components/ProtectedRoute";
 import AIChatbot from "./components/AIChatbot.jsx";
+import FamilyAlertBanner from "./components/FamilyAlertBanner.jsx";
 import JungleLoader from "./components/JungleLoader.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import CookieConsent from "./components/CookieConsent.jsx";
@@ -199,6 +200,7 @@ function AppRoutes() {
       <ScrollToTop />
       <RouteLoader />
       <AIChatbot />
+      <FamilyAlertBanner />
       <Suspense fallback={<PageSkeleton />}>
         <PageTransition>
           <Routes>

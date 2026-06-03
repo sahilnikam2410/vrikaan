@@ -2849,6 +2849,63 @@ Message:"""${clean}"""`;
   });
 }
 
+// ─── FAMILY MESH — one member's scam alerts the whole family ──────────
+// Phase 3 of Scam DNA: when a family member hits a scam, every member gets a
+// real-time heads-up. Alerts live under families/{fid}/alerts (server-only via
+// Admin SDK; members read through the API, so no extra client rules).
+async function _resolveFamily(fs, uid) {
+  const u = await fs.collection("users").doc(uid).get();
+  const name = u.exists ? (u.data().displayName || u.data().name || null) : null;
+  const fid = u.exists ? u.data().currentFamilyId : null;
+  if (fid) {
+    const fam = await fs.collection("families").doc(fid).get();
+    if (fam.exists) return { familyId: fid, family: fam.data(), name };
+  }
+  const owned = await _getFamilyByOwner(fs, uid);
+  if (owned) return { familyId: owned.id, family: owned.data(), name };
+  return null;
+}
+
+async function handleFamilyAlert(req, res) {
+  const me = await verifyIdTokenFromHeader(req);
+  if (!me) return res.status(401).json({ error: "Sign-in required" });
+  const { category, tactic, sample, sigId } = req.body || {};
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "DB not configured" });
+  const found = await _resolveFamily(fs, me.uid);
+  if (!found) return res.status(400).json({ error: "You're not part of a family yet. Set up a Family plan to use mesh alerts." });
+  const byName = found.name || me.email?.split("@")[0] || "A family member";
+  const { FieldValue } = await import("firebase-admin/firestore");
+  const ref = await fs.collection("families").doc(found.familyId).collection("alerts").add({
+    byUid: me.uid, byName,
+    category: category || "scam", tactic: String(tactic || "").slice(0, 80),
+    sample: String(sample || "").slice(0, 160), sigId: sigId || null,
+    createdAt: FieldValue.serverTimestamp(),
+  });
+  return res.status(200).json({ success: true, alertId: ref.id, memberCount: Object.keys(found.family.members || {}).length });
+}
+
+async function handleFamilyAlerts(req, res) {
+  const me = await verifyIdTokenFromHeader(req);
+  if (!me) return res.status(401).json({ error: "Sign-in required" });
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "DB not configured" });
+  const found = await _resolveFamily(fs, me.uid);
+  if (!found) return res.status(200).json({ alerts: [], inFamily: false });
+  let docs = [];
+  try {
+    const snap = await fs.collection("families").doc(found.familyId).collection("alerts").orderBy("createdAt", "desc").limit(20).get();
+    docs = snap.docs;
+  } catch { /* no alerts yet */ }
+  const alerts = docs.map((d) => {
+    const x = d.data();
+    return { id: d.id, byUid: x.byUid, byName: x.byName, category: x.category, tactic: x.tactic, sample: x.sample, sigId: x.sigId || null, createdAt: x.createdAt?.toMillis?.() || null, mine: x.byUid === me.uid };
+  });
+  return res.status(200).json({ alerts, inFamily: true });
+}
+
 // Shared: upsert a scam signal into the Scam DNA network (used by Scam DNA +
 // Scambaiter). Keys by the scammer's strongest reusable identifier, else a
 // signature hash. Returns the doc id.
@@ -2986,6 +3043,8 @@ const HANDLERS = {
   "family-set-mode": handleFamilySetMode,
   "family-add-seat": handleFamilyAddSeat,
   "family-info": handleFamilyInfo,
+  "family-alert": handleFamilyAlert,
+  "family-alerts": handleFamilyAlerts,
   "scam-check": handleScamCheck,
   "scam-dna": handleScamDna,
   "scambait": handleScambait,
