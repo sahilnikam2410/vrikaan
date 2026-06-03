@@ -85,6 +85,15 @@ service cloud.firestore {
       }
     }
 
+    // ─── leaderboard ─────────────────────────────────────────────
+    // Public Academy leaderboard. Any signed-in user can read all entries;
+    // each user may write ONLY their own doc (keyed by uid). XP is a vanity
+    // metric (no entitlement attached), so client-write is acceptable here.
+    match /leaderboard/{uid} {
+      allow read: if isSignedIn();
+      allow write: if isOwner(uid);
+    }
+
     // ─── referrals ───────────────────────────────────────────────
     // Each user owns exactly one referral-code document keyed by their uid.
     // Any signed-in user can READ this collection (so signup can look up

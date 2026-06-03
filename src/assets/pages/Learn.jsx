@@ -899,6 +899,11 @@ export default function Learn() {
   const stats = computeStats(progress, certs, courses);
   const badges = computeBadges(progress, certs, stats, courses);
 
+  // Persist total XP so the Academy leaderboard (cross-user) can read it.
+  useEffect(() => {
+    localStorage.setItem("vrikaan_academy_xp", String(stats.xp));
+  }, [stats.xp]);
+
   // Continue-learning: most recent course with partial progress.
   const inProgressCourse = courses.find(c => {
     const done = (progress[c.id] || []).length;
@@ -1033,6 +1038,24 @@ export default function Learn() {
               <div style={{ fontSize: 11, color: T.muted }}>{s.l}</div>
             </div>
           ))}
+        </div>
+
+        {/* Mock tests + leaderboard CTAs */}
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 14 }}>
+          <Link to="/mock-test" style={{ flex: "1 1 200px", display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", borderRadius: 12, background: `${T.cyan}12`, border: `1px solid ${T.cyan}40`, textDecoration: "none" }}>
+            <span style={{ fontSize: 22 }}>📝</span>
+            <div>
+              <div style={{ fontWeight: 800, color: T.white, fontSize: 15 }}>Mock Tests</div>
+              <div style={{ fontSize: 12, color: T.muted }}>Timed exams · earn bonus XP</div>
+            </div>
+          </Link>
+          <Link to="/leaderboard" style={{ flex: "1 1 200px", display: "flex", alignItems: "center", gap: 12, padding: "14px 18px", borderRadius: 12, background: `${T.gold}12`, border: `1px solid ${T.gold}40`, textDecoration: "none" }}>
+            <span style={{ fontSize: 22 }}>🏆</span>
+            <div>
+              <div style={{ fontWeight: 800, color: T.white, fontSize: 15 }}>Leaderboard</div>
+              <div style={{ fontSize: 12, color: T.muted }}>See top learners · find your rank</div>
+            </div>
+          </Link>
         </div>
 
         {/* Continue learning */}

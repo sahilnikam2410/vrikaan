@@ -118,6 +118,8 @@ const FamilyDashboard = lazy(() => import("./assets/pages/FamilyDashboard.jsx"))
 const FamilyPlanLanding = lazy(() => import("./assets/pages/FamilyPlanLanding.jsx"));
 const ApiDocs = lazy(() => import("./assets/pages/ApiDocs.jsx"));
 const RiskScore = lazy(() => import("./assets/pages/RiskScore.jsx"));
+const MockTest = lazy(() => import("./assets/pages/MockTest.jsx"));
+const Leaderboard = lazy(() => import("./assets/pages/Leaderboard.jsx"));
 const ScamCheck = lazy(() => import("./assets/pages/ScamCheck.jsx"));
 const DeepfakeAudio = lazy(() => import("./assets/pages/DeepfakeAudio.jsx"));
 const VulnerabilityScan = lazy(() => import("./assets/pages/VulnerabilityScan.jsx"));
@@ -206,6 +208,9 @@ function AppRoutes() {
             <Route path="/team" element={<ProtectedRoute><Team /></ProtectedRoute>} />
             <Route path="/family-plan" element={<FamilyPlanLanding />} />
             <Route path="/risk-score" element={<RiskScore />} />
+            <Route path="/mock-test" element={<MockTest />} />
+            <Route path="/mock-tests" element={<MockTest />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/cyber-risk" element={<RiskScore />} />
             <Route path="/security-checkup" element={<RiskScore />} />
             <Route path="/api" element={<ApiDocs />} />
