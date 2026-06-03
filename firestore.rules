@@ -27,6 +27,27 @@ service cloud.firestore {
     // ─── users ───────────────────────────────────────────────────
     // Owner: full read/write on their own profile doc.
     // Admin: full read/write on any profile (needed for AdminDashboard).
+    //
+    // ⚠️ PHASE 2 SECURITY (staged — DO NOT activate until a real Cashfree
+    // payment confirms verify-payment writes the plan server-side):
+    // The rule below lets a logged-in user write ANY field on their own
+    // profile, INCLUDING `plan`/`role` — so a user can self-grant Enterprise
+    // from the browser console. To close that, REPLACE the `match /users/{uid}`
+    // block with the field-locked version below, then run:
+    //     firebase deploy --only firestore:rules
+    // (Also make client firestoreUpdateProfile tolerate a permission error on
+    //  the plan field, since the server now owns that write.)
+    //
+    //   match /users/{uid} {
+    //     allow read:   if isOwner(uid) || isAdmin();
+    //     allow create: if isOwner(uid) || isAdmin();
+    //     allow delete: if isAdmin();
+    //     allow update: if isAdmin() || (isOwner(uid)
+    //       && !request.resource.data.diff(resource.data).affectedKeys()
+    //            .hasAny(['plan','role','familyRole','planExpiresAt',
+    //                     'planActivatedAt','planBilling','lastOrderId']));
+    //   }
+    //
     match /users/{uid} {
       allow read, write: if isOwner(uid) || isAdmin();
 

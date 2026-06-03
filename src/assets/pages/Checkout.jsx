@@ -289,7 +289,10 @@ export default function Checkout() {
         });
         const data = await res.json();
         if (!data.verified) {
-          setErrors({ verify: data.error || "Payment was not completed. You were not charged." });
+          const why = data.status && data.status !== "PAID"
+            ? `Payment didn't go through (status: ${data.status}). You were not charged.`
+            : (data.error || "Payment was not completed. You were not charged.");
+          setErrors({ verify: `${why} Please try again — you can use a different method (UPI, card, net banking, or a wallet) on the next screen.` });
           setVerifying(false);
           return;
         }
