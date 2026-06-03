@@ -1,8 +1,6 @@
 import { useState } from "react";
-import Navbar from "../../components/Navbar";
+import ToolShell from "../../components/ToolShell";
 import SeniorModeBanner from "../../components/SeniorModeBanner";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
 import QuotaBanner from "../../components/QuotaBanner";
 import UpgradeModal from "../../components/UpgradeModal";
 import { useToolQuota } from "../../hooks/useToolQuota";
@@ -65,17 +63,17 @@ export default function ScamCheck() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO title="Scam SMS / Email Checker — VRIKAAN" description="Paste any suspicious SMS, email, or WhatsApp message. AI tells you if it's a scam in 5 seconds. Built for India." path="/scam-check" />
-      <Navbar />
-      <div style={{ maxWidth: 980, margin: '0 auto', padding: '0 24px' }}><SeniorModeBanner /></div>
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "120px 20px 80px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, margin: 0, marginBottom: 8, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-          Scam Message Checker
-        </h1>
-        <p style={{ color: T.muted, fontSize: 14, margin: "0 0 24px" }}>
-          Paste an SMS, email, or WhatsApp message. AI analyzes it for India-specific scam patterns — UPI fraud, fake KYC, parcel-delivery scams, OTP requests, and more.
-        </p>
+    <ToolShell
+      route="/scam-check" eyebrow="AI Scam Tool"
+      title="Scam Message" titleAccent="Checker"
+      subtitle="Paste an SMS, email, or WhatsApp message. AI analyzes it for India-specific scam patterns — UPI fraud, fake KYC, parcel-delivery scams, OTP requests, and more."
+      width={760}
+      seoTitle="Scam SMS / Email Checker — VRIKAAN"
+      seoDesc="Paste any suspicious SMS, email, or WhatsApp message. AI tells you if it's a scam in 5 seconds. Built for India."
+      path="/scam-check"
+      topSlot={<SeniorModeBanner />}
+      footer
+    >
 
         <QuotaBanner
           unlimited={quota.unlimited}
@@ -200,8 +198,6 @@ export default function ScamCheck() {
             </p>
           </div>
         )}
-      </div>
-      <Footer />
       {paywall && (
         <UpgradeModal
           open={paywall}
@@ -212,6 +208,6 @@ export default function ScamCheck() {
           userPlan={quota.userPlan}
         />
       )}
-    </div>
+    </ToolShell>
   );
 }
