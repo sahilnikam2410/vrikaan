@@ -2911,12 +2911,19 @@ EXTRACTION (important): scan EVERY "SCAMMER:" line above and pull out ALL reusab
 Return STRICT JSON (no markdown):
 {"reply":"the next short message I should send the scammer","extracted":{"paymentHandles":["every UPI/wallet id the SCAMMER gave"],"phones":["every phone number the SCAMMER gave"],"urls":["every link the SCAMMER gave"],"bankAccounts":["every account number the SCAMMER gave"]},"tactic":"short label of their scam","category":"upi-fraud|phishing|vishing|loan-app|job-scam|investment|lottery-prize|fake-bank|fake-courier|fake-police|kyc|other","wasted":"one short line on how this reply wastes their time"}`;
 
-  const r = await callGemini(prompt, { temperature: 0.75, maxOutputTokens: 700, json: true });
+  let r = await callGemini(prompt, { temperature: 0.75, maxOutputTokens: 1200, json: true });
+  let p = r.ok ? (tryParseJson(r.text) || null) : null;
+  // One retry if the model returned unparseable/truncated JSON (keeps the turn
+  // useful instead of a generic fallback that drops harvested intel).
+  if (r.ok && (!p || !p.reply)) {
+    r = await callGemini(prompt, { temperature: 0.5, maxOutputTokens: 1200, json: true });
+    p = r.ok ? (tryParseJson(r.text) || null) : p;
+  }
   if (!r.ok) {
     const transient = r.status === 503 || r.status === 429 || /high demand|overloaded|unavailable/i.test(r.detail || "");
     return res.status(transient ? 503 : 502).json({ error: transient ? "AI is briefly busy — try again in a few seconds." : (r.detail || "AI unavailable"), retryable: transient });
   }
-  const p = tryParseJson(r.text) || {};
+  p = p || {};
   const ex = p.extracted || {};
   const idents = [
     ...(ex.paymentHandles || []), ...(ex.phones || []), ...(ex.urls || []), ...(ex.bankAccounts || []),
