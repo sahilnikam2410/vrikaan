@@ -2777,19 +2777,13 @@ async function handleScamDna(req, res) {
   if (action === "purge-unverified") {
     let deleted = 0;
     try {
-      const snap = await col.where("verified", "!=", true).limit(500).get();
+      // Scan all (Firestore "!=" skips docs missing the field, which our test
+      // entries are) and delete anything not flagged verified.
+      const all = await col.limit(1000).get();
       const batch = fs.batch();
-      snap.docs.forEach((d) => { batch.delete(d.ref); deleted++; });
+      all.docs.forEach((d) => { if (d.data().verified !== true) { batch.delete(d.ref); deleted++; } });
       await batch.commit();
-    } catch (e) {
-      // verified "!=" needs the field present; fall back to scanning all docs.
-      try {
-        const all = await col.limit(500).get();
-        const batch = fs.batch();
-        all.docs.forEach((d) => { if (d.data().verified !== true) { batch.delete(d.ref); deleted++; } });
-        await batch.commit();
-      } catch (e2) { return res.status(500).json({ error: e2.message }); }
-    }
+    } catch (e2) { return res.status(500).json({ error: e2.message }); }
     return res.status(200).json({ deleted });
   }
 
