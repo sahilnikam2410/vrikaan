@@ -1,0 +1,51 @@
+/* VRIKAAN UI kit — interaction + depth styles (inline styles can't do :hover,
+   :focus-visible or keyframes, so the shared classes live here). */
+
+.vk-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: 'Vrikaan Sans', sans-serif; font-weight: 700; cursor: pointer;
+  border: 1px solid transparent; text-decoration: none; white-space: nowrap;
+  transition: transform .12s ease, filter .15s ease, background .15s ease, border-color .15s ease;
+  user-select: none;
+}
+.vk-btn:active { transform: translateY(1px); }
+.vk-btn:disabled { opacity: .55; cursor: not-allowed; }
+.vk-btn-primary:hover:not(:disabled) { filter: brightness(1.07); }
+.vk-btn-secondary:hover:not(:disabled),
+.vk-btn-ghost:hover:not(:disabled) { background: rgba(148,163,184,0.10); border-color: rgba(148,163,184,0.28); }
+.vk-btn-danger:hover:not(:disabled) { filter: brightness(1.08); }
+
+/* Card — layered depth + 1px top highlight; optional hover lift */
+.vk-card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)) , #0b1220;
+  border: 1px solid rgba(148,163,184,0.12);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.03) inset, 0 10px 30px rgba(0,0,0,0.25);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.vk-card-hover:hover {
+  transform: translateY(-3px);
+  border-color: rgba(20,184,166,0.35);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 18px 44px rgba(0,0,0,0.40), 0 0 0 1px rgba(20,184,166,0.12);
+}
+
+/* Inputs */
+.vk-input {
+  font-family: 'Vrikaan Sans', sans-serif; outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.vk-input::placeholder { color: #64748b; }
+.vk-input:focus-visible {
+  border-color: #14b8a6 !important;
+  box-shadow: 0 0 0 3px rgba(20,184,166,0.18);
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Reveal on mount */
+@keyframes vkRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.vk-rise { animation: vkRise .45s cubic-bezier(0.16,1,0.3,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .vk-btn, .vk-card, .vk-card-hover:hover, .vk-rise { transition: none; animation: none; transform: none; }
+}

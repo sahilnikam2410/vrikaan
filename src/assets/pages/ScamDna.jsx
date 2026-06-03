@@ -1,18 +1,13 @@
 import { useState, useEffect } from "react";
 import {
   LuDna, LuShieldAlert, LuTriangleAlert, LuShieldCheck, LuSearch, LuUsers,
-  LuClock, LuBanknote, LuActivity, LuFlame, LuCircleAlert,
+  LuClock, LuBanknote, LuActivity, LuFlame, LuCircleAlert, LuChevronRight,
 } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
 import { useAuth } from "../../context/AuthContext";
 import { apiFetch } from "../../lib/apiFetch";
-
-const T = {
-  bg: "#060a14", card: "#0b1220", border: "rgba(148,163,184,0.12)",
-  white: "#f1f5f9", muted: "#94a3b8", dim: "#64748b",
-  cyan: "#14b8a6", accent: "#6366f1", green: "#22c55e", red: "#ef4444", gold: "#fbbf24", orange: "#ff7a45",
-};
+import { Section, PageHero, Card, Button, Textarea, Badge, T, alpha } from "../../components/ui";
 
 const VERDICT = {
   "scam": { c: T.red, Icon: LuShieldAlert, label: "Scam" },
@@ -41,17 +36,6 @@ export default function ScamDna() {
   const [familyAlerted, setFamilyAlerted] = useState(false);
   const inFamily = !!(user && (user.familyRole || user.plan === "family" || user.currentFamilyId));
 
-  async function alertFamily() {
-    if (!result) return;
-    try {
-      const r = await apiFetch("/api/tools?tool=family-alert", {
-        method: "POST",
-        body: JSON.stringify({ category: result.category, tactic: result.tactic, sample: text, sigId: result.sigId }),
-      });
-      if (r.ok) setFamilyAlerted(true);
-    } catch { /* ignore */ }
-  }
-
   useEffect(() => { loadFeed(); }, []);
   async function loadFeed() {
     try {
@@ -61,6 +45,17 @@ export default function ScamDna() {
       });
       const d = await r.json();
       if (Array.isArray(d.items)) setFeed(d.items);
+    } catch { /* ignore */ }
+  }
+
+  async function alertFamily() {
+    if (!result) return;
+    try {
+      const r = await apiFetch("/api/tools?tool=family-alert", {
+        method: "POST",
+        body: JSON.stringify({ category: result.category, tactic: result.tactic, sample: text, sigId: result.sigId }),
+      });
+      if (r.ok) setFamilyAlerted(true);
     } catch { /* ignore */ }
   }
 
@@ -84,41 +79,32 @@ export default function ScamDna() {
   const v = result ? (VERDICT[result.verdict] || VERDICT.suspicious) : null;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, color: T.text, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="Scam DNA — India's Live Scam-Intelligence Network | VRIKAAN" description="Paste any suspicious SMS, WhatsApp or UPI message. VRIKAAN fingerprints it and checks it against a live, crowdsourced India scam network — see how many people got the same scam in real time." path="/scam-dna" />
       <Navbar />
-      <main style={{ maxWidth: 880, margin: "0 auto", padding: "100px 20px 80px" }}>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.cyan, textTransform: "uppercase" }}>
-          <LuDna size={14} /> Live community network
-        </span>
-        <h1 style={{ fontSize: 40, fontWeight: 800, margin: "8px 0 10px", letterSpacing: -1 }}>
-          Scam <span style={{ color: T.cyan }}>DNA</span>
-        </h1>
-        <p style={{ color: T.muted, fontSize: 16, maxWidth: 640, lineHeight: 1.6, margin: "0 0 28px" }}>
-          Paste any suspicious SMS, WhatsApp or UPI message. VRIKAAN fingerprints it and checks it against a
-          <strong style={{ color: T.white }}> live, crowdsourced India scam network</strong> — instantly see if others are getting the exact same scam right now. Every check makes everyone safer.
-        </p>
+      <Section width={880} style={{ paddingTop: 100 }}>
+        <PageHero
+          eyebrow="Live community network" icon={<LuDna size={14} />}
+          title={<>Scam <span style={{ color: T.cyan }}>DNA</span></>}
+          subtitle="Paste any suspicious SMS, WhatsApp or UPI message. VRIKAAN fingerprints it and checks it against a live, crowdsourced India scam network — instantly see if others are getting the exact same scam. Every check makes everyone safer."
+        />
 
         {/* Input */}
-        <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 16, padding: 20 }}>
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Paste the message here — e.g. 'Your KYC expires today, update at bit.ly/... or call 90xxxxxxx and share OTP'"
-            rows={5}
-            style={{ width: "100%", background: "rgba(2,6,23,0.5)", border: `1px solid ${T.border}`, borderRadius: 11, color: T.white, padding: "14px 16px", fontSize: 15, fontFamily: "inherit", resize: "vertical", outline: "none", boxSizing: "border-box" }}
-          />
+        <Card>
+          <Textarea value={text} onChange={(e) => setText(e.target.value)} rows={5}
+            placeholder="Paste the message here — e.g. 'Your KYC expires today, update at bit.ly/... or call 90xxxxxxx and share OTP'" />
           {error && <div style={{ color: T.red, fontSize: 13, marginTop: 10 }}>{error}</div>}
-          <button onClick={() => check(false)} disabled={loading} style={{ marginTop: 14, width: "100%", padding: "14px", borderRadius: 11, border: "none", background: loading ? "rgba(20,184,166,0.4)" : T.cyan, color: "#04110e", fontWeight: 800, fontSize: 15.5, cursor: loading ? "wait" : "pointer", fontFamily: "inherit", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-            <LuSearch size={18} /> {loading ? "Checking the network…" : "Check against the network"}
-          </button>
-        </div>
+          <Button onClick={() => check(false)} loading={loading} icon={<LuSearch size={18} />}
+            style={{ marginTop: 14, width: "100%" }}>
+            {loading ? "Checking the network…" : "Check against the network"}
+          </Button>
+        </Card>
 
         {/* Result */}
         {v && result && (
-          <div style={{ background: T.card, border: `1px solid ${v.c}44`, borderRadius: 16, padding: 24, marginTop: 18 }}>
+          <Card accent={v.c} style={{ marginTop: 18 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
-              <span style={{ width: 52, height: 52, borderRadius: 13, background: `${v.c}1f`, color: v.c, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <span style={{ width: 52, height: 52, borderRadius: 13, background: alpha(v.c, 0.12), color: v.c, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                 <v.Icon size={26} />
               </span>
               <div>
@@ -127,26 +113,22 @@ export default function ScamDna() {
               </div>
             </div>
 
-            {/* Community intel — the killer feature */}
-            <div style={{ background: `${T.accent}10`, border: `1px solid ${T.accent}33`, borderRadius: 12, padding: "16px 18px", marginBottom: 16 }}>
+            {/* Community intel */}
+            <div style={{ background: alpha(T.accent, 0.06), border: `1px solid ${alpha(T.accent, 0.2)}`, borderRadius: 12, padding: "16px 18px", marginBottom: 16 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, fontWeight: 800, letterSpacing: 1, color: T.accent, textTransform: "uppercase", marginBottom: 10, flexWrap: "wrap" }}>
                 <LuUsers size={14} /> Community intelligence
-                {result.community?.verified && (
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4, letterSpacing: 0, textTransform: "none", padding: "2px 8px", borderRadius: 999, background: `${T.green}1f`, border: `1px solid ${T.green}55`, color: T.green, fontSize: 11 }}>
-                    <LuShieldCheck size={12} /> Known scam · VRIKAAN verified
-                  </span>
-                )}
+                {result.community?.verified && <Badge tone={T.green} icon={<LuShieldCheck size={12} />} style={{ letterSpacing: 0, textTransform: "none" }}>Known scam · VRIKAAN verified</Badge>}
               </div>
               {result.community?.isNew ? (
-                <div style={{ fontSize: 15, color: T.white, lineHeight: 1.6 }}>
-                  <LuFlame size={16} color={T.orange} style={{ verticalAlign: "-3px" }} /> <strong>First sighting.</strong> You're the first to report this one — it's now in the network protecting everyone else.
+                <div style={{ fontSize: 15, color: T.text, lineHeight: 1.6 }}>
+                  <LuFlame size={16} color={T.orange} style={{ verticalAlign: "-3px" }} /> <strong>First sighting.</strong> You're the first to report this one — it's now protecting everyone else.
                 </div>
               ) : (
                 <div style={{ display: "grid", gap: 10 }}>
-                  <Stat Icon={LuActivity} c={T.red} label="Times reported" value={`${result.community.seenCount}×`} sub={`matched by ${result.matchedBy}`} />
-                  <Stat Icon={LuClock} c={T.cyan} label="First seen" value={result.community.firstSeen ? ago(result.community.firstSeen) : "today"} sub={`last seen ${ago(result.community.lastSeen)}`} />
+                  <IntelRow Icon={LuActivity} c={T.red} label="Times reported" value={`${result.community.seenCount}×`} sub={`matched by ${result.matchedBy}`} />
+                  <IntelRow Icon={LuClock} c={T.cyan} label="First seen" value={result.community.firstSeen ? ago(result.community.firstSeen) : "today"} sub={`last seen ${ago(result.community.lastSeen)}`} />
                   {result.community.lossCount > 0 && (
-                    <Stat Icon={LuBanknote} c={T.gold} label="Reported money lost" value={`${result.community.lossCount} ${result.community.lossCount === 1 ? "person" : "people"}`} sub={result.community.lossTotal > 0 ? `≈ ₹${result.community.lossTotal.toLocaleString("en-IN")} total` : "amounts not shared"} />
+                    <IntelRow Icon={LuBanknote} c={T.gold} label="Reported money lost" value={`${result.community.lossCount} ${result.community.lossCount === 1 ? "person" : "people"}`} sub={result.community.lossTotal > 0 ? `≈ ₹${result.community.lossTotal.toLocaleString("en-IN")} total` : "amounts not shared"} />
                   )}
                 </div>
               )}
@@ -158,7 +140,7 @@ export default function ScamDna() {
                 <div style={{ fontSize: 12, fontWeight: 700, color: T.muted, marginBottom: 8 }}>Extracted scammer identifiers</div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                   {[...(result.extracted.paymentHandles || []), ...(result.extracted.phones || []), ...(result.extracted.urls || [])].map((id, i) => (
-                    <span key={i} style={{ fontSize: 12.5, fontFamily: "'Vrikaan Mono', monospace", padding: "5px 10px", borderRadius: 8, background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.25)", color: "#fca5a5" }}>{id}</span>
+                    <span key={i} style={{ fontSize: 12.5, fontFamily: "'Vrikaan Mono', monospace", padding: "5px 10px", borderRadius: 8, background: alpha(T.red, 0.1), border: `1px solid ${alpha(T.red, 0.25)}`, color: "#fca5a5" }}>{id}</span>
                   ))}
                 </div>
               </div>
@@ -175,7 +157,7 @@ export default function ScamDna() {
               </ul>
             )}
 
-            {/* Family mesh — warn the whole family */}
+            {/* Family mesh */}
             {inFamily && (
               <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 14, marginBottom: 14 }}>
                 {familyAlerted ? (
@@ -185,9 +167,7 @@ export default function ScamDna() {
                 ) : (
                   <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                     <span style={{ fontSize: 13, color: T.muted }}>Protect your family from this one?</span>
-                    <button onClick={alertFamily} style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "8px 14px", borderRadius: 9, border: `1px solid ${T.cyan}55`, background: `${T.cyan}15`, color: T.cyan, fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>
-                      <LuUsers size={15} /> Alert my family
-                    </button>
+                    <Button variant="secondary" size="sm" onClick={alertFamily} icon={<LuUsers size={15} />} style={{ color: T.cyan, borderColor: alpha(T.cyan, 0.35) }}>Alert my family</Button>
                   </div>
                 )}
               </div>
@@ -200,13 +180,11 @@ export default function ScamDna() {
               ) : (
                 <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                   <span style={{ fontSize: 13, color: T.muted }}>Did this scam cost you money?</span>
-                  <button onClick={() => check(true, 0)} disabled={loading} style={{ padding: "8px 14px", borderRadius: 9, border: `1px solid ${T.gold}55`, background: `${T.gold}15`, color: T.gold, fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "inherit" }}>
-                    I lost money to this
-                  </button>
+                  <Button variant="secondary" size="sm" onClick={() => check(true, 0)} disabled={loading} style={{ color: T.gold, borderColor: alpha(T.gold, 0.35) }}>I lost money to this</Button>
                 </div>
               )}
             </div>
-          </div>
+          </Card>
         )}
 
         {/* Live feed */}
@@ -217,14 +195,14 @@ export default function ScamDna() {
             </h2>
             <div style={{ display: "grid", gap: 8 }}>
               {feed.map((f) => (
-                <div key={f.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", background: T.card, border: `1px solid ${T.border}`, borderRadius: 11 }}>
-                  <span style={{ width: 36, height: 36, borderRadius: 9, background: "rgba(239,68,68,0.12)", color: T.red, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <Card key={f.id} hover padding={0} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px" }}>
+                  <span style={{ width: 36, height: 36, borderRadius: 9, background: alpha(T.red, 0.12), color: T.red, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <LuTriangleAlert size={18} />
                   </span>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontWeight: 700, fontSize: 14, textTransform: "capitalize", display: "flex", alignItems: "center", gap: 6 }}>
                       {(f.category || "scam").replace(/-/g, " ")}{f.tactic ? ` — ${f.tactic}` : ""}
-                      {f.verified && <LuShieldCheck size={13} color={T.green} title="VRIKAAN verified" />}
+                      {f.verified && <LuShieldCheck size={13} color={T.green} />}
                     </div>
                     <div style={{ fontSize: 12, color: T.dim, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{f.sample}</div>
                   </div>
@@ -232,7 +210,7 @@ export default function ScamDna() {
                     <div style={{ fontWeight: 800, fontSize: 14, color: T.red }}>{f.count}×</div>
                     <div style={{ fontSize: 11, color: T.dim }}>{ago(f.lastSeen)}</div>
                   </div>
-                </div>
+                </Card>
               ))}
             </div>
           </div>
@@ -241,15 +219,15 @@ export default function ScamDna() {
         <p style={{ fontSize: 12, color: T.dim, marginTop: 28, lineHeight: 1.6 }}>
           Privacy: only the scam fingerprint (tactic, scammer UPI/phone/link) is stored to warn others — never your personal info. The more people check, the smarter the network gets.
         </p>
-      </main>
+      </Section>
     </div>
   );
 }
 
-function Stat({ Icon, c, label, value, sub }) {
+function IntelRow({ Icon, c, label, value, sub }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-      <span style={{ width: 34, height: 34, borderRadius: 9, background: `${c}1c`, color: c, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Icon size={17} /></span>
+      <span style={{ width: 34, height: 34, borderRadius: 9, background: alpha(c, 0.11), color: c, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Icon size={17} /></span>
       <div style={{ flex: 1 }}>
         <div style={{ fontSize: 15, fontWeight: 700, color: "#fff" }}>{value} <span style={{ fontSize: 12.5, fontWeight: 500, color: T.muted }}>{label}</span></div>
         {sub && <div style={{ fontSize: 12, color: T.dim }}>{sub}</div>}
