@@ -2864,7 +2864,14 @@ export default function VrikaanApp() {
   ];
 
   return (
-    <div style={{ background: T.bg, color: T.white, minHeight: "100vh", fontFamily: "var(--font-body)", overflowX: "hidden" }}>
+    <div style={{ background: T.bg, color: T.white, minHeight: "100vh", fontFamily: "var(--font-body)", overflowX: "hidden", position: "relative" }}>
+      {/* Aurora orbs — colour behind the frosted glass so blur actually shows */}
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: "-10%", left: "-5%", width: 560, height: 560, borderRadius: "50%", background: "radial-gradient(circle, rgba(20,184,166,0.22), transparent 70%)", filter: "blur(40px)" }} />
+        <div style={{ position: "absolute", top: "30%", right: "-8%", width: 620, height: 620, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.20), transparent 70%)", filter: "blur(50px)" }} />
+        <div style={{ position: "absolute", bottom: "-12%", left: "25%", width: 680, height: 680, borderRadius: "50%", background: "radial-gradient(circle, rgba(168,85,247,0.14), transparent 70%)", filter: "blur(60px)" }} />
+      </div>
+      <div style={{ position: "relative", zIndex: 1 }}>
       <SEO path="/" />
       <StickyFab />
 
@@ -3213,6 +3220,7 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
         <CTABanner />
         <Footer />
         <PageJump />
+      </div>
       </div>
     </div>
   );
