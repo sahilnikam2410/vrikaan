@@ -198,6 +198,20 @@ function getSmartResponse(message) {
 // ─── Styles ───
 const T = { bg: "#060a14", dark: "#0a0f1e", white: "#f1f5f9", muted: "#94a3b8", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", border: "rgba(148,163,184,0.08)" };
 
+// Shared chatbot keyframes (rendered in both launcher + open panel).
+const CHAT_ANIM = `
+  @keyframes chatPulse { 0%,100% { box-shadow: 0 4px 24px rgba(99,102,241,0.4); } 50% { box-shadow: 0 4px 32px rgba(20,184,166,0.6), 0 0 0 6px rgba(20,184,166,0.10); } }
+  @keyframes chatFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes chatBreath { 0%,100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+  @keyframes chatPing { 0% { transform: scale(1); opacity: .6; } 100% { transform: scale(1.7); opacity: 0; } }
+  @keyframes chatBadge { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+  @keyframes slideUp { from { opacity:0; transform: translateY(24px) scale(0.96); } to { opacity:1; transform: translateY(0) scale(1); } }
+  @keyframes dotBounce { 0%,80%,100% { transform: translateY(0); } 40% { transform: translateY(-6px); } }
+  @keyframes msgIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+  @keyframes onlinePulse { 0%,100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(34,197,94,0.5); } 50% { transform: scale(1.25); opacity: .85; box-shadow: 0 0 0 4px rgba(34,197,94,0); } }
+  @media (prefers-reduced-motion: reduce) { #vrikaan-chat *, #vrikaan-chat { animation: none !important; } }
+`;
+
 export default function AIChatbot() {
   const { user } = useAuth() || {};
   const navigate = useNavigate();
@@ -434,42 +448,44 @@ export default function AIChatbot() {
   // ─── Render ───
   if (!open) {
     return (
-      <div onClick={() => setOpen(true)} style={{
+      <div onClick={() => setOpen(true)}
+        onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.08)"; }}
+        onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)"; }}
+        style={{
         position: "fixed", bottom: 24, right: 24, zIndex: 9999, width: 62, height: 62,
         borderRadius: "50%", cursor: "pointer",
         background: "linear-gradient(135deg, #6366f1, #14b8a6)",
         display: "flex", alignItems: "center", justifyContent: "center",
         boxShadow: "0 4px 24px rgba(99,102,241,0.4), 0 0 0 3px rgba(99,102,241,0.15)",
-        animation: "chatPulse 2s ease-in-out infinite",
-        transition: "transform 0.2s",
+        animation: "chatFloat 3.2s ease-in-out infinite, chatPulse 2s ease-in-out infinite",
+        transition: "transform 0.2s cubic-bezier(0.34,1.56,0.64,1)",
       }}>
-        <style>{`
-          @keyframes chatPulse { 0%,100% { box-shadow: 0 4px 24px rgba(99,102,241,0.4); } 50% { box-shadow: 0 4px 32px rgba(20, 184, 166,0.6), 0 0 0 6px rgba(20, 184, 166,0.1); } }
-          @keyframes slideUp { from { opacity:0; transform:translateY(20px) scale(0.95); } to { opacity:1; transform:translateY(0) scale(1); } }
-          @keyframes dotBounce { 0%,80%,100% { transform:translateY(0); } 40% { transform:translateY(-6px); } }
-        `}</style>
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <style>{CHAT_ANIM}</style>
+        {/* expanding ping ring */}
+        <span style={{ position: "absolute", inset: 0, borderRadius: "50%", border: "2px solid #14b8a6", animation: "chatPing 2.4s cubic-bezier(0,0,0.2,1) infinite", pointerEvents: "none" }} />
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ animation: "chatBreath 2.4s ease-in-out infinite" }}>
           <path d="M12 2C6.48 2 2 5.92 2 10.5c0 2.5 1.34 4.74 3.44 6.3L4 22l4.66-2.34C9.72 19.88 10.84 20 12 20c5.52 0 10-3.42 10-7.5S17.52 2 12 2z"/>
           <circle cx="8" cy="10.5" r="1" fill="#fff"/><circle cx="12" cy="10.5" r="1" fill="#fff"/><circle cx="16" cy="10.5" r="1" fill="#fff"/>
         </svg>
         {/* AI badge */}
-        <div style={{ position: "absolute", top: -4, right: -4, background: "#22c55e", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800, color: "#fff", border: "2px solid #060a14" }}>AI</div>
+        <div style={{ position: "absolute", top: -4, right: -4, background: "#22c55e", borderRadius: "50%", width: 20, height: 20, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800, color: "#fff", border: "2px solid #060a14", animation: "chatBadge 2.4s ease-in-out infinite" }}>AI</div>
       </div>
     );
   }
 
   return (
-    <div style={{
+    <div id="vrikaan-chat" style={{
       position: "fixed", bottom: 24, right: 24, zIndex: 9999,
       width: 400, height: 580,
       background: T.dark, borderRadius: 16,
       border: `1px solid rgba(99,102,241,0.2)`,
       boxShadow: "0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(99,102,241,0.1)",
       display: "flex", flexDirection: "column",
-      animation: "slideUp 0.3s ease",
+      animation: "slideUp 0.4s cubic-bezier(0.34,1.56,0.64,1)",
       fontFamily: "'Vrikaan Sans', sans-serif",
       overflow: "hidden",
     }}>
+      <style>{CHAT_ANIM}</style>
       {/* Header */}
       <div style={{
         padding: "14px 16px", display: "flex", alignItems: "center", gap: 10,
@@ -479,9 +495,9 @@ export default function AIChatbot() {
         <img src="/wolf-mark.png?v=2" alt="VRIKAAN" style={{ width: 36, height: 36, borderRadius: 10 }} />
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'" }}>VRIKAAN AI</div>
-          <div style={{ fontSize: 11, color: T.green, display: "flex", alignItems: "center", gap: 4 }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", background: T.green }} />
-            Powered by VRIKAAN AI
+          <div style={{ fontSize: 11, color: T.green, display: "flex", alignItems: "center", gap: 5 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", background: T.green, animation: "onlinePulse 2s ease-in-out infinite" }} />
+            Online · VRIKAAN AI
           </div>
         </div>
         {/* Credits badge */}
@@ -628,7 +644,7 @@ export default function AIChatbot() {
           {/* Messages */}
           <div ref={msgsRef} style={{ flex: 1, overflowY: "auto", padding: "12px 14px", display: "flex", flexDirection: "column", gap: 10 }}>
             {messages.map((m, i) => (
-              <div key={i} style={{ display: "flex", flexDirection: m.role === "user" ? "row-reverse" : "row", gap: 8, alignItems: "flex-start" }}>
+              <div key={i} style={{ display: "flex", flexDirection: m.role === "user" ? "row-reverse" : "row", gap: 8, alignItems: "flex-start", animation: "msgIn 0.35s cubic-bezier(0.16,1,0.3,1) both" }}>
                 {/* Avatar */}
                 {m.role === "bot" && (
                   <img src="/wolf-mark.png?v=2" alt="VRIKAAN" style={{ width: 28, height: 28, borderRadius: 8, flexShrink: 0 }} />
