@@ -1,8 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 
 const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", ember: "#f97316", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
@@ -17,25 +14,22 @@ const protocols = [
 export default function EmergencyHelp() {
   const [open, setOpen] = useState(null);
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Emergency Help — Cyber Incident Recovery"
-        description="Immediate recovery steps for bank fraud, account takeover, phishing, identity theft, and ransomware incidents. Step-by-step protocols to limit damage."
-        path="/emergency-help"
-        keywords="cyber incident response, bank fraud recovery, account hacked help, identity theft steps, phishing recovery"
-      />
-      <Navbar />
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "120px 24px 80px" }}>
-        <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>
-        <div style={{ padding: "16px 24px", background: "rgba(239,68,68,0.04)", border: "1px solid rgba(239,68,68,0.12)", borderRadius: 12, marginBottom: 36, display: "flex", alignItems: "center", gap: 12 }}>
+    <ToolShell
+      route="/emergency-help" eyebrow="Emergency Response"
+      title="Incident Recovery" titleAccent="Protocols"
+      subtitle="Select your situation for immediate, actionable recovery steps."
+      width={900}
+      seoTitle="Emergency Help — Cyber Incident Recovery"
+      seoDesc="Immediate recovery steps for bank fraud, account takeover, phishing, identity theft, and ransomware incidents. Step-by-step protocols to limit damage."
+      path="/emergency-help"
+      topSlot={
+        <div style={{ padding: "16px 24px", background: "rgba(239,68,68,0.04)", border: "1px solid rgba(239,68,68,0.12)", borderRadius: 12, marginTop: 100, marginBottom: -64, display: "flex", alignItems: "center", gap: 12 }}>
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: T.red, flexShrink: 0 }} />
           <span style={{ color: T.red, fontSize: 13, fontWeight: 600 }}>If in immediate physical danger, call your local emergency number (112) first.</span>
         </div>
-        <div style={{ textAlign: "center", marginBottom: 56 }}>
-          <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.red}0c`, border: `1px solid ${T.red}20`, fontSize: 11, fontWeight: 600, color: T.red, marginBottom: 16, letterSpacing: 0.5 }}>Emergency Response</span>
-          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Incident Recovery Protocols</h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 520, margin: "0 auto", lineHeight: 1.7 }}>Select your situation for immediate, actionable recovery steps.</p>
-        </div>
+      }
+      footer
+    >
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {protocols.map((p, i) => (
             <div key={i} style={{ background: T.card, border: `1px solid ${open === i ? p.color + "20" : T.border}`, borderRadius: 14, overflow: "hidden", transition: "all 0.3s", cursor: "pointer" }} onClick={() => setOpen(open === i ? null : i)}>
@@ -70,13 +64,11 @@ export default function EmergencyHelp() {
             ))}
           </div>
         </div>
-      </div>
       <style>{`
   @media (max-width: 768px) {
     .resp-grid-2 { grid-template-columns: 1fr !important; }
   }
 `}</style>
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

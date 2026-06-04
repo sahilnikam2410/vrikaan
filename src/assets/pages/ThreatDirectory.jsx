@@ -1,8 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO, { breadcrumbSchema } from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import THREATS, { THREAT_CATEGORIES } from "../../data/threats";
 import { LuArrowRight } from "react-icons/lu";
 
@@ -45,32 +43,16 @@ export default function ThreatDirectory() {
   }, [query, category]);
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Cybersecurity Threat Directory"
-        description="A plain-English directory of the most common cybersecurity threats — phishing, ransomware, SIM swapping, romance scams and more. Signs, examples, and prevention for each."
-        path="/threats"
-        keywords="cybersecurity threats, phishing, ransomware, scam types, online fraud, security guide"
-        jsonLd={breadcrumbSchema([
-          { name: "Home", path: "/" },
-          { name: "Threats", path: "/threats" },
-        ])}
-      />
-      <Navbar />
-
-      <main style={{ maxWidth: 1100, margin: "0 auto", padding: "120px 24px 80px" }}>
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <div style={{ fontSize: 12, color: T.cyan, fontFamily: "'Vrikaan Mono', monospace", letterSpacing: 2, marginBottom: 12 }}>
-            THREAT DIRECTORY
-          </div>
-          <h1 style={{ fontSize: 44, fontWeight: 800, letterSpacing: "-0.02em", margin: "0 0 16px" }}>
-            Know the threats. Defend smarter.
-          </h1>
-          <p style={{ fontSize: 16, color: T.muted, maxWidth: 640, margin: "0 auto", lineHeight: 1.6 }}>
-            Plain-English guides to the most common cyber threats. Each entry covers
-            warning signs, real-world examples, and the prevention steps that actually work.
-          </p>
-        </div>
+    <ToolShell
+      route="/threats" eyebrow="Threat Directory"
+      title="Know the threats." titleAccent="Defend smarter."
+      subtitle="Plain-English guides to the most common cyber threats. Each entry covers warning signs, real-world examples, and the prevention steps that actually work."
+      width={1100}
+      seoTitle="Cybersecurity Threat Directory"
+      seoDesc="A plain-English directory of the most common cybersecurity threats — phishing, ransomware, SIM swapping, romance scams and more. Signs, examples, and prevention for each."
+      path="/threats"
+      footer
+    >
 
         {/* Search + filter */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginBottom: 32, justifyContent: "center" }}>
@@ -195,9 +177,6 @@ export default function ThreatDirectory() {
             ))}
           </div>
         )}
-      </main>
-
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

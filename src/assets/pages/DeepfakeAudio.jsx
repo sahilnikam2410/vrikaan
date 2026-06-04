@@ -1,7 +1,5 @@
 import { useState, useRef } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 import { LuAudioLines, LuCircleCheck, LuActivity, LuTriangleAlert, LuCircleHelp } from "react-icons/lu";
 
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
@@ -74,16 +72,16 @@ export default function DeepfakeAudio() {
   const meta = result ? (VERDICT_META[result.verdict] || VERDICT_META.uncertain) : null;
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO title="Deepfake / Vishing Audio Detector — VRIKAAN" description="Upload a suspicious phone-call recording. AI analyzes it for synthetic voice, vishing scripts, and India-specific scam patterns." path="/deepfake-audio" />
-      <Navbar />
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "120px 20px 80px" }}>
-        <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, margin: 0, marginBottom: 8, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-          Deepfake & Vishing Audio Detector
-        </h1>
-        <p style={{ color: T.muted, fontSize: 14, margin: "0 0 24px" }}>
-          Upload a phone-call recording (≤ 5 MB). AI listens for AI-generated voice, urgency scripts, and common Indian vishing patterns — fake bank, fake tax officer, fake police, fake courier.
-        </p>
+    <ToolShell
+      route="/deepfake-audio" eyebrow="AI Audio Tool"
+      title="Deepfake & Vishing" titleAccent="Audio Detector"
+      subtitle="Upload a phone-call recording (≤ 5 MB). AI listens for AI-generated voice, urgency scripts, and common Indian vishing patterns — fake bank, fake tax officer, fake police, fake courier."
+      width={760}
+      seoTitle="Deepfake / Vishing Audio Detector — VRIKAAN"
+      seoDesc="Upload a suspicious phone-call recording. AI analyzes it for synthetic voice, vishing scripts, and India-specific scam patterns."
+      path="/deepfake-audio"
+      footer
+    >
 
         {/* File input */}
         <div
@@ -216,8 +214,6 @@ export default function DeepfakeAudio() {
             </p>
           </div>
         )}
-      </div>
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

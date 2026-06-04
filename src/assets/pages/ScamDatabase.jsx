@@ -1,8 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 
 const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", ember: "#f97316", red: "#ef4444", gold: "#eab308", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 
@@ -28,21 +25,16 @@ export default function ScamDatabase() {
   const filtered = scams.filter(s => (filter === "ALL" || s.type === filter) && (s.title.toLowerCase().includes(search.toLowerCase()) || s.desc.toLowerCase().includes(search.toLowerCase())));
 
   return (
-    <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO
-        title="Scam Database — Active Scam Tracker"
-        description="Browse an active database of cyber scams: phishing, investment fraud, impersonation, romance scams, and more. Searchable, regularly updated, reported by users."
-        path="/scam-database"
-        keywords="scam database, phishing scams, fraud alerts, Indian cyber scams, OTP scam, delivery scam"
-      />
-      <Navbar />
-      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "120px 24px 80px" }}>
-        <div style={{ marginBottom: 48 }}><Link to="/" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 13, fontWeight: 500 }}>&larr; Back to Home</Link></div>
-        <div style={{ textAlign: "center", marginBottom: 48 }}>
-          <span style={{ display: "inline-block", padding: "5px 14px", borderRadius: 100, background: `${T.red}0c`, border: `1px solid ${T.red}20`, fontSize: 11, fontWeight: 600, color: T.red, marginBottom: 16, letterSpacing: 0.5 }}>Community Reports</span>
-          <h1 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(36px, 4vw, 48px)", fontWeight: 700, letterSpacing: "-0.03em", margin: "0 0 16px" }}>Scam Database</h1>
-          <p style={{ color: T.muted, fontSize: 16, maxWidth: 500, margin: "0 auto", lineHeight: 1.7 }}>Community-reported scams and fraud attempts. Learn to recognize and avoid them.</p>
-        </div>
+    <ToolShell
+      route="/scam-database" eyebrow="Community Reports"
+      title="Scam" titleAccent="Database"
+      subtitle="Community-reported scams and fraud attempts. Learn to recognize and avoid them."
+      width={1000}
+      seoTitle="Scam Database — Active Scam Tracker"
+      seoDesc="Browse an active database of cyber scams: phishing, investment fraud, impersonation, romance scams, and more. Searchable, regularly updated, reported by users."
+      path="/scam-database"
+      footer
+    >
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search scams..." style={{ width: "100%", padding: "14px 20px", background: "rgba(0,0,0,0.3)", border: `1px solid ${T.border}`, borderRadius: 12, color: T.white, fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 14, outline: "none", marginBottom: 24 }} onFocus={e => e.target.style.borderColor = "rgba(99,102,241,0.3)"} onBlur={e => e.target.style.borderColor = T.border} />
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 32 }}>
           {types.map(t => (<button key={t} onClick={() => setFilter(t)} style={{ padding: "7px 14px", borderRadius: 8, fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 11, fontWeight: 600, cursor: "pointer", transition: "all 0.3s", background: filter === t ? `${T.accent}15` : "rgba(148,163,184,0.04)", border: `1px solid ${filter === t ? T.accent + "30" : T.border}`, color: filter === t ? T.accent : T.mutedDark }}>{t}</button>))}
@@ -73,8 +65,6 @@ export default function ScamDatabase() {
           ))}
           {filtered.length === 0 && <div style={{ textAlign: "center", padding: 48, color: T.mutedDark }}>No scams found.</div>}
         </div>
-      </div>
-      <Footer />
-    </div>
+    </ToolShell>
   );
 }

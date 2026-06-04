@@ -2,9 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { db } from "../../firebase/config";
 import { doc, getDoc, setDoc, collection, query, where, getDocs, serverTimestamp } from "firebase/firestore";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
-import SEO from "../../components/SEO";
+import ToolShell from "../../components/ToolShell";
 
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
@@ -73,16 +71,16 @@ export default function Referral() {
   ];
 
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans',sans-serif" }}>
-      <SEO title="Refer & Earn" description="Invite friends to VRIKAAN and earn free credits and subscription upgrades." path="/referral" />
-      <Navbar />
-      <div style={{ maxWidth: 700, margin: "0 auto", padding: "120px 20px 60px" }}>
-        <div style={{ textAlign: "center", marginBottom: 40 }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}>&#x1F381;</div>
-          <h1 style={{ fontSize: 32, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans',sans-serif", marginBottom: 8 }}>Refer & Earn</h1>
-          <p style={{ color: T.muted, fontSize: 15 }}>Invite friends and earn free credits & subscription upgrades</p>
-        </div>
-
+    <ToolShell
+      route="/referral" eyebrow="Rewards"
+      title="Refer &" titleAccent="Earn"
+      subtitle="Invite friends and earn free credits & subscription upgrades"
+      width={700}
+      seoTitle="Refer & Earn"
+      seoDesc="Invite friends to VRIKAAN and earn free credits and subscription upgrades."
+      path="/referral"
+      footer
+    >
         {loading ? (
           <div style={{ textAlign: "center", padding: 40, color: T.muted }}>Loading referral data...</div>
         ) : (
@@ -157,14 +155,12 @@ export default function Referral() {
             </div>
           </>
         )}
-      </div>
-      <Footer />
       <style>{`
         @media (max-width: 500px) {
           .ref-share-grid { grid-template-columns: 1fr !important; }
           .ref-stats-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
-    </div>
+    </ToolShell>
   );
 }
