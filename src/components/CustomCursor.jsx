@@ -1,25 +1,25 @@
 import { useEffect, useRef } from "react";
 
 /**
- * CustomCursor — cyber targeting reticle. Four corner brackets + center dot
- * that track the pointer; brackets "lock on" (tighten + brighten + rotate)
- * over interactive elements. Desktop only (pointer: fine).
+ * CustomCursor — VRIKAAN wolf cursor. The wolf mark glides after the pointer
+ * (teal glow, scales/brightens over interactive elements); a small precise dot
+ * leads at the exact pointer position for accuracy. Desktop only (pointer:fine).
  */
 const TEAL = "#14b8a6";
 
 export default function CustomCursor() {
-  const wrapRef = useRef(null);
+  const wolfRef = useRef(null);
   const dotRef = useRef(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!(window.matchMedia && window.matchMedia("(pointer: fine)").matches)) return;
-    const wrap = wrapRef.current, dot = dotRef.current;
-    if (!wrap || !dot) return;
+    const wolf = wolfRef.current, dot = dotRef.current;
+    if (!wolf || !dot) return;
 
     document.body.style.cursor = "none";
     let mx = innerWidth / 2, my = innerHeight / 2, wx = mx, wy = my, raf;
-    let interactive = false, spin = 0;
+    let interactive = false;
 
     const onMove = (e) => {
       mx = e.clientX; my = e.clientY;
@@ -27,20 +27,20 @@ export default function CustomCursor() {
       const t = e.target;
       interactive = !!(t && t.closest && t.closest('a,button,[role="button"],input,textarea,select,label,.vk-btn'));
     };
-    const onDown = () => { wrap.style.setProperty("--k", "0.8"); };
-    const onUp = () => { wrap.style.setProperty("--k", "1"); };
-    const onLeave = () => { wrap.style.opacity = "0"; dot.style.opacity = "0"; };
-    const onEnter = () => { wrap.style.opacity = "1"; dot.style.opacity = "1"; };
+    const onDown = () => { wolf.dataset.k = "0.82"; };
+    const onUp = () => { wolf.dataset.k = "1"; };
+    const onLeave = () => { wolf.style.opacity = "0"; dot.style.opacity = "0"; };
+    const onEnter = () => { wolf.style.opacity = "1"; dot.style.opacity = "1"; };
 
     const loop = () => {
-      wx += (mx - wx) * 0.22; wy += (my - wy) * 0.22;
-      spin += interactive ? 1.4 : 0.25;
-      const size = interactive ? 26 : 38;          // lock-on tightens
-      const k = wrap.style.getPropertyValue("--k") || 1;
-      wrap.style.width = wrap.style.height = `${size}px`;
-      wrap.style.transform = `translate(${wx}px,${wy}px) translate(-50%,-50%) rotate(${spin}deg) scale(${k})`;
-      wrap.style.opacity = wrap.style.opacity || "1";
-      for (const c of wrap.children) c.style.borderColor = interactive ? TEAL : "rgba(20,184,166,0.6)";
+      wx += (mx - wx) * 0.2; wy += (my - wy) * 0.2;
+      const k = Number(wolf.dataset.k || 1) * (interactive ? 1.25 : 1);
+      // slight lean toward motion
+      const lean = Math.max(-12, Math.min(12, (mx - wx) * 0.6));
+      wolf.style.transform = `translate(${wx}px,${wy}px) translate(-50%,-50%) rotate(${lean}deg) scale(${k})`;
+      wolf.style.filter = interactive
+        ? "drop-shadow(0 0 8px rgba(20,184,166,0.9)) brightness(1.15)"
+        : "drop-shadow(0 0 5px rgba(20,184,166,0.5))";
       raf = requestAnimationFrame(loop);
     };
     loop();
@@ -61,19 +61,15 @@ export default function CustomCursor() {
 
   return (
     <>
-      <div ref={wrapRef} aria-hidden style={{
-        position: "fixed", top: 0, left: 0, width: 38, height: 38,
+      <img ref={wolfRef} src="/wolf-mark.png?v=2" alt="" aria-hidden data-k="1" style={{
+        position: "fixed", top: 0, left: 0, width: 30, height: 30, borderRadius: 7,
         pointerEvents: "none", zIndex: 100000, transition: "opacity .2s",
-      }}>
-        <span style={{ position: "absolute", top: 0, left: 0, width: 9, height: 9, borderTop: `1.5px solid ${TEAL}`, borderLeft: `1.5px solid ${TEAL}` }} />
-        <span style={{ position: "absolute", top: 0, right: 0, width: 9, height: 9, borderTop: `1.5px solid ${TEAL}`, borderRight: `1.5px solid ${TEAL}` }} />
-        <span style={{ position: "absolute", bottom: 0, left: 0, width: 9, height: 9, borderBottom: `1.5px solid ${TEAL}`, borderLeft: `1.5px solid ${TEAL}` }} />
-        <span style={{ position: "absolute", bottom: 0, right: 0, width: 9, height: 9, borderBottom: `1.5px solid ${TEAL}`, borderRight: `1.5px solid ${TEAL}` }} />
-      </div>
+        filter: "drop-shadow(0 0 5px rgba(20,184,166,0.5))",
+      }} />
       <div ref={dotRef} aria-hidden style={{
         position: "fixed", top: 0, left: 0, width: 5, height: 5, borderRadius: "50%",
         background: TEAL, boxShadow: `0 0 8px ${TEAL}`, pointerEvents: "none",
-        zIndex: 100000, transition: "opacity .2s",
+        zIndex: 100001, transition: "opacity .2s",
       }} />
     </>
   );
