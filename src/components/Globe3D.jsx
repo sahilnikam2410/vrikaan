@@ -71,7 +71,7 @@ function createArcCurve(start, end) {
   return new THREE.QuadraticBezierCurve3(start, mid, end);
 }
 
-const Globe3D = memo(function Globe3D({ size, threatsRef, onContextLost }) {
+const Globe3D = memo(function Globe3D({ size, threatsRef, onContextLost, onArc }) {
   const containerRef = useRef(null);
   const onContextLostRef = useRef(onContextLost);
   onContextLostRef.current = onContextLost;
@@ -159,25 +159,33 @@ const Globe3D = memo(function Globe3D({ size, threatsRef, onContextLost }) {
     renderer.domElement.addEventListener("mousemove", (e) => onMove(e.clientX, e.clientY));
     renderer.domElement.addEventListener("touchmove", (e) => { e.preventDefault(); onMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
 
-    // Pick a REAL threat origin if live feed available, else random city pair.
+    // STRICT REAL: only draw arcs from real abuse.ch threats whose source
+    // country maps to coords. No random/fabricated lines — returns null when
+    // there's no real threat to draw (then we draw nothing).
     const pickEndpoints = () => {
       const live = threatsRef?.current;
-      if (live && live.length) {
-        const t = live[Math.floor(Math.random() * live.length)];
-        const origin = COUNTRY_COORDS[t.country] || NODES[Math.floor(Math.random() * NODES.length)];
-        const target = INDIA_TARGETS[Math.floor(Math.random() * INDIA_TARGETS.length)];
-        return { start: latLonToVec3(origin.lat, origin.lon, 2.02), end: latLonToVec3(target.lat, target.lon, 2.02), real: true };
-      }
-      const ai = Math.floor(Math.random() * NODES.length);
-      let bi = Math.floor(Math.random() * NODES.length); while (bi === ai) bi = Math.floor(Math.random() * NODES.length);
-      return { start: latLonToVec3(NODES[ai].lat, NODES[ai].lon, 2.02), end: latLonToVec3(NODES[bi].lat, NODES[bi].lon, 2.02), real: false };
+      if (!live || !live.length) return null;
+      const usable = live.filter((t) => t.country && COUNTRY_COORDS[t.country]);
+      if (!usable.length) return null;
+      const t = usable[Math.floor(Math.random() * usable.length)];
+      const origin = COUNTRY_COORDS[t.country];
+      const target = INDIA_TARGETS[Math.floor(Math.random() * INDIA_TARGETS.length)];
+      return {
+        start: latLonToVec3(origin.lat, origin.lon, 2.02),
+        end: latLonToVec3(target.lat, target.lon, 2.02),
+        threat: t,
+      };
     };
 
     let lastAttackTime = 0;
     const spawnAttack = (now) => {
-      const { start, end } = pickEndpoints();
+      const ep = pickEndpoints();
+      if (!ep) return; // no real threat → no line (honest)
+      const { start, end, threat } = ep;
+      if (onArc) onArc(threat);
       const curve = createArcCurve(start, end);
-      const color = ATTACK_COLORS[Math.floor(Math.random() * ATTACK_COLORS.length)];
+      // color by real threat kind: malware = red, botnet = purple
+      const color = threat.kind === "botnet" ? 0xa78bfa : 0xef4444;
       const lineMat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.7 });
       const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints(curve.getPoints(60)), lineMat); arcsGroup.add(line);
       const particle = new THREE.Mesh(new THREE.SphereGeometry(0.035, 6, 6), new THREE.MeshBasicMaterial({ color: 0xffffff })); arcsGroup.add(particle);
@@ -230,7 +238,7 @@ const Globe3D = memo(function Globe3D({ size, threatsRef, onContextLost }) {
       if (renderer.domElement.parentNode) container.removeChild(renderer.domElement);
       renderer.dispose();
     };
-  }, [size, threatsRef]);
+  }, [size, threatsRef, onArc]);
 
   return <div ref={containerRef} style={{ width: "100%", height: size, background: "#060a14" }} />;
 });

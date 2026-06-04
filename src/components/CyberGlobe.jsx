@@ -144,21 +144,22 @@ export default memo(function CyberGlobe({ size = 520 }) {
     return () => { alive = false; clearInterval(iv); };
   }, []);
 
-  // Rotate the overlay label through real threats.
+  // Overlay label: in 3D mode the globe drives it per-arc via onArc (each line =
+  // the exact real threat shown). Only the 2D fallback rotates the label itself.
   useEffect(() => {
-    if (!threatsRef.current.length) return;
+    if (use3D || !threatsRef.current.length) return;
     const iv = setInterval(() => {
       const arr = threatsRef.current;
       if (arr.length) setLatest(arr[Math.floor(Math.random() * arr.length)]);
     }, 2600);
     return () => clearInterval(iv);
-  }, [latest]);
+  }, [latest, use3D]);
 
   return (
     <div style={{ position: "relative", width: "100%", height: size }}>
       {use3D && webgl ? (
         <Suspense fallback={<FallbackGlobe size={size} />}>
-          <Globe3D size={size} threatsRef={threatsRef} onContextLost={handleContextLost} />
+          <Globe3D size={size} threatsRef={threatsRef} onContextLost={handleContextLost} onArc={setLatest} />
         </Suspense>
       ) : (
         <FallbackGlobe size={size} />
