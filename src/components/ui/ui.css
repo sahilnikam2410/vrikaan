@@ -8,9 +8,10 @@
   transition: transform .12s ease, filter .15s ease, background .15s ease, border-color .15s ease;
   user-select: none;
 }
-.vk-btn:active { transform: translateY(1px); }
+.vk-btn:hover:not(:disabled) { transform: translateY(-1.5px); }
+.vk-btn:active:not(:disabled) { transform: translateY(0); }
 .vk-btn:disabled { opacity: .55; cursor: not-allowed; }
-.vk-btn-primary:hover:not(:disabled) { filter: brightness(1.07); }
+.vk-btn-primary:hover:not(:disabled) { filter: brightness(1.07); box-shadow: 0 8px 22px rgba(20,184,166,0.28); }
 .vk-btn-secondary:hover:not(:disabled),
 .vk-btn-ghost:hover:not(:disabled) { background: rgba(148,163,184,0.10); border-color: rgba(148,163,184,0.28); }
 .vk-btn-danger:hover:not(:disabled) { filter: brightness(1.08); }

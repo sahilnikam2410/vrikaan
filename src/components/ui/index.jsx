@@ -1,10 +1,64 @@
 // VRIKAAN UI kit — shared components. Lightweight CSS-in-JS over inline styles
 // + ui.css for hover/focus/motion. Import from "../components/ui".
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { tokens, T, alpha } from "./tokens";
 import "./ui.css";
 
 export { tokens, T, alpha };
+
+/* ── Reveal ── scroll-into-view fade+rise (IntersectionObserver, once). ── */
+export function Reveal({ children, delay = 0, y = 14, as: Tag = "div", style, ...rest }) {
+  const ref = useRef(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || shown) return;
+    if (typeof IntersectionObserver === "undefined") { setShown(true); return; }
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setShown(true); io.disconnect(); }
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [shown]);
+  return (
+    <Tag ref={ref} style={{
+      opacity: shown ? 1 : 0,
+      transform: shown ? "none" : `translateY(${y}px)`,
+      transition: `opacity .6s cubic-bezier(0.16,1,0.3,1) ${delay}s, transform .6s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+      willChange: "opacity, transform", ...style,
+    }} {...rest}>{children}</Tag>
+  );
+}
+
+/* ── CountUp ── animates 0→end when scrolled into view. ── */
+export function CountUp({ end = 0, duration = 1400, prefix = "", suffix = "", decimals = 0, style }) {
+  const ref = useRef(null);
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let raf, started = false;
+    const run = () => {
+      const t0 = performance.now();
+      const tick = (now) => {
+        const p = Math.min(1, (now - t0) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setVal(end * eased);
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    };
+    if (typeof IntersectionObserver === "undefined") { setVal(end); return; }
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !started) { started = true; run(); io.disconnect(); }
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => { io.disconnect(); cancelAnimationFrame(raf); };
+  }, [end, duration]);
+  const shown = decimals > 0 ? val.toFixed(decimals) : Math.round(val).toLocaleString("en-IN");
+  return <span ref={ref} style={style}>{prefix}{shown}{suffix}</span>;
+}
 
 /* ── Button ──────────────────────────────────────────────────────────
    <Button variant="primary|secondary|ghost|danger" size="sm|md|lg"
