@@ -22,6 +22,7 @@ const ACTION_TIERS = {
   "scam-check":         "pro",
   "scam-dna":           "free",  // free → grows the community scam-intel network (the moat)
   "scambait":           "free",  // free → viral + harvests scam intel into Scam DNA
+  "whatsapp":           "free",  // Meta Cloud API webhook (scam-check via WhatsApp)
   "risk-score":         "free",  // lead-gen — free to drive signups + upgrade intent
   "headers-fix":        "pro",
   "deepfake-audio":     "pro",
@@ -3081,6 +3082,70 @@ Return STRICT JSON (no markdown):
   });
 }
 
+// ─── WHATSAPP BOT (Meta Cloud API) — scam-check by forwarding a message ──
+// Webhook: POST /api/tools?tool=whatsapp. Parses inbound text, runs the scam
+// fingerprint, replies via Graph API, and feeds the Scam DNA network.
+async function _waSend(to, body) {
+  const token = process.env.WHATSAPP_TOKEN, phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  if (!token || !phoneId) { console.warn("WhatsApp env missing"); return; }
+  try {
+    await fetch(`https://graph.facebook.com/v21.0/${phoneId}/messages`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ messaging_product: "whatsapp", to, type: "text", text: { body: body.slice(0, 4000), preview_url: false } }),
+    });
+  } catch (e) { console.error("wa send:", e.message); }
+}
+
+async function handleWhatsapp(req, res) {
+  // Always 200 fast so Meta doesn't retry; work happens before responding.
+  const body = req.body || {};
+  let msg = null, from = null;
+  try {
+    const v = body.entry?.[0]?.changes?.[0]?.value;
+    const m = v?.messages?.[0];
+    if (m && m.type === "text") { msg = m.text?.body || ""; from = m.from; }
+  } catch { /* ignore */ }
+
+  if (!from || !msg) return res.status(200).json({ ok: true });
+
+  // greeting / help
+  if (/^(hi|hello|hey|start|help|namaste)\b/i.test(msg.trim()) && msg.trim().length < 12) {
+    await _waSend(from, "🛡 VRIKAAN Scam Check\n\nForward me any suspicious SMS, WhatsApp, or UPI message and I'll tell you in seconds if it's a scam — free.\n\nJust paste the message here. 👇");
+    return res.status(200).json({ ok: true });
+  }
+
+  try {
+    const prompt = `India scam analyst. Analyze this forwarded message. STRICT JSON, no markdown:
+{"verdict":"scam"|"likely-scam"|"suspicious"|"probably-safe","riskScore":0-100,"category":"upi-fraud|phishing|vishing|loan-app|job-scam|lottery-prize|fake-bank|fake-courier|kyc|other","tactic":"short","paymentHandles":[],"phones":[],"urls":[],"advice":["1-2 short actions"]}
+Message:"""${msg.slice(0, 3000)}"""`;
+    const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 700, json: true });
+    if (!r.ok) { await _waSend(from, "⚠ Our AI is briefly busy. Please resend the message in a few seconds."); return res.status(200).json({ ok: true }); }
+    const p = tryParseJson(r.text) || {};
+    const emoji = { "scam": "🚨", "likely-scam": "🚨", "suspicious": "⚠", "probably-safe": "✅" }[p.verdict] || "⚠";
+    const label = { "scam": "SCAM", "likely-scam": "LIKELY SCAM", "suspicious": "SUSPICIOUS", "probably-safe": "PROBABLY SAFE" }[p.verdict] || "SUSPICIOUS";
+    const advice = (Array.isArray(p.advice) ? p.advice : []).slice(0, 2).map((a) => `• ${a}`).join("\n");
+    const ids = [...(p.paymentHandles || []), ...(p.phones || []), ...(p.urls || [])].slice(0, 4);
+
+    // feed Scam DNA
+    try {
+      const adminMod = await import("./_firebaseAdmin.js");
+      const fs = adminMod.getAdminFirestore();
+      if (fs) await _recordScamSignal(fs, { idents: ids, category: p.category, tactic: p.tactic, sample: msg });
+    } catch { /* ignore */ }
+
+    let reply = `${emoji} *${label}* — risk ${p.riskScore ?? "?"}/100\n${p.tactic ? `Type: ${p.tactic}\n` : ""}`;
+    if (ids.length) reply += `\nScammer details: ${ids.join(", ")}`;
+    if (advice) reply += `\n\nWhat to do:\n${advice}`;
+    reply += `\n\nNever share OTP/UPI PIN. Verify on official numbers only.\n— VRIKAAN`;
+    await _waSend(from, reply);
+  } catch (e) {
+    console.error("whatsapp handler:", e.message);
+    try { await _waSend(from, "Sorry, something went wrong. Please try again."); } catch { /* ignore */ }
+  }
+  return res.status(200).json({ ok: true });
+}
+
 const HANDLERS = {
   whois: handleWhois,
   "newsletter-subscribe": handleNewsletterSubscribe,
@@ -3118,6 +3183,7 @@ const HANDLERS = {
   "scam-check": handleScamCheck,
   "scam-dna": handleScamDna,
   "scambait": handleScambait,
+  "whatsapp": handleWhatsapp,
   "risk-score": handleRiskScore,
   "headers-fix": handleHeadersFix,
   "deepfake-audio": handleDeepfakeAudio,
@@ -3156,6 +3222,14 @@ async function validateApiToken(authHeader) {
 }
 
 export default async function handler(req, res) {
+  // WhatsApp Cloud API webhook verification (Meta GET with hub.* params).
+  if (req.method === "GET" && req.query["hub.mode"] === "subscribe") {
+    if (req.query["hub.verify_token"] && req.query["hub.verify_token"] === process.env.WHATSAPP_VERIFY_TOKEN) {
+      return res.status(200).send(req.query["hub.challenge"]);
+    }
+    return res.status(403).end();
+  }
+
   const tool = req.query.tool;
   if (!tool || !HANDLERS[tool]) {
     // Don't enumerate available actions in the response — reduces attack surface
