@@ -21,11 +21,12 @@ export default async function handler(req, res) {
     fetchedAt: new Date().toISOString(),
   };
 
-  // ── 1. URLhaus Recent Threats (abuse.ch) — free, no key ──
+  // ── 1. URLhaus Recent Threats (abuse.ch) — now requires Auth-Key ──
   try {
+    const abuseKey = process.env.ABUSECH_API_KEY;
     const urlhausRes = await fetch("https://urlhaus-api.abuse.ch/v1/urls/recent/limit/50/", {
       method: "POST",
-      headers: { "User-Agent": "VRIKAAN/1.0" },
+      headers: { "User-Agent": "VRIKAAN/1.0", ...(abuseKey ? { "Auth-Key": abuseKey } : {}) },
     });
     if (urlhausRes.ok) {
       const data = await urlhausRes.json();
