@@ -19,27 +19,33 @@ export default function CustomCursor() {
 
     document.body.style.cursor = "none";
     let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-    let rx = mx, ry = my;
-    let raf;
+    let rx = mx, ry = my, prx = rx, pry = ry;
+    let interactive = false, raf;
 
     const onMove = (e) => {
       mx = e.clientX; my = e.clientY;
-      dot.style.transform = `translate(${mx}px, ${my}px)`;
-      // grow ring over clickable targets
+      dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
       const t = e.target;
-      const interactive = t && (t.closest && t.closest('a,button,[role="button"],input,textarea,select,label,.vk-btn'));
-      ring.style.width = ring.style.height = interactive ? "46px" : "30px";
-      ring.style.borderColor = interactive ? "rgba(20,184,166,0.9)" : "rgba(20,184,166,0.5)";
-      ring.style.background = interactive ? "rgba(20,184,166,0.10)" : "transparent";
+      interactive = !!(t && t.closest && t.closest('a,button,[role="button"],input,textarea,select,label,.vk-btn'));
     };
-    const onDown = () => { ring.style.transform += " scale(0.8)"; dot.style.opacity = "0.5"; };
+    const onDown = () => { dot.style.opacity = "0.4"; };
     const onUp = () => { dot.style.opacity = "1"; };
     const onLeave = () => { dot.style.opacity = "0"; ring.style.opacity = "0"; };
     const onEnter = () => { dot.style.opacity = "1"; ring.style.opacity = "1"; };
 
+    // Elastic ring: lags the pointer + squash-stretches along its velocity.
     const loop = () => {
-      rx += (mx - rx) * 0.18; ry += (my - ry) * 0.18;
-      ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+      rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
+      const vx = rx - prx, vy = ry - pry; prx = rx; pry = ry;
+      const speed = Math.min(Math.hypot(vx, vy), 40);
+      const angle = Math.atan2(vy, vx) * 180 / Math.PI;
+      const stretch = speed / 40;            // 0..1
+      const sx = 1 + stretch * 0.6;          // elongate along motion
+      const sy = 1 - stretch * 0.35;         // squash perpendicular
+      const base = interactive ? 1.5 : 1;
+      ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%) rotate(${angle}deg) scale(${sx * base}, ${sy * base})`;
+      ring.style.borderColor = interactive ? "rgba(20,184,166,0.95)" : "rgba(20,184,166,0.55)";
+      ring.style.background = interactive ? "rgba(20,184,166,0.12)" : "transparent";
       raf = requestAnimationFrame(loop);
     };
     loop();
