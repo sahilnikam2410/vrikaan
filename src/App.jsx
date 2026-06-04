@@ -13,6 +13,7 @@ import CookieConsent from "./components/CookieConsent.jsx";
 import PWAInstallPrompt from "./components/PWAInstallPrompt.jsx";
 import ExitIntent from "./components/ExitIntent.jsx";
 import CommandPalette from "./components/CommandPalette.jsx";
+import CustomCursor from "./components/CustomCursor.jsx";
 
 /* ── Skeleton Loader ── */
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.6)", border: "rgba(148,163,184,0.08)", accent: "#6366f1", cyan: "#14b8a6" };
@@ -372,6 +373,7 @@ function App() {
     <ToastProvider>
     <AuthProvider>
       <Router>
+        <CustomCursor />
         <AppRoutes />
         <CommandPalette />
         <CookieConsent />
