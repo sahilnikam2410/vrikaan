@@ -427,12 +427,21 @@ async function handleFileHashCheck(req, res) {
     formData.append("query", "get_info");
     formData.append("hash", hash.trim());
 
+    // MalwareBazaar now requires a free Auth-Key (set ABUSECH_API_KEY in env).
+    const mbKey = process.env.ABUSECH_API_KEY;
     const mbResponse = await fetch("https://mb-api.abuse.ch/api/v1/", {
       method: "POST",
+      headers: mbKey ? { "Auth-Key": mbKey } : {},
       body: formData,
       signal: AbortSignal.timeout(10000),
     });
     const mbData = await mbResponse.json();
+
+    // Auth failure (missing/invalid key) → honest message, not silent "unknown".
+    if (mbData.error || mbData.query_status === "unauthorized" || mbData.query_status === "illegal_auth") {
+      console.error("MalwareBazaar auth error:", mbData.error || mbData.query_status);
+      return res.status(503).json({ error: "Malware database needs configuration (ABUSECH_API_KEY). Try again later.", hash: hash.trim() });
+    }
 
     if (mbData.query_status === "hash_not_found") {
       return res.status(200).json({ status: "clean", message: "No malware match found", hash: hash.trim(), detections: 0, engines: 0 });
