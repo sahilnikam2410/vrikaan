@@ -18,6 +18,7 @@ const GlobePlaceholder = ({ size = 520 }) => (
   />
 );
 import ThreatMapLive from "./components/ThreatMapLive";
+import HeroScamCheck from "./components/HeroScamCheck";
 import PageJump from "./components/PageJump";
 import NewsletterSignup from "./components/NewsletterSignup";
 import Spotlight from "./components/Spotlight";
@@ -468,7 +469,7 @@ const Hero = () => {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 5.5vw, 72px)", fontWeight: 700, color: T.white, margin: "0 0 24px", lineHeight: 1.05, letterSpacing: "-0.04em" }}>
+            <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(44px, 6vw, 88px)", fontWeight: 800, color: T.white, margin: "0 0 24px", lineHeight: 1.02, letterSpacing: "-0.045em" }}>
               Cyber Defense<br />for the <GradientText>Modern World</GradientText>
             </h1>
           </Reveal>
@@ -486,6 +487,10 @@ const Hero = () => {
             <p style={{ fontFamily: "var(--font-body)", fontSize: "clamp(16px, 1.5vw, 18px)", color: T.muted, maxWidth: 520, lineHeight: 1.8, marginBottom: 40 }}>
               <strong style={{ color: T.white }}>60+ AI-powered cybersecurity tools.</strong> Scam detection, deepfake audio AI, MITRE ATT&amp;CK SOC, Aadhaar mask, OTP emergency. Built in India, bilingual EN+हिन्दी. Free forever.
             </p>
+          </Reveal>
+
+          <Reveal delay={0.25}>
+            <HeroScamCheck />
           </Reveal>
 
           <Reveal delay={0.3}>
