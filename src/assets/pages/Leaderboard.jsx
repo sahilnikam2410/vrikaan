@@ -6,7 +6,7 @@ import SEO from "../../components/SEO";
 import { useAuth } from "../../context/AuthContext";
 import { getTopScores, submitScore } from "../../services/leaderboardService";
 import { totalMockXp, getMockResults } from "../../lib/mockTests";
-import { Card, Button } from "../../components/ui";
+import { Card, Button, Aurora } from "../../components/ui";
 
 const T = {
   bg: "#060a14", card: "#0b1220", border: "rgba(148,163,184,0.12)",
@@ -51,6 +51,7 @@ export default function Leaderboard() {
     <div style={{ minHeight: "100vh", background: T.bg, color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="Leaderboard — VRIKAAN Academy" description="See the top cyber-safety learners. Earn XP from courses and mock tests to climb the ranks." path="/leaderboard" />
       <Navbar />
+      <Aurora />
       <main style={{ maxWidth: 820, margin: "0 auto", padding: "100px 20px 80px" }}>
         <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.cyan, textTransform: "uppercase" }}>VRIKAAN Academy</span>
         <h1 style={{ fontSize: 38, fontWeight: 800, margin: "6px 0 10px", letterSpacing: -1, display: "flex", alignItems: "center", gap: 12 }}>

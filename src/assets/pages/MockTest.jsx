@@ -4,7 +4,7 @@ import {
   LuShield, LuBanknote, LuFish, LuLock, LuClock, LuTrophy, LuCircleCheck,
   LuCircleX, LuArrowRight, LuArrowLeft, LuRotateCcw, LuChevronRight,
 } from "react-icons/lu";
-import { Card, Button } from "../../components/ui";
+import { Card, Button, Aurora } from "../../components/ui";
 import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
 import { useAuth } from "../../context/AuthContext";
@@ -41,6 +41,7 @@ export default function MockTest() {
     <div style={{ minHeight: "100vh", background: T.bg, color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="Mock Tests — VRIKAAN Academy" description="Test your cyber-safety knowledge with timed mock exams on UPI fraud, phishing, scam calls and account security. Earn XP and climb the leaderboard." path="/mock-test" />
       <Navbar />
+      <Aurora />
       <main style={{ maxWidth: 980, margin: "0 auto", padding: "100px 20px 80px" }}>
         {!activeId ? (
           <TestList results={results} onStart={setActiveId} />

@@ -6,7 +6,7 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import ToolIcon from "../../lib/toolIcons.jsx";
 import { toolsMenu, stripEmoji } from "../../lib/toolsCatalog";
-import { Section, PageHero, Card, Input, T, alpha } from "../../components/ui";
+import { Section, PageHero, Card, Input, Aurora, T, alpha } from "../../components/ui";
 
 export default function Tools() {
   const [q, setQ] = useState("");
@@ -32,6 +32,7 @@ export default function Tools() {
     <div style={{ minHeight: "100vh", background: T.bg, color: T.text, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="All Tools — VRIKAAN" description="Every VRIKAAN cyber-defense tool in one place — scam detection, UPI fraud check, dark-web monitoring, password vault, deepfake detection and more. India-first, mostly free." path="/tools" />
       <Navbar />
+      <Aurora />
       <Section width={1120} style={{ paddingTop: 100 }}>
         <PageHero
           eyebrow="Toolbox" icon={<LuWrench size={14} />}

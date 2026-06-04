@@ -4,7 +4,7 @@ import {
   LuVenetianMask, LuSend, LuCopy, LuCheck, LuShieldAlert, LuDna,
   LuTriangleAlert, LuUserRound, LuBot,
 } from "react-icons/lu";
-import { Card, Button } from "../../components/ui";
+import { Card, Button, Aurora } from "../../components/ui";
 import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
 
@@ -79,6 +79,7 @@ export default function ScamBait() {
     <div style={{ minHeight: "100vh", background: T.bg, color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="AI Scambaiter — Waste Scammers' Time | VRIKAAN" description="Forward a scammer's message and let VRIKAAN's AI honeypot waste their time and harvest their UPI IDs and scripts — feeding India's live Scam DNA network. It never shares real OTP or money." path="/scambait" />
       <Navbar />
+      <Aurora />
       <main style={{ maxWidth: 880, margin: "0 auto", padding: "100px 20px 80px" }}>
         <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: 11, fontWeight: 800, letterSpacing: 2, color: T.cyan, textTransform: "uppercase" }}>
           <LuVenetianMask size={15} /> Honeypot

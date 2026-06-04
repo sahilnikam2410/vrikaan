@@ -7,7 +7,7 @@ import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
 import { useAuth } from "../../context/AuthContext";
 import { apiFetch } from "../../lib/apiFetch";
-import { Section, PageHero, Card, Button, Textarea, Badge, T, alpha } from "../../components/ui";
+import { Section, PageHero, Card, Button, Textarea, Badge, Aurora, T, alpha } from "../../components/ui";
 
 const VERDICT = {
   "scam": { c: T.red, Icon: LuShieldAlert, label: "Scam" },
@@ -82,6 +82,7 @@ export default function ScamDna() {
     <div style={{ minHeight: "100vh", background: T.bg, color: T.text, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO title="Scam DNA — India's Live Scam-Intelligence Network | VRIKAAN" description="Paste any suspicious SMS, WhatsApp or UPI message. VRIKAAN fingerprints it and checks it against a live, crowdsourced India scam network — see how many people got the same scam in real time." path="/scam-dna" />
       <Navbar />
+      <Aurora />
       <Section width={880} style={{ paddingTop: 100 }}>
         <PageHero
           eyebrow="Live community network" icon={<LuDna size={14} />}

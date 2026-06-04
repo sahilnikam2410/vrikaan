@@ -7,6 +7,18 @@ import "./ui.css";
 
 export { tokens, T, alpha };
 
+/* ── Aurora ── fixed low-opacity gradient orbs behind content so the frosted
+   glass cards actually read (blur needs colour behind it). Render once per page. */
+export function Aurora() {
+  return (
+    <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+      <div style={{ position: "absolute", top: "-12%", left: "-6%", width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle, rgba(20,184,166,0.20), transparent 70%)", filter: "blur(44px)" }} />
+      <div style={{ position: "absolute", top: "28%", right: "-10%", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.18), transparent 70%)", filter: "blur(54px)" }} />
+      <div style={{ position: "absolute", bottom: "-14%", left: "22%", width: 640, height: 640, borderRadius: "50%", background: "radial-gradient(circle, rgba(168,85,247,0.12), transparent 70%)", filter: "blur(64px)" }} />
+    </div>
+  );
+}
+
 /* ── Reveal ── scroll-into-view fade+rise (IntersectionObserver, once). ── */
 export function Reveal({ children, delay = 0, y = 14, as: Tag = "div", style, ...rest }) {
   const ref = useRef(null);

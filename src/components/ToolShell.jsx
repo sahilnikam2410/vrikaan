@@ -2,7 +2,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SEO from "./SEO";
 import ToolIcon from "../lib/toolIcons.jsx";
-import { Section, T, alpha } from "./ui";
+import { Section, Aurora, T, alpha } from "./ui";
 
 /**
  * ToolShell — standard chrome for every tool page: background, Navbar, SEO,
@@ -22,11 +22,12 @@ export default function ToolShell({
 }) {
   const iconEl = icon || (route ? <ToolIcon to={route} size={26} /> : null);
   return (
-    <div style={{ minHeight: "100vh", background: T.bg, color: T.text, fontFamily: "'Vrikaan Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: T.bg, color: T.text, fontFamily: "'Vrikaan Sans', sans-serif", position: "relative" }}>
+      <Aurora />
       <SEO title={seoTitle || (title ? `${title} | VRIKAAN` : "VRIKAAN")} description={seoDesc} path={path || route} />
       <Navbar />
-      {topSlot && <div style={{ maxWidth: width, margin: "0 auto", padding: "0 20px" }}>{topSlot}</div>}
-      <Section width={width} style={{ paddingTop: 100 }}>
+      {topSlot && <div style={{ position: "relative", zIndex: 1, maxWidth: width, margin: "0 auto", padding: "0 20px" }}>{topSlot}</div>}
+      <Section width={width} style={{ paddingTop: 100, position: "relative", zIndex: 1 }}>
         <div className="vk-rise" style={{ marginBottom: 36 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: subtitle ? 14 : 0 }}>
             {iconEl && (
