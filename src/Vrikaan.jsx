@@ -35,7 +35,7 @@ const T = {
   deep: "#0a0f1e",
   surface: "#111827",
   surfaceHover: "#1f2937",
-  card: "rgba(17,24,39,0.6)",
+  card: "rgba(20,28,46,0.55)",
   glass: "rgba(3,7,18,0.65)",
   accent: "#6366f1",
   accentSoft: "#818cf8",
@@ -358,7 +358,7 @@ const Card = ({ children, style: s = {}, hover = true }) => {
     <div onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
       style={{
         background: T.card, border: `1px solid ${h && hover ? "rgba(99,102,241,0.15)" : T.border}`,
-        backdropFilter: "blur(8px)", padding: 32, borderRadius: 16,
+        backdropFilter: "blur(14px) saturate(1.25)", padding: 32, borderRadius: 16,
         transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
         transform: h && hover ? "translateY(-4px)" : "translateY(0)",
         boxShadow: h && hover ? "0 20px 50px rgba(0,0,0,0.3), 0 0 30px rgba(99,102,241,0.06)" : "0 2px 12px rgba(0,0,0,0.1)",
@@ -524,11 +524,11 @@ const Hero = () => {
               </Suspense>
             </div>
             {/* Floating stat cards */}
-            <div style={{ position: "absolute", top: "8%", right: "-5%", padding: "12px 18px", background: "rgba(17,24,39,0.85)", backdropFilter: "blur(12px)", border: `1px solid ${T.border}`, borderRadius: 12, animation: "float 4s ease-in-out infinite" }}>
+            <div style={{ position: "absolute", top: "8%", right: "-5%", padding: "12px 18px", background: "rgba(20,28,46,0.58)", backdropFilter: "blur(14px) saturate(1.25)", border: `1px solid ${T.border}`, borderRadius: 12, animation: "float 4s ease-in-out infinite" }}>
               <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: T.red, fontWeight: 600, marginBottom: 4 }}>THREAT DETECTED</div>
               <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: T.mutedDark }}>SQL Injection &bull; 192.168.x.x</div>
             </div>
-            <div style={{ position: "absolute", bottom: "12%", left: "-8%", padding: "12px 18px", background: "rgba(17,24,39,0.85)", backdropFilter: "blur(12px)", border: `1px solid ${T.border}`, borderRadius: 12, animation: "float 5s ease-in-out infinite 1s" }}>
+            <div style={{ position: "absolute", bottom: "12%", left: "-8%", padding: "12px 18px", background: "rgba(20,28,46,0.58)", backdropFilter: "blur(14px) saturate(1.25)", border: `1px solid ${T.border}`, borderRadius: 12, animation: "float 5s ease-in-out infinite 1s" }}>
               <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#22c55e", fontWeight: 600, marginBottom: 4 }}>BLOCKED</div>
               <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: T.mutedDark }}>Phishing attempt neutralized</div>
             </div>
@@ -562,7 +562,7 @@ const SplashScreen = ({ onDone }) => {
         transform: phase >= 1 ? "scale(1)" : "scale(0.5)",
         opacity: phase >= 1 ? 1 : 0.3,
         transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
-        filter: phase >= 1 ? "none" : "blur(8px)",
+        filter: phase >= 1 ? "none" : "blur(14px) saturate(1.25)",
       }}>
         <BrandIcon size={80} />
       </div>
@@ -725,7 +725,7 @@ const SocialProofToasts = () => {
   return (
     <div style={{
       position: "fixed", bottom: 28, left: 28, zIndex: 150,
-      background: "rgba(17,24,39,0.92)", backdropFilter: "blur(16px)",
+      background: "rgba(20,28,46,0.60)", backdropFilter: "blur(16px) saturate(1.3)",
       border: `1px solid ${T.border}`, borderRadius: 14,
       padding: "14px 20px", display: "flex", alignItems: "center", gap: 12,
       opacity: visible ? 1 : 0,
@@ -793,8 +793,8 @@ const ProductDemo = () => {
 
           {/* Demo window */}
           <div style={{
-            background: "rgba(17,24,39,0.6)", border: `1px solid ${T.border}`,
-            borderRadius: 20, overflow: "hidden", backdropFilter: "blur(8px)",
+            background: "rgba(20,28,46,0.55)", border: `1px solid ${T.border}`,
+            borderRadius: 20, overflow: "hidden", backdropFilter: "blur(14px) saturate(1.25)",
             boxShadow: "0 24px 80px rgba(0,0,0,0.4), 0 0 40px rgba(99,102,241,0.04)",
           }}>
             {/* Window chrome */}
@@ -867,7 +867,7 @@ const BeforeAfter = () => (
       {/* BEFORE */}
       <Reveal>
         <div style={{
-          background: "linear-gradient(135deg, rgba(239,68,68,0.04) 0%, rgba(17,24,39,0.6) 100%)",
+          background: "linear-gradient(135deg, rgba(239,68,68,0.04) 0%, rgba(20,28,46,0.55) 100%)",
           border: `1px solid rgba(239,68,68,0.12)`, borderRadius: 20, padding: "40px 32px",
           position: "relative", overflow: "hidden", height: "100%",
         }}>
@@ -904,7 +904,7 @@ const BeforeAfter = () => (
       {/* AFTER */}
       <Reveal delay={0.15}>
         <div style={{
-          background: "linear-gradient(135deg, rgba(34,197,94,0.04) 0%, rgba(17,24,39,0.6) 100%)",
+          background: "linear-gradient(135deg, rgba(34,197,94,0.04) 0%, rgba(20,28,46,0.55) 100%)",
           border: `1px solid rgba(34,197,94,0.12)`, borderRadius: 20, padding: "40px 32px",
           position: "relative", overflow: "hidden", height: "100%",
         }}>
@@ -942,9 +942,9 @@ const DeviceMockup = () => (
         {/* Laptop */}
         <div style={{ position: "relative", zIndex: 2 }}>
           <div style={{
-            width: "clamp(280px, 70vw, 640px)", background: "rgba(17,24,39,0.8)",
+            width: "clamp(280px, 70vw, 640px)", background: "rgba(20,28,46,0.58)",
             border: `1px solid ${T.border}`, borderRadius: "16px 16px 0 0",
-            overflow: "hidden", backdropFilter: "blur(8px)",
+            overflow: "hidden", backdropFilter: "blur(14px) saturate(1.25)",
           }}>
             {/* Screen chrome */}
             <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "10px 16px", borderBottom: `1px solid ${T.border}`, background: "rgba(3,7,18,0.6)" }}>
@@ -985,14 +985,14 @@ const DeviceMockup = () => (
             </div>
           </div>
           {/* Laptop base */}
-          <div style={{ width: "110%", height: 16, background: "linear-gradient(180deg, rgba(30,40,60,0.8), rgba(17,24,39,0.6))", borderRadius: "0 0 12px 12px", margin: "0 -5%", borderTop: `1px solid rgba(148,163,184,0.1)` }} />
+          <div style={{ width: "110%", height: 16, background: "linear-gradient(180deg, rgba(30,40,60,0.8), rgba(20,28,46,0.55))", borderRadius: "0 0 12px 12px", margin: "0 -5%", borderTop: `1px solid rgba(148,163,184,0.1)` }} />
         </div>
 
         {/* Phone */}
         <div style={{ position: "relative", zIndex: 3, marginLeft: -60, marginBottom: 20 }} className="phone-mockup">
           <div style={{
-            width: 160, background: "rgba(17,24,39,0.9)", border: `1px solid ${T.border}`,
-            borderRadius: 24, overflow: "hidden", backdropFilter: "blur(8px)",
+            width: 160, background: "rgba(20,28,46,0.60)", border: `1px solid ${T.border}`,
+            borderRadius: 24, overflow: "hidden", backdropFilter: "blur(14px) saturate(1.25)",
             boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
           }}>
             {/* Phone notch */}
@@ -1056,7 +1056,7 @@ const PricingComparison = () => {
       <Reveal>
         <div className="comparison-card" style={{
           background: T.card, border: `1px solid ${T.border}`, borderRadius: 20,
-          overflow: "hidden", backdropFilter: "blur(8px)", maxWidth: "100%", boxSizing: "border-box",
+          overflow: "hidden", backdropFilter: "blur(14px) saturate(1.25)", maxWidth: "100%", boxSizing: "border-box",
         }}>
           <div style={{ padding: "24px clamp(16px, 4vw, 32px)", borderBottom: `1px solid ${T.border}` }}>
             <h3 style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 700, color: T.white, margin: 0 }}>
@@ -2268,8 +2268,8 @@ const PricingSection = () => {
         {plans.map((p, i) => (
           <Reveal key={i} delay={i * 0.12}>
             <div className="pricing-card" style={{
-              background: p.featured ? "linear-gradient(180deg, rgba(99,102,241,0.04) 0%, rgba(17,24,39,0.9) 40%)" : T.card,
-              backdropFilter: "blur(16px)", border: `1px solid ${p.featured ? "rgba(99,102,241,0.2)" : T.border}`,
+              background: p.featured ? "linear-gradient(180deg, rgba(99,102,241,0.04) 0%, rgba(20,28,46,0.60) 40%)" : T.card,
+              backdropFilter: "blur(16px) saturate(1.3)", border: `1px solid ${p.featured ? "rgba(99,102,241,0.2)" : T.border}`,
               padding: "40px 32px", borderRadius: 18, position: "relative", overflow: "hidden", height: "100%", display: "flex", flexDirection: "column",
               transform: p.featured ? "scale(1.03)" : "scale(1)", transition: "all 0.45s cubic-bezier(0.22, 1, 0.36, 1)",
               boxShadow: p.featured ? "0 20px 60px rgba(0,0,0,0.35)" : "0 2px 12px rgba(0,0,0,0.1)",
@@ -2355,7 +2355,7 @@ const FAQ = () => {
                 background: open === i ? "rgba(99,102,241,0.04)" : T.card,
                 border: `1px solid ${open === i ? "rgba(99,102,241,0.15)" : T.border}`,
                 borderRadius: 14, padding: "22px 28px", cursor: "pointer",
-                backdropFilter: "blur(8px)", transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
+                backdropFilter: "blur(14px) saturate(1.25)", transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16 }}>
@@ -2562,7 +2562,7 @@ const FounderSection = () => (
         <div className="founders-grid-home" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
 
           {/* Sahil */}
-          <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: "clamp(28px, 3vw, 40px)", backdropFilter: "blur(8px)" }}>
+          <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: "clamp(28px, 3vw, 40px)", backdropFilter: "blur(14px) saturate(1.25)" }}>
             <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 18 }}>
               <div style={{ width: 76, height: 76, borderRadius: 18, display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(139,92,246,0.10))", border: "1px solid rgba(99,102,241,0.25)", flexShrink: 0 }}>
                 <span style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 300, color: T.white }}>S</span>
@@ -2582,7 +2582,7 @@ const FounderSection = () => (
           </div>
 
           {/* Khushi */}
-          <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: "clamp(28px, 3vw, 40px)", backdropFilter: "blur(8px)" }}>
+          <div style={{ background: T.card, border: `1px solid ${T.border}`, borderRadius: 20, padding: "clamp(28px, 3vw, 40px)", backdropFilter: "blur(14px) saturate(1.25)" }}>
             <div style={{ display: "flex", gap: 18, alignItems: "flex-start", marginBottom: 18 }}>
               <div style={{ width: 76, height: 76, borderRadius: 18, display: "flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(135deg, rgba(20, 184, 166,0.18), rgba(99,102,241,0.10))", border: "1px solid rgba(20, 184, 166,0.25)", flexShrink: 0 }}>
                 <span style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 300, color: T.white }}>K</span>
@@ -2651,9 +2651,9 @@ const Testimonials = () => {
         position: "absolute", top: "50%", [direction === "left" ? "left" : "right"]: 4,
         transform: "translateY(-50%)", zIndex: 2,
         width: 40, height: 40, borderRadius: "50%",
-        background: "rgba(17,24,39,0.8)", border: `1px solid ${T.border}`,
+        background: "rgba(20,28,46,0.58)", border: `1px solid ${T.border}`,
         color: T.muted, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-        transition: "all 0.3s", backdropFilter: "blur(8px)",
+        transition: "all 0.3s", backdropFilter: "blur(14px) saturate(1.25)",
       }}
       className="testimonial-arrow"
     >
