@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   try {
     const abuseKey = process.env.ABUSECH_API_KEY;
     const urlhausRes = await fetch("https://urlhaus-api.abuse.ch/v1/urls/recent/limit/50/", {
-      method: "POST",
+      method: "GET",
       headers: { "User-Agent": "VRIKAAN/1.0", ...(abuseKey ? { "Auth-Key": abuseKey } : {}) },
     });
     if (urlhausRes.ok) {
