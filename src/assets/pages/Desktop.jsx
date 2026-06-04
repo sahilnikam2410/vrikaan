@@ -167,7 +167,7 @@ export default function Desktop() {
         {/* HERO */}
         <header style={{ textAlign: "center", marginBottom: 36 }}>
           <span style={{
-            display: "inline-block", padding: "5px 14px", borderRadius: 999,
+            padding: "5px 14px", borderRadius: 999,
             background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}40`,
             fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
             color: T.cyan, marginBottom: 14,
@@ -202,7 +202,6 @@ export default function Desktop() {
 
             {isPreRelease ? (
               <a href={`#waitlist`} onClick={(e) => { e.preventDefault(); document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" }); }} style={{
-                display: "inline-block",
                 padding: "14px 32px", borderRadius: 12,
                 background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 16,
                 textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
@@ -210,7 +209,6 @@ export default function Desktop() {
               }}><LuMail size={16} /> Notify me when ready ({primary.eta}) →</a>
             ) : (
               <a href={primary.url} style={{
-                display: "inline-block",
                 padding: "14px 32px", borderRadius: 12,
                 background: T.cyan, color: T.bg, fontWeight: 800, fontSize: 16,
                 textDecoration: "none", fontFamily: "'Vrikaan Sans', sans-serif",
