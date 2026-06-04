@@ -101,45 +101,20 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Security Tools — hidden while inside a tool page (keeps focus) */}
+        {/* Tools — full list lives on /tools now; footer stays clean. */}
         {!onTool && (
         <div>
-          <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Security Tools</h4>
+          <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Tools</h4>
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-            <FooterTool to="/scam-recovery">🚨 Scam Recovery Hotline</FooterTool>
-            <FooterTool to="/safe-word">Family Safe-Word</FooterTool>
-            <FooterTool to="/whatsapp-audit">WhatsApp Group Audit</FooterTool>
-            <FooterTool to="/receipt-audit">Receipt Authenticity</FooterTool>
-            <FooterTool to="/otp-decay">🚨 OTP Decay Emergency</FooterTool>
-            <FooterTool to="/stolen-phone">📱 Stolen Phone Recovery</FooterTool>
-            <FooterTool to="/upi-lookup">UPI Scam Lookup</FooterTool>
-            <FooterTool to="/loan-app-check">Loan App Profiler</FooterTool>
-            <FooterTool to="/voiceprint">Voiceprint Vault</FooterTool>
-            <FooterTool to="/desktop">💻 Desktop App (waitlist)</FooterTool>
-            <FooterTool to="/hi">🇮🇳 हिन्दी में</FooterTool>
-            <FooterTool to="/enterprise">🏛 Enterprise SOC</FooterTool>
-            <FooterTool to="/device-scan">Device Scanner</FooterTool>
-            <FooterTool to="/aadhaar-mask">Aadhaar Mask Tool</FooterTool>
-            <FooterTool to="/festival-fraud">Festival Fraud Forecast</FooterTool>
-            <FooterTool to="/threat-map">Threat Map</FooterTool>
-            <FooterTool to="/fraud-analyzer">Fraud Analyzer</FooterTool>
-            <FooterTool to="/vulnerability-scanner">Vulnerability Scanner</FooterTool>
-            <FooterTool to="/dark-web-monitor">Dark Web Monitor</FooterTool>
-            <FooterTool to="/password-vault">Password Vault</FooterTool>
-            <FooterTool to="/email-analyzer">Email Analyzer</FooterTool>
-            <FooterTool to="/ip-lookup">IP Lookup</FooterTool>
-            <FooterTool to="/qr-scanner">QR Scanner</FooterTool>
-            <FooterTool to="/identity-xray">Identity X-Ray</FooterTool>
-            <FooterTool to="/password-checker">Password Checker</FooterTool>
-            <FooterTool to="/whois-lookup">WHOIS Lookup</FooterTool>
-            <FooterTool to="/security-headers">Security Headers</FooterTool>
-            <FooterTool to="/file-hash-scanner">File Hash Scanner</FooterTool>
-            <FooterTool to="/security-audit">Security Audit</FooterTool>
+            <FooterTool to="/tools">All Tools →</FooterTool>
+            <FooterTool to="/scam-dna">🧬 Scam DNA</FooterTool>
+            <FooterTool to="/scambait">🎭 AI Scambaiter</FooterTool>
+            <FooterTool to="/scam-recovery">🚨 Scam Recovery</FooterTool>
           </ul>
         </div>
         )}
 
-        {/* Resources — also hidden inside a tool page */}
+        {/* Resources — content/learning, not tools */}
         {!onTool && (
         <div>
           <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Resources</h4>
@@ -148,15 +123,7 @@ const Footer = () => {
             <FooterTool to="/cyber-news">Cyber News</FooterTool>
             <FooterTool to="/threats">Threat Directory</FooterTool>
             <FooterTool to="/blog">Blog</FooterTool>
-            <FooterTool to="/security-checklist">Security Checklist</FooterTool>
-            <FooterTool to="/security-score">Security Score</FooterTool>
-            <FooterTool to="/scam-database">Scam Database</FooterTool>
-            <FooterTool to="/emergency-help">Emergency Help</FooterTool>
-            <FooterTool to="/2fa-guide">2FA Setup Guide</FooterTool>
-            <FooterTool to="/phishing-trainer">Phishing Trainer</FooterTool>
-            <FooterTool to="/browser-fingerprint">Browser Fingerprint</FooterTool>
-            <FooterTool to="/dns-leak-test">DNS Leak Test</FooterTool>
-            <FooterTool to="/referral">Refer & Earn</FooterTool>
+            <FooterTool to="/hi">🇮🇳 हिन्दी में</FooterTool>
           </ul>
         </div>
         )}
