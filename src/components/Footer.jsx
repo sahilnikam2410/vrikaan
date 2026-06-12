@@ -81,9 +81,12 @@ const Footer = () => {
             />
             <span style={{ fontFamily: "var(--font-display)", fontSize: 22, letterSpacing: 4, color: T.white, fontWeight: 700 }}>VRIKAAN</span>
           </div>
-          <p style={{ fontFamily: "var(--font-body)", color: T.mutedDark, fontSize: 14, lineHeight: 1.8, marginBottom: 20, maxWidth: 240 }}>
+          <p style={{ fontFamily: "var(--font-body)", color: T.mutedDark, fontSize: 14, lineHeight: 1.8, marginBottom: 14, maxWidth: 240 }}>
             AI-powered cyber defense for everyone. Enterprise security made accessible.
           </p>
+          <a href="https://www.indianstartuptimes.com/news/the-cyber-50-indias-elite-founders-list/" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 6, marginBottom: 20, padding: "5px 11px", borderRadius: 100, background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.25)", textDecoration: "none", fontSize: 12, color: T.muted }}>
+            <span style={{ color: "#fbbf24" }}>★</span> Featured in <strong style={{ color: T.white }}>Cyber 50</strong> ↗
+          </a>
           <div style={{ display: "flex", gap: 10 }}>
             {[
               { label: "X",  href: "https://x.com/vrikaan" },

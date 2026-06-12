@@ -512,6 +512,19 @@ const Hero = () => {
               <HeroCounter end={2024} label="Founded · Made in India" color={T.cyan} noComma />
             </div>
           </Reveal>
+
+          <Reveal delay={0.5}>
+            <a href="https://www.indianstartuptimes.com/news/the-cyber-50-indias-elite-founders-list/" target="_blank" rel="noopener noreferrer" style={{
+              display: "inline-flex", alignItems: "center", gap: 9, marginTop: 26,
+              padding: "8px 15px", borderRadius: 100, textDecoration: "none",
+              background: "linear-gradient(90deg, rgba(251,191,36,0.10), rgba(255,255,255,0.02))",
+              border: "1px solid rgba(251,191,36,0.30)",
+            }}>
+              <span style={{ fontSize: 13, color: "#fbbf24" }}>★</span>
+              <span style={{ fontSize: 12.5, color: T.muted }}>Featured in <strong style={{ color: T.white }}>Indian Startup Times — Cyber 50</strong></span>
+              <span style={{ color: T.cyan, fontSize: 12, fontWeight: 800 }}>↗</span>
+            </a>
+          </Reveal>
         </div>
 
         {/* Right — 3D Globe */}
