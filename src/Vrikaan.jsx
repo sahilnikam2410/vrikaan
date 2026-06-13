@@ -471,7 +471,7 @@ const Hero = () => {
 
           <Reveal delay={0.1}>
             <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(44px, 6vw, 88px)", fontWeight: 800, color: T.white, margin: "0 0 24px", lineHeight: 1.02, letterSpacing: "-0.045em" }}>
-              Cyber Defense<br />for the <GradientText>Modern World</GradientText>
+              Scammers attack.<br />Our AI <GradientText>fights back</GradientText>.
             </h1>
           </Reveal>
 
@@ -486,7 +486,7 @@ const Hero = () => {
 
           <Reveal delay={0.2}>
             <p style={{ fontFamily: "var(--font-body)", fontSize: "clamp(16px, 1.5vw, 18px)", color: T.muted, maxWidth: 520, lineHeight: 1.8, marginBottom: 40 }}>
-              <strong style={{ color: T.white }}>60+ AI-powered cybersecurity tools.</strong> Scam detection, deepfake audio AI, MITRE ATT&amp;CK SOC, Aadhaar mask, OTP emergency. Built in India, bilingual EN+हिन्दी. Free forever.
+              <strong style={{ color: T.white }}>The AI Scambaiter wastes scammers&apos; time</strong> while <strong style={{ color: T.white }}>Scam DNA</strong> warns your whole family. Plus 60+ free tools — deepfake detection, UPI &amp; loan-app checks, Aadhaar mask. Built in India, EN+हिन्दी. Free forever.
             </p>
           </Reveal>
 
