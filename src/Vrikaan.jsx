@@ -19,6 +19,7 @@ const GlobePlaceholder = ({ size = 520 }) => (
 );
 import ThreatMapLive from "./components/ThreatMapLive";
 import HeroScamCheck from "./components/HeroScamCheck";
+import HeroVideo from "./components/HeroVideo";
 import PageJump from "./components/PageJump";
 import NewsletterSignup from "./components/NewsletterSignup";
 import Spotlight from "./components/Spotlight";
@@ -785,6 +786,7 @@ const ProductDemo = () => {
   return (
     <Section id="demo">
       <Reveal><SectionHeader badge="See It in Action" title={<>Platform <GradientText>Demo</GradientText></>} subtitle="Watch how Vrikaan protects you in real-time across every threat vector." /></Reveal>
+      <Reveal delay={0.05}><HeroVideo /></Reveal>
       <Reveal delay={0.1}>
         <div style={{ maxWidth: 960, margin: "0 auto" }}>
           {/* Tab bar */}
