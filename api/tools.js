@@ -1093,29 +1093,16 @@ async function handleWeeklyDigest(req, res) {
   const force = String(req.query?.force || "") === "1";
   if (!isMonday && !force) return res.status(200).json({ skipped: true, reason: "not Monday UTC", cleanup });
 
-  // Read opt-in list from public-readable digest_subscribers collection.
-  // Users add themselves from the authenticated client; cron uses public REST.
-  const projectId = process.env.VITE_FIREBASE_PROJECT_ID;
-  const apiKey = process.env.VITE_FIREBASE_API_KEY;
-  if (!projectId || !apiKey) return res.status(500).json({ error: "Firebase env vars missing" });
+  // Read opt-in list via Admin SDK (server-only — no public read needed, so
+  // digest_subscribers can be locked down to owner-only in firestore.rules).
+  const _adminMod = await import("./_firebaseAdmin.js");
+  const _fs = _adminMod.getAdminFirestore();
+  if (!_fs) return res.status(500).json({ error: "Admin SDK not configured" });
 
   try {
-    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/digest_subscribers?pageSize=500&key=${apiKey}`;
-    const r = await fetch(url);
-    if (!r.ok) {
-      const text = await r.text();
-      console.error("Firestore read failed:", r.status, text.slice(0, 200));
-      return res.status(500).json({ error: `Firestore ${r.status}` });
-    }
-    const data = await r.json();
-    const users = (data.documents || [])
-      .map((d) => {
-        const f = d.fields || {};
-        return {
-          email: f.email?.stringValue || "",
-          name: f.name?.stringValue || "",
-        };
-      })
+    const _snap = await _fs.collection("digest_subscribers").limit(2000).get();
+    const users = _snap.docs
+      .map((d) => ({ email: d.data().email || "", name: d.data().name || "" }))
       .filter((u) => u.email);
 
     // Sanity-check EmailJS env vars early so the failure mode is visible.

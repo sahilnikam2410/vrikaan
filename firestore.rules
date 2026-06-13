@@ -137,7 +137,9 @@ service cloud.firestore {
     // the cron can list all (the public API allows list when read
     // is allowed without auth).
     match /digest_subscribers/{uid} {
-      allow read: if true; // public — only contains name/email/optedAt
+      // Was public-read (email harvest risk). Now owner/admin only — the cron
+      // reads via Admin SDK (bypasses rules), so no public access needed.
+      allow read: if isOwner(uid) || isAdmin();
       allow create, update: if isOwner(uid)
         && request.resource.data.uid == uid
         && request.resource.data.email == request.auth.token.email;
