@@ -453,17 +453,18 @@ export function AuthProvider({ children }) {
 
   const updatePlan = useCallback(async (plan) => {
     if (!user || !user.uid) return;
-
-    if (String(user.uid).startsWith("demo_")) {
-      setUser((prev) => ({ ...prev, plan }));
-      return;
-    }
-
+    // Optimistic local update always — UI reflects the upgrade immediately.
+    setUser((prev) => ({ ...prev, plan }));
+    if (String(user.uid).startsWith("demo_")) return;
+    // Plan is server-owned now: verify-payment writes it via Admin SDK, and
+    // locked Firestore rules deny client plan-writes. This client write is
+    // best-effort — a permission-denied here is expected and harmless.
     try {
       await updateUserPlan(user.uid, plan);
-      setUser((prev) => ({ ...prev, plan }));
     } catch (error) {
-      console.error("Failed to update plan:", error);
+      if (!/permission|insufficient/i.test(error?.message || "")) {
+        console.error("Failed to update plan:", error);
+      }
     }
   }, [user]);
 
