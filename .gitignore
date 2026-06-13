@@ -34,6 +34,9 @@ dist-ssr
 *.pdf
 *.docx
 *.mp4
+*.gif
+# Heavy ad media — served via CLI deploy, uploaded to Canva; not tracked in git
+public/ad/
 marketing-out/
 scripts/ppt/node_modules/
 scripts/marketing/node_modules/

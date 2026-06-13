@@ -22,6 +22,7 @@ const ACTION_TIERS = {
   "scam-check":         "pro",
   "scam-dna":           "free",  // free → grows the community scam-intel network (the moat)
   "scambait":           "free",  // free → viral + harvests scam intel into Scam DNA
+  "scam-dna-api":       "enterprise", // B2B: programmatic scam-intel for fintechs/banks (paid)
   "whatsapp":           "free",  // Meta Cloud API webhook (scam-check via WhatsApp)
   "risk-score":         "free",  // lead-gen — free to drive signups + upgrade intent
   "headers-fix":        "pro",
@@ -2829,6 +2830,25 @@ async function handleScamDna(req, res) {
     }
   }
 
+  // ── CHECK: free, read-only lookup of one identifier (phone/UPI/URL).
+  // Powers the browser extension + lightweight client checks. No AI, no write.
+  if (action === "check") {
+    const id = _sanitizeId(String(req.body?.identifier || ""));
+    if (id.length < 4) return res.status(400).json({ error: "identifier too short", known: false, riskScore: 0 });
+    try {
+      const snap = await col.doc(`id_${id}`.slice(0, 200)).get();
+      if (!snap.exists) return res.status(200).json({ known: false, riskScore: 0, identifier: id });
+      const x = snap.data();
+      const reports = x.count || 0;
+      const risk = x.verified ? 95 : Math.min(90, 40 + reports * 8 + (x.lossCount || 0) * 5);
+      return res.status(200).json({
+        known: true, riskScore: risk, identifier: id,
+        category: x.category || "other", tactic: x.tactic || "",
+        reports, verified: !!x.verified,
+      });
+    } catch (e) { return res.status(200).json({ known: false, riskScore: 0 }); }
+  }
+
   // ── ANALYZE: fingerprint + match + contribute ──
   if (!text || typeof text !== "string" || text.trim().length < 8) {
     return res.status(400).json({ error: "Paste the suspicious message (min 8 chars)." });
@@ -2905,6 +2925,86 @@ Message:"""${clean}"""`;
     matchedBy: idents[0] ? (idents[0].includes("@") ? "UPI ID" : idents[0].match(/^[0-9]+$/) ? "phone number" : "link/identifier") : "scam pattern",
     sigId: docId,
   });
+}
+
+// ─── SCAM DNA — B2B INTELLIGENCE API ──────────────────────────────────
+// Authenticated, programmatic read/contribute access to the Scam DNA network
+// for fintechs, banks, telcos and wallets. Auth = a long-lived vrk_ API token
+// on an enterprise plan; the main dispatcher enforces the tier + rate limits
+// (ACTION_TIERS["scam-dna-api"] = "enterprise"). This monetizes the moat:
+// partners query our crowdsourced scam-intel in real time at txn/onboarding.
+//   POST /api/tools?tool=scam-dna-api   Authorization: Bearer vrk_...
+//   { action: "check",      identifier: "scammer@upi" }
+//   { action: "bulk-check", identifiers: ["+9198…","bad-link.in"] }   // ≤50
+//   { action: "feed",       limit: 20 }                               // trending
+//   { action: "report",     identifier, category, tactic, sample, keyPhrases }
+async function handleScamDnaApi(req, res) {
+  const { action = "check" } = req.body || {};
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "Scam DNA unavailable (DB not configured)" });
+  const col = fs.collection("scamSignatures");
+
+  // Look up one identifier against the network. Uses the SAME normalization +
+  // doc-id scheme as analyze/_recordScamSignal so keys line up exactly.
+  const lookup = async (raw) => {
+    const id = _sanitizeId(String(raw || ""));
+    if (id.length < 4) return { identifier: raw, known: false, riskScore: 0, error: "identifier too short" };
+    const snap = await col.doc(`id_${id}`.slice(0, 200)).get();
+    if (!snap.exists) return { identifier: raw, normalized: id, known: false, riskScore: 0 };
+    const x = snap.data();
+    const reports = x.count || 0;
+    // Risk model: verified known-scam = 95; else scale with report volume + losses.
+    const risk = x.verified ? 95 : Math.min(90, 40 + reports * 8 + (x.lossCount || 0) * 5);
+    return {
+      identifier: raw, normalized: id, known: true, riskScore: risk,
+      category: x.category || "other", tactic: x.tactic || "",
+      reports, lossReports: x.lossCount || 0, lossTotal: x.lossTotal || 0,
+      verified: !!x.verified,
+      firstSeen: x.firstSeen?.toMillis?.() || null,
+      lastSeen: x.lastSeen?.toMillis?.() || null,
+    };
+  };
+
+  if (action === "check") {
+    const { identifier } = req.body || {};
+    if (!identifier) return res.status(400).json({ error: "identifier required (phone / UPI id / URL)" });
+    return res.status(200).json({ result: await lookup(identifier) });
+  }
+
+  if (action === "bulk-check") {
+    const ids = Array.isArray(req.body?.identifiers) ? req.body.identifiers.slice(0, 50) : null;
+    if (!ids || !ids.length) return res.status(400).json({ error: "identifiers[] required (1–50)" });
+    const results = await Promise.all(ids.map(lookup));
+    return res.status(200).json({ count: results.length, results });
+  }
+
+  if (action === "feed") {
+    const limit = Math.min(50, Math.max(1, Number(req.body?.limit) || 20));
+    try {
+      const snap = await col.orderBy("lastSeen", "desc").limit(limit).get();
+      const items = snap.docs.map((d) => { const x = d.data(); return {
+        id: d.id, category: x.category || "scam", tactic: x.tactic || "",
+        reports: x.count || 1, lossReports: x.lossCount || 0, verified: !!x.verified,
+        lastSeen: x.lastSeen?.toMillis?.() || null,
+      }; });
+      return res.status(200).json({ count: items.length, items });
+    } catch { return res.status(200).json({ count: 0, items: [] }); }
+  }
+
+  if (action === "report") {
+    const { identifier, identifiers, category, tactic, sample, keyPhrases } = req.body || {};
+    const idents = [identifier, ...(Array.isArray(identifiers) ? identifiers : [])].filter(Boolean);
+    if (!idents.length && !category) return res.status(400).json({ error: "identifier(s) or category required" });
+    const sigId = await _recordScamSignal(fs, {
+      idents, category, tactic,
+      sample: String(sample || "").slice(0, 200),
+      keyPhrases: Array.isArray(keyPhrases) ? keyPhrases : [],
+    });
+    return res.status(200).json({ success: true, sigId });
+  }
+
+  return res.status(400).json({ error: "Unknown action. Use: check | bulk-check | feed | report." });
 }
 
 // ─── FAMILY MESH — one member's scam alerts the whole family ──────────
@@ -3169,6 +3269,7 @@ const HANDLERS = {
   "family-alerts": handleFamilyAlerts,
   "scam-check": handleScamCheck,
   "scam-dna": handleScamDna,
+  "scam-dna-api": handleScamDnaApi,
   "scambait": handleScambait,
   "whatsapp": handleWhatsapp,
   "risk-score": handleRiskScore,
