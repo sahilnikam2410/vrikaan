@@ -789,6 +789,33 @@ async function main() {
   }
 
   console.log(`[prerender] wrote ${count} static HTML shells into dist/`);
+
+  // ── Auto-generate sitemap.xml from every prerendered route (never stale) ──
+  const NOINDEX = new Set([
+    "dashboard", "admin", "user-dashboard", "checkout", "login", "signup",
+    "forgot-password", "offline", "family", "family-dashboard", "parent-dashboard",
+  ]);
+  const base = "https://www.vrikaan.com";
+  // SPA-only routes (not prerendered yet) — listed so Google indexes them.
+  const urls = ["/", "/scam-dna", "/scambait", "/tools", "/mock-test", "/leaderboard", "/risk-score", "/deepfake-audio", "/emergency-help"];
+  for (const name of fs.readdirSync(DIST)) {
+    const full = path.join(DIST, name);
+    let isDir = false;
+    try { isDir = fs.statSync(full).isDirectory(); } catch { continue; }
+    if (!isDir || name === "assets" || name.startsWith(".") || NOINDEX.has(name)) continue;
+    if (fs.existsSync(path.join(full, "index.html"))) urls.push(`/${name}`);
+    for (const sub of fs.readdirSync(full)) {
+      try {
+        const subFull = path.join(full, sub);
+        if (fs.statSync(subFull).isDirectory() && fs.existsSync(path.join(subFull, "index.html"))) urls.push(`/${name}/${sub}`);
+      } catch { /* skip */ }
+    }
+  }
+  const uniq = [...new Set(urls)].sort();
+  const today = new Date().toISOString().slice(0, 10);
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${uniq.map((u) => `  <url><loc>${base}${u === "/" ? "/" : u}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>${u === "/" ? "1.0" : "0.7"}</priority></url>`).join("\n")}\n</urlset>\n`;
+  fs.writeFileSync(path.join(DIST, "sitemap.xml"), xml);
+  console.log(`[prerender] sitemap.xml: ${uniq.length} urls`);
 }
 
 main().catch((e) => {
