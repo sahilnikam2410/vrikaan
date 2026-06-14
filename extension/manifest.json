@@ -40,7 +40,8 @@
     "contextMenus"
   ],
   "host_permissions": [
-    "https://vrikaan.com/*"
+    "https://vrikaan.com/*",
+    "https://www.vrikaan.com/*"
   ],
   "commands": {
     "_execute_action": {

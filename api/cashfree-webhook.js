@@ -15,19 +15,15 @@
  *   2. Unsigned requests are rejected with 401.
  *
  * Persistence note:
- *   The browser-redirect verification flow in /api/verify-payment
- *   already updates Firestore via the authenticated client. This
- *   webhook is a backup for the rare case where a user closes the
- *   tab before the redirect lands, so we log the order id and
- *   leave it for the next /api/verify-payment call to reconcile
- *   when the user re-opens the site.
- *
- *   For full server-side Firestore writes from this webhook we'd
- *   need firebase-admin + a service account key — currently
- *   blocked by the Firebase project's org policy. See
- *   _firebaseAdmin.js for context.
+ *   Both this webhook and /api/verify-payment grant the plan via the
+ *   shared, idempotent grantPlanFromOrder (Admin SDK). verify-payment
+ *   fires on the browser redirect; this webhook is the server-to-server
+ *   backup for when the user closes the tab before the redirect lands.
+ *   The orders/{orderId} transaction guard guarantees a single grant
+ *   regardless of which path (or how many retries) arrives first.
  */
 import crypto from "crypto";
+import { fetchCashfreeOrder, grantPlanFromOrder } from "./_grantPlan.js";
 
 // Disable Vercel's body parser so we can read the raw body for signature verification
 export const config = { api: { bodyParser: false } };
@@ -100,6 +96,23 @@ export default async function handler(req, res) {
       paymentMethod: payment.payment_group,
       timestamp,
     });
+
+    // AUTHORITATIVE BACKUP GRANT — covers the case where the user closes the
+    // tab before the /checkout redirect fires /api/verify-payment. We re-fetch
+    // the full order from Cashfree (the webhook body omits order_tags/uid) and
+    // grant idempotently; the orders/{orderId} guard prevents a double grant.
+    const isSuccess = /SUCCESS/i.test(eventType || "") || /SUCCESS/i.test(payment.payment_status || "");
+    if (isSuccess && order.order_id) {
+      try {
+        const { ok, paid, data: cfData } = await fetchCashfreeOrder(order.order_id);
+        if (ok && paid && cfData) {
+          const result = await grantPlanFromOrder(cfData);
+          console.log("Cashfree webhook grant:", { orderId: order.order_id, granted: result.granted, already: result.already, noUid: result.noUid, skipped: result.skipped, plan: result.plan });
+        }
+      } catch (e) {
+        console.error("Cashfree webhook grant error:", e.message);
+      }
+    }
 
     // Cashfree expects a 200 within a few seconds — anything else is retried
     return res.status(200).json({ received: true });

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VRIKAAN Scambaiter — Ad</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --teal: #14b8a6; --indigo: #6366f1; --ink: #f1f5f9; --mut: #94a3b8;
+    --spring: cubic-bezier(.16,1,.3,1);
+    --smooth: cubic-bezier(.4,0,.2,1);
+  }
+  html, body {
+    width: 100%; height: 100%; background: #02040a; overflow: hidden;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #stage {
+    position: relative; width: 1280px; height: 720px; flex-shrink: 0;
+    background: #060a14; overflow: hidden; color: var(--ink);
+  }
+  /* drifting orbs (parallax depth) */
+  .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: .55; }
+  .orb.a { width: 620px; height: 620px; background: var(--teal);   top: -180px; left: -120px; animation: drift1 14s ease-in-out infinite; }
+  .orb.b { width: 560px; height: 560px; background: var(--indigo); bottom: -200px; right: -120px; animation: drift2 16s ease-in-out infinite; }
+  .orb.c { width: 380px; height: 380px; background: #8b5cf6; top: 30%; right: 22%; opacity: .3; animation: drift1 19s ease-in-out infinite reverse; }
+  @keyframes drift1 { 0%,100%{ transform: translate(0,0) scale(1);} 50%{ transform: translate(60px,40px) scale(1.08);} }
+  @keyframes drift2 { 0%,100%{ transform: translate(0,0) scale(1);} 50%{ transform: translate(-50px,-30px) scale(1.1);} }
+  #stage::before { content:""; position:absolute; inset:0; opacity:.04; pointer-events:none;
+    background-image: linear-gradient(rgba(148,163,184,.7) 1px,transparent 1px),linear-gradient(90deg,rgba(148,163,184,.7) 1px,transparent 1px);
+    background-size: 54px 54px; }
+
+  /* scene: camera-style transition (scale+blur+fade) */
+  .scene { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: scale(1.06); filter: blur(8px);
+    transition: opacity .8s var(--smooth), transform 1.1s var(--spring), filter .8s var(--smooth); pointer-events: none; }
+  #stage[data-scene="intro"] .s-intro,
+  #stage[data-scene="bait"]  .s-bait,
+  #stage[data-scene="dna"]   .s-dna,
+  #stage[data-scene="outro"] .s-outro { opacity: 1; transform: scale(1); filter: blur(0); }
+
+  /* kinetic word reveal */
+  .kw { display: inline-block; opacity: 0; transform: translateY(28px) rotateX(-40deg);
+    transition: opacity .6s var(--smooth), transform .7s var(--spring); }
+  .on .kw { opacity: 1; transform: translateY(0) rotateX(0); }
+
+  .brand { display: flex; align-items: center; gap: 18px; }
+  .brand img { width: 70px; height: 70px; filter: drop-shadow(0 0 16px rgba(20,184,166,.6)); }
+  .brand .word { font-size: 44px; letter-spacing: 9px; font-weight: 800; }
+
+  /* INTRO */
+  .s-intro { flex-direction: column; gap: 30px; text-align: center; }
+  .s-intro .hook { font-size: 52px; font-weight: 800; line-height: 1.18; max-width: 940px; perspective: 600px; }
+  .s-intro .hook .l2 { color: var(--teal); }
+  .s-intro .sub { font-size: 23px; color: var(--mut); }
+
+  /* BAIT */
+  .s-bait { gap: 70px; }
+  .left-copy { width: 380px; perspective: 600px; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 9px; font-size: 14px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--teal); font-weight: 700; margin-bottom: 20px; }
+  .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{ opacity:1; box-shadow:0 0 0 0 rgba(20,184,166,.5);} 50%{ opacity:.5; box-shadow:0 0 0 9px rgba(20,184,166,0);} }
+  .left-copy h2 { font-size: 44px; font-weight: 800; line-height: 1.12; margin-bottom: 18px; }
+  .left-copy p { font-size: 20px; color: var(--mut); line-height: 1.5; }
+  .timer { margin-top: 28px; display: inline-flex; align-items: baseline; gap: 13px;
+    background: rgba(20,184,166,.08); border: 1px solid rgba(20,184,166,.28); border-radius: 18px; padding: 16px 24px; }
+  .timer .num { font-size: 46px; font-weight: 800; color: var(--teal); font-variant-numeric: tabular-nums; }
+  .timer .lbl { font-size: 15px; color: var(--mut); }
+
+  .phone { width: 350px; height: 610px; border-radius: 46px; padding: 14px;
+    background: linear-gradient(160deg,#0d1424,#080d18); border: 1px solid rgba(148,163,184,.18);
+    box-shadow: 0 50px 100px rgba(0,0,0,.6), 0 0 0 2px rgba(20,184,166,.08);
+    transform: translateY(40px) scale(.96); opacity: 0; transition: transform 1s var(--spring), opacity .7s var(--smooth); }
+  #stage[data-scene="bait"] .phone { transform: translateY(0) scale(1); opacity: 1; }
+  .screen { width: 100%; height: 100%; border-radius: 34px; background: #0a0f1c; overflow: hidden; display: flex; flex-direction: column; }
+  .phead { padding: 18px 18px 13px; border-bottom: 1px solid rgba(148,163,184,.1); display: flex; align-items: center; gap: 12px; }
+  .pavatar { width: 42px; height: 42px; border-radius: 50%; background: rgba(239,68,68,.16); border: 1px solid rgba(239,68,68,.4);
+    display: flex; align-items: center; justify-content: center; }
+  .pavatar svg { width: 21px; height: 21px; }
+  .pname { font-size: 15px; font-weight: 700; }
+  .pnum { font-size: 12px; color: #ef4444; }
+  .chat { flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .b { max-width: 80%; padding: 12px 15px; font-size: 14.5px; line-height: 1.45; border-radius: 18px;
+    opacity: 0; transform: translateY(16px) scale(.96); transition: opacity .45s var(--smooth), transform .5s var(--spring); }
+  .b.show { opacity: 1; transform: translateY(0) scale(1); }
+  .b.them { align-self: flex-start; background: #1b2336; border-bottom-left-radius: 6px; color: #e2e8f0; }
+  .b.scam { border: 1px solid rgba(239,68,68,.4); }
+  .b.me { align-self: flex-end; background: linear-gradient(160deg,#14b8a6,#0f9c8a); color: #042f2a; font-weight: 600; border-bottom-right-radius: 6px; }
+  .b .who { display: block; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; opacity: .7; }
+  .badge-ai { align-self: center; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--teal);
+    background: rgba(20,184,166,.1); border: 1px solid rgba(20,184,166,.3); padding: 6px 13px; border-radius: 100px; font-weight: 700;
+    opacity: 0; transform: scale(.85); transition: all .45s var(--spring); }
+  .badge-ai.show { opacity: 1; transform: scale(1); }
+  .typing { align-self: flex-end; display: flex; gap: 4px; padding: 13px 16px; background: rgba(20,184,166,.15);
+    border-radius: 18px; border-bottom-right-radius: 6px; opacity: 0; transition: opacity .3s; }
+  .typing.show { opacity: 1; }
+  .typing i { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); animation: bob 1s ease-in-out infinite; }
+  .typing i:nth-child(2){ animation-delay: .15s; } .typing i:nth-child(3){ animation-delay: .3s; }
+  @keyframes bob { 0%,100%{ transform: translateY(0); opacity:.4;} 50%{ transform: translateY(-5px); opacity:1;} }
+
+  /* DNA */
+  .s-dna { flex-direction: column; gap: 30px; text-align: center; }
+  .s-dna .helix { width: 84px; height: 84px; filter: drop-shadow(0 0 18px rgba(20,184,166,.5)); animation: spin 8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .s-dna h2 { font-size: 46px; font-weight: 800; perspective: 600px; }
+  .s-dna .desc { font-size: 22px; color: var(--mut); max-width: 760px; line-height: 1.5; }
+  .s-dna .desc b { color: var(--teal); }
+  .protected { display: flex; align-items: baseline; gap: 16px; margin-top: 8px; }
+  .protected .num { font-size: 84px; font-weight: 800; color: var(--teal); font-variant-numeric: tabular-nums; text-shadow: 0 0 44px rgba(20,184,166,.4); }
+  .protected .lbl { font-size: 21px; color: #cbd5e1; }
+
+  /* OUTRO */
+  .s-outro { flex-direction: column; gap: 28px; text-align: center; }
+  .s-outro .brand .word { font-size: 60px; letter-spacing: 13px; }
+  .s-outro .brand img { width: 90px; height: 90px; }
+  .s-outro .cta { font-size: 32px; font-weight: 700; }
+  .s-outro .cta b { color: var(--teal); }
+  .s-outro .url { font-size: 26px; color: var(--mut); letter-spacing: 2px; }
+  .s-outro .pill { font-size: 15px; color: var(--teal); border: 1px solid rgba(20,184,166,.35);
+    background: rgba(20,184,166,.08); padding: 11px 24px; border-radius: 100px; font-weight: 700; letter-spacing: 1px; }
+
+  /* progress bar */
+  .progress { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+  .progress span { width: 46px; height: 4px; border-radius: 4px; background: rgba(148,163,184,.2); overflow: hidden; position: relative; }
+  .progress span b { position: absolute; inset: 0; width: 0; background: var(--teal); border-radius: 4px; }
+  .logo-mini { position: absolute; top: 30px; left: 36px; display: flex; align-items: center; gap: 10px; opacity: .85; }
+  .logo-mini img { width: 30px; height: 30px; }
+  .logo-mini span { font-size: 16px; letter-spacing: 4px; font-weight: 800; }
+</style>
+</head>
+<body>
+  <div id="stage" data-scene="intro">
+    <div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
+
+    <div class="logo-mini"><img src="/wolf-compact.png" alt=""/><span>VRIKAAN</span></div>
+
+    <!-- INTRO -->
+    <div class="scene s-intro">
+      <div class="brand"><img src="/wolf-compact.png" alt=""/><span class="word">VRIKAAN</span></div>
+      <div class="hook" id="hook">
+        <div class="l1"></div><div class="l2"></div>
+      </div>
+      <div class="sub" id="introsub" style="opacity:0;transition:opacity .6s ease .9s">Most apps just warn you. We fight back.</div>
+    </div>
+
+    <!-- BAIT -->
+    <div class="scene s-bait">
+      <div class="left-copy" id="baitcopy">
+        <span class="eyebrow"><span class="dot"></span>AI Scambaiter</span>
+        <h2 id="baith2"></h2>
+        <p>Paste any scam message. Our AI replies as a believable target and keeps the scammer busy for hours.</p>
+        <div class="timer"><span class="num" id="timer">00:00</span><span class="lbl">scammer time wasted</span></div>
+      </div>
+      <div class="phone"><div class="screen">
+        <div class="phead">
+          <div class="pavatar"><svg viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M3 5a2 2 0 0 1 2-2h3l2 5-2 1a11 11 0 0 0 5 5l1-2 5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 5z"/></svg></div>
+          <div><div class="pname">Unknown</div><div class="pnum">+91 98••• ••••2 · likely scam</div></div>
+        </div>
+        <div class="chat" id="chat">
+          <div class="b them scam" data-i="0"><span class="who">Scammer</span>Dear customer, your SBI KYC has expired. Update now or account blocked: kyc-sbi-verify.in</div>
+          <div class="badge-ai" data-i="1">⚡ VRIKAAN engaged — bot replying</div>
+          <div class="typing" id="typing"><i></i><i></i><i></i></div>
+          <div class="b me" data-i="2"><span class="who">VRIKAAN AI</span>Oh no! How do I update? I'm not good with phones, beta. My son set this up.</div>
+          <div class="b them" data-i="3">Click the link, enter card number + OTP, sir. Hurry, only 10 minutes.</div>
+          <div class="b me" data-i="4"><span class="who">VRIKAAN AI</span>Card in other room. Which one — SBI or the green card? OTP not coming, can you wait?</div>
+          <div class="b them" data-i="5">Yes yes I will wait. Please be fast sir 🙏</div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- DNA -->
+    <div class="scene s-dna">
+      <svg class="helix" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="1.6"><path d="M4 3c0 6 16 6 16 18M20 3c0 6-16 6-16 18"/><path d="M5.5 7h13M5.5 17h13M7 5h10M7 19h10"/></svg>
+      <h2 id="dnah2"></h2>
+      <div class="desc">Every scam feeds <b>Scam DNA</b> — a crowdsourced immune system. Families get auto-alerted to scams active near them.</div>
+      <div class="protected"><span class="num" id="protected">0</span><span class="lbl">families protected this week</span></div>
+    </div>
+
+    <!-- OUTRO -->
+    <div class="scene s-outro">
+      <div class="brand"><img src="/wolf-compact.png" alt=""/><span class="word">VRIKAAN</span></div>
+      <div class="cta">Fight back. <b>For free.</b></div>
+      <div class="url">vrikaan.com</div>
+      <div class="pill">★ Featured in Cyber 50</div>
+    </div>
+
+    <div class="progress"><span><b id="p0"></b></span><span><b id="p1"></b></span><span><b id="p2"></b></span><span><b id="p3"></b></span></div>
+  </div>
+
+<script>
+  const stage = document.getElementById('stage');
+  const bubbles = [...document.querySelectorAll('#stage [data-i]')];
+  const timerEl = document.getElementById('timer');
+  const protEl = document.getElementById('protected');
+  const typing = document.getElementById('typing');
+  let timers = [];
+  const at = (ms, fn) => timers.push(setTimeout(fn, ms));
+  const clearAll = () => { timers.forEach(clearTimeout); timers = []; };
+
+  // build kinetic words into a container
+  function kinetic(el, text, baseDelay){
+    el.innerHTML = '';
+    text.split(' ').forEach((w,i) => {
+      const s = document.createElement('span');
+      s.className = 'kw'; s.textContent = w + ' ';
+      s.style.transitionDelay = (baseDelay + i*70) + 'ms';
+      el.appendChild(s);
+    });
+  }
+  kinetic(document.querySelector('#hook .l1'), 'Every 60 seconds, an Indian family', 200);
+  kinetic(document.querySelector('#hook .l2'), 'loses money to a scam.', 600);
+  kinetic(document.getElementById('baith2'), 'Waste their time. Save their savings.', 0);
+  kinetic(document.getElementById('dnah2'), 'One report protects everyone.', 0);
+
+  const fmt = s => String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+  function ramp(el, to, dur, fmtFn){
+    const start = performance.now(), scene = stage.dataset.scene;
+    (function tick(now){
+      const p = Math.min(1, (now-start)/dur);
+      const e = 1-Math.pow(1-p,3); // easeOutCubic
+      el.textContent = fmtFn(Math.round(to*e));
+      if (p<1 && stage.dataset.scene===scene) requestAnimationFrame(tick);
+    })(performance.now());
+  }
+  function fillBar(id, dur){
+    const b = document.getElementById(id); b.style.transition='none'; b.style.width='0';
+    requestAnimationFrame(()=>{ b.style.transition='width '+dur+'ms linear'; b.style.width='100%'; });
+  }
+  function resetBars(){ ['p0','p1','p2','p3'].forEach(id=>{const b=document.getElementById(id);b.style.transition='none';b.style.width='0';}); }
+
+  function loop(){
+    clearAll(); resetBars();
+    bubbles.forEach(b=>b.classList.remove('show'));
+    typing.classList.remove('show');
+    document.querySelectorAll('.s-intro, .s-bait .left-copy, .s-dna').forEach(e=>e.classList.remove('on'));
+    timerEl.textContent='00:00'; protEl.textContent='0';
+
+    // INTRO 0–4s
+    stage.dataset.scene='intro';
+    at(150, ()=>document.querySelector('.s-intro').classList.add('on'));
+    at(1400, ()=>document.getElementById('introsub').style.opacity='1');
+    fillBar('p0', 4000);
+
+    // BAIT 4–14.5s
+    at(4000, ()=>{ stage.dataset.scene='bait'; document.querySelector('.s-bait .left-copy').classList.add('on'); ramp(timerEl, 2640, 9500, fmt); fillBar('p1', 10500); });
+    at(4900, ()=>bubbles[0].classList.add('show'));
+    at(5900, ()=>bubbles[1].classList.add('show'));
+    at(6500, ()=>typing.classList.add('show'));
+    at(7300, ()=>{ typing.classList.remove('show'); bubbles[2].classList.add('show'); });
+    at(8800, ()=>bubbles[3].classList.add('show'));
+    at(9500, ()=>typing.classList.add('show'));
+    at(10400, ()=>{ typing.classList.remove('show'); bubbles[4].classList.add('show'); });
+    at(12000, ()=>bubbles[5].classList.add('show'));
+
+    // DNA 14.5–18.5s
+    at(14500, ()=>{ stage.dataset.scene='dna'; document.querySelector('.s-dna').classList.add('on'); ramp(protEl, 12407, 2800, n=>n.toLocaleString('en-IN')); fillBar('p2', 4000); });
+
+    // OUTRO 18.5–22s
+    at(18500, ()=>{ stage.dataset.scene='outro'; fillBar('p3', 3500); });
+
+    at(22000, loop);
+  }
+  loop();
+
+  function fit(){ const s=Math.min(window.innerWidth/1280, window.innerHeight/720); stage.style.transform='scale('+s+')'; }
+  addEventListener('resize', fit); fit();
+</script>
+</body>
+</html>

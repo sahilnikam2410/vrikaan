@@ -201,6 +201,22 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    // ─── leads ───────────────────────────────────────────────────
+    // Enterprise walkthrough leads — written server-only (enterprise-lead
+    // handler via Admin SDK). Contains contact details; never client-readable.
+    match /leads/{leadId} {
+      allow read, write: if false;
+    }
+
+    // ─── orders ──────────────────────────────────────────────────
+    // Payment idempotency + audit records, keyed by Cashfree orderId. Written
+    // ONLY by the server (verify-payment / cashfree-webhook via Admin SDK,
+    // which bypasses rules). No client access — the orders/{orderId} guard is
+    // what makes plan grants single-shot, so it must never be client-writable.
+    match /orders/{orderId} {
+      allow read, write: if false;
+    }
+
     // ─── Default deny ────────────────────────────────────────────
     // Any collection not explicitly matched above is locked down.
     match /{document=**} {

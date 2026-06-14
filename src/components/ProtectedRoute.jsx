@@ -34,7 +34,13 @@ export function ProtectedRoute({ children, adminOnly = false, tier: tierOverride
   if (!user) {
     return <Navigate to={`/login?next=${encodeURIComponent(location.pathname)}`} replace />;
   }
-  if (adminOnly && user.role !== "admin") return <Navigate to="/dashboard" replace />;
+  // Admin routes gate by role ONLY — admins bypass plan-tier + kid gates.
+  // (Previously fell through to the tier check below, so an admin on a non-
+  // enterprise plan got the Enterprise paywall on their own /admin dashboard.)
+  if (adminOnly) {
+    if (user.role !== "admin") return <Navigate to="/dashboard" replace />;
+    return children;
+  }
 
   // Kid-mode gate — Family-plan members tagged role=kid can't access scary /
   // adult / dark-web tools. Soft-redirect to dashboard with note query param.

@@ -115,12 +115,17 @@ export default function Enterprise() {
     }
     setError("");
     try {
-      await fetch("/api/tools?tool=newsletter-subscribe", {
+      await fetch("/api/tools?tool=enterprise-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          name: form.name.trim(),
           email: form.email.trim().toLowerCase(),
-          source: `enterprise-lead:${form.tier}:${form.employees}:${form.company.trim()}:${form.role}:${form.message.slice(0, 200)}`,
+          company: form.company.trim(),
+          role: form.role.trim(),
+          employees: form.employees,
+          tier: form.tier,
+          message: form.message.slice(0, 1000),
         }),
       });
     } catch {}

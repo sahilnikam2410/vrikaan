@@ -307,17 +307,25 @@ export default function Checkout() {
           return;
         }
 
-        // 3. Update user subscription in Firestore
+        // 3. Mirror non-entitlement subscription metadata on the user doc.
+        // NOTE: `plan` / `planExpiresAt` are server-owned and LOCKED by
+        // firestore.rules — verify-payment already granted them via Admin SDK.
+        // Writing `plan` here would be permission-denied and abort the whole
+        // updateDoc, falsely showing the user a failure after a real payment.
         const userRef = doc(db, "users", user.uid);
-        await updateDoc(userRef, {
-          plan: data.plan,
-          subscriptionActive: true,
-          subscriptionBilling: data.billing,
-          subscriptionStartedAt: serverTimestamp(),
-          subscriptionExpiresAt: Timestamp.fromDate(new Date(data.expiresAt)),
-          subscriptionOrderId: orderId,
-          updatedAt: serverTimestamp(),
-        });
+        try {
+          await updateDoc(userRef, {
+            subscriptionActive: true,
+            subscriptionBilling: data.billing,
+            subscriptionStartedAt: serverTimestamp(),
+            ...(data.expiresAt ? { subscriptionExpiresAt: Timestamp.fromDate(new Date(data.expiresAt)) } : {}),
+            subscriptionOrderId: orderId,
+            updatedAt: serverTimestamp(),
+          });
+        } catch (e) {
+          // Non-fatal: the plan is already granted server-side. Don't block success.
+          console.warn("Checkout: subscription metadata write skipped:", e.message);
+        }
 
         // 4. Save payment record
         await addDoc(paymentsRef, {

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   LuShield, LuBanknote, LuFish, LuLock, LuClock, LuTrophy, LuCircleCheck,
   LuCircleX, LuArrowRight, LuArrowLeft, LuRotateCcw, LuChevronRight,
+  LuBriefcase, LuShoppingCart, LuScanFace, LuUsers, LuAward,
 } from "react-icons/lu";
 import { Card, Button, Aurora } from "../../components/ui";
 import Navbar from "../../components/Navbar";
@@ -19,7 +20,11 @@ const T = {
   cyan: "#14b8a6", accent: "#6366f1", green: "#22c55e", red: "#ef4444", gold: "#fbbf24",
 };
 
-const ICONS = { shield: LuShield, banknote: LuBanknote, fish: LuFish, lock: LuLock };
+const ICONS = {
+  shield: LuShield, banknote: LuBanknote, fish: LuFish, lock: LuLock,
+  briefcase: LuBriefcase, "shopping-cart": LuShoppingCart, "scan-face": LuScanFace,
+  users: LuUsers, award: LuAward,
+};
 
 // Level curve mirrors Academy (computeStats in Learn.jsx).
 function levelFromXp(xp) {

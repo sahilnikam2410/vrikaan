@@ -1,16 +1,5 @@
 import { checkRateLimit } from "./_rateLimit.js";
-import { getAdminFirestore } from "./_firebaseAdmin.js";
-
-const CASHFREE_API_BASE = process.env.CASHFREE_ENV === "production"
-  ? "https://api.cashfree.com/pg/orders"
-  : "https://sandbox.cashfree.com/pg/orders";
-
-const PLAN_MAP = {
-  starter: "starter", standard: "starter",
-  pro: "pro", advanced: "pro",
-  family: "family",
-  enterprise: "enterprise",
-};
+import { fetchCashfreeOrder, grantPlanFromOrder } from "./_grantPlan.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -31,70 +20,41 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Missing orderId" });
     }
 
-    // Verify payment with Cashfree API
-    const cfResponse = await fetch(`${CASHFREE_API_BASE}/${orderId}`, {
-      method: "GET",
-      headers: {
-        "x-api-version": "2023-08-01",
-        "x-client-id": process.env.CASHFREE_APP_ID,
-        "x-client-secret": process.env.CASHFREE_SECRET_KEY,
-      },
-    });
+    // Verify payment with Cashfree API (server-side, authoritative).
+    const { ok, paid, data: cfData } = await fetchCashfreeOrder(orderId);
 
-    const cfData = await cfResponse.json();
-
-    if (!cfResponse.ok) {
+    if (!ok || !cfData) {
       console.error("Cashfree verify error:", cfData);
       return res.status(400).json({ error: "Failed to verify order with Cashfree" });
     }
 
-    if (cfData.order_status !== "PAID") {
+    if (!paid) {
       return res.status(400).json({
         error: "Payment not completed",
         status: cfData.order_status,
       });
     }
 
-    // Payment verified — return data for frontend to update Firestore
-    const planKey = cfData.order_tags?.plan || "pro";
-    const billing = cfData.order_tags?.billing || "monthly";
-    const normalizedPlan = PLAN_MAP[planKey] || "pro";
-    const durationDays = billing === "annual" ? 365 : 30;
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + durationDays);
-
-    // SERVER-AUTHORITATIVE grant: write the plan to Firestore via Admin SDK
-    // (bypasses security rules). This is the source of truth — the client can
-    // no longer mint its own plan. uid travels in the Cashfree order_tags.
-    const uid = cfData.order_tags?.uid;
-    if (uid) {
-      const db = getAdminFirestore();
-      if (db) {
-        try {
-          await db.collection("users").doc(String(uid)).set({
-            plan: normalizedPlan,
-            planBilling: billing,
-            planActivatedAt: new Date().toISOString(),
-            planExpiresAt: expiresAt.toISOString(),
-            lastOrderId: cfData.order_id,
-          }, { merge: true });
-        } catch (e) {
-          console.error("verify-payment: failed to write plan for", uid, e.message);
-        }
-      } else {
-        console.warn("verify-payment: admin SDK unavailable — plan not written server-side");
-      }
+    // Idempotent, server-authoritative grant. Safe to call repeatedly —
+    // the orders/{orderId} guard means a replay can't re-extend the plan.
+    const result = await grantPlanFromOrder(cfData);
+    if (result.error) {
+      console.error("verify-payment: grant failed", result.error, "order", orderId);
+    }
+    if (result.noUid) {
+      console.warn("verify-payment: order has no uid tag — plan not attributed", orderId);
     }
 
     return res.status(200).json({
       verified: true,
-      plan: normalizedPlan,
-      billing,
+      plan: result.plan || cfData.order_tags?.plan || "pro",
+      billing: result.billing || cfData.order_tags?.billing || "monthly",
       amount: cfData.order_amount,
       orderId: cfData.order_id,
       cfOrderId: cfData.cf_order_id,
-      expiresAt: expiresAt.toISOString(),
-      durationDays,
+      expiresAt: result.expiresAt || null,
+      durationDays: result.durationDays || (cfData.order_tags?.billing === "annual" ? 365 : 30),
+      alreadyProcessed: !!result.already,
     });
   } catch (err) {
     console.error("Payment verification error:", err.message);
