@@ -201,6 +201,13 @@ service cloud.firestore {
       allow create, update, delete: if isAdmin();
     }
 
+    // ─── leads ───────────────────────────────────────────────────
+    // Enterprise walkthrough leads — written server-only (enterprise-lead
+    // handler via Admin SDK). Contains contact details; never client-readable.
+    match /leads/{leadId} {
+      allow read, write: if false;
+    }
+
     // ─── orders ──────────────────────────────────────────────────
     // Payment idempotency + audit records, keyed by Cashfree orderId. Written
     // ONLY by the server (verify-payment / cashfree-webhook via Admin SDK,

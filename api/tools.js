@@ -15,6 +15,7 @@ const ACTION_TIERS = {
   "weekly-digest":     "free", // cron auth handled separately inside handler
   "leak-check":        "free",
   "newsletter-subscribe": "free",
+  "enterprise-lead": "free",
   "coupon-validate": "free",
   "whatsapp-inbound": "free",  // Twilio webhook — no user auth, rate-limited by phone
 
@@ -2485,6 +2486,116 @@ Reply ONLY with strict JSON (no markdown fences):
 // ─── ROUTER ─────────────────────────────────────────────────────────
 
 // ── Newsletter subscribe — Brevo + Firestore log (server-side, key never in browser) ──
+// ─── BREVO TRANSACTIONAL EMAIL HELPER ─────────────────────────────────
+// Sends a single transactional email via Brevo. `sender.email` must be a
+// VERIFIED sender/domain in your Brevo account or Brevo rejects the send.
+async function _brevoEmail({ to, subject, html, replyTo, sender }) {
+  const key = process.env.BREVO_API_KEY;
+  if (!key) return { ok: false, skipped: "no-brevo-key" };
+  try {
+    const r = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: { "api-key": key, "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        sender: sender || { name: "VRIKAAN", email: "hello@vrikaan.com" },
+        to: (Array.isArray(to) ? to : [to]).map((e) => (typeof e === "string" ? { email: e } : e)),
+        subject,
+        htmlContent: html,
+        ...(replyTo ? { replyTo: { email: replyTo } } : {}),
+      }),
+    });
+    if (!r.ok) { const d = await r.json().catch(() => ({})); console.warn("brevo email", r.status, d?.message); }
+    return { ok: r.ok, status: r.status };
+  } catch (e) { console.error("brevo email failed:", e.message); return { ok: false, error: e.message }; }
+}
+
+// ─── ENTERPRISE LEAD — the full mail chain ────────────────────────────
+// Enterprise "Request walkthrough" form. Records a structured lead, adds the
+// contact to Brevo CRM, EMAILS the founders (reply-to = the lead), and sends
+// the lead an auto-reply. Replaces cramming everything into newsletter source.
+const LEAD_NOTIFY_TO = ["hello@vrikaan.com", "sahilnikam133@gmail.com"]; // founders' inbox(es)
+const esc = (s) => String(s || "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+async function handleEnterpriseLead(req, res) {
+  const b = req.body || {};
+  const email = String(b.email || "").trim().toLowerCase().slice(0, 254);
+  const name = String(b.name || "").trim().slice(0, 120);
+  const company = String(b.company || "").trim().slice(0, 160);
+  if (!name || !company || !/^\S+@\S+\.\S+$/.test(email)) {
+    return res.status(400).json({ error: "Name, work email and company are required." });
+  }
+  const lead = {
+    name, email, company,
+    role: String(b.role || "").slice(0, 120),
+    employees: String(b.employees || "").slice(0, 60),
+    tier: String(b.tier || "").slice(0, 40),
+    message: String(b.message || "").slice(0, 1000),
+    createdAt: new Date().toISOString(),
+    ip: (req.headers?.["x-forwarded-for"]?.split(",")[0] || "").trim().slice(0, 64),
+    ua: (req.headers?.["user-agent"] || "").slice(0, 200),
+  };
+
+  // 1) Firestore record (structured — server-only via Admin SDK)
+  try {
+    const db = getAdminFirestore();
+    if (db) await db.collection("leads").add(lead);
+  } catch (e) { console.warn("lead: firestore write failed:", e.message); }
+
+  // 2) Brevo CRM contact (so it also lands in the list)
+  const brevoKey = process.env.BREVO_API_KEY;
+  if (brevoKey) {
+    try {
+      await fetch("https://api.brevo.com/v3/contacts", {
+        method: "POST",
+        headers: { "api-key": brevoKey, "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          email, updateEnabled: true,
+          ...(process.env.BREVO_LIST_ID ? { listIds: [Number(process.env.BREVO_LIST_ID)] } : {}),
+          attributes: { FIRSTNAME: name, COMPANY: company, ROLE: lead.role, LEAD_TIER: lead.tier, SOURCE: "enterprise-walkthrough" },
+        }),
+      });
+    } catch (e) { console.warn("lead: brevo contact failed:", e.message); }
+  }
+
+  // 3) Founder notification email (reply-to = the lead → reply goes straight back)
+  const founderHtml = `
+    <div style="font-family:system-ui,Arial,sans-serif;max-width:560px;margin:0 auto;color:#0f172a">
+      <div style="background:#090e1a;color:#fff;padding:20px 24px;border-radius:12px 12px 0 0">
+        <div style="font-size:13px;letter-spacing:2px;color:#14b8a6;font-weight:700">VRIKAAN · NEW ENTERPRISE LEAD</div>
+        <div style="font-size:22px;font-weight:800;margin-top:6px">${esc(company)}</div>
+        <div style="font-size:13px;color:#94a3b8">${esc(lead.tier || "tier n/a")} · ${esc(lead.employees || "size n/a")}</div>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;border:1px solid #e2e8f0;border-top:0;border-radius:0 0 12px 12px">
+        <tr><td style="padding:10px 24px;color:#64748b;width:120px">Name</td><td style="padding:10px 24px;font-weight:600">${esc(name)}</td></tr>
+        <tr><td style="padding:10px 24px;color:#64748b">Email</td><td style="padding:10px 24px"><a href="mailto:${esc(email)}">${esc(email)}</a></td></tr>
+        <tr><td style="padding:10px 24px;color:#64748b">Role</td><td style="padding:10px 24px">${esc(lead.role || "—")}</td></tr>
+        <tr><td style="padding:10px 24px;color:#64748b">Interest</td><td style="padding:10px 24px">${esc(lead.tier || "—")}</td></tr>
+        <tr><td style="padding:10px 24px;color:#64748b;vertical-align:top">Notes</td><td style="padding:10px 24px;white-space:pre-wrap">${esc(lead.message || "—")}</td></tr>
+      </table>
+      <p style="font-size:12px;color:#64748b;margin:16px 0 0">Reply to this email to respond directly. Promised SLA: 24h.</p>
+    </div>`;
+  await _brevoEmail({ to: LEAD_NOTIFY_TO, replyTo: email, subject: `🔥 Enterprise lead — ${company} (${lead.tier || "?"})`, html: founderHtml });
+
+  // 4) Lead auto-reply
+  const replyHtml = `
+    <div style="font-family:system-ui,Arial,sans-serif;max-width:560px;margin:0 auto;color:#0f172a">
+      <div style="background:#090e1a;color:#fff;padding:22px 26px;border-radius:12px">
+        <div style="font-size:20px;letter-spacing:4px;font-weight:800">VRIKAAN</div>
+        <div style="font-size:12px;color:#94a3b8;margin-top:2px">AI Cyber Defense · Made in India</div>
+      </div>
+      <div style="padding:22px 4px">
+        <p style="font-size:15px;line-height:1.6">Hi ${esc(name.split(" ")[0] || name)},</p>
+        <p style="font-size:15px;line-height:1.6">Thanks for requesting a walkthrough for <b>${esc(company)}</b>. One of the founders — Sahil or Khushi — will email you within <b>24 hours</b> with 3 calendar slots.</p>
+        <p style="font-size:15px;line-height:1.6">It's a live sandbox demo at <b>soc.vrikaan.com</b> with synthetic attacks running — you'll see real alerts in real time. No slides.</p>
+        <p style="font-size:15px;line-height:1.6">— Team VRIKAAN</p>
+        <p style="font-size:12px;color:#64748b;margin-top:18px">We never sell your data · DPDP compliant · <a href="https://vrikaan.com">vrikaan.com</a></p>
+      </div>
+    </div>`;
+  await _brevoEmail({ to: email, subject: "VRIKAAN — your 20-min walkthrough request", html: replyHtml });
+
+  return res.status(200).json({ ok: true });
+}
+
 async function handleNewsletterSubscribe(req, res) {
   const { email, source } = req.body || {};
   if (!email || typeof email !== "string" || !/^\S+@\S+\.\S+$/.test(email)) {
@@ -3236,6 +3347,7 @@ Message:"""${msg.slice(0, 3000)}"""`;
 const HANDLERS = {
   whois: handleWhois,
   "newsletter-subscribe": handleNewsletterSubscribe,
+  "enterprise-lead": handleEnterpriseLead,
   "coupon-validate": handleCouponValidate,
   "whatsapp-inbound": handleWhatsappInbound,
   "security-headers": handleSecurityHeaders,
