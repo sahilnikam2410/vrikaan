@@ -1,230 +1,197 @@
 /**
- * Invoice / Receipt PDF generation.
- * Pure client-side using jsPDF — no extra network calls or server load.
+ * GST-style Tax Invoice / payment receipt — pure client-side via jsPDF.
+ * Generated after a successful payment. India-first: SAC code, place of
+ * supply, CGST+SGST split back-computed from the GST-inclusive price.
  *
- * Used after a successful payment to give the customer a downloadable
- * GST-style receipt. Saves directly to the user's machine and also
- * returns the Blob/data-URI for any caller that wants to email it.
+ * NOTE: set SUPPLIER.gstin + legal name/address to your real registered
+ * details. While gstin is empty the document prints as a "Payment Receipt"
+ * (not a tax invoice) and omits the GST breakup, so it's never misleading.
  */
 import { jsPDF } from "jspdf";
 
-const BRAND = {
+// ── Supplier (you). Fill these with real registered details. ──────────
+const SUPPLIER = {
   name: "VRIKAAN",
-  tagline: "Empowering Defenders for a Safer Digital Future",
-  legal: "Vrikaan Cybersecurity",
-  address: "India",
+  tagline: "AI Cyber Defense — Made in India",
+  legal: "Vrikaan Cybersecurity",      // TODO: update to Pvt Ltd legal name on incorporation
+  address: ["Pune, Maharashtra", "India"],
+  gstin: "",                            // TODO: real GSTIN (e.g. "27ABCDE1234F1Z5"). Empty → receipt mode.
+  state: "Maharashtra",
+  stateCode: "27",
+  sac: "998314",                        // SAC: IT / software / cybersecurity services
   email: "hello@vrikaan.com",
   website: "https://www.vrikaan.com",
 };
 
+const GST_RATE = 0.18;          // 18% on IT services
+const PRICE_INCLUSIVE = true;   // displayed plan prices already include GST
+
+const PLAN_LABEL = { starter: "Standard", standard: "Standard", pro: "Advanced", advanced: "Advanced", family: "Family", enterprise: "Enterprise" };
+
 const COLORS = {
-  ink: [15, 23, 42],
-  accent: [99, 102, 241],
-  cyan: [20, 227, 197],
-  muted: [100, 116, 139],
-  border: [226, 232, 240],
+  ink: [15, 23, 42], accent: [99, 102, 241], muted: [100, 116, 139],
+  border: [226, 232, 240], faint: [248, 250, 252], green: [22, 163, 74],
 };
 
-function formatINR(amount) {
-  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(amount);
+function inr(n) {
+  const v = Number(n) || 0;
+  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(v);
+}
+function fmtDate(d) {
+  return new Date(d || Date.now()).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+}
+function planLabel(p) {
+  if (!p) return "Subscription";
+  return PLAN_LABEL[String(p).toLowerCase()] || (String(p).charAt(0).toUpperCase() + String(p).slice(1));
 }
 
-function formatDate(d) {
-  return new Date(d).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+// Back-compute taxable value + tax from the (inclusive) gross amount.
+function taxBreakup(gross) {
+  const total = Number(gross) || 0;
+  const taxable = PRICE_INCLUSIVE ? total / (1 + GST_RATE) : total;
+  const tax = PRICE_INCLUSIVE ? total - taxable : total * GST_RATE;
+  return {
+    taxable: Math.round(taxable * 100) / 100,
+    cgst: Math.round((tax / 2) * 100) / 100,
+    sgst: Math.round((tax / 2) * 100) / 100,
+    total: PRICE_INCLUSIVE ? total : total + tax,
+  };
 }
 
-/**
- * Build invoice PDF.
- * @param {Object} data
- * @param {string} data.invoiceNumber  – e.g. "VRK-2025-04-30-001"
- * @param {string} data.customerName
- * @param {string} data.customerEmail
- * @param {string} data.plan           – Standard / Advanced / Enterprise
- * @param {string} data.billing        – monthly / annual
- * @param {number} data.amount         – in INR
- * @param {string} data.transactionId  – Cashfree order id
- * @param {Date|string} data.paidAt
- * @param {string} [data.method]       – cashfree / upi / crypto
- * @returns {{ blob: Blob, dataUri: string, filename: string, doc: jsPDF }}
- */
-export function buildInvoicePdf(data) {
+export function buildInvoicePdf(data = {}) {
+  const isTaxInvoice = !!SUPPLIER.gstin;
   const doc = new jsPDF({ unit: "pt", format: "a4" });
-  const PAGE_W = doc.internal.pageSize.getWidth();
-  let y = 56;
+  const W = doc.internal.pageSize.getWidth();
+  const L = 56, R = W - 56;
+  let y = 50;
 
-  // Header bar (accent stripe)
-  doc.setFillColor(...COLORS.accent);
-  doc.rect(0, 0, PAGE_W, 8, "F");
+  const amount = Number(data.amount) || 0;
+  const plan = planLabel(data.plan);
+  const billing = data.billing === "annual" ? "Annual" : "Monthly";
+  const bk = taxBreakup(amount);
 
-  // Brand block
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(26);
-  doc.setTextColor(...COLORS.ink);
-  doc.text(BRAND.name, 56, y);
+  // accent stripe
+  doc.setFillColor(...COLORS.accent); doc.rect(0, 0, W, 8, "F");
 
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.setTextColor(...COLORS.muted);
-  doc.text(BRAND.tagline, 56, y + 16);
+  // brand
+  doc.setFont("helvetica", "bold").setFontSize(24).setTextColor(...COLORS.ink);
+  doc.text(SUPPLIER.name, L, y);
+  doc.setFont("helvetica", "normal").setFontSize(8.5).setTextColor(...COLORS.muted);
+  doc.text(SUPPLIER.tagline, L, y + 15);
 
-  // Invoice meta (right side)
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(20);
-  doc.setTextColor(...COLORS.ink);
-  doc.text("INVOICE", PAGE_W - 56, y, { align: "right" });
+  // doc title + meta (right)
+  doc.setFont("helvetica", "bold").setFontSize(16).setTextColor(...COLORS.ink);
+  doc.text(isTaxInvoice ? "TAX INVOICE" : "PAYMENT RECEIPT", R, y, { align: "right" });
+  doc.setFont("helvetica", "normal").setFontSize(8.5).setTextColor(...COLORS.muted);
+  doc.text(`No: ${data.invoiceNumber || "—"}`, R, y + 15, { align: "right" });
+  doc.text(`Date: ${fmtDate(data.paidAt)}`, R, y + 28, { align: "right" });
 
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.setTextColor(...COLORS.muted);
-  doc.text(`Invoice #: ${data.invoiceNumber}`, PAGE_W - 56, y + 16, { align: "right" });
-  doc.text(`Date: ${formatDate(data.paidAt)}`, PAGE_W - 56, y + 30, { align: "right" });
-
-  y += 56;
-
-  // Divider
-  doc.setDrawColor(...COLORS.border);
-  doc.setLineWidth(0.5);
-  doc.line(56, y, PAGE_W - 56, y);
-  y += 24;
-
-  // Bill From / Bill To
-  doc.setFontSize(8);
-  doc.setTextColor(...COLORS.muted);
-  doc.text("BILL FROM", 56, y);
-  doc.text("BILL TO", PAGE_W / 2 + 8, y);
-  y += 14;
-
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(11);
-  doc.setTextColor(...COLORS.ink);
-  doc.text(BRAND.legal, 56, y);
-  doc.text(data.customerName || "Customer", PAGE_W / 2 + 8, y);
-  y += 14;
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.setTextColor(...COLORS.muted);
-  doc.text(BRAND.address, 56, y);
-  doc.text(data.customerEmail || "—", PAGE_W / 2 + 8, y);
-  y += 12;
-  doc.text(BRAND.email, 56, y);
-  y += 12;
-  doc.text(BRAND.website, 56, y);
-  y += 32;
-
-  // Line items table — header
-  doc.setFillColor(248, 250, 252);
-  doc.rect(56, y, PAGE_W - 112, 28, "F");
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(9);
-  doc.setTextColor(...COLORS.ink);
-  doc.text("DESCRIPTION", 64, y + 18);
-  doc.text("BILLING", PAGE_W - 220, y + 18);
-  doc.text("AMOUNT", PAGE_W - 64, y + 18, { align: "right" });
-  y += 28;
-
-  // Line item row
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(11);
-  doc.setTextColor(...COLORS.ink);
-  doc.text(`${BRAND.name} ${data.plan} subscription`, 64, y + 20);
-  doc.setFontSize(9);
-  doc.setTextColor(...COLORS.muted);
-  doc.text(data.billing === "annual" ? "1 year of access" : "1 month of access", 64, y + 34);
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(11);
-  doc.setTextColor(...COLORS.ink);
-  doc.text(data.billing === "annual" ? "Annual" : "Monthly", PAGE_W - 220, y + 20);
-  doc.text(formatINR(data.amount), PAGE_W - 64, y + 20, { align: "right" });
-
-  y += 56;
-  doc.setDrawColor(...COLORS.border);
-  doc.line(56, y, PAGE_W - 56, y);
-  y += 18;
-
-  // Totals block
-  const labelX = PAGE_W - 200;
-  const valueX = PAGE_W - 64;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(10);
-  doc.setTextColor(...COLORS.muted);
-  doc.text("Subtotal", labelX, y);
-  doc.setTextColor(...COLORS.ink);
-  doc.text(formatINR(data.amount), valueX, y, { align: "right" });
-  y += 16;
-
-  doc.setTextColor(...COLORS.muted);
-  doc.text("Tax (GST)", labelX, y);
-  doc.setTextColor(...COLORS.ink);
-  doc.text(formatINR(0), valueX, y, { align: "right" });
+  y += 50;
+  doc.setDrawColor(...COLORS.border).setLineWidth(0.5).line(L, y, R, y);
   y += 22;
 
-  doc.setDrawColor(...COLORS.border);
-  doc.line(labelX - 8, y - 8, valueX + 8, y - 8);
+  // Seller / Buyer columns
+  const colR = W / 2 + 8;
+  doc.setFont("helvetica", "bold").setFontSize(8).setTextColor(...COLORS.muted);
+  doc.text("SELLER", L, y); doc.text("BILL TO", colR, y);
+  y += 14;
+  doc.setFont("helvetica", "bold").setFontSize(10.5).setTextColor(...COLORS.ink);
+  doc.text(SUPPLIER.legal, L, y);
+  doc.text(data.customerName || "Customer", colR, y);
+  y += 13;
+  doc.setFont("helvetica", "normal").setFontSize(8.5).setTextColor(...COLORS.muted);
+  let ly = y, ry = y;
+  SUPPLIER.address.forEach((line) => { doc.text(line, L, ly); ly += 11; });
+  if (isTaxInvoice) { doc.text(`GSTIN: ${SUPPLIER.gstin}`, L, ly); ly += 11; }
+  doc.text(`State: ${SUPPLIER.state} (${SUPPLIER.stateCode})`, L, ly); ly += 11;
+  doc.text(SUPPLIER.email, L, ly); ly += 11;
+  doc.text(data.customerEmail || "—", colR, ry); ry += 11;
+  doc.text(`Place of supply: ${SUPPLIER.state} (${SUPPLIER.stateCode})`, colR, ry); ry += 11;
+  y = Math.max(ly, ry) + 18;
 
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(13);
-  doc.setTextColor(...COLORS.ink);
-  doc.text("TOTAL PAID", labelX, y + 8);
-  doc.setTextColor(...COLORS.accent);
-  doc.text(formatINR(data.amount), valueX, y + 8, { align: "right" });
-  y += 40;
+  // Line-items table header
+  doc.setFillColor(...COLORS.faint); doc.rect(L, y, R - L, 26, "F");
+  doc.setFont("helvetica", "bold").setFontSize(8.5).setTextColor(...COLORS.ink);
+  doc.text("DESCRIPTION", L + 10, y + 17);
+  doc.text("SAC", R - 250, y + 17);
+  doc.text("QTY", R - 180, y + 17);
+  doc.text(isTaxInvoice ? "TAXABLE" : "AMOUNT", R - 10, y + 17, { align: "right" });
+  y += 26;
+
+  // Line item
+  doc.setFont("helvetica", "normal").setFontSize(10.5).setTextColor(...COLORS.ink);
+  doc.text(`${SUPPLIER.name} ${plan} — ${billing} subscription`, L + 10, y + 19);
+  doc.setFontSize(8.5).setTextColor(...COLORS.muted);
+  doc.text(billing === "Annual" ? "1 year of access" : "1 month of access", L + 10, y + 32);
+  doc.setFontSize(9.5).setTextColor(...COLORS.ink);
+  doc.text(isTaxInvoice ? SUPPLIER.sac : "—", R - 250, y + 19);
+  doc.text("1", R - 180, y + 19);
+  doc.text(inr(isTaxInvoice ? bk.taxable : amount), R - 10, y + 19, { align: "right" });
+  y += 48;
+  doc.setDrawColor(...COLORS.border).line(L, y, R, y);
+  y += 18;
+
+  // Totals (right aligned block)
+  const lx = R - 200, vx = R;
+  const row = (label, val, opts = {}) => {
+    doc.setFont("helvetica", opts.bold ? "bold" : "normal").setFontSize(opts.bold ? 12 : 9.5);
+    doc.setTextColor(...(opts.bold ? COLORS.ink : COLORS.muted));
+    doc.text(label, lx, y);
+    doc.setTextColor(...(opts.accent ? COLORS.accent : COLORS.ink));
+    doc.text(val, vx, y, { align: "right" });
+    y += opts.bold ? 0 : 15;
+  };
+  if (isTaxInvoice) {
+    row("Taxable value", inr(bk.taxable));
+    row(`CGST @ ${(GST_RATE / 2 * 100).toFixed(0)}%`, inr(bk.cgst));
+    row(`SGST @ ${(GST_RATE / 2 * 100).toFixed(0)}%`, inr(bk.sgst));
+  } else {
+    row("Subtotal", inr(amount));
+  }
+  y += 6;
+  doc.setDrawColor(...COLORS.border).line(lx - 8, y - 8, vx + 8, y - 8);
+  row("TOTAL PAID", inr(bk.total), { bold: true, accent: true });
+  y += 36;
 
   // Payment details box
-  doc.setFillColor(248, 250, 252);
-  doc.roundedRect(56, y, PAGE_W - 112, 80, 6, 6, "F");
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(10);
+  doc.setFillColor(...COLORS.faint); doc.roundedRect(L, y, R - L, 78, 6, 6, "F");
+  doc.setFont("helvetica", "bold").setFontSize(9.5).setTextColor(...COLORS.ink);
+  doc.text("PAYMENT DETAILS", L + 16, y + 20);
+  doc.setFont("helvetica", "normal").setFontSize(8.5).setTextColor(...COLORS.muted);
+  doc.text("Method:", L + 16, y + 38);
+  doc.text("Transaction ID:", L + 16, y + 54);
+  doc.text("Status:", L + 16, y + 70);
   doc.setTextColor(...COLORS.ink);
-  doc.text("PAYMENT DETAILS", 72, y + 22);
-
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.setTextColor(...COLORS.muted);
-  doc.text("Method:", 72, y + 40);
-  doc.text("Transaction ID:", 72, y + 56);
-  doc.text("Status:", 72, y + 72);
-
-  doc.setTextColor(...COLORS.ink);
-  doc.text(data.method || "Cashfree", 170, y + 40);
+  doc.text(String(data.method || "Cashfree"), L + 130, y + 38);
   doc.setFont("courier", "normal");
-  doc.text(data.transactionId || "—", 170, y + 56);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(34, 197, 94);
-  doc.text("PAID", 170, y + 72);
-  y += 100;
+  doc.text(String(data.transactionId || "—"), L + 130, y + 54);
+  doc.setFont("helvetica", "bold").setTextColor(...COLORS.green);
+  doc.text("PAID", L + 130, y + 70);
+  y += 98;
 
   // Footer
-  doc.setDrawColor(...COLORS.border);
-  doc.line(56, y, PAGE_W - 56, y);
-  y += 18;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8);
-  doc.setTextColor(...COLORS.muted);
-  doc.text("Thank you for choosing VRIKAAN. For support contact " + BRAND.email, PAGE_W / 2, y, { align: "center" });
-  doc.text("This is a computer-generated receipt and does not require a signature.", PAGE_W / 2, y + 12, { align: "center" });
+  doc.setDrawColor(...COLORS.border).line(L, y, R, y);
+  y += 16;
+  doc.setFont("helvetica", "normal").setFontSize(7.5).setTextColor(...COLORS.muted);
+  if (PRICE_INCLUSIVE && isTaxInvoice) {
+    doc.text("Amount is inclusive of GST. CGST + SGST shown for intra-state supply.", W / 2, y, { align: "center" }); y += 11;
+  }
+  doc.text(`Thank you for choosing ${SUPPLIER.name}. Support: ${SUPPLIER.email}`, W / 2, y, { align: "center" });
+  y += 11;
+  doc.text("Computer-generated document — no signature required.", W / 2, y, { align: "center" });
 
-  const filename = `VRIKAAN-Invoice-${data.invoiceNumber}.pdf`;
-  const blob = doc.output("blob");
-  const dataUri = doc.output("datauristring");
-  return { blob, dataUri, filename, doc };
+  const filename = `VRIKAAN-${isTaxInvoice ? "Invoice" : "Receipt"}-${data.invoiceNumber || "VRK"}.pdf`;
+  return { blob: doc.output("blob"), dataUri: doc.output("datauristring"), filename, doc };
 }
 
-/**
- * Generate + immediately download.
- */
 export function downloadInvoice(data) {
   const { doc, filename } = buildInvoicePdf(data);
   doc.save(filename);
 }
 
-/**
- * Build a deterministic invoice number from order + date.
- */
 export function makeInvoiceNumber(orderId) {
-  const date = new Date();
-  const ymd = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}`;
+  const d = new Date();
+  const ymd = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, "0")}${String(d.getDate()).padStart(2, "0")}`;
   const tail = (orderId || "").slice(-6).toUpperCase() || Math.random().toString(36).slice(2, 8).toUpperCase();
   return `VRK-${ymd}-${tail}`;
 }
