@@ -1,5 +1,6 @@
 import { applyRateLimit } from "./_rateLimit.js";
 import { getAdminFirestore, getAdminAuth } from "./_firebaseAdmin.js";
+import { waitUntil } from "@vercel/functions";
 
 // ─── Tier gate (server-trusted) ─────────────────────────────────────
 // Map each action → required plan tier.
@@ -3296,7 +3297,6 @@ async function _waSend(to, body) {
 }
 
 async function handleWhatsapp(req, res) {
-  // Always 200 fast so Meta doesn't retry; work happens before responding.
   const body = req.body || {};
   let msg = null, from = null;
   try {
@@ -3305,12 +3305,23 @@ async function handleWhatsapp(req, res) {
     if (m && m.type === "text") { msg = m.text?.body || ""; from = m.from; }
   } catch { /* ignore */ }
 
-  if (!from || !msg) return res.status(200).json({ ok: true });
+  // ACK Meta IMMEDIATELY — it requires a 200 within ~5s or it retries the
+  // webhook and eventually throttles/disables it. The AI work below runs after
+  // the response is flushed (Vercel keeps the function alive until this async
+  // handler resolves), so Gemini latency never delays Meta's acknowledgement.
+  res.status(200).json({ ok: true }); // instant ack — Meta needs a 200 in ~5s
+  if (from && msg) waitUntil(_processWhatsapp(from, msg));
+}
 
+// Runs AFTER the response is flushed. waitUntil keeps the Vercel function alive
+// until this resolves, so Gemini latency never delays Meta's acknowledgement
+// (Vercel buffers the HTTP response until the handler returns — without this,
+// the slow AI work would push the 200 past Meta's timeout → retries/throttle).
+async function _processWhatsapp(from, msg) {
   // greeting / help
   if (/^(hi|hello|hey|start|help|namaste)\b/i.test(msg.trim()) && msg.trim().length < 12) {
     await _waSend(from, "🛡 VRIKAAN Scam Check\n\nForward me any suspicious SMS, WhatsApp, or UPI message and I'll tell you in seconds if it's a scam — free.\n\nJust paste the message here. 👇");
-    return res.status(200).json({ ok: true });
+    return;
   }
 
   try {
@@ -3318,7 +3329,7 @@ async function handleWhatsapp(req, res) {
 {"verdict":"scam"|"likely-scam"|"suspicious"|"probably-safe","riskScore":0-100,"category":"upi-fraud|phishing|vishing|loan-app|job-scam|lottery-prize|fake-bank|fake-courier|kyc|other","tactic":"short","paymentHandles":[],"phones":[],"urls":[],"advice":["1-2 short actions"]}
 Message:"""${msg.slice(0, 3000)}"""`;
     const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 700, json: true });
-    if (!r.ok) { await _waSend(from, "⚠ Our AI is briefly busy. Please resend the message in a few seconds."); return res.status(200).json({ ok: true }); }
+    if (!r.ok) { await _waSend(from, "⚠ Our AI is briefly busy. Please resend the message in a few seconds."); return; }
     const p = tryParseJson(r.text) || {};
     const emoji = { "scam": "🚨", "likely-scam": "🚨", "suspicious": "⚠", "probably-safe": "✅" }[p.verdict] || "⚠";
     const label = { "scam": "SCAM", "likely-scam": "LIKELY SCAM", "suspicious": "SUSPICIOUS", "probably-safe": "PROBABLY SAFE" }[p.verdict] || "SUSPICIOUS";
@@ -3341,7 +3352,7 @@ Message:"""${msg.slice(0, 3000)}"""`;
     console.error("whatsapp handler:", e.message);
     try { await _waSend(from, "Sorry, something went wrong. Please try again."); } catch { /* ignore */ }
   }
-  return res.status(200).json({ ok: true });
+  return;
 }
 
 const HANDLERS = {
