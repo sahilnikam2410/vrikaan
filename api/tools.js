@@ -3318,8 +3318,11 @@ async function handleWhatsapp(req, res) {
 // (Vercel buffers the HTTP response until the handler returns — without this,
 // the slow AI work would push the 200 past Meta's timeout → retries/throttle).
 async function _processWhatsapp(from, msg) {
-  // greeting / help
-  if (/^(hi|hello|hey|start|help|namaste)\b/i.test(msg.trim()) && msg.trim().length < 12) {
+  // greeting / help — match common openers even with a name ("hello vrikaan"),
+  // but skip if it carries a URL / number / @ (that's a message to analyze).
+  const _t = msg.trim();
+  if (/^(hi+|hello|hey+|start|help|namaste|hlo|hii|yo|good (morning|evening|afternoon))\b/i.test(_t)
+      && _t.length < 30 && !/https?:|www\.|\d{6,}|@|\.(com|in|net|org)/i.test(_t)) {
     await _waSend(from, "🛡 VRIKAAN Scam Check\n\nForward me any suspicious SMS, WhatsApp, or UPI message and I'll tell you in seconds if it's a scam — free.\n\nJust paste the message here. 👇");
     return;
   }
