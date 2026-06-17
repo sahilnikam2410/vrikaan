@@ -6,7 +6,7 @@ import { useState } from "react";
 // the user opts in). Set VIDEO_ID to your uploaded ad's YouTube id.
 //   e.g. https://youtu.be/AbC123xyz  →  VIDEO_ID = "AbC123xyz"
 // While VIDEO_ID is empty, the component renders nothing (safe to ship).
-const VIDEO_ID = ""; // TODO: paste the YouTube video id of the VRIKAAN ad
+const VIDEO_ID = "9QPN6pFOnVU"; // VRIKAAN cinematic trailer
 
 const T = { cyan: "#14b8a6", border: "rgba(148,163,184,0.12)" };
 
