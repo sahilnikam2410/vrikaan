@@ -123,6 +123,8 @@ const RiskScore = lazy(() => import("./assets/pages/RiskScore.jsx"));
 const MockTest = lazy(() => import("./assets/pages/MockTest.jsx"));
 const ScamDna = lazy(() => import("./assets/pages/ScamDna.jsx"));
 const ThreatFeed = lazy(() => import("./assets/pages/ThreatFeed.jsx"));
+const ScamLookup = lazy(() => import("./assets/pages/ScamLookup.jsx"));
+const ScamRegistry = lazy(() => import("./assets/pages/ScamRegistry.jsx"));
 const FileComplaint = lazy(() => import("./assets/pages/FileComplaint.jsx"));
 const Developers = lazy(() => import("./assets/pages/Developers.jsx"));
 const Tools = lazy(() => import("./assets/pages/Tools.jsx"));
@@ -219,6 +221,8 @@ function AppRoutes() {
             <Route path="/risk-score" element={<RiskScore />} />
             <Route path="/scam-dna" element={<ScamDna />} />
             <Route path="/scam-feed" element={<ThreatFeed />} />
+            <Route path="/scam-registry" element={<ScamRegistry />} />
+            <Route path="/lookup/:id" element={<ScamLookup />} />
             <Route path="/file-complaint" element={<FileComplaint />} />
             <Route path="/developers" element={<Developers />} />
             <Route path="/api" element={<Developers />} />

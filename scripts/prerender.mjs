@@ -797,7 +797,7 @@ async function main() {
   ]);
   const base = "https://www.vrikaan.com";
   // SPA-only routes (not prerendered yet) — listed so Google indexes them.
-  const urls = ["/", "/scam-dna", "/scambait", "/tools", "/mock-test", "/leaderboard", "/risk-score", "/deepfake-audio", "/emergency-help"];
+  const urls = ["/", "/scam-dna", "/scambait", "/tools", "/mock-test", "/leaderboard", "/risk-score", "/deepfake-audio", "/emergency-help", "/scam-registry", "/scam-feed", "/file-complaint", "/developers"];
   for (const name of fs.readdirSync(DIST)) {
     const full = path.join(DIST, name);
     let isDir = false;
