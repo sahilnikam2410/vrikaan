@@ -17,6 +17,7 @@ const ACTION_TIERS = {
   "leak-check":        "free",
   "newsletter-subscribe": "free",
   "enterprise-lead": "free",
+  "yt-lesson": "free",
   "coupon-validate": "free",
   "whatsapp-inbound": "free",  // Twilio webhook — no user auth, rate-limited by phone
 
@@ -2487,6 +2488,33 @@ Reply ONLY with strict JSON (no markdown fences):
 // ─── ROUTER ─────────────────────────────────────────────────────────
 
 // ── Newsletter subscribe — Brevo + Firestore log (server-side, key never in browser) ──
+// ─── YOUTUBE LESSON VIDEO LOOKUP ──────────────────────────────────────
+// Returns the top embeddable YouTube video for a lesson topic so the Academy
+// can play the real video inline (instead of opening a YouTube search page).
+// Needs YT_API_KEY (free — Google Cloud → YouTube Data API v3). Without it,
+// responds {fallback:true} so the client opens a search as before.
+const _ytCache = new Map(); // q -> { id, title, t }
+async function handleYtLesson(req, res) {
+  const q = String(req.query.q || req.body?.q || "").trim().slice(0, 120);
+  if (!q) return res.status(400).json({ error: "q required" });
+  const key = process.env.YT_API_KEY;
+  if (!key) return res.status(200).json({ videoId: null, fallback: true });
+  const hit = _ytCache.get(q);
+  if (hit && Date.now() - hit.t < 7 * 24 * 3600 * 1000) return res.status(200).json({ videoId: hit.id, title: hit.title, cached: true });
+  try {
+    const u = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&videoEmbeddable=true&safeSearch=strict&regionCode=IN&relevanceLanguage=en&q=${encodeURIComponent(q)}&key=${key}`;
+    const r = await fetch(u);
+    const j = await r.json();
+    const id = j.items?.[0]?.id?.videoId || null;
+    const title = j.items?.[0]?.snippet?.title || null;
+    if (id) _ytCache.set(q, { id, title, t: Date.now() });
+    return res.status(200).json({ videoId: id, title, fallback: !id });
+  } catch (e) {
+    console.error("yt-lesson:", e.message);
+    return res.status(200).json({ videoId: null, fallback: true });
+  }
+}
+
 // ─── BREVO TRANSACTIONAL EMAIL HELPER ─────────────────────────────────
 // Sends a single transactional email via Brevo. `sender.email` must be a
 // VERIFIED sender/domain in your Brevo account or Brevo rejects the send.
@@ -3362,6 +3390,7 @@ const HANDLERS = {
   whois: handleWhois,
   "newsletter-subscribe": handleNewsletterSubscribe,
   "enterprise-lead": handleEnterpriseLead,
+  "yt-lesson": handleYtLesson,
   "coupon-validate": handleCouponValidate,
   "whatsapp-inbound": handleWhatsappInbound,
   "security-headers": handleSecurityHeaders,
@@ -3406,7 +3435,7 @@ const HANDLERS = {
 };
 
 // Some tools accept GET (ip lookup, cron pings); others require POST.
-const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check"]);
+const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson"]);
 // Tools that bypass shared rate-limit (cron uses its own auth)
 const RL_EXEMPT = new Set(["weekly-digest"]);
 
