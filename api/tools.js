@@ -18,6 +18,9 @@ const ACTION_TIERS = {
   "newsletter-subscribe": "free",
   "enterprise-lead": "free",
   "yt-lesson": "free",
+  "blog-list": "free",
+  "blog-get": "free",
+  "blog-generate": "free", // gated internally by CRON_SECRET
   "coupon-validate": "free",
   "whatsapp-inbound": "free",  // Twilio webhook — no user auth, rate-limited by phone
 
@@ -1164,7 +1167,10 @@ async function handleWeeklyDigest(req, res) {
       await new Promise((r) => setTimeout(r, 350));
     }
     console.log(`weekly-digest: ok=${ok} fail=${fail} total=${users.length}`);
-    return res.status(200).json({ sent: ok, failed: fail, total: users.length, errors: lastErrors, cleanup });
+    // Piggyback: generate this week's auto-blog post (no extra cron used).
+    let blog = null;
+    try { blog = await _genBlogPost(_fs); console.log("weekly auto-blog:", JSON.stringify(blog)); } catch (e) { console.error("auto-blog:", e.message); }
+    return res.status(200).json({ sent: ok, failed: fail, total: users.length, errors: lastErrors, cleanup, blog });
   } catch (err) {
     console.error("weekly-digest error:", err.message);
     return res.status(500).json({ error: err.message });
@@ -2515,6 +2521,76 @@ async function handleYtLesson(req, res) {
   }
 }
 
+// ─── AUTO-BLOG (Gemini, fed by Scam DNA trends) ───────────────────────
+// Weekly cron generates an India scam-awareness article from trending scam
+// signals and saves it to blog_posts. blog-list / blog-get serve the site.
+function _slugify(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 80); }
+
+async function _genBlogPost(fs) {
+  if (!fs) return { ok: false, error: "no-db" };
+  let trends = [];
+  try {
+    const snap = await fs.collection("scamSignatures").orderBy("lastSeen", "desc").limit(10).get();
+    trends = snap.docs.map((d) => { const x = d.data(); return `${x.category || "scam"}${x.tactic ? " — " + x.tactic : ""}`; }).filter(Boolean);
+  } catch { /* ignore */ }
+  const ctx = trends.length ? trends.join("; ") : "UPI collection-request fraud, KYC/OTP phishing, predatory loan apps, deepfake-voice family emergencies, 'digital arrest' extortion, fake job/task scams";
+  const prompt = `You are VRIKAAN's threat-intelligence editor. Write a concise, factual, India-focused scam-awareness article based on these currently trending scams: ${ctx}.
+Return STRICT JSON, no markdown:
+{"title":"specific compelling title","category":"Threats"|"Tips"|"News"|"Tutorials","excerpt":"1-2 sentence summary","tags":["3-5 short tags"],"readTime":"X min read","sections":[{"heading":"...","text":"100-160 words"}]}
+Use 4-5 sections. Practical Indian context (UPI, 1930 helpline, cybercrime.gov.in, RBI). Do NOT invent statistics.`;
+  const r = await callGemini(prompt, { temperature: 0.5, maxOutputTokens: 1700, json: true });
+  if (!r.ok) return { ok: false, error: r.detail || "ai" };
+  const p = tryParseJson(r.text) || {};
+  if (!p.title || !Array.isArray(p.sections) || !p.sections.length) return { ok: false, error: "parse" };
+  const slug = _slugify(p.title);
+  const { FieldValue } = await import("firebase-admin/firestore");
+  const cat = ["Threats", "Tips", "News", "Tutorials", "Industry"].includes(p.category) ? p.category : "Threats";
+  await fs.collection("blog_posts").doc(slug).set({
+    slug, title: String(p.title).slice(0, 140), category: cat,
+    excerpt: String(p.excerpt || "").slice(0, 320),
+    tags: (Array.isArray(p.tags) ? p.tags : []).slice(0, 6).map((t) => String(t).slice(0, 24)),
+    readTime: String(p.readTime || "5 min read"),
+    sections: p.sections.slice(0, 6).map((s) => ({ heading: String(s.heading || "").slice(0, 120), text: String(s.text || "").slice(0, 1500) })),
+    author: "VRIKAAN Threat Desk", auto: true, published: true,
+    createdAt: FieldValue.serverTimestamp(), createdAtMs: Date.now(),
+  }, { merge: true });
+  return { ok: true, slug, title: p.title };
+}
+
+async function handleBlogGenerate(req, res) {
+  // Gate with CRON_SECRET so it can be triggered manually to seed posts.
+  const key = req.query.key || req.body?.key;
+  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+  const fs = getAdminFirestore();
+  const out = await _genBlogPost(fs);
+  return res.status(out.ok ? 200 : 500).json(out);
+}
+
+async function handleBlogList(req, res) {
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(200).json({ posts: [] });
+  try {
+    const snap = await fs.collection("blog_posts").orderBy("createdAtMs", "desc").limit(40).get();
+    const posts = snap.docs.map((d) => d.data()).filter((x) => x.published).map((x) => ({
+      slug: x.slug, title: x.title, category: x.category, excerpt: x.excerpt,
+      tags: x.tags || [], readTime: x.readTime, author: x.author, createdAtMs: x.createdAtMs || 0,
+    }));
+    return res.status(200).json({ posts });
+  } catch (e) { return res.status(200).json({ posts: [] }); }
+}
+
+async function handleBlogGet(req, res) {
+  const slug = String(req.query.slug || req.body?.slug || "").slice(0, 120);
+  if (!slug) return res.status(400).json({ error: "slug required" });
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(404).json({ error: "not found" });
+  try {
+    const d = await fs.collection("blog_posts").doc(slug).get();
+    if (!d.exists || !d.data().published) return res.status(404).json({ error: "not found" });
+    return res.status(200).json({ post: d.data() });
+  } catch (e) { return res.status(404).json({ error: "not found" }); }
+}
+
 // ─── BREVO TRANSACTIONAL EMAIL HELPER ─────────────────────────────────
 // Sends a single transactional email via Brevo. `sender.email` must be a
 // VERIFIED sender/domain in your Brevo account or Brevo rejects the send.
@@ -3391,6 +3467,9 @@ const HANDLERS = {
   "newsletter-subscribe": handleNewsletterSubscribe,
   "enterprise-lead": handleEnterpriseLead,
   "yt-lesson": handleYtLesson,
+  "blog-list": handleBlogList,
+  "blog-get": handleBlogGet,
+  "blog-generate": handleBlogGenerate,
   "coupon-validate": handleCouponValidate,
   "whatsapp-inbound": handleWhatsappInbound,
   "security-headers": handleSecurityHeaders,
@@ -3435,7 +3514,7 @@ const HANDLERS = {
 };
 
 // Some tools accept GET (ip lookup, cron pings); others require POST.
-const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson"]);
+const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "blog-generate"]);
 // Tools that bypass shared rate-limit (cron uses its own auth)
 const RL_EXEMPT = new Set(["weekly-digest"]);
 

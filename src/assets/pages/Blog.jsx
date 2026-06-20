@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -374,10 +374,28 @@ const Blog = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [hoveredTag, setHoveredTag] = useState(null);
   const [hoveredCategory, setHoveredCategory] = useState(null);
+  const [autoPosts, setAutoPosts] = useState([]);
+
+  // Auto-generated posts (weekly Gemini articles from Scam DNA trends).
+  useEffect(() => {
+    let on = true;
+    fetch("/api/tools?tool=blog-list").then((r) => r.json()).then((d) => {
+      if (!on || !Array.isArray(d.posts)) return;
+      const mapped = d.posts.map((x, i) => ({
+        id: "auto_" + x.slug, title: x.title, slug: x.slug,
+        category: x.category || "Threats", readTime: x.readTime || "5 min read",
+        date: x.createdAtMs ? new Date(x.createdAtMs).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "",
+        author: authors[0], excerpt: x.excerpt || "", likes: 0, comments: 0,
+        tags: x.tags || [], featured: false, content: [],
+      }));
+      setAutoPosts(mapped);
+    }).catch(() => {});
+    return () => { on = false; };
+  }, []);
 
   const categories = ["All", "News", "Tutorials", "Tips", "Threats", "Industry"];
 
-  const filteredArticles = articles.filter((a) => {
+  const filteredArticles = [...autoPosts, ...articles].filter((a) => {
     const matchesCat = activeCategory === "All" || a.category === activeCategory;
     const q = searchQuery.toLowerCase();
     const matchesSearch = !q || a.title.toLowerCase().includes(q) || a.excerpt.toLowerCase().includes(q) || a.tags.some((t) => t.toLowerCase().includes(q));

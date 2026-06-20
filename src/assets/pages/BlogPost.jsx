@@ -15,10 +15,32 @@ import {
 
 export default function BlogPost() {
   const { slug } = useParams();
-  const article = getArticleBySlug(slug);
+  const hardcoded = getArticleBySlug(slug);
+  const [fetched, setFetched] = useState(undefined);
+  const [tried, setTried] = useState(false);
+  const article = hardcoded || fetched;
   const [activeSection, setActiveSection] = useState(0);
   const [copied, setCopied] = useState(false);
   const contentRef = useRef(null);
+
+  // Auto-generated post fallback (not in the hardcoded list).
+  useEffect(() => {
+    if (hardcoded) { setTried(true); return; }
+    let on = true;
+    fetch(`/api/tools?tool=blog-get&slug=${encodeURIComponent(slug)}`).then((r) => r.json()).then((d) => {
+      if (!on) return;
+      if (d.post) setFetched({
+        id: "auto_" + d.post.slug, title: d.post.title, category: d.post.category || "Threats",
+        readTime: d.post.readTime || "5 min read",
+        date: d.post.createdAtMs ? new Date(d.post.createdAtMs).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "",
+        author: { name: d.post.author || "VRIKAAN Threat Desk", initials: "VK", color: T.cyan, bio: "VRIKAAN's automated threat-intelligence desk — articles generated from live Scam DNA trends." },
+        excerpt: d.post.excerpt || "", likes: 0, comments: 0, tags: d.post.tags || [], featured: false,
+        content: Array.isArray(d.post.sections) ? d.post.sections : [],
+      });
+      setTried(true);
+    }).catch(() => { if (on) setTried(true); });
+    return () => { on = false; };
+  }, [slug, hardcoded]);
 
   // Scroll-spy for TOC
   useEffect(() => {
@@ -38,7 +60,10 @@ export default function BlogPost() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [article]);
 
-  if (!article) return <Navigate to="/blog" replace />;
+  if (!article) {
+    if (!tried) return <div style={{ background: T.bg, minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: T.muted, fontFamily: "var(--font-body)" }}>Loading…</div>;
+    return <Navigate to="/blog" replace />;
+  }
 
   const catColor = categoryColors[article.category] || T.cyan;
   const grad = categoryGradients[article.category] || categoryGradients.News;
