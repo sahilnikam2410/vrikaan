@@ -128,10 +128,15 @@ const Footer = () => {
             <FooterTool to="/scam-registry">🔍 Scam Registry — check any number</FooterTool>
             <FooterTool to="/file-complaint">File a Complaint · 1930</FooterTool>
             <FooterTool to="/developers">For Developers · API</FooterTool>
+            <FooterTool to="/developers/keys">API Keys</FooterTool>
             <FooterTool to="/cyber-news">Cyber News</FooterTool>
             <FooterTool to="/threats">Threat Directory</FooterTool>
             <FooterTool to="/blog">Blog</FooterTool>
-            <FooterTool to="/hi">🇮🇳 हिन्दी में</FooterTool>
+            <FooterTool to="/hi">🇮🇳 हिन्दी</FooterTool>
+            <FooterTool to="/ta">தமிழ்</FooterTool>
+            <FooterTool to="/te">తెలుగు</FooterTool>
+            <FooterTool to="/mr">मराठी</FooterTool>
+            <FooterTool to="/bn">বাংলা</FooterTool>
           </ul>
         </div>
         )}
