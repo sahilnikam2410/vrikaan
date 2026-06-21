@@ -226,12 +226,19 @@ function TestRunner({ testId, user, onExit }) {
 function Result({ test, score, answers, onExit }) {
   const xp = attemptXp(score.correct, score.total, score.passed);
   const { user } = useAuth();
-  const getCert = () => downloadCertificate({
-    name: user?.displayName || user?.email?.split("@")[0] || "Cyber Defender",
-    testTitle: test.title, scorePct: score.pct,
-    date: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
-    certId: makeCertId(),
-  });
+  const getCert = () => {
+    const name = user?.displayName || user?.email?.split("@")[0] || "Cyber Defender";
+    const certId = makeCertId();
+    // register for public /verify/:id
+    try {
+      fetch("/api/tools?tool=cert-register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ certId, name, title: test.title, kind: "mock-test", score: score.pct, date: new Date().toISOString() }) }).catch(() => {});
+    } catch { /* ignore */ }
+    downloadCertificate({
+      name, testTitle: test.title, scorePct: score.pct,
+      date: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+      certId,
+    });
+  };
   return (
     <div>
       <div style={{ textAlign: "center", background: T.card, border: `1px solid ${score.passed ? `${T.green}55` : `${T.gold}55`}`, borderRadius: 20, padding: "40px 24px", marginBottom: 28 }}>

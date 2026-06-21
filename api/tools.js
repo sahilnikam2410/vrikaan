@@ -23,6 +23,8 @@ const ACTION_TIERS = {
   "blog-generate": "free", // gated internally by CRON_SECRET
   "daily-alert": "free",   // cron, gated by CRON_SECRET
   "wa-broadcast": "free",  // cron/admin, gated by CRON_SECRET
+  "cert-register": "free",
+  "cert-verify": "free",
   "coupon-validate": "free",
   "whatsapp-inbound": "free",  // Twilio webhook — no user auth, rate-limited by phone
 
@@ -2593,6 +2595,41 @@ async function handleBlogGet(req, res) {
   } catch (e) { return res.status(404).json({ error: "not found" }); }
 }
 
+// ─── CERTIFICATE REGISTER / VERIFY ────────────────────────────────────
+// Academy certs print "verify at vrikaan.com/verify/<id>". Register on issue
+// so /verify/:id can validate them publicly (server-only writes via Admin SDK).
+async function handleCertRegister(req, res) {
+  const b = req.body || {};
+  const certId = String(b.certId || "").trim().toUpperCase().slice(0, 40);
+  if (!/^[A-Z0-9-]{6,40}$/.test(certId)) return res.status(400).json({ error: "bad certId" });
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "no-db" });
+  try {
+    await fs.collection("certificates").doc(certId).set({
+      certId,
+      name: String(b.name || "").slice(0, 80),
+      title: String(b.title || b.course || "").slice(0, 120),
+      kind: String(b.kind || "course").slice(0, 24),
+      score: b.score != null ? Number(b.score) : null,
+      issuedAt: b.date || new Date().toISOString(),
+      createdAtMs: Date.now(),
+    }, { merge: true });
+    return res.status(200).json({ ok: true, certId });
+  } catch (e) { return res.status(500).json({ error: e.message }); }
+}
+async function handleCertVerify(req, res) {
+  const id = String(req.query.id || req.body?.id || "").trim().toUpperCase().slice(0, 40);
+  if (!id) return res.status(400).json({ error: "id required" });
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(200).json({ valid: false });
+  try {
+    const d = await fs.collection("certificates").doc(id).get();
+    if (!d.exists) return res.status(200).json({ valid: false });
+    const x = d.data();
+    return res.status(200).json({ valid: true, certId: x.certId, name: x.name, title: x.title, kind: x.kind, score: x.score, issuedAt: x.issuedAt });
+  } catch { return res.status(200).json({ valid: false }); }
+}
+
 // ─── #2 DAILY SCAM ALERT (email) ──────────────────────────────────────
 const DAILY_TIPS = [
   ["Fake 'KYC expired' SMS", "Banks never send KYC links by SMS. Don't click — open the bank app directly."],
@@ -3566,6 +3603,8 @@ const HANDLERS = {
   "blog-generate": handleBlogGenerate,
   "daily-alert": handleDailyAlert,
   "wa-broadcast": handleWaBroadcast,
+  "cert-register": handleCertRegister,
+  "cert-verify": handleCertVerify,
   "coupon-validate": handleCouponValidate,
   "whatsapp-inbound": handleWhatsappInbound,
   "security-headers": handleSecurityHeaders,
@@ -3610,7 +3649,7 @@ const HANDLERS = {
 };
 
 // Some tools accept GET (ip lookup, cron pings); others require POST.
-const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "blog-generate", "daily-alert", "wa-broadcast"]);
+const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "blog-generate", "daily-alert", "wa-broadcast", "cert-verify"]);
 // Tools that bypass shared rate-limit (cron uses its own auth)
 const RL_EXEMPT = new Set(["weekly-digest", "daily-alert", "wa-broadcast"]);
 

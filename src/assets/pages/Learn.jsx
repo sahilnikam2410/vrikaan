@@ -493,6 +493,19 @@ function saveCertificate(cert) {
   }
 }
 
+function newCertId() {
+  return `SEC-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+}
+// Register a cert server-side so /verify/:id can validate it publicly.
+function registerCert({ certId, name, course, kind = "course" }) {
+  try {
+    fetch("/api/tools?tool=cert-register", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ certId, name, title: course, kind, date: new Date().toISOString() }),
+    }).catch(() => {});
+  } catch { /* ignore */ }
+}
+
 // ─── Gamification: XP, levels, streaks, badges ──────────────────────
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -567,7 +580,7 @@ function loadImg(src) {
   });
 }
 
-async function generateCertificate(courseName, userName) {
+async function generateCertificate(courseName, userName, certIdArg) {
   const W = 1600, H = 1130;
   const canvas = document.createElement("canvas");
   canvas.width = W; canvas.height = H;
@@ -708,7 +721,7 @@ async function generateCertificate(courseName, userName) {
 
   // ── Date and Certificate ID section ──
   const dateStr = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-  const certId = `SEC-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+  const certId = certIdArg || `SEC-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
   ctx.strokeStyle = "#e5e7eb";
   ctx.lineWidth = 1;
@@ -913,6 +926,7 @@ export default function Learn() {
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [certName, setCertName] = useState("");
   const [certImage, setCertImage] = useState(null);
+  const [certId, setCertId] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [kbActive, setKbActive] = useState(null);
@@ -1004,7 +1018,7 @@ export default function Learn() {
     a.href = certImage;
     a.download = `VRIKAAN_Certificate_${activeCourse.title.replace(/\s+/g, "_")}.png`;
     a.click();
-    saveCertificate({ courseId: activeCourse.id, name: certName, date: new Date().toISOString(), course: activeCourse.title });
+    saveCertificate({ courseId: activeCourse.id, name: certName, date: new Date().toISOString(), course: activeCourse.title, certId });
   };
 
   // ─── Course Catalog View ───
@@ -1451,9 +1465,12 @@ export default function Learn() {
             <button
               onClick={async () => {
                 if (!certName.trim()) return;
-                const img = await generateCertificate(activeCourse.title, certName.trim());
+                const cid = newCertId();
+                setCertId(cid);
+                const img = await generateCertificate(activeCourse.title, certName.trim(), cid);
                 setCertImage(img);
-                saveCertificate({ courseId: activeCourse.id, name: certName.trim(), date: new Date().toISOString(), course: activeCourse.title });
+                saveCertificate({ courseId: activeCourse.id, name: certName.trim(), date: new Date().toISOString(), course: activeCourse.title, certId: cid });
+                registerCert({ certId: cid, name: certName.trim(), course: activeCourse.title });
               }}
               disabled={!certName.trim()}
               style={{ ...sty.btn(certName.trim() ? T.accent : "rgba(99,102,241,0.3)"), width: "100%", justifyContent: "center", padding: "14px" }}
@@ -1517,7 +1534,8 @@ export default function Learn() {
                   <button onClick={async () => {
                     setActiveCourse(course);
                     setCertName(cert.name);
-                    const img = await generateCertificate(cert.course, cert.name);
+                    if (cert.certId) setCertId(cert.certId);
+                    const img = await generateCertificate(cert.course, cert.name, cert.certId);
                     setCertImage(img);
                     setView("certificate");
                   }} style={sty.btn("rgba(99,102,241,0.1)", T.accent)}>
