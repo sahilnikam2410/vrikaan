@@ -21,6 +21,8 @@ const ACTION_TIERS = {
   "blog-list": "free",
   "blog-get": "free",
   "blog-generate": "free", // gated internally by CRON_SECRET
+  "daily-alert": "free",   // cron, gated by CRON_SECRET
+  "wa-broadcast": "free",  // cron/admin, gated by CRON_SECRET
   "coupon-validate": "free",
   "whatsapp-inbound": "free",  // Twilio webhook — no user auth, rate-limited by phone
 
@@ -2591,6 +2593,85 @@ async function handleBlogGet(req, res) {
   } catch (e) { return res.status(404).json({ error: "not found" }); }
 }
 
+// ─── #2 DAILY SCAM ALERT (email) ──────────────────────────────────────
+const DAILY_TIPS = [
+  ["Fake 'KYC expired' SMS", "Banks never send KYC links by SMS. Don't click — open the bank app directly."],
+  ["UPI collect-request trap", "To RECEIVE money you never enter your UPI PIN. If it asks for PIN, you're PAYING."],
+  ["Deepfake 'family emergency' call", "Cloned voices are real now. Use a family safe-word; call back on the saved number."],
+  ["'Digital arrest' video call", "No Indian agency arrests over video call or asks money for 'verification'. Hang up."],
+  ["Predatory loan apps", "Never grant Contacts/Photos/SMS access. Borrow only from RBI-registered lenders."],
+  ["Job / task scam", "If a 'job' asks you to pay or deposit to earn — it's a scam. Real jobs pay you."],
+  ["Lottery / KBC win", "You didn't enter, you didn't win. 'Pay a fee to claim' = advance-fee scam."],
+  ["Fake customer-care number", "Numbers from Google/search can be planted. Use the number on your card only."],
+  ["QR to 'receive' money", "Scanning a QR + PIN always PAYS. Receiving never needs a scan."],
+  ["AnyDesk / screen-share", "No real agent needs remote access. Installing it hands over your accounts."],
+  ["Electricity 'disconnection' SMS", "Fear + deadline + link = phishing. Check dues only in the official app."],
+  ["Sextortion threat", "Don't pay — it never stops. Cut contact, keep evidence, report to 1930."],
+];
+async function handleDailyAlert(req, res) {
+  const expected = process.env.CRON_SECRET;
+  const got = (req.headers["authorization"] || "").replace(/^Bearer\s+/i, "");
+  if (!expected || got !== expected) return res.status(401).json({ error: "Unauthorized" });
+  const dayIdx = Math.floor(Date.now() / 86400000) % DAILY_TIPS.length;
+  const tip = DAILY_TIPS[dayIdx];
+  const sid = process.env.VITE_EMAILJS_SERVICE_ID, tpl = process.env.VITE_EMAILJS_NOTIFY_TEMPLATE, pub = process.env.VITE_EMAILJS_PUBLIC_KEY, priv = process.env.EMAILJS_PRIVATE_KEY;
+  if (!sid || !tpl || !pub) return res.status(500).json({ error: "EmailJS env missing" });
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "Admin SDK not configured" });
+  let users = [];
+  try {
+    const snap = await fs.collection("digest_subscribers").limit(2000).get();
+    users = snap.docs.map((d) => ({ email: d.data().email || "", name: d.data().name || "", off: d.data().dailyOff === true })).filter((u) => u.email && !u.off);
+  } catch { /* */ }
+  const subject = `🛡 Today's scam: ${tip[0]}`;
+  const message = `Scam of the day — ${tip[0]}\n\n${tip[1]}\n\nCheck any suspicious message free at vrikaan.com. Lost money? Call 1930.\n\n— VRIKAAN. Reply STOP-DAILY to pause.`;
+  let ok = 0, fail = 0;
+  for (const u of users) {
+    try {
+      const r = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ service_id: sid, template_id: tpl, user_id: pub, ...(priv ? { accessToken: priv } : {}), template_params: { to_name: u.name || "User", to_email: u.email, from_name: "VRIKAAN", subject, message } }),
+      });
+      r.ok ? ok++ : fail++;
+    } catch { fail++; }
+    await new Promise((r) => setTimeout(r, 250));
+  }
+  console.log(`daily-alert: tip=${tip[0]} ok=${ok} fail=${fail}`);
+  return res.status(200).json({ tip: tip[0], sent: ok, failed: fail });
+}
+
+// ─── #10 WHATSAPP BROADCAST ───────────────────────────────────────────
+// Sends an approved template to opted-in WhatsApp users. Business-initiated
+// messages REQUIRE a Meta-approved template — set WA_ALERT_TEMPLATE to its name.
+async function _waSendTemplate(to, templateName, lang = "en") {
+  const token = process.env.WHATSAPP_TOKEN, pid = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  if (!token || !pid) return false;
+  try {
+    const r = await fetch(`https://graph.facebook.com/v21.0/${pid}/messages`, {
+      method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ messaging_product: "whatsapp", to, type: "template", template: { name: templateName, language: { code: lang } } }),
+    });
+    return r.ok;
+  } catch { return false; }
+}
+async function handleWaBroadcast(req, res) {
+  const expected = process.env.CRON_SECRET;
+  const got = (req.headers["authorization"] || "").replace(/^Bearer\s+/i, "") || req.query.key;
+  if (!expected || got !== expected) return res.status(401).json({ error: "Unauthorized" });
+  const template = process.env.WA_ALERT_TEMPLATE;
+  if (!template) return res.status(400).json({ error: "WA_ALERT_TEMPLATE not set (create + approve a template in Meta first)" });
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "Admin SDK not configured" });
+  let subs = [];
+  try { const snap = await fs.collection("wa_subscribers").limit(5000).get(); subs = snap.docs.map((d) => d.data()).filter((x) => x.optedIn && x.phone); } catch { /* */ }
+  let ok = 0, fail = 0;
+  for (const s of subs) { (await _waSendTemplate(s.phone, template)) ? ok++ : fail++; await new Promise((r) => setTimeout(r, 120)); }
+  console.log(`wa-broadcast: template=${template} ok=${ok} fail=${fail}`);
+  return res.status(200).json({ template, sent: ok, failed: fail, total: subs.length });
+}
+
 // ─── BREVO TRANSACTIONAL EMAIL HELPER ─────────────────────────────────
 // Sends a single transactional email via Brevo. `sender.email` must be a
 // VERIFIED sender/domain in your Brevo account or Brevo rejects the send.
@@ -3422,6 +3503,19 @@ async function handleWhatsapp(req, res) {
 // (Vercel buffers the HTTP response until the handler returns — without this,
 // the slow AI work would push the 200 past Meta's timeout → retries/throttle).
 async function _processWhatsapp(from, msg) {
+  // #10 broadcast opt-in/out: "alert on" / "alert off"
+  const optM = /\balert\s*(on|off|stop|start)\b/i.exec(msg.trim());
+  if (optM) {
+    const on = /on|start/i.test(optM[1]);
+    try {
+      const adminMod = await import("./_firebaseAdmin.js");
+      const fs = adminMod.getAdminFirestore();
+      if (fs) await fs.collection("wa_subscribers").doc(from).set({ phone: from, optedIn: on, updatedAt: Date.now() }, { merge: true });
+    } catch { /* ignore */ }
+    await _waSend(from, on ? "✅ Subscribed to VRIKAAN scam alerts — we'll warn you about active scams. Reply 'alert off' to stop." : "Unsubscribed from scam alerts. Reply 'alert on' to rejoin. 🐺");
+    return;
+  }
+
   // greeting / help — match common openers even with a name ("hello vrikaan"),
   // but skip if it carries a URL / number / @ (that's a message to analyze).
   const _t = msg.trim();
@@ -3470,6 +3564,8 @@ const HANDLERS = {
   "blog-list": handleBlogList,
   "blog-get": handleBlogGet,
   "blog-generate": handleBlogGenerate,
+  "daily-alert": handleDailyAlert,
+  "wa-broadcast": handleWaBroadcast,
   "coupon-validate": handleCouponValidate,
   "whatsapp-inbound": handleWhatsappInbound,
   "security-headers": handleSecurityHeaders,
@@ -3514,9 +3610,9 @@ const HANDLERS = {
 };
 
 // Some tools accept GET (ip lookup, cron pings); others require POST.
-const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "blog-generate"]);
+const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "blog-generate", "daily-alert", "wa-broadcast"]);
 // Tools that bypass shared rate-limit (cron uses its own auth)
-const RL_EXEMPT = new Set(["weekly-digest"]);
+const RL_EXEMPT = new Set(["weekly-digest", "daily-alert", "wa-broadcast"]);
 
 /**
  * Validate an incoming Bearer token against /api_tokens/{token} in
