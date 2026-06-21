@@ -1,4 +1,4 @@
-const CACHE_NAME = "vrikaan-v100";
+const CACHE_NAME = "vrikaan-v101";
 const STATIC_CACHE = "vrikaan-static-v99";
 const API_CACHE = "vrikaan-api-v99";
 // "/" left in for offline-first first-paint; "/index.html" removed because

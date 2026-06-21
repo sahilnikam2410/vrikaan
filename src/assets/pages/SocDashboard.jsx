@@ -238,7 +238,7 @@ function EventsTab({ events }) {
         {events.length === 0 ? (
           <div style={{ padding: 32, color: T.muted, fontSize: 13, textAlign: "center" }}>No events in selected window.</div>
         ) : (
-          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+          <div style={{ overflowX: "auto" }}><table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12, minWidth: 600 }}>
             <thead>
               <tr style={{ background: "rgba(15,23,42,0.5)", position: "sticky", top: 0 }}>
                 <th style={tableHeadCell}>Time</th>
@@ -288,7 +288,7 @@ function EventsTab({ events }) {
                 );
               })}
             </tbody>
-          </table>
+          </table></div>
         )}
       </div>
     </div>
@@ -466,7 +466,8 @@ function AgentsTab({ agents, events }) {
         <h3 style={{ color: T.white, fontSize: 14, margin: 0, fontFamily: "'Vrikaan Sans'" }}>Agents · {agents.length}</h3>
         <p style={{ color: T.muted, fontSize: 11, margin: "4px 0 0" }}>Each registered device acts as a Wazuh-style agent. Last-seen derived from event activity.</p>
       </div>
-      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+      <div style={{ overflowX: "auto" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12, minWidth: 600 }}>
         <thead>
           <tr style={{ background: "rgba(15,23,42,0.5)" }}>
             <th style={tableHeadCell}>Agent ID</th>
@@ -505,6 +506,7 @@ function AgentsTab({ agents, events }) {
           })}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
