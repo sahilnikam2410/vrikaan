@@ -3183,6 +3183,21 @@ async function handleScamDna(req, res) {
     } catch (e) { return res.status(200).json({ known: false, riskScore: 0 }); }
   }
 
+  // ── REPORT: free crowd-report of a scam identifier (browser extension,
+  // "report this site" buttons). No AI — feeds the network directly.
+  if (action === "report") {
+    const id = _sanitizeId(String(req.body?.identifier || ""));
+    if (id.length < 4) return res.status(400).json({ error: "identifier required" });
+    const sigId = await _recordScamSignal(fs, {
+      idents: [id],
+      category: String(req.body?.category || "other").slice(0, 40),
+      tactic: String(req.body?.tactic || "user-reported").slice(0, 80),
+      sample: String(req.body?.sample || "").slice(0, 200),
+      keyPhrases: [],
+    });
+    return res.status(200).json({ ok: true, sigId, identifier: id });
+  }
+
   // ── ANALYZE: fingerprint + match + contribute ──
   if (!text || typeof text !== "string" || text.trim().length < 8) {
     return res.status(400).json({ error: "Paste the suspicious message (min 8 chars)." });
@@ -3424,7 +3439,7 @@ async function _recordScamSignal(fs, { idents, category, tactic, sample, keyPhra
       count: FieldValue.increment(1),
       firstSeen: ex?.firstSeen || FieldValue.serverTimestamp(),
       lastSeen: FieldValue.serverTimestamp(),
-      viaScambait: ex?.viaScambait || undefined,
+      ...(ex?.viaScambait ? { viaScambait: ex.viaScambait } : {}),
     }, { merge: true });
   } catch (e) { console.error("recordScamSignal:", e.message); }
   return docId;

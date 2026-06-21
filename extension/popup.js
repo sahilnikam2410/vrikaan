@@ -101,6 +101,19 @@ document.getElementById("btn-headers").addEventListener("click", async () => {
   } catch (e) { errorMsg("page-result", e.message); }
 });
 
+// ─── Report current site into Scam DNA ──────────────────────────────
+document.getElementById("btn-report").addEventListener("click", () => {
+  if (!currentTab?.url) return;
+  let host;
+  try { host = new URL(currentTab.url).hostname.replace(/^www\./, ""); } catch { return; }
+  if (!host || host.endsWith("vrikaan.com")) { errorMsg("page-result", "Nothing to report here."); return; }
+  loading("page-result");
+  chrome.runtime.sendMessage({ type: "vrikaan-report", identifier: host, category: "phishing" }, (r) => {
+    if (r && r.ok) setText("page-result", `<div class="verdict-card" style="--vc:#22c55e"><div class="verdict-head"><span class="verdict-emoji">🚩</span><span class="verdict-label">Reported — thank you</span></div><p class="verdict-reason">${escapeHtml(host)} added to VRIKAAN's Scam DNA network. Your report protects the next person.</p></div>`);
+    else errorMsg("page-result", "Could not report. Try again.");
+  });
+});
+
 // ─── Tab 2: paste-text scam check ───────────────────────────────────
 document.getElementById("btn-scam").addEventListener("click", async () => {
   const text = document.getElementById("scam-text").value.trim();

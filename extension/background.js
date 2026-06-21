@@ -51,7 +51,24 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     checkIdentifier(msg.identifier).then(sendResponse);
     return true; // async
   }
+  if (msg?.type === "vrikaan-report") {
+    reportScam(msg.identifier, msg.category).then(sendResponse);
+    return true; // async
+  }
 });
+
+// Crowd-report a scam host/identifier into the Scam DNA network.
+async function reportScam(identifier, category) {
+  const id = String(identifier || "").trim().toLowerCase();
+  if (id.length < 4) return { ok: false, error: "too short" };
+  try {
+    const r = await fetch(API, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "report", identifier: id, category: category || "phishing", tactic: "reported via browser extension" }),
+    });
+    return await r.json();
+  } catch (e) { return { ok: false, error: String(e) }; }
+}
 
 // ── per-tab badge when active tab host is a known scam ──
 async function badgeForTab(tabId, url) {
