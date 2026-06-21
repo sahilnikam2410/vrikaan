@@ -125,6 +125,8 @@ const Footer = () => {
             <FooterTool to="/learn">Learn Academy</FooterTool>
             <FooterTool to="/scam-feed">🔴 Live Scam Feed</FooterTool>
             <FooterTool to="/scam-registry">🔎 Scam Registry</FooterTool>
+            <FooterTool to="/kumbh-kavach">🪔 Kumbh Kavach 2027</FooterTool>
+            <FooterTool to="/store">🛍 Store</FooterTool>
             <FooterTool to="/scam-registry">🔍 Scam Registry — check any number</FooterTool>
             <FooterTool to="/file-complaint">File a Complaint · 1930</FooterTool>
             <FooterTool to="/developers">For Developers · API</FooterTool>

@@ -128,6 +128,7 @@ const ScamRegistry = lazy(() => import("./assets/pages/ScamRegistry.jsx"));
 const ApiKeys = lazy(() => import("./assets/pages/ApiKeys.jsx"));
 const Verify = lazy(() => import("./assets/pages/Verify.jsx"));
 const KumbhKavach = lazy(() => import("./assets/pages/KumbhKavach.jsx"));
+const Store = lazy(() => import("./assets/pages/Store.jsx"));
 const RegionalLanding = lazy(() => import("./assets/pages/RegionalLanding.jsx"));
 const FileComplaint = lazy(() => import("./assets/pages/FileComplaint.jsx"));
 const Developers = lazy(() => import("./assets/pages/Developers.jsx"));
@@ -231,6 +232,8 @@ function AppRoutes() {
             <Route path="/verify/:certId" element={<Verify />} />
             <Route path="/kumbh-kavach" element={<KumbhKavach />} />
             <Route path="/kumbh" element={<KumbhKavach />} />
+            <Route path="/store" element={<Store />} />
+            <Route path="/shop" element={<Store />} />
             <Route path="/ta" element={<RegionalLanding lang="ta" />} />
             <Route path="/te" element={<RegionalLanding lang="te" />} />
             <Route path="/mr" element={<RegionalLanding lang="mr" />} />
