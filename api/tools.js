@@ -1,5 +1,6 @@
 import { applyRateLimit } from "./_rateLimit.js";
 import { getAdminFirestore, getAdminAuth } from "./_firebaseAdmin.js";
+import { waitUntil } from "@vercel/functions";
 
 // ─── Tier gate (server-trusted) ─────────────────────────────────────
 // Map each action → required plan tier.
@@ -16,6 +17,12 @@ const ACTION_TIERS = {
   "leak-check":        "free",
   "newsletter-subscribe": "free",
   "enterprise-lead": "free",
+  "yt-lesson": "free",
+  "blog-list": "free",
+  "blog-get": "free",
+  "blog-generate": "free", // gated internally by CRON_SECRET
+  "daily-alert": "free",   // cron, gated by CRON_SECRET
+  "wa-broadcast": "free",  // cron/admin, gated by CRON_SECRET
   "coupon-validate": "free",
   "whatsapp-inbound": "free",  // Twilio webhook — no user auth, rate-limited by phone
 
@@ -1162,7 +1169,10 @@ async function handleWeeklyDigest(req, res) {
       await new Promise((r) => setTimeout(r, 350));
     }
     console.log(`weekly-digest: ok=${ok} fail=${fail} total=${users.length}`);
-    return res.status(200).json({ sent: ok, failed: fail, total: users.length, errors: lastErrors, cleanup });
+    // Piggyback: generate this week's auto-blog post (no extra cron used).
+    let blog = null;
+    try { blog = await _genBlogPost(_fs); console.log("weekly auto-blog:", JSON.stringify(blog)); } catch (e) { console.error("auto-blog:", e.message); }
+    return res.status(200).json({ sent: ok, failed: fail, total: users.length, errors: lastErrors, cleanup, blog });
   } catch (err) {
     console.error("weekly-digest error:", err.message);
     return res.status(500).json({ error: err.message });
@@ -2486,6 +2496,182 @@ Reply ONLY with strict JSON (no markdown fences):
 // ─── ROUTER ─────────────────────────────────────────────────────────
 
 // ── Newsletter subscribe — Brevo + Firestore log (server-side, key never in browser) ──
+// ─── YOUTUBE LESSON VIDEO LOOKUP ──────────────────────────────────────
+// Returns the top embeddable YouTube video for a lesson topic so the Academy
+// can play the real video inline (instead of opening a YouTube search page).
+// Needs YT_API_KEY (free — Google Cloud → YouTube Data API v3). Without it,
+// responds {fallback:true} so the client opens a search as before.
+const _ytCache = new Map(); // q -> { id, title, t }
+async function handleYtLesson(req, res) {
+  const q = String(req.query.q || req.body?.q || "").trim().slice(0, 120);
+  if (!q) return res.status(400).json({ error: "q required" });
+  const key = process.env.YT_API_KEY;
+  if (!key) return res.status(200).json({ videoId: null, fallback: true });
+  const hit = _ytCache.get(q);
+  if (hit && Date.now() - hit.t < 7 * 24 * 3600 * 1000) return res.status(200).json({ videoId: hit.id, title: hit.title, cached: true });
+  try {
+    const u = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&videoEmbeddable=true&safeSearch=strict&regionCode=IN&relevanceLanguage=en&q=${encodeURIComponent(q)}&key=${key}`;
+    const r = await fetch(u);
+    const j = await r.json();
+    const id = j.items?.[0]?.id?.videoId || null;
+    const title = j.items?.[0]?.snippet?.title || null;
+    if (id) _ytCache.set(q, { id, title, t: Date.now() });
+    return res.status(200).json({ videoId: id, title, fallback: !id });
+  } catch (e) {
+    console.error("yt-lesson:", e.message);
+    return res.status(200).json({ videoId: null, fallback: true });
+  }
+}
+
+// ─── AUTO-BLOG (Gemini, fed by Scam DNA trends) ───────────────────────
+// Weekly cron generates an India scam-awareness article from trending scam
+// signals and saves it to blog_posts. blog-list / blog-get serve the site.
+function _slugify(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 80); }
+
+async function _genBlogPost(fs) {
+  if (!fs) return { ok: false, error: "no-db" };
+  let trends = [];
+  try {
+    const snap = await fs.collection("scamSignatures").orderBy("lastSeen", "desc").limit(10).get();
+    trends = snap.docs.map((d) => { const x = d.data(); return `${x.category || "scam"}${x.tactic ? " — " + x.tactic : ""}`; }).filter(Boolean);
+  } catch { /* ignore */ }
+  const ctx = trends.length ? trends.join("; ") : "UPI collection-request fraud, KYC/OTP phishing, predatory loan apps, deepfake-voice family emergencies, 'digital arrest' extortion, fake job/task scams";
+  const prompt = `You are VRIKAAN's threat-intelligence editor. Write a concise, factual, India-focused scam-awareness article based on these currently trending scams: ${ctx}.
+Return STRICT JSON, no markdown:
+{"title":"specific compelling title","category":"Threats"|"Tips"|"News"|"Tutorials","excerpt":"1-2 sentence summary","tags":["3-5 short tags"],"readTime":"X min read","sections":[{"heading":"...","text":"100-160 words"}]}
+Use 4-5 sections. Practical Indian context (UPI, 1930 helpline, cybercrime.gov.in, RBI). Do NOT invent statistics.`;
+  const r = await callGemini(prompt, { temperature: 0.5, maxOutputTokens: 1700, json: true });
+  if (!r.ok) return { ok: false, error: r.detail || "ai" };
+  const p = tryParseJson(r.text) || {};
+  if (!p.title || !Array.isArray(p.sections) || !p.sections.length) return { ok: false, error: "parse" };
+  const slug = _slugify(p.title);
+  const { FieldValue } = await import("firebase-admin/firestore");
+  const cat = ["Threats", "Tips", "News", "Tutorials", "Industry"].includes(p.category) ? p.category : "Threats";
+  await fs.collection("blog_posts").doc(slug).set({
+    slug, title: String(p.title).slice(0, 140), category: cat,
+    excerpt: String(p.excerpt || "").slice(0, 320),
+    tags: (Array.isArray(p.tags) ? p.tags : []).slice(0, 6).map((t) => String(t).slice(0, 24)),
+    readTime: String(p.readTime || "5 min read"),
+    sections: p.sections.slice(0, 6).map((s) => ({ heading: String(s.heading || "").slice(0, 120), text: String(s.text || "").slice(0, 1500) })),
+    author: "VRIKAAN Threat Desk", auto: true, published: true,
+    createdAt: FieldValue.serverTimestamp(), createdAtMs: Date.now(),
+  }, { merge: true });
+  return { ok: true, slug, title: p.title };
+}
+
+async function handleBlogGenerate(req, res) {
+  // Gate with CRON_SECRET so it can be triggered manually to seed posts.
+  const key = req.query.key || req.body?.key;
+  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+  const fs = getAdminFirestore();
+  const out = await _genBlogPost(fs);
+  return res.status(out.ok ? 200 : 500).json(out);
+}
+
+async function handleBlogList(req, res) {
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(200).json({ posts: [] });
+  try {
+    const snap = await fs.collection("blog_posts").orderBy("createdAtMs", "desc").limit(40).get();
+    const posts = snap.docs.map((d) => d.data()).filter((x) => x.published).map((x) => ({
+      slug: x.slug, title: x.title, category: x.category, excerpt: x.excerpt,
+      tags: x.tags || [], readTime: x.readTime, author: x.author, createdAtMs: x.createdAtMs || 0,
+    }));
+    return res.status(200).json({ posts });
+  } catch (e) { return res.status(200).json({ posts: [] }); }
+}
+
+async function handleBlogGet(req, res) {
+  const slug = String(req.query.slug || req.body?.slug || "").slice(0, 120);
+  if (!slug) return res.status(400).json({ error: "slug required" });
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(404).json({ error: "not found" });
+  try {
+    const d = await fs.collection("blog_posts").doc(slug).get();
+    if (!d.exists || !d.data().published) return res.status(404).json({ error: "not found" });
+    return res.status(200).json({ post: d.data() });
+  } catch (e) { return res.status(404).json({ error: "not found" }); }
+}
+
+// ─── #2 DAILY SCAM ALERT (email) ──────────────────────────────────────
+const DAILY_TIPS = [
+  ["Fake 'KYC expired' SMS", "Banks never send KYC links by SMS. Don't click — open the bank app directly."],
+  ["UPI collect-request trap", "To RECEIVE money you never enter your UPI PIN. If it asks for PIN, you're PAYING."],
+  ["Deepfake 'family emergency' call", "Cloned voices are real now. Use a family safe-word; call back on the saved number."],
+  ["'Digital arrest' video call", "No Indian agency arrests over video call or asks money for 'verification'. Hang up."],
+  ["Predatory loan apps", "Never grant Contacts/Photos/SMS access. Borrow only from RBI-registered lenders."],
+  ["Job / task scam", "If a 'job' asks you to pay or deposit to earn — it's a scam. Real jobs pay you."],
+  ["Lottery / KBC win", "You didn't enter, you didn't win. 'Pay a fee to claim' = advance-fee scam."],
+  ["Fake customer-care number", "Numbers from Google/search can be planted. Use the number on your card only."],
+  ["QR to 'receive' money", "Scanning a QR + PIN always PAYS. Receiving never needs a scan."],
+  ["AnyDesk / screen-share", "No real agent needs remote access. Installing it hands over your accounts."],
+  ["Electricity 'disconnection' SMS", "Fear + deadline + link = phishing. Check dues only in the official app."],
+  ["Sextortion threat", "Don't pay — it never stops. Cut contact, keep evidence, report to 1930."],
+];
+async function handleDailyAlert(req, res) {
+  const expected = process.env.CRON_SECRET;
+  const got = (req.headers["authorization"] || "").replace(/^Bearer\s+/i, "");
+  if (!expected || got !== expected) return res.status(401).json({ error: "Unauthorized" });
+  const dayIdx = Math.floor(Date.now() / 86400000) % DAILY_TIPS.length;
+  const tip = DAILY_TIPS[dayIdx];
+  const sid = process.env.VITE_EMAILJS_SERVICE_ID, tpl = process.env.VITE_EMAILJS_NOTIFY_TEMPLATE, pub = process.env.VITE_EMAILJS_PUBLIC_KEY, priv = process.env.EMAILJS_PRIVATE_KEY;
+  if (!sid || !tpl || !pub) return res.status(500).json({ error: "EmailJS env missing" });
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "Admin SDK not configured" });
+  let users = [];
+  try {
+    const snap = await fs.collection("digest_subscribers").limit(2000).get();
+    users = snap.docs.map((d) => ({ email: d.data().email || "", name: d.data().name || "", off: d.data().dailyOff === true })).filter((u) => u.email && !u.off);
+  } catch { /* */ }
+  const subject = `🛡 Today's scam: ${tip[0]}`;
+  const message = `Scam of the day — ${tip[0]}\n\n${tip[1]}\n\nCheck any suspicious message free at vrikaan.com. Lost money? Call 1930.\n\n— VRIKAAN. Reply STOP-DAILY to pause.`;
+  let ok = 0, fail = 0;
+  for (const u of users) {
+    try {
+      const r = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ service_id: sid, template_id: tpl, user_id: pub, ...(priv ? { accessToken: priv } : {}), template_params: { to_name: u.name || "User", to_email: u.email, from_name: "VRIKAAN", subject, message } }),
+      });
+      r.ok ? ok++ : fail++;
+    } catch { fail++; }
+    await new Promise((r) => setTimeout(r, 250));
+  }
+  console.log(`daily-alert: tip=${tip[0]} ok=${ok} fail=${fail}`);
+  return res.status(200).json({ tip: tip[0], sent: ok, failed: fail });
+}
+
+// ─── #10 WHATSAPP BROADCAST ───────────────────────────────────────────
+// Sends an approved template to opted-in WhatsApp users. Business-initiated
+// messages REQUIRE a Meta-approved template — set WA_ALERT_TEMPLATE to its name.
+async function _waSendTemplate(to, templateName, lang = "en") {
+  const token = process.env.WHATSAPP_TOKEN, pid = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  if (!token || !pid) return false;
+  try {
+    const r = await fetch(`https://graph.facebook.com/v21.0/${pid}/messages`, {
+      method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ messaging_product: "whatsapp", to, type: "template", template: { name: templateName, language: { code: lang } } }),
+    });
+    return r.ok;
+  } catch { return false; }
+}
+async function handleWaBroadcast(req, res) {
+  const expected = process.env.CRON_SECRET;
+  const got = (req.headers["authorization"] || "").replace(/^Bearer\s+/i, "") || req.query.key;
+  if (!expected || got !== expected) return res.status(401).json({ error: "Unauthorized" });
+  const template = process.env.WA_ALERT_TEMPLATE;
+  if (!template) return res.status(400).json({ error: "WA_ALERT_TEMPLATE not set (create + approve a template in Meta first)" });
+  const adminMod = await import("./_firebaseAdmin.js");
+  const fs = adminMod.getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "Admin SDK not configured" });
+  let subs = [];
+  try { const snap = await fs.collection("wa_subscribers").limit(5000).get(); subs = snap.docs.map((d) => d.data()).filter((x) => x.optedIn && x.phone); } catch { /* */ }
+  let ok = 0, fail = 0;
+  for (const s of subs) { (await _waSendTemplate(s.phone, template)) ? ok++ : fail++; await new Promise((r) => setTimeout(r, 120)); }
+  console.log(`wa-broadcast: template=${template} ok=${ok} fail=${fail}`);
+  return res.status(200).json({ template, sent: ok, failed: fail, total: subs.length });
+}
+
 // ─── BREVO TRANSACTIONAL EMAIL HELPER ─────────────────────────────────
 // Sends a single transactional email via Brevo. `sender.email` must be a
 // VERIFIED sender/domain in your Brevo account or Brevo rejects the send.
@@ -3296,7 +3482,6 @@ async function _waSend(to, body) {
 }
 
 async function handleWhatsapp(req, res) {
-  // Always 200 fast so Meta doesn't retry; work happens before responding.
   const body = req.body || {};
   let msg = null, from = null;
   try {
@@ -3305,12 +3490,39 @@ async function handleWhatsapp(req, res) {
     if (m && m.type === "text") { msg = m.text?.body || ""; from = m.from; }
   } catch { /* ignore */ }
 
-  if (!from || !msg) return res.status(200).json({ ok: true });
+  // ACK Meta IMMEDIATELY — it requires a 200 within ~5s or it retries the
+  // webhook and eventually throttles/disables it. The AI work below runs after
+  // the response is flushed (Vercel keeps the function alive until this async
+  // handler resolves), so Gemini latency never delays Meta's acknowledgement.
+  res.status(200).json({ ok: true }); // instant ack — Meta needs a 200 in ~5s
+  if (from && msg) waitUntil(_processWhatsapp(from, msg));
+}
 
-  // greeting / help
-  if (/^(hi|hello|hey|start|help|namaste)\b/i.test(msg.trim()) && msg.trim().length < 12) {
+// Runs AFTER the response is flushed. waitUntil keeps the Vercel function alive
+// until this resolves, so Gemini latency never delays Meta's acknowledgement
+// (Vercel buffers the HTTP response until the handler returns — without this,
+// the slow AI work would push the 200 past Meta's timeout → retries/throttle).
+async function _processWhatsapp(from, msg) {
+  // #10 broadcast opt-in/out: "alert on" / "alert off"
+  const optM = /\balert\s*(on|off|stop|start)\b/i.exec(msg.trim());
+  if (optM) {
+    const on = /on|start/i.test(optM[1]);
+    try {
+      const adminMod = await import("./_firebaseAdmin.js");
+      const fs = adminMod.getAdminFirestore();
+      if (fs) await fs.collection("wa_subscribers").doc(from).set({ phone: from, optedIn: on, updatedAt: Date.now() }, { merge: true });
+    } catch { /* ignore */ }
+    await _waSend(from, on ? "✅ Subscribed to VRIKAAN scam alerts — we'll warn you about active scams. Reply 'alert off' to stop." : "Unsubscribed from scam alerts. Reply 'alert on' to rejoin. 🐺");
+    return;
+  }
+
+  // greeting / help — match common openers even with a name ("hello vrikaan"),
+  // but skip if it carries a URL / number / @ (that's a message to analyze).
+  const _t = msg.trim();
+  if (/^(hi+|hello|hey+|start|help|namaste|hlo|hii|yo|good (morning|evening|afternoon))\b/i.test(_t)
+      && _t.length < 30 && !/https?:|www\.|\d{6,}|@|\.(com|in|net|org)/i.test(_t)) {
     await _waSend(from, "🛡 VRIKAAN Scam Check\n\nForward me any suspicious SMS, WhatsApp, or UPI message and I'll tell you in seconds if it's a scam — free.\n\nJust paste the message here. 👇");
-    return res.status(200).json({ ok: true });
+    return;
   }
 
   try {
@@ -3318,7 +3530,7 @@ async function handleWhatsapp(req, res) {
 {"verdict":"scam"|"likely-scam"|"suspicious"|"probably-safe","riskScore":0-100,"category":"upi-fraud|phishing|vishing|loan-app|job-scam|lottery-prize|fake-bank|fake-courier|kyc|other","tactic":"short","paymentHandles":[],"phones":[],"urls":[],"advice":["1-2 short actions"]}
 Message:"""${msg.slice(0, 3000)}"""`;
     const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 700, json: true });
-    if (!r.ok) { await _waSend(from, "⚠ Our AI is briefly busy. Please resend the message in a few seconds."); return res.status(200).json({ ok: true }); }
+    if (!r.ok) { await _waSend(from, "⚠ Our AI is briefly busy. Please resend the message in a few seconds."); return; }
     const p = tryParseJson(r.text) || {};
     const emoji = { "scam": "🚨", "likely-scam": "🚨", "suspicious": "⚠", "probably-safe": "✅" }[p.verdict] || "⚠";
     const label = { "scam": "SCAM", "likely-scam": "LIKELY SCAM", "suspicious": "SUSPICIOUS", "probably-safe": "PROBABLY SAFE" }[p.verdict] || "SUSPICIOUS";
@@ -3341,13 +3553,19 @@ Message:"""${msg.slice(0, 3000)}"""`;
     console.error("whatsapp handler:", e.message);
     try { await _waSend(from, "Sorry, something went wrong. Please try again."); } catch { /* ignore */ }
   }
-  return res.status(200).json({ ok: true });
+  return;
 }
 
 const HANDLERS = {
   whois: handleWhois,
   "newsletter-subscribe": handleNewsletterSubscribe,
   "enterprise-lead": handleEnterpriseLead,
+  "yt-lesson": handleYtLesson,
+  "blog-list": handleBlogList,
+  "blog-get": handleBlogGet,
+  "blog-generate": handleBlogGenerate,
+  "daily-alert": handleDailyAlert,
+  "wa-broadcast": handleWaBroadcast,
   "coupon-validate": handleCouponValidate,
   "whatsapp-inbound": handleWhatsappInbound,
   "security-headers": handleSecurityHeaders,
@@ -3392,9 +3610,9 @@ const HANDLERS = {
 };
 
 // Some tools accept GET (ip lookup, cron pings); others require POST.
-const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check"]);
+const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "blog-generate", "daily-alert", "wa-broadcast"]);
 // Tools that bypass shared rate-limit (cron uses its own auth)
-const RL_EXEMPT = new Set(["weekly-digest"]);
+const RL_EXEMPT = new Set(["weekly-digest", "daily-alert", "wa-broadcast"]);
 
 /**
  * Validate an incoming Bearer token against /api_tokens/{token} in

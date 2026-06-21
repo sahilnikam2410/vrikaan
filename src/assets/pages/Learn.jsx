@@ -833,9 +833,38 @@ async function generateCertificate(courseName, userName) {
 }
 
 // ─── Video Player ───
+// Plays the real topic video INLINE: on click, ask our /api/tools?tool=yt-lesson
+// for the top embeddable YouTube video and embed it. If no API key / no match,
+// fall back to opening a YouTube search in a new tab.
 function VideoPlayer({ title, lessonDesc, duration }) {
   const [playing, setPlaying] = useState(false);
-  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent("cybersecurity " + title + " tutorial")}`;
+  const [videoId, setVideoId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const query = "cyber safety " + title + " scam awareness India";
+  const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+
+  const start = async () => {
+    setPlaying(true); setLoading(true);
+    try {
+      const r = await fetch(`/api/tools?tool=yt-lesson&q=${encodeURIComponent(query)}`);
+      const d = await r.json();
+      if (d.videoId) { setVideoId(d.videoId); setLoading(false); return; }
+    } catch { /* ignore */ }
+    setLoading(false);
+    window.open(searchUrl, "_blank"); // fallback: no key / no result
+  };
+
+  if (playing && videoId) {
+    return (
+      <iframe
+        title={title}
+        src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`}
+        allow="accelerated-display; autoplay; encrypted-media; picture-in-picture"
+        allowFullScreen
+        style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: 0 }}
+      />
+    );
+  }
 
   if (playing) {
     return (
@@ -843,8 +872,8 @@ function VideoPlayer({ title, lessonDesc, duration }) {
         <div style={{ width: 56, height: 56, borderRadius: 14, background: "linear-gradient(135deg, #22c55e, #14b8a6)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16, animation: "pulse 2s infinite" }}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </div>
-        <div style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Vrikaan Sans'", marginBottom: 6, textAlign: "center" }}>Opening YouTube...</div>
-        <div style={{ fontSize: 13, color: "#94a3b8", textAlign: "center" }}>Video is playing in a new tab</div>
+        <div style={{ fontSize: 16, fontWeight: 700, color: "#f1f5f9", fontFamily: "'Vrikaan Sans'", marginBottom: 6, textAlign: "center" }}>{loading ? "Finding the best video…" : "Opening YouTube…"}</div>
+        <div style={{ fontSize: 13, color: "#94a3b8", textAlign: "center" }}>{loading ? "Loading the lesson video" : "Video opened in a new tab"}</div>
         <style>{`@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }`}</style>
       </div>
     );
@@ -852,7 +881,7 @@ function VideoPlayer({ title, lessonDesc, duration }) {
 
   return (
     <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", background: "linear-gradient(135deg, #0a0f1e 0%, #111827 50%, #0a0f1e 100%)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 24, boxSizing: "border-box", cursor: "pointer" }}
-      onClick={() => { setPlaying(true); window.open(searchUrl, "_blank"); }}>
+      onClick={start}>
       {/* Decorative grid background */}
       <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(20, 184, 166,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 184, 166,0.03) 1px, transparent 1px)", backgroundSize: "40px 40px", pointerEvents: "none" }} />
       {/* Shield icon */}

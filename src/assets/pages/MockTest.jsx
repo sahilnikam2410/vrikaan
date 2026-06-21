@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 import {
   LuShield, LuBanknote, LuFish, LuLock, LuClock, LuTrophy, LuCircleCheck,
   LuCircleX, LuArrowRight, LuArrowLeft, LuRotateCcw, LuChevronRight,
-  LuBriefcase, LuShoppingCart, LuScanFace, LuUsers, LuAward,
+  LuBriefcase, LuShoppingCart, LuScanFace, LuUsers, LuAward, LuDownload,
 } from "react-icons/lu";
+import { downloadCertificate, makeCertId } from "../../services/certificateService";
 import { Card, Button, Aurora } from "../../components/ui";
 import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
@@ -224,6 +225,13 @@ function TestRunner({ testId, user, onExit }) {
 /* ───────────────────────── Result ───────────────────────── */
 function Result({ test, score, answers, onExit }) {
   const xp = attemptXp(score.correct, score.total, score.passed);
+  const { user } = useAuth();
+  const getCert = () => downloadCertificate({
+    name: user?.displayName || user?.email?.split("@")[0] || "Cyber Defender",
+    testTitle: test.title, scorePct: score.pct,
+    date: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
+    certId: makeCertId(),
+  });
   return (
     <div>
       <div style={{ textAlign: "center", background: T.card, border: `1px solid ${score.passed ? `${T.green}55` : `${T.gold}55`}`, borderRadius: 20, padding: "40px 24px", marginBottom: 28 }}>
@@ -238,6 +246,7 @@ function Result({ test, score, answers, onExit }) {
         </p>
         <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginTop: 22 }}>
           <button onClick={onExit} style={btn(T.cyan)}><LuRotateCcw size={16} /> Back to tests</button>
+          {score.passed && <button onClick={getCert} style={btn(T.green)}><LuDownload size={16} /> Download certificate</button>}
           <Link to="/leaderboard" style={{ ...btn(T.gold), textDecoration: "none" }}><LuTrophy size={16} /> Leaderboard</Link>
         </div>
       </div>

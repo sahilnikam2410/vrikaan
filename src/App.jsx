@@ -122,6 +122,13 @@ const ApiDocs = lazy(() => import("./assets/pages/ApiDocs.jsx"));
 const RiskScore = lazy(() => import("./assets/pages/RiskScore.jsx"));
 const MockTest = lazy(() => import("./assets/pages/MockTest.jsx"));
 const ScamDna = lazy(() => import("./assets/pages/ScamDna.jsx"));
+const ThreatFeed = lazy(() => import("./assets/pages/ThreatFeed.jsx"));
+const ScamLookup = lazy(() => import("./assets/pages/ScamLookup.jsx"));
+const ScamRegistry = lazy(() => import("./assets/pages/ScamRegistry.jsx"));
+const ApiKeys = lazy(() => import("./assets/pages/ApiKeys.jsx"));
+const RegionalLanding = lazy(() => import("./assets/pages/RegionalLanding.jsx"));
+const FileComplaint = lazy(() => import("./assets/pages/FileComplaint.jsx"));
+const Developers = lazy(() => import("./assets/pages/Developers.jsx"));
 const Tools = lazy(() => import("./assets/pages/Tools.jsx"));
 const ScamBait = lazy(() => import("./assets/pages/ScamBait.jsx"));
 const Leaderboard = lazy(() => import("./assets/pages/Leaderboard.jsx"));
@@ -215,6 +222,17 @@ function AppRoutes() {
             <Route path="/family-plan" element={<FamilyPlanLanding />} />
             <Route path="/risk-score" element={<RiskScore />} />
             <Route path="/scam-dna" element={<ScamDna />} />
+            <Route path="/scam-feed" element={<ThreatFeed />} />
+            <Route path="/scam-registry" element={<ScamRegistry />} />
+            <Route path="/lookup/:id" element={<ScamLookup />} />
+            <Route path="/developers/keys" element={<ProtectedRoute><ApiKeys /></ProtectedRoute>} />
+            <Route path="/ta" element={<RegionalLanding lang="ta" />} />
+            <Route path="/te" element={<RegionalLanding lang="te" />} />
+            <Route path="/mr" element={<RegionalLanding lang="mr" />} />
+            <Route path="/bn" element={<RegionalLanding lang="bn" />} />
+            <Route path="/file-complaint" element={<FileComplaint />} />
+            <Route path="/developers" element={<Developers />} />
+            <Route path="/api" element={<Developers />} />
             <Route path="/tools" element={<Tools />} />
             <Route path="/scambait" element={<ScamBait />} />
             <Route path="/mock-test" element={<MockTest />} />

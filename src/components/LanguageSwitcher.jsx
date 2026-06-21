@@ -3,6 +3,10 @@ import { useTranslation } from "react-i18next";
 const LANGS = [
   { code: "en", label: "EN", name: "English" },
   { code: "hi", label: "हि", name: "हिन्दी" },
+  { code: "ta", label: "த", name: "தமிழ்" },
+  { code: "te", label: "తె", name: "తెలుగు" },
+  { code: "mr", label: "मरा", name: "मराठी" },
+  { code: "bn", label: "বাং", name: "বাংলা" },
 ];
 
 /**
