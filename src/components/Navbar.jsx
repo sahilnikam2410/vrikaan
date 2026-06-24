@@ -15,7 +15,8 @@ const TL = { bg: "#f8fafc", white: "#0f172a", muted: "#475569", accent: "#6366f1
 
 const mainLinks = [
   { to: "/learn", label: "Learn" },
-  { to: "/cyber-news", label: "News" },
+  { to: "/kumbh-kavach", label: "Kumbh 2027", badge: "New" },
+  { to: "/store", label: "Store" },
   { to: "/blog", label: "Blog" },
   { to: "/pricing", label: "Pricing" },
 ];

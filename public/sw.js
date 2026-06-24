@@ -1,6 +1,6 @@
-const CACHE_NAME = "vrikaan-v104";
-const STATIC_CACHE = "vrikaan-static-v104";
-const API_CACHE = "vrikaan-api-v104";
+const CACHE_NAME = "vrikaan-v105";
+const STATIC_CACHE = "vrikaan-static-v105";
+const API_CACHE = "vrikaan-api-v105";
 // "/" left in for offline-first first-paint; "/index.html" removed because
 // the precache version of it pinned old chunk hashes → ChunkLoadError after
 // deploy. The fetch handler's network-first HTML strategy refreshes "/" on
