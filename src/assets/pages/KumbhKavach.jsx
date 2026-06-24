@@ -1,12 +1,77 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { LuShieldCheck, LuQrCode, LuMapPin, LuSiren, LuBadgeCheck, LuUsers, LuHeartPulse, LuScanLine } from "react-icons/lu";
+import { LuShieldCheck, LuQrCode, LuMapPin, LuSiren, LuBadgeCheck, LuUsers, LuHeartPulse, LuScanLine, LuChevronDown } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import { Section, Aurora, Card, T, alpha } from "../../components/ui";
 
 const SAFFRON = "#f97316";
+const KUMBH_DATE = new Date("2027-07-01T00:00:00+05:30");
+
+// Countdown to Simhastha 2027
+function Countdown() {
+  const [t, setT] = useState({ d: 0, h: 0, m: 0, s: 0 });
+  useEffect(() => {
+    const tick = () => {
+      const ms = Math.max(0, KUMBH_DATE - Date.now());
+      setT({ d: Math.floor(ms / 86400000), h: Math.floor(ms / 3600000) % 24, m: Math.floor(ms / 60000) % 60, s: Math.floor(ms / 1000) % 60 });
+    };
+    tick(); const i = setInterval(tick, 1000); return () => clearInterval(i);
+  }, []);
+  const box = (n, l) => (
+    <div style={{ textAlign: "center" }}>
+      <div style={{ fontFamily: "var(--font-display)", fontSize: "clamp(26px,5vw,40px)", fontWeight: 800, color: SAFFRON, fontVariantNumeric: "tabular-nums", minWidth: 64 }}>{String(n).padStart(2, "0")}</div>
+      <div style={{ fontSize: 11, color: T.muted, letterSpacing: 1, textTransform: "uppercase" }}>{l}</div>
+    </div>
+  );
+  return (
+    <div style={{ display: "inline-flex", gap: "clamp(10px,3vw,24px)", padding: "16px 24px", borderRadius: 16, background: alpha(SAFFRON, 0.06), border: `1px solid ${alpha(SAFFRON, 0.25)}`, marginTop: 26 }}>
+      {box(t.d, "days")}{box(t.h, "hrs")}{box(t.m, "min")}{box(t.s, "sec")}
+    </div>
+  );
+}
+
+// Count-up on scroll
+function CountUp({ to, suffix = "", dur = 1600 }) {
+  const [n, setN] = useState(0); const ref = useRef(null); const done = useRef(false);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const io = new IntersectionObserver((es) => {
+      if (es[0].isIntersecting && !done.current) {
+        done.current = true; const t0 = performance.now();
+        const step = (now) => { const p = Math.min(1, (now - t0) / dur); setN(Math.round(to * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(step); };
+        requestAnimationFrame(step);
+      }
+    }, { threshold: 0.4 });
+    io.observe(el); return () => io.disconnect();
+  }, [to, dur]);
+  return <span ref={ref}>{n.toLocaleString("en-IN")}{suffix}</span>;
+}
+
+const FAQS = [
+  ["How does the QR band reunite a lost person?", "Anyone — a volunteer, police officer or stranger — scans the band's QR. It instantly shows the registered family contact and sends them an alert with the help-desk location. No phone or shared language needed."],
+  ["Is my data safe?", "Yes. The band stores only what you choose (a contact + optional medical note). It's encrypted, never sold, and powered by VRIKAAN's security stack. You control and can wipe it anytime."],
+  ["How does it stop donation fraud?", "Open the app, scan any donation/UPI QR before paying — VRIKAAN's Scam DNA network instantly flags fake or look-alike QR codes used to divert devotees' money."],
+  ["What does it cost pilgrims?", "The band is ₹50. The safety app — lost-&-found, fake-QR guard, SOS, crowd alerts — is completely free."],
+  ["We're a govt body / CSR sponsor — how do we partner?", "Pick 'Sponsor / Govt' in the form or email hello@vrikaan.com. We make VRIKAAN your official Kumbh safety partner: you fund/endorse, we build and run it."],
+];
+function Faq() {
+  const [open, setOpen] = useState(0);
+  return (
+    <div style={{ display: "grid", gap: 10 }}>
+      {FAQS.map(([q, a], i) => (
+        <Card key={i} style={{ padding: 0, overflow: "hidden", cursor: "pointer" }}>
+          <div onClick={() => setOpen(open === i ? -1 : i)} style={{ padding: "16px 20px", display: "flex", alignItems: "center", gap: 12 }}>
+            <span style={{ flex: 1, fontWeight: 600, color: T.white, fontSize: 15.5 }}>{q}</span>
+            <LuChevronDown size={18} color={T.cyan} style={{ transform: open === i ? "rotate(180deg)" : "none", transition: "transform 0.2s", flexShrink: 0 }} />
+          </div>
+          {open === i && <div style={{ padding: "0 20px 18px", color: T.muted, fontSize: 14.5, lineHeight: 1.65 }}>{a}</div>}
+        </Card>
+      ))}
+    </div>
+  );
+}
 
 export default function KumbhKavach() {
   const [f, setF] = useState({ name: "", phone: "", email: "", role: "Pilgrim" });
@@ -65,6 +130,10 @@ export default function KumbhKavach() {
           <a href="#preregister" style={btn(T.cyan, true)}>Pre-register a band</a>
           <a href="#partner" style={btn(SAFFRON, false)}>Become a safety partner</a>
         </div>
+        <div><Countdown /></div>
+        <div style={{ marginTop: 26, color: T.mutedDark, fontSize: 13, display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+          <span>🛡 Powered by VRIKAAN Scam DNA</span><span>·</span><span>SOC analysts</span><span>·</span><span>★ Cyber 50</span><span>·</span><span>Made in Nashik</span>
+        </div>
       </Section>
 
       {/* How it works */}
@@ -106,6 +175,23 @@ export default function KumbhKavach() {
             ))}
           </div>
         </Card>
+      </Section>
+
+      {/* Live impact */}
+      <Section style={{ maxWidth: 900 }}>
+        <Card style={{ padding: 30, textAlign: "center", border: `1px solid ${alpha(SAFFRON, 0.3)}` }}>
+          <div style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px,7vw,68px)", fontWeight: 800, color: SAFFRON }}>
+            <CountUp to={50000000} />+
+          </div>
+          <div style={{ color: T.white, fontSize: 17, marginTop: 6 }}>safety touchpoints targeted for Simhastha 2027</div>
+          <div style={{ color: T.muted, fontSize: 14, marginTop: 4 }}>Bands · scans · fraud blocks · SOS — one protective layer for every pilgrim.</div>
+        </Card>
+      </Section>
+
+      {/* FAQ */}
+      <Section style={{ maxWidth: 760 }}>
+        <h2 style={h2}>Questions, answered</h2>
+        <Faq />
       </Section>
 
       {/* Pre-register form */}
