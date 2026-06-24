@@ -52,9 +52,9 @@ export default function Store() {
             const Ic = pr.icon;
             return (
               <Card key={pr.id} style={{ padding: 0, overflow: "hidden" }}>
-                <div style={{ height: 150, background: `linear-gradient(135deg, ${alpha(pr.color, 0.18)}, ${alpha("#060a14", 0.4)})`, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-                  <Ic size={56} color={pr.color} />
-                  {pr.tag && <span style={{ position: "absolute", top: 12, right: 12, fontSize: 11, fontWeight: 700, color: pr.color, background: alpha(pr.color, 0.14), border: `1px solid ${alpha(pr.color, 0.4)}`, padding: "4px 10px", borderRadius: 100 }}>{pr.tag}</span>}
+                <div style={{ height: 190, position: "relative", overflow: "hidden", background: "#070b14" }}>
+                  <img src={`/store/${pr.id}.png`} alt={pr.name} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  {pr.tag && <span style={{ position: "absolute", top: 12, right: 12, fontSize: 11, fontWeight: 700, color: pr.color, background: alpha(pr.color, 0.2), border: `1px solid ${alpha(pr.color, 0.5)}`, padding: "4px 10px", borderRadius: 100, backdropFilter: "blur(4px)" }}>{pr.tag}</span>}
                 </div>
                 <div style={{ padding: 18 }}>
                   <div style={{ fontSize: 17, fontWeight: 700, color: T.white }}>{pr.name}</div>
