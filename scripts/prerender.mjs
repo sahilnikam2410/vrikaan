@@ -816,6 +816,29 @@ async function main() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${uniq.map((u) => `  <url><loc>${base}${u === "/" ? "/" : u}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>${u === "/" ? "1.0" : "0.7"}</priority></url>`).join("\n")}\n</urlset>\n`;
   fs.writeFileSync(path.join(DIST, "sitemap.xml"), xml);
   console.log(`[prerender] sitemap.xml: ${uniq.length} urls`);
+
+  // ── IndexNow: ping Bing/DuckDuckGo/Yandex with the full URL list ──
+  // Key file is served at https://www.vrikaan.com/<KEY>.txt (public/<KEY>.txt).
+  // Build-time ping is fine — bots fetch the URLs minutes later, by which point
+  // the new deploy is live. Non-fatal: a failed ping never breaks the build.
+  const INDEXNOW_KEY = "48dd394b7a0b9fbd012c1c5b77bf1ad2";
+  try {
+    const host = "www.vrikaan.com";
+    const urlList = uniq.map((u) => `${base}${u === "/" ? "/" : u}`);
+    const res = await fetch("https://api.indexnow.org/indexnow", {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify({
+        host,
+        key: INDEXNOW_KEY,
+        keyLocation: `https://${host}/${INDEXNOW_KEY}.txt`,
+        urlList,
+      }),
+    });
+    console.log(`[prerender] IndexNow ping: ${res.status} (${urlList.length} urls)`);
+  } catch (e) {
+    console.warn(`[prerender] IndexNow ping skipped: ${e.message}`);
+  }
 }
 
 main().catch((e) => {
