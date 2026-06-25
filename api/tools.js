@@ -2540,9 +2540,9 @@ async function _genBlogPost(fs) {
   const ctx = trends.length ? trends.join("; ") : "UPI collection-request fraud, KYC/OTP phishing, predatory loan apps, deepfake-voice family emergencies, 'digital arrest' extortion, fake job/task scams";
   const prompt = `You are VRIKAAN's threat-intelligence editor. Write a concise, factual, India-focused scam-awareness article based on these currently trending scams: ${ctx}.
 Return STRICT JSON, no markdown:
-{"title":"specific compelling title","category":"Threats"|"Tips"|"News"|"Tutorials","excerpt":"1-2 sentence summary","tags":["3-5 short tags"],"readTime":"X min read","sections":[{"heading":"...","text":"100-160 words"}]}
-Use 4-5 sections. Practical Indian context (UPI, 1930 helpline, cybercrime.gov.in, RBI). Do NOT invent statistics.`;
-  const r = await callGemini(prompt, { temperature: 0.5, maxOutputTokens: 1700, json: true });
+{"title":"specific compelling title","category":"Threats"|"Tips"|"News"|"Tutorials","excerpt":"1-2 sentence summary","tags":["3-5 short tags"],"readTime":"X min read","sections":[{"heading":"...","text":"90-130 words"}]}
+Use exactly 4 sections. Practical Indian context (UPI, 1930 helpline, cybercrime.gov.in, RBI). Do NOT invent statistics.`;
+  const r = await callGemini(prompt, { temperature: 0.5, maxOutputTokens: 2600, json: true });
   if (!r.ok) return { ok: false, error: r.detail || "ai" };
   const p = tryParseJson(r.text) || {};
   if (!p.title || !Array.isArray(p.sections) || !p.sections.length) return { ok: false, error: "parse" };
