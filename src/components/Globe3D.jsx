@@ -71,10 +71,12 @@ function createArcCurve(start, end) {
   return new THREE.QuadraticBezierCurve3(start, mid, end);
 }
 
-const Globe3D = memo(function Globe3D({ size, threatsRef, onContextLost, onArc }) {
+const Globe3D = memo(function Globe3D({ size, threatsRef, onContextLost, onArc, pausedRef }) {
   const containerRef = useRef(null);
   const onContextLostRef = useRef(onContextLost);
   onContextLostRef.current = onContextLost;
+  const pausedReadRef = useRef(pausedRef);
+  pausedReadRef.current = pausedRef;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -210,6 +212,9 @@ const Globe3D = memo(function Globe3D({ size, threatsRef, onContextLost, onArc }
     const animate = () => {
       raf = requestAnimationFrame(animate);
       const delta = clock.getDelta(), elapsed = clock.getElapsedTime(), now = Date.now();
+      // Off-screen → consume the clock delta (avoid a jump on resume) but skip
+      // the WebGL render + arc updates entirely. Kills GPU cost while scrolled away.
+      if (pausedReadRef.current?.current) return;
       if (!mouseDown) rotY += autoSpeed;
       [earth, nodesGroup, arcsGroup].forEach((o) => { o.rotation.y = rotY; o.rotation.x = rotX; });
       ring1.rotation.z += delta * 0.05; ring2.rotation.z -= delta * 0.03;

@@ -23,7 +23,7 @@ const FB_NODES = [
   { x: 0.87, y: 0.73, label: "SYD" }, { x: 0.61, y: 0.42, label: "DXB" },
 ];
 
-function FallbackGlobe({ size }) {
+function FallbackGlobe({ size, pausedRef }) {
   const canvasRef = useRef(null);
   useEffect(() => {
     const c = canvasRef.current;
@@ -42,6 +42,9 @@ function FallbackGlobe({ size }) {
     };
     resize(); window.addEventListener("resize", resize);
     const draw = () => {
+      raf = requestAnimationFrame(draw);
+      // Off-screen → keep the loop alive but skip all canvas work (no repaint).
+      if (pausedRef?.current) return;
       const w = c.width / dpr, h = c.height / dpr, now = Date.now(), t = now * 0.001;
       const cx = w / 2, cy = h / 2, R = Math.min(w, h) * 0.36;
       ctx.fillStyle = "#060a14"; ctx.fillRect(0, 0, w, h);
@@ -91,11 +94,10 @@ function FallbackGlobe({ size }) {
       ctx.beginPath(); ctx.moveTo(w - pad - len, pad); ctx.lineTo(w - pad, pad); ctx.lineTo(w - pad, pad + len); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(pad, h - pad - len); ctx.lineTo(pad, h - pad); ctx.lineTo(pad + len, h - pad); ctx.stroke();
       ctx.beginPath(); ctx.moveTo(w - pad - len, h - pad); ctx.lineTo(w - pad, h - pad); ctx.lineTo(w - pad, h - pad - len); ctx.stroke(); ctx.restore();
-      raf = requestAnimationFrame(draw);
     };
     draw();
     return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
-  }, [size]);
+  }, [size, pausedRef]);
   return (
     <div style={{ width: "100%", height: size, background: "#060a14", position: "relative" }}>
       <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} />
@@ -114,12 +116,30 @@ export default memo(function CyberGlobe({ size = 520 }) {
   const [latest, setLatest] = useState(null); // latest real threat for overlay
   const handleContextLost = useCallback(() => setUse3D(false), []);
 
-  // Upgrade to 3D shortly after mount so the Canvas2D placeholder paints first.
+  // IntersectionObserver gate: globes off-screen pause their render loops, and
+  // the heavy Three.js chunk only loads once the globe is near the viewport.
+  const wrapRef = useRef(null);
+  const pausedRef = useRef(true);     // true = off-screen → skip render work
+  const [inView, setInView] = useState(false);
   useEffect(() => {
-    if (!webgl) return;
+    const el = wrapRef.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") { pausedRef.current = false; setInView(true); return; }
+    const io = new IntersectionObserver(
+      ([e]) => { pausedRef.current = !e.isIntersecting; setInView(e.isIntersecting); },
+      { rootMargin: "200px" } // start loading/animating slightly before visible
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Upgrade to 3D shortly after the globe scrolls into view (Canvas2D paints
+  // first; off-screen globes never pull the Three.js chunk).
+  useEffect(() => {
+    if (!webgl || !inView) return;
     const id = setTimeout(() => setUse3D(true), 300);
     return () => clearTimeout(id);
-  }, [webgl]);
+  }, [webgl, inView]);
 
   // Fetch real threat intel (free abuse.ch feeds via our /api/threats).
   useEffect(() => {
@@ -156,13 +176,13 @@ export default memo(function CyberGlobe({ size = 520 }) {
   }, [latest, use3D]);
 
   return (
-    <div style={{ position: "relative", width: "100%", height: size }}>
+    <div ref={wrapRef} style={{ position: "relative", width: "100%", height: size }}>
       {use3D && webgl ? (
-        <Suspense fallback={<FallbackGlobe size={size} />}>
-          <Globe3D size={size} threatsRef={threatsRef} onContextLost={handleContextLost} onArc={setLatest} />
+        <Suspense fallback={<FallbackGlobe size={size} pausedRef={pausedRef} />}>
+          <Globe3D size={size} threatsRef={threatsRef} onContextLost={handleContextLost} onArc={setLatest} pausedRef={pausedRef} />
         </Suspense>
       ) : (
-        <FallbackGlobe size={size} />
+        <FallbackGlobe size={size} pausedRef={pausedRef} />
       )}
 
       {/* Live real-threat label (only when feed returned data) */}
