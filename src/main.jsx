@@ -4,6 +4,7 @@ import { inject } from "@vercel/analytics";
 import { injectSpeedInsights } from "@vercel/speed-insights";
 import App from "./App.jsx";
 import { installGlobalHandlers } from "./services/errorReporter";
+import { initDatadog } from "./lib/datadog";
 import "./i18n.js"; // initialize i18next before any component renders
 import "./styles/fonts.css";
 import "./index.css";
@@ -38,6 +39,7 @@ import("./services/gamificationService").then(({ pingActivity }) => {
 inject();
 injectSpeedInsights();
 installGlobalHandlers();
+initDatadog(); // no-op unless VITE_DD_* keys present + production
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
