@@ -6,6 +6,7 @@ import UpgradeModal from "../../components/UpgradeModal";
 import { useToolQuota } from "../../hooks/useToolQuota";
 import { apiFetch, parseTierError } from "../../lib/apiFetch";
 import { LuCircleCheck, LuTriangleAlert, LuMessageSquare } from "react-icons/lu";
+import { shareScamCard } from "../../lib/scamCard";
 
 const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: "#14b8a6", green: "#22c55e", red: "#ef4444", yellow: "#fbbf24", white: "#f1f5f9", muted: "#94a3b8", border: "rgba(148,163,184,0.08)" };
 
@@ -58,8 +59,8 @@ export default function ScamCheck() {
   const meta = result ? (VERDICT_META[result.verdict] || VERDICT_META.suspicious) : null;
 
   const shareWhatsApp = () => {
-    const summary = `VRIKAAN Scam Check verdict: ${meta?.label}\nReasoning: ${result.reasoning}\nCheck your messages: https://vrikaan.com/scam-check`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(summary)}`, "_blank");
+    // Branded image card → native share / WhatsApp (viral family-warning loop).
+    shareScamCard({ verdict: result.verdict, riskScore: result.score, snippet: text });
   };
 
   return (
@@ -189,7 +190,7 @@ export default function ScamCheck() {
 
             {/* Share */}
             <div style={{ display: "flex", gap: 8, paddingTop: 18, borderTop: `1px solid ${T.border}`, flexWrap: "wrap" }}>
-              <button onClick={shareWhatsApp} style={{ padding: "10px 16px", borderRadius: 8, border: "none", background: "rgba(34,197,94,0.15)", color: T.green, fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}><LuMessageSquare size={14} /> Share on WhatsApp</button>
+              <button onClick={shareWhatsApp} style={{ padding: "10px 16px", borderRadius: 8, border: "none", background: "rgba(34,197,94,0.15)", color: T.green, fontSize: 13, fontWeight: 600, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 6 }}><LuMessageSquare size={14} /> Warn family (image)</button>
               <button onClick={() => navigator.clipboard.writeText(`VRIKAAN Scam Check — ${meta.label} (${result.score}/100)\n${result.reasoning}\nhttps://vrikaan.com/scam-check`)} style={{ padding: "10px 16px", borderRadius: 8, border: `1px solid ${T.border}`, background: "transparent", color: T.muted, fontSize: 13, cursor: "pointer" }}>Copy result</button>
             </div>
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { LuShieldAlert, LuShieldCheck, LuTriangleAlert, LuCircleAlert, LuArrowRight } from "react-icons/lu";
+import { LuShieldAlert, LuShieldCheck, LuTriangleAlert, LuCircleAlert, LuArrowRight, LuShare2 } from "react-icons/lu";
+import { shareScamCard } from "../lib/scamCard";
 
 // Inline hero scam-checker — the "serious product" moment. Paste a message,
 // get an instant verdict + live community count, feeds the Scam DNA network.
@@ -17,6 +18,15 @@ export default function HeroScamCheck() {
   const [loading, setLoading] = useState(false);
   const [res, setRes] = useState(null);
   const [err, setErr] = useState("");
+  const [sharing, setSharing] = useState(false);
+
+  async function warnFamily() {
+    if (!res) return;
+    setSharing(true);
+    try { await shareScamCard({ verdict: res.verdict, riskScore: res.riskScore, snippet: text }); }
+    catch { /* ignore */ }
+    setSharing(false);
+  }
 
   async function check() {
     if (text.trim().length < 8) { setErr("Paste a longer message."); return; }
@@ -70,9 +80,18 @@ export default function HeroScamCheck() {
               seen <strong style={{ color: C.text }}>{res.community.seenCount}×</strong> in the network
             </span>
           )}
-          <Link to="/scam-dna" style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 5, color: C.cyan, fontWeight: 700, fontSize: 12.5, textDecoration: "none" }}>
-            Full report <LuArrowRight size={14} />
-          </Link>
+          <div style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 10 }}>
+            <button onClick={warnFamily} disabled={sharing} style={{
+              display: "inline-flex", alignItems: "center", gap: 6, padding: "7px 13px", borderRadius: 8,
+              border: `1px solid ${v.c}`, background: v.c, color: "#04110e",
+              fontWeight: 800, fontSize: 12.5, cursor: sharing ? "wait" : "pointer", fontFamily: "'Vrikaan Sans', sans-serif",
+            }}>
+              <LuShare2 size={14} /> {sharing ? "…" : "Warn family"}
+            </button>
+            <Link to="/scam-dna" style={{ display: "inline-flex", alignItems: "center", gap: 5, color: C.cyan, fontWeight: 700, fontSize: 12.5, textDecoration: "none" }}>
+              Full report <LuArrowRight size={14} />
+            </Link>
+          </div>
         </div>
       )}
     </div>
