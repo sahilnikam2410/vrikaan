@@ -213,6 +213,47 @@ async function fetchAutoPosts() {
   }
 }
 
+// Flagged scam identifiers (UPI IDs / phone numbers) from the Scam DNA network.
+// Each `scamSignatures/id_<identifier>` doc → an indexable /lookup/<id> page
+// ("Is <id> a scam?") with the verdict baked into static meta + JSON-LD. This
+// is the SEO moat: VRIKAAN ranks for "is <upi/number> scam" searches (huge
+// India volume) and every crowd report compounds the footprint.
+//
+// Only safe, path-friendly identifiers are emitted (UPI + phone; URLs and any
+// id with path-breaking chars are skipped — they still work as live SPA pages).
+async function fetchFlaggedIdentifiers() {
+  const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
+  if (!raw) return [];
+  try {
+    const { initializeApp, getApps, cert } = await import("firebase-admin/app");
+    const { getFirestore } = await import("firebase-admin/firestore");
+    if (!getApps().length) {
+      const text = raw.trim().startsWith("{") ? raw : Buffer.from(raw, "base64").toString("utf8");
+      const creds = JSON.parse(text);
+      if (creds.private_key?.includes("\\n")) creds.private_key = creds.private_key.replace(/\\n/g, "\n");
+      initializeApp({ credential: cert(creds) });
+    }
+    const db = getFirestore();
+    const snap = await db.collection("scamSignatures").orderBy("lastSeen", "desc").limit(1000).get();
+    const out = [];
+    for (const d of snap.docs) {
+      if (!d.id.startsWith("id_")) continue;          // only identifier docs
+      const identifier = d.id.slice(3);
+      if (!identifier || identifier.length < 4) continue;
+      if (/[\/\\:?#%\s]/.test(identifier)) continue;  // path/URL-unsafe → skip
+      const x = d.data() || {};
+      const reports = x.count || 0;
+      const risk = x.verified ? 95 : Math.min(90, 40 + reports * 8 + (x.lossCount || 0) * 5);
+      out.push({ identifier, reports, verified: !!x.verified, risk, category: x.category || "", tactic: x.tactic || "" });
+    }
+    console.log(`[prerender] fetched ${out.length} flagged identifiers from Firestore`);
+    return out;
+  } catch (e) {
+    console.warn(`[prerender] flagged-identifier fetch skipped: ${e.message}`);
+    return [];
+  }
+}
+
 // ---------- primary / tool pages ----------
 //
 // Keep this list narrow — only pages we actively want perfect social
@@ -821,6 +862,45 @@ async function main() {
       jsonLd,
     });
     writeRoute(`/blog/${slug}`, html);
+    count++;
+  }
+
+  // Scam DNA lookup pages (Firestore) — indexable "Is <id> a scam?" per
+  // flagged UPI ID / phone number. The verdict is baked into static meta so
+  // crawlers index it; the live SPA still hydrates the full report.
+  const flagged = await fetchFlaggedIdentifiers();
+  for (const f of flagged) {
+    const idEnc = f.identifier; // already path-safe (filtered in fetcher)
+    const kind = idEnc.includes("@") ? "UPI ID" : /^[+0-9-]{6,}$/.test(idEnc) ? "phone number" : "identifier";
+    const verdict = f.verified || f.risk >= 75 ? "a known scam" : f.risk >= 45 ? "a likely scam" : "reported as suspicious";
+    const canonical = `${SITE}/lookup/${idEnc}`;
+    const pageTitle = `Is ${idEnc} a scam? — ${SITE_NAME} Scam DNA`;
+    const description = `${idEnc} (${kind}) is ${verdict} — flagged ${f.reports} time${f.reports === 1 ? "" : "s"} in VRIKAAN's crowdsourced Scam DNA network${f.tactic ? `: ${f.tactic}` : ""}. Check any UPI ID or number free before you pay.`;
+    const ogImage = ogUrl({ title: `Is ${idEnc} a scam?`, subtitle: `${verdict} · ${f.reports} reports`, category: "Scam DNA" });
+    const jsonLd = [
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: [{
+          "@type": "Question",
+          name: `Is ${idEnc} a scam?`,
+          acceptedAnswer: { "@type": "Answer", text: description },
+        }],
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${SITE}/` },
+          { "@type": "ListItem", position: 2, name: "Scam Registry", item: `${SITE}/scam-registry` },
+          { "@type": "ListItem", position: 3, name: `Is ${idEnc} a scam?`, item: canonical },
+        ],
+      },
+    ];
+    const html = rewriteMeta(baseHtml, {
+      title: pageTitle, description, canonical, ogImage, ogType: "article", jsonLd,
+    });
+    writeRoute(`/lookup/${idEnc}`, html);
     count++;
   }
 

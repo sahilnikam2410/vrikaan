@@ -495,11 +495,27 @@ const Hero = () => {
           </Reveal>
 
           <Reveal delay={0.3}>
-            <div className="hero-buttons" style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 56 }}>
+            <div className="hero-buttons" style={{ display: "flex", gap: 14, flexWrap: "wrap", marginBottom: 20 }}>
               <Btn primary to="/scam-recovery" icon="&#128680;">Just got scammed?</Btn>
               <Btn to="/scam-dna" icon="&#129516;">Check a scam</Btn>
               <Btn to="/signup" icon="&#9889;">Sign up</Btn>
             </div>
+          </Reveal>
+
+          <Reveal delay={0.34}>
+            <a href="https://t.me/VrikaanBot" target="_blank" rel="noopener noreferrer" style={{
+              display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 52,
+              padding: "10px 16px", borderRadius: 100, textDecoration: "none",
+              background: "rgba(20,184,166,0.06)", border: "1px solid rgba(20,184,166,0.3)",
+              transition: "all 0.2s",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(20,184,166,0.14)"; e.currentTarget.style.borderColor = "rgba(20,184,166,0.5)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(20,184,166,0.06)"; e.currentTarget.style.borderColor = "rgba(20,184,166,0.3)"; }}
+            >
+              <span style={{ fontSize: 18 }}>💬</span>
+              <span style={{ fontSize: 13.5, color: T.white, fontWeight: 600 }}>Prefer chat? Check scams on Telegram</span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: 12.5, color: T.cyan, fontWeight: 700 }}>@VrikaanBot →</span>
+            </a>
           </Reveal>
 
           <Reveal delay={0.4}>
