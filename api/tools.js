@@ -22,6 +22,7 @@ const ACTION_TIERS = {
   "blog-get": "free",
   "blog-generate": "free", // gated internally by CRON_SECRET
   "blog-delete": "free",   // gated internally by CRON_SECRET
+  "referral-record": "free", // attributes a signup to a referrer (auth required)
   "daily-alert": "free",   // cron, gated by CRON_SECRET
   "wa-broadcast": "free",  // cron/admin, gated by CRON_SECRET
   "cert-register": "free",
@@ -2612,6 +2613,41 @@ async function handleBlogDelete(req, res) {
   return res.status(200).json({ ok: true, deleted });
 }
 
+// ─── REFERRAL ATTRIBUTION ─────────────────────────────────────────────
+// Called once right after a referred user signs up (Authorization: Bearer
+// <Firebase ID token>, body { code }). Resolves the referrer by their public
+// referral code, then writes one server-trusted referral_signups doc keyed by
+// the referred user's uid (idempotent). Blocks self-referral. The referrer's
+// /referral page reads these to show real counts + unlock reward tiers.
+async function handleReferralRecord(req, res) {
+  const caller = await resolveCaller(req);
+  if (!caller.uid) return res.status(401).json({ error: "sign in required" });
+  const code = String(req.body?.code || req.query.code || "").trim().toUpperCase().slice(0, 40);
+  if (!/^[A-Z0-9-]{4,40}$/.test(code)) return res.status(400).json({ error: "bad code" });
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "no-db" });
+  try {
+    // Idempotent — one signup record per referred user (docId = their uid).
+    const sigRef = fs.collection("referral_signups").doc(caller.uid);
+    if ((await sigRef.get()).exists) return res.status(200).json({ ok: true, already: true });
+    // Resolve referrer by public code.
+    const q = await fs.collection("referrals").where("code", "==", code).limit(1).get();
+    if (q.empty) return res.status(404).json({ error: "invalid code" });
+    const referrerUid = q.docs[0].data().uid;
+    if (!referrerUid || referrerUid === caller.uid) return res.status(400).json({ error: "self referral" });
+    let email = "";
+    try { const u = await getAdminAuth().getUser(caller.uid); email = u.email || ""; } catch { /* ignore */ }
+    const { FieldValue } = await import("firebase-admin/firestore");
+    await sigRef.set({
+      referredBy: referrerUid, referredUser: caller.uid, code,
+      email, name: "", createdAt: FieldValue.serverTimestamp(), createdAtMs: Date.now(),
+    });
+    return res.status(200).json({ ok: true, referredBy: referrerUid });
+  } catch (e) {
+    return res.status(500).json({ error: e.message || "failed" });
+  }
+}
+
 async function handleBlogList(req, res) {
   const fs = getAdminFirestore();
   if (!fs) return res.status(200).json({ posts: [] });
@@ -3659,6 +3695,7 @@ const HANDLERS = {
   "blog-get": handleBlogGet,
   "blog-generate": handleBlogGenerate,
   "blog-delete": handleBlogDelete,
+  "referral-record": handleReferralRecord,
   "daily-alert": handleDailyAlert,
   "wa-broadcast": handleWaBroadcast,
   "cert-register": handleCertRegister,

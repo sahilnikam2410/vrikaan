@@ -248,6 +248,26 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
+  // Attribute a signup to a referrer if the user arrived via a ?ref= link.
+  // The code is stashed in localStorage by the Signup page; backend records it
+  // once (idempotent) and clears it. Best-effort — never blocks auth.
+  const recordReferral = useCallback(async () => {
+    try {
+      const code = localStorage.getItem("vrikaan_ref");
+      if (!code) return;
+      const current = auth.currentUser;
+      if (!current) return;
+      const token = await current.getIdToken();
+      const r = await fetch("/api/tools?tool=referral-record", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ code }),
+      });
+      // Clear on success OR permanent rejection so we don't retry forever.
+      if (r.ok || r.status === 400 || r.status === 404) localStorage.removeItem("vrikaan_ref");
+    } catch { /* ignore — referral is non-critical */ }
+  }, []);
+
   const signup = useCallback(async (data) => {
     try {
       const existing = DEMO_USERS.find((u) => u.email === data.email);
@@ -278,6 +298,7 @@ export function AuthProvider({ children }) {
       setUser(merged);
 
       sendWelcomeEmail(fullName, data.email);
+      recordReferral();
 
       return { success: true, user: merged };
     } catch (error) {
@@ -325,6 +346,7 @@ export function AuthProvider({ children }) {
   const _socialLogin = async (provider, label) => {
     try {
       const result = await signInWithPopup(auth, provider);
+      recordReferral();
       return { success: true, user: result.user };
     } catch (error) {
       console.warn(`${label} popup sign-in error:`, error.code, error.message);

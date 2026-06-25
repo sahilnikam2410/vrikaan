@@ -8,7 +8,7 @@ const T = { bg: "#060a14", card: "rgba(17,24,39,0.8)", accent: "#6366f1", cyan: 
 
 function generateCode(uid) {
   const base = uid ? uid.slice(0, 6).toUpperCase() : Math.random().toString(36).slice(2, 8).toUpperCase();
-  return `SECUV-${base}`;
+  return `VRIK-${base}`;
 }
 
 export default function Referral() {

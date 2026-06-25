@@ -125,6 +125,12 @@ export default function Signup() {
   const refCode = params.get("ref") || "";
   const { user, signup, loginWithGoogle, loginWithGithub, loginWithFacebook } = useAuth();
 
+  // Stash referral code so AuthContext can attribute the signup after the
+  // account is created (survives the social-auth redirect round-trip).
+  useEffect(() => {
+    if (refCode) localStorage.setItem("vrikaan_ref", refCode.trim().toUpperCase().slice(0, 40));
+  }, [refCode]);
+
   // Redirect if already logged in (handles social signup race condition)
   useEffect(() => {
     if (user) navigate("/home", { replace: true });
