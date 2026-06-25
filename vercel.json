@@ -50,6 +50,10 @@
     }
   ],
   "redirects": [
+    { "source": "/:path*", "has": [{ "type": "host", "value": "vrikaan.live" }], "destination": "https://vrikaan.com/:path*", "permanent": true },
+    { "source": "/:path*", "has": [{ "type": "host", "value": "www.vrikaan.live" }], "destination": "https://vrikaan.com/:path*", "permanent": true },
+    { "source": "/:path*", "has": [{ "type": "host", "value": "vrikaan.tech" }], "destination": "https://vrikaan.com/:path*", "permanent": true },
+    { "source": "/:path*", "has": [{ "type": "host", "value": "www.vrikaan.tech" }], "destination": "https://vrikaan.com/:path*", "permanent": true },
     { "source": "/apply", "destination": "https://forms.gle/ff3vA9kDC9vZaEzm9", "permanent": false }
   ],
   "rewrites": [
