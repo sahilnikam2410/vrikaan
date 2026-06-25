@@ -655,6 +655,14 @@ const PRIMARY_PAGES = [
       "Invite friends to VRIKAAN and both of you get premium features free. Help us make cybersecurity accessible to everyone.",
     ogSubtitle: "Give security, get security",
   },
+  {
+    path: "/badge",
+    title: "Secured by VRIKAAN — Free Trust Badge",
+    description:
+      "Add the free “Secured by VRIKAAN” trust badge to your website, store, or email signature. Show customers you take cyber-safety seriously. Copy-paste HTML or Markdown.",
+    ogSubtitle: "Free trust badge for your website",
+    ogCategory: "Partners",
+  },
 ];
 
 // ---------- main ----------

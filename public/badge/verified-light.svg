@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="248" height="56" viewBox="0 0 248 56" role="img" aria-label="Verified by VRIKAAN">
+  <rect x="1" y="1" width="246" height="54" rx="12" fill="#ffffff" stroke="#0d9488" stroke-opacity="0.5" stroke-width="1.5"/>
+  <g transform="translate(18,12)">
+    <path d="M16 0 L31 6 V17 C31 26 24 31 16 33 C8 31 1 26 1 17 V6 Z" fill="#0d9488" fill-opacity="0.12" stroke="#0d9488" stroke-width="1.5"/>
+    <path d="M9.5 16.5 L14 21 L23 11" fill="none" stroke="#0d9488" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="64" y="24" font-family="'Segoe UI',Arial,sans-serif" font-size="11" font-weight="600" letter-spacing="1.5" fill="#64748b">SECURED BY</text>
+  <text x="64" y="43" font-family="'Segoe UI',Arial,sans-serif" font-size="21" font-weight="800" letter-spacing="2" fill="#0f172a">VRIKAAN</text>
+</svg>

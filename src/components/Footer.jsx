@@ -133,6 +133,7 @@ const Footer = () => {
             <FooterTool to="/cyber-news">Cyber News</FooterTool>
             <FooterTool to="/threats">Threat Directory</FooterTool>
             <FooterTool to="/blog">Blog</FooterTool>
+            <FooterTool to="/badge">🛡 Trust Badge</FooterTool>
           </ul>
         </div>
         )}
