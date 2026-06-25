@@ -16,10 +16,11 @@ const TL = { bg: "#f8fafc", white: "#0f172a", muted: "#475569", accent: "#6366f1
 const mainLinks = [
   { to: "/learn", label: "Learn" },
   { to: "/kumbh-kavach", label: "Kumbh 2027", badge: "New" },
-  { to: "/store", label: "Store" },
   { to: "/blog", label: "Blog" },
   { to: "/pricing", label: "Pricing" },
 ];
+
+const SAFFRON = "#f97316"; // Store/merch accent — matches /store theme
 
 // Always-visible links (rendered for both logged-in and logged-out users)
 const alwaysLinks = [
@@ -340,6 +341,24 @@ const Navbar = () => {
 
         {/* Desktop auth buttons */}
         <div className="nav-desktop-auth" style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {/* Shop CTA — prominent, always visible */}
+          <Link to="/store" title="VRIKAAN Store — tees, Kumbh bands & merch" style={{
+            display: "inline-flex", alignItems: "center", gap: 7,
+            padding: "8px 16px", borderRadius: 8, textDecoration: "none",
+            fontSize: 13, fontWeight: 700, fontFamily: "'Vrikaan Sans', sans-serif",
+            color: isActive("/store") ? "#04110e" : SAFFRON,
+            background: isActive("/store") ? SAFFRON : "rgba(249,115,22,0.1)",
+            border: `1px solid ${isActive("/store") ? SAFFRON : "rgba(249,115,22,0.35)"}`,
+            transition: "all 0.2s",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = SAFFRON; e.currentTarget.style.color = "#04110e"; }}
+            onMouseLeave={e => { if (!isActive("/store")) { e.currentTarget.style.background = "rgba(249,115,22,0.1)"; e.currentTarget.style.color = SAFFRON; } }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+            Shop
+          </Link>
           {/* Search */}
           <div ref={searchRef} style={{ position: "relative" }}>
             <button onClick={() => { setSearchOpen(!searchOpen); setTimeout(() => searchInputRef.current?.focus(), 50); }}
@@ -631,6 +650,17 @@ const Navbar = () => {
             </Link>
           ))}
 
+          <Link to="/store" style={{
+            display: "inline-flex", alignItems: "center", gap: 8, marginTop: 4,
+            padding: "11px 26px", borderRadius: 10, textDecoration: "none",
+            fontSize: 17, fontWeight: 700, fontFamily: "'Vrikaan Sans', sans-serif",
+            color: SAFFRON, background: "rgba(249,115,22,0.1)", border: `1px solid rgba(249,115,22,0.35)`,
+          }}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+            Shop
+          </Link>
           <Link to="/about" style={{ color: T.muted, textDecoration: "none", fontSize: 16, fontWeight: 500, padding: "8px 24px" }}>About</Link>
           <Link to="/contact" style={{ color: T.muted, textDecoration: "none", fontSize: 16, fontWeight: 500, padding: "8px 24px" }}>Contact</Link>
 

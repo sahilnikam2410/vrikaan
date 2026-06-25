@@ -105,8 +105,11 @@ function FallbackGlobe({ size, pausedRef }) {
   );
 }
 
-export default memo(function CyberGlobe({ size = 520 }) {
+export default memo(function CyberGlobe({ size = 520, flat = false }) {
   // WebGL support → upgrade to 3D. No WebGL → stay on Canvas2D.
+  // `flat` forces the lightweight Canvas2D globe and never loads Three.js —
+  // used for the secondary homepage globe so the page only ever spins up one
+  // WebGL context (the hero).
   const [webgl] = useState(() => {
     try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); }
     catch { return false; }
@@ -136,10 +139,10 @@ export default memo(function CyberGlobe({ size = 520 }) {
   // Upgrade to 3D shortly after the globe scrolls into view (Canvas2D paints
   // first; off-screen globes never pull the Three.js chunk).
   useEffect(() => {
-    if (!webgl || !inView) return;
+    if (!webgl || !inView || flat) return;
     const id = setTimeout(() => setUse3D(true), 300);
     return () => clearTimeout(id);
-  }, [webgl, inView]);
+  }, [webgl, inView, flat]);
 
   // Fetch real threat intel (free abuse.ch feeds via our /api/threats).
   useEffect(() => {

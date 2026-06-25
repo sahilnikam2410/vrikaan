@@ -1749,12 +1749,12 @@ const ThreatMapSection = () => {
       <Reveal delay={0.3}>
         <div style={{ marginTop: 32, display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
           <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, transparent, ${T.border})` }} />
-          <Badge color={T.mutedDark}>3D Threat Visualization</Badge>
+          <Badge color={T.mutedDark}>Live Threat Visualization</Badge>
           <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${T.border}, transparent)` }} />
         </div>
         <div style={{ position: "relative", height: 500, borderRadius: 20, overflow: "hidden", border: `1px solid ${T.border}`, background: "radial-gradient(ellipse at 50% 50%, rgba(20, 184, 166,0.02) 0%, #060a14 70%)" }}>
           <Suspense fallback={<div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}><GlobePlaceholder size={400} /></div>}>
-            <CyberGlobe size={500} />
+            <CyberGlobe size={500} flat />
           </Suspense>
           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, textAlign: "center", padding: "36px 0 20px", background: "linear-gradient(transparent, rgba(3,7,18,0.9))", pointerEvents: "none" }}>
             <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: T.mutedDark, marginBottom: 6 }}>Global operations detected</div>
@@ -2822,26 +2822,31 @@ const Footer = () => (
           AI-powered cyber defense for everyone. Enterprise security made accessible.
         </p>
         <div style={{ display: "flex", gap: 12 }}>
-          {["X", "GH", "LI"].map((s, i) => (
-            <div key={i} style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(148,163,184,0.04)", border: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: T.mutedDark, fontSize: 11, fontFamily: "var(--font-mono)", fontWeight: 600, cursor: "pointer", transition: "all 0.3s" }}
+          {[
+            { s: "X", href: "https://x.com/vrikaan" },
+            { s: "GH", href: "https://github.com/sahilnikam2410/vrikaan" },
+            { s: "LI", href: "https://www.linkedin.com/company/vrikaan-ai-cybersecurity" },
+            { s: "Ig", href: "https://www.instagram.com/vrikaan_official/" },
+          ].map((o, i) => (
+            <a key={i} href={o.href} target="_blank" rel="noopener noreferrer" style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(148,163,184,0.04)", border: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: T.mutedDark, fontSize: 11, fontFamily: "var(--font-mono)", fontWeight: 600, cursor: "pointer", transition: "all 0.3s", textDecoration: "none" }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(99,102,241,0.2)"; e.currentTarget.style.color = T.white; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = T.border; e.currentTarget.style.color = T.mutedDark; }}
-            >{s}</div>
+            >{o.s}</a>
           ))}
         </div>
       </div>
       {[
-        { t: "Platform", l: [{ label: "Features", to: "/features" }, { label: "Pricing", to: "/pricing" }, { label: "Dashboard", to: "/dashboard" }, { label: "Analyzer", to: "/fraud-analyzer" }] },
-        { t: "Company", l: [{ label: "About", to: "/about" }, { label: "Founder", to: "/founder" }, { label: "Threat Map", to: "/threat-map" }, { label: "Contact", to: "/contact" }] },
-        { t: "Resources", l: [{ label: "Learn", to: "/learn" }, { label: "Scam Database", to: "/scam-database" }, { label: "Security Score", to: "/security-score" }, { label: "Emergency Help", to: "/emergency-help" }] },
-        { t: "Legal", l: [{ label: "Privacy Policy", to: "/privacy" }, { label: "Terms of Service", to: "/terms" }, { label: "Login", to: "/login" }, { label: "Sign Up", to: "/signup" }] },
+        { t: "Platform", l: [{ label: "Features", to: "/features" }, { label: "Pricing", to: "/pricing" }, { label: "Dashboard", to: "/dashboard" }, { label: "Analyzer", to: "/fraud-analyzer" }, { label: "🛍 Store", to: "/store", accent: "#f97316" }] },
+        { t: "Company", l: [{ label: "About", to: "/about" }, { label: "Founder", to: "/founder" }, { label: "Careers", to: "/careers" }, { label: "Threat Map", to: "/threat-map" }, { label: "Contact", to: "/contact" }] },
+        { t: "Resources", l: [{ label: "Learn", to: "/learn" }, { label: "Scam Database", to: "/scam-database" }, { label: "Blog", to: "/blog" }, { label: "Security Score", to: "/security-score" }, { label: "🪔 Kumbh 2027", to: "/kumbh-kavach", accent: "#f97316" }] },
+        { t: "Legal", l: [{ label: "Privacy Policy", to: "/privacy" }, { label: "Terms of Service", to: "/terms" }, { label: "Refund Policy", to: "/refund-policy" }, { label: "Login", to: "/login" }, { label: "Sign Up", to: "/signup" }] },
       ].map((c, i) => (
         <div key={i}>
           <div style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.white, marginBottom: 18, fontWeight: 600 }}>{c.t}</div>
           {c.l.map((l, j) => (
-            <Link key={j} to={l.to} style={{ display: "block", color: T.mutedDark, fontSize: 14, padding: "7px 0", textDecoration: "none", transition: "all 0.3s" }}
-              onMouseEnter={e => { e.target.style.color = T.white; e.target.style.transform = "translateX(4px)"; }}
-              onMouseLeave={e => { e.target.style.color = T.mutedDark; e.target.style.transform = "translateX(0)"; }}
+            <Link key={j} to={l.to} style={{ display: "block", color: l.accent || T.mutedDark, fontSize: 14, padding: "7px 0", textDecoration: "none", transition: "all 0.3s", fontWeight: l.accent ? 600 : 400 }}
+              onMouseEnter={e => { e.target.style.color = l.accent || T.white; e.target.style.transform = "translateX(4px)"; }}
+              onMouseLeave={e => { e.target.style.color = l.accent || T.mutedDark; e.target.style.transform = "translateX(0)"; }}
             >{l.label}</Link>
           ))}
         </div>
@@ -3093,6 +3098,20 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
               animation: "pulse-dot 2.4s ease-in-out infinite",
             }}>Hiring</span>
           </Link>
+          <Link to="/store" title="VRIKAAN Store — tees, Kumbh bands & merch" style={{
+            display: "inline-flex", alignItems: "center", gap: 7, padding: "8px 16px",
+            borderRadius: 8, textDecoration: "none", fontSize: 13, fontWeight: 700,
+            fontFamily: "var(--font-body)", color: "#f97316",
+            background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.35)", transition: "all 0.2s",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = "#f97316"; e.currentTarget.style.color = "#04110e"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(249,115,22,0.1)"; e.currentTarget.style.color = "#f97316"; }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+            Shop
+          </Link>
           {user ? (
             <Btn primary to="/dashboard" style={{ padding: "9px 22px", fontSize: 13 }}>Dashboard</Btn>
           ) : (
@@ -3128,6 +3147,10 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
               border: "1px solid rgba(20, 184, 166,0.4)",
               textTransform: "uppercase",
             }}>Hiring</span>
+          </Link>
+          <Link to="/store" onClick={() => setMenuOpen(false)}
+            style={{ padding: "22px 0", borderBottom: `1px solid ${T.border}`, fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 600, color: "#f97316", textDecoration: "none", letterSpacing: "-0.03em", opacity: 0, animation: `card-enter 0.5s ease forwards ${(navLinks.length + 0.5) * 0.08}s`, display: "flex", alignItems: "center", gap: 12 }}>
+            🛍 Shop
           </Link>
           <div style={{ marginTop: 40, opacity: 0, animation: `card-enter 0.5s ease forwards ${(navLinks.length + 1) * 0.08}s`, display: "flex", flexDirection: "column", gap: 12 }}>
             {user ? (

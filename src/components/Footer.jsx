@@ -113,6 +113,8 @@ const Footer = () => {
             <FooterTool to="/scam-dna">🧬 Scam DNA</FooterTool>
             <FooterTool to="/scambait">🎭 AI Scambaiter</FooterTool>
             <FooterTool to="/scam-recovery">🚨 Scam Recovery</FooterTool>
+            <FooterTool to="/kumbh-kavach">🪔 Kumbh Kavach 2027</FooterTool>
+            <FooterTool to="/store">🛍 Store</FooterTool>
           </ul>
         </div>
         )}
@@ -125,20 +127,12 @@ const Footer = () => {
             <FooterTool to="/learn">Learn Academy</FooterTool>
             <FooterTool to="/scam-feed">🔴 Live Scam Feed</FooterTool>
             <FooterTool to="/scam-registry">🔎 Scam Registry</FooterTool>
-            <FooterTool to="/kumbh-kavach">🪔 Kumbh Kavach 2027</FooterTool>
-            <FooterTool to="/store">🛍 Store</FooterTool>
-            <FooterTool to="/scam-registry">🔍 Scam Registry — check any number</FooterTool>
             <FooterTool to="/file-complaint">File a Complaint · 1930</FooterTool>
             <FooterTool to="/developers">For Developers · API</FooterTool>
             <FooterTool to="/developers/keys">API Keys</FooterTool>
             <FooterTool to="/cyber-news">Cyber News</FooterTool>
             <FooterTool to="/threats">Threat Directory</FooterTool>
             <FooterTool to="/blog">Blog</FooterTool>
-            <FooterTool to="/hi">🇮🇳 हिन्दी</FooterTool>
-            <FooterTool to="/ta">தமிழ்</FooterTool>
-            <FooterTool to="/te">తెలుగు</FooterTool>
-            <FooterTool to="/mr">मराठी</FooterTool>
-            <FooterTool to="/bn">বাংলা</FooterTool>
           </ul>
         </div>
         )}
@@ -174,6 +168,24 @@ const Footer = () => {
       {/* Email routing pills */}
       <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 20, marginTop: 8 }}>
         <EmailRouting variant="compact" />
+      </div>
+
+      {/* Languages — compact inline row (pulled out of Resources to balance cols) */}
+      <div style={{ borderTop: `1px solid ${T.border}`, paddingTop: 18, marginTop: 8, display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: 8 }}>
+        <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: T.mutedDark, marginRight: 4 }}>Read in your language:</span>
+        {[
+          { to: "/hi", label: "🇮🇳 हिन्दी" }, { to: "/ta", label: "தமிழ்" },
+          { to: "/te", label: "తెలుగు" }, { to: "/mr", label: "मराठी" }, { to: "/bn", label: "বাংলা" },
+        ].map((l) => (
+          <Link key={l.to} to={l.to} style={{
+            padding: "5px 12px", borderRadius: 100, textDecoration: "none",
+            fontSize: 12.5, fontWeight: 600, color: T.muted,
+            background: "rgba(148,163,184,0.05)", border: `1px solid ${T.border}`, transition: "all 0.2s",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.color = T.white; e.currentTarget.style.borderColor = "rgba(20,184,166,0.3)"; }}
+            onMouseLeave={e => { e.currentTarget.style.color = T.muted; e.currentTarget.style.borderColor = T.border; }}
+          >{l.label}</Link>
+        ))}
       </div>
 
       {/* Bottom */}
