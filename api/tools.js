@@ -29,6 +29,7 @@ const ACTION_TIERS = {
   "cert-verify": "free",
   "coupon-validate": "free",
   "whatsapp-inbound": "free",  // Twilio webhook — no user auth, rate-limited by phone
+  "telegram": "free",          // Telegram bot webhook — no user auth
 
   // PRO tier (AI, data-heavy, paid value)
   "scam-check":         "pro",
@@ -3104,6 +3105,67 @@ async function handleWhatsappInbound(req, res) {
   return res.status(200).send(`<?xml version="1.0" encoding="UTF-8"?><Response></Response>`);
 }
 
+// ─── TELEGRAM BOT ───────────────────────────────────────────────────
+// Second viral channel — mirrors the WhatsApp scam-check bot. Telegram POSTs
+// updates to /api/tools?tool=telegram. Reuses the WhatsApp intent parser +
+// tool dispatch + formatter; replies via the Telegram Bot API.
+//
+// Setup (once): set TELEGRAM_BOT_TOKEN (+ optional TELEGRAM_WEBHOOK_SECRET),
+// then register the webhook:
+//   https://api.telegram.org/bot<TOKEN>/setWebhook?url=https://vrikaan.com/api/tools%3Ftool%3Dtelegram&secret_token=<SECRET>
+const TG_HELP = `🛡 *VRIKAAN Cyber Defence Bot*
+
+Send me any of:
+
+📩 *scam check: <message>* — AI scam analysis
+🔓 *breach: your@email* — breach lookup
+🌐 *whois example.com* — domain lookup
+📍 *ip 8.8.8.8* — IP geo + threat
+🩸 *leak: phone-or-email* — dark-web search
+
+Or just forward any suspicious message and I'll check it.
+/help — show this again.
+Full tools + Family Plan (₹149/mo) at vrikaan.com`;
+
+async function _tgSend(chatId, text) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (!token) { console.warn("TG: TELEGRAM_BOT_TOKEN missing"); return; }
+  const url = `https://api.telegram.org/bot${token}/sendMessage`;
+  const send = (parseMode) => fetch(url, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ chat_id: chatId, text, disable_web_page_preview: true, ...(parseMode ? { parse_mode: parseMode } : {}) }),
+  });
+  try {
+    const r = await send("Markdown");
+    if (!r.ok) { await send(null); } // Markdown parse error → resend as plain text
+  } catch (e) { console.error("TG send failed:", e.message); }
+}
+
+async function handleTelegram(req, res) {
+  // Optional shared-secret check (set when registering the webhook).
+  const secret = process.env.TELEGRAM_WEBHOOK_SECRET;
+  if (secret && req.headers["x-telegram-bot-api-secret-token"] !== secret) {
+    return res.status(401).json({ ok: false });
+  }
+  const update = (typeof req.body === "object" && req.body) || {};
+  const msg = update.message || update.edited_message || update.channel_post;
+  const chatId = msg?.chat?.id;
+  let text = (msg?.text || "").trim();
+  if (!chatId || !text) return res.status(200).json({ ok: true });
+  // Telegram commands arrive as "/start", "/help", "/scam ..." — strip the
+  // leading slash (and any @botname suffix) so the WhatsApp parser matches.
+  if (text.startsWith("/")) text = text.slice(1).replace(/^(\w+)@\w+/, "$1");
+  try {
+    const { intent, payload } = _waParseIntent(text);
+    const origin = `https://${req.headers.host}`;
+    const reply = intent === "help" ? TG_HELP : _waFormat(intent, await _waCallTool(intent, payload, origin));
+    await _tgSend(chatId, reply);
+  } catch (e) {
+    console.error("telegram error:", e.message);
+  }
+  return res.status(200).json({ ok: true });
+}
+
 // ─── COUPON VALIDATE ────────────────────────────────────────────────
 // Server-side coupon lookup. Replaces client-side getDoc(coupons/CODE) which
 // let any anonymous user enumerate/probe coupon catalogue via Firestore SDK.
@@ -3702,6 +3764,7 @@ const HANDLERS = {
   "cert-verify": handleCertVerify,
   "coupon-validate": handleCouponValidate,
   "whatsapp-inbound": handleWhatsappInbound,
+  "telegram": handleTelegram,
   "security-headers": handleSecurityHeaders,
   "file-hash-check": handleFileHashCheck,
   "ai-explain": handleGeminiExplain,

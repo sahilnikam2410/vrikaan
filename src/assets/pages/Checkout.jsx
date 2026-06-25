@@ -156,7 +156,7 @@ export default function Checkout() {
   const planKey = params.get("plan") || "pro";
   const plan = plans[planKey] || plans.pro;
 
-  const [billing, setBilling] = useState("monthly");
+  const [billing, setBilling] = useState(params.get("billing") === "annual" ? "annual" : "monthly");
   const [method, setMethod] = useState("cashfree");
   const [processing, setProcessing] = useState(false);
   const [success, setSuccess] = useState(false);
