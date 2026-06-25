@@ -2979,6 +2979,7 @@ async function handleNewsletterSubscribe(req, res) {
 const WA_INTENTS = {
   "scam check": "scam-check",
   "scam:":      "scam-check",
+  "scam ":      "scam-check", // "/scam <msg>" (Telegram slash-command form)
   "breach":     "breach-check",
   "breach:":    "breach-check",
   "leak":       "leak-check",
