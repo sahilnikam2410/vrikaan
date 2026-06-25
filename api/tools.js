@@ -21,6 +21,7 @@ const ACTION_TIERS = {
   "blog-list": "free",
   "blog-get": "free",
   "blog-generate": "free", // gated internally by CRON_SECRET
+  "blog-delete": "free",   // gated internally by CRON_SECRET
   "daily-alert": "free",   // cron, gated by CRON_SECRET
   "wa-broadcast": "free",  // cron/admin, gated by CRON_SECRET
   "cert-register": "free",
@@ -2538,10 +2539,34 @@ async function _genBlogPost(fs) {
     trends = snap.docs.map((d) => { const x = d.data(); return `${x.category || "scam"}${x.tactic ? " — " + x.tactic : ""}`; }).filter(Boolean);
   } catch { /* ignore */ }
   const ctx = trends.length ? trends.join("; ") : "UPI collection-request fraud, KYC/OTP phishing, predatory loan apps, deepfake-voice family emergencies, 'digital arrest' extortion, fake job/task scams";
-  const prompt = `You are VRIKAAN's threat-intelligence editor. Write a concise, factual, India-focused scam-awareness article based on these currently trending scams: ${ctx}.
+  // Rotate a specific topic + angle each run so posts don't collapse into
+  // near-duplicate "trending scams" roundups (thin/dup content hurts SEO).
+  const TOPICS = [
+    "the 'digital arrest' extortion scam (fake CBI/police video calls)",
+    "UPI collection-request & 'wrong transfer refund' fraud",
+    "predatory instant-loan apps and recovery-agent harassment (RBI rules)",
+    "deepfake-voice 'family emergency' calls targeting elders",
+    "fake job / work-from-home & task-based investment scams",
+    "KYC-update & electricity-bill SMS phishing",
+    "QR-code & fake-merchant payment scams",
+    "OTP & SIM-swap account-takeover fraud",
+    "fake customer-care numbers found via Google search",
+    "courier / FedEx 'parcel seized' scam calls",
+    "matrimonial & romance scams on dating apps",
+    "fake investment / stock-tip Telegram & WhatsApp groups",
+  ];
+  const ANGLES = [
+    { f: "a step-by-step 'how to spot it' guide", cat: "Tips" },
+    { f: "a real-world walkthrough of how the scam unfolds, then how to defend", cat: "Threats" },
+    { f: "a 'just got hit — what to do in the next 30 minutes' recovery playbook", cat: "Tutorials" },
+    { f: "a myth-vs-fact explainer that corrects common misconceptions", cat: "Tips" },
+  ];
+  const topic = TOPICS[Math.floor(Math.random() * TOPICS.length)];
+  const angle = ANGLES[Math.floor(Math.random() * ANGLES.length)];
+  const prompt = `You are VRIKAAN's threat-intelligence editor. Write a concise, factual, India-focused article specifically about ${topic}. Format it as ${angle.f}. Other scams trending right now (for context only, stay focused on the main topic): ${ctx}.
 Return STRICT JSON, no markdown:
-{"title":"specific compelling title","category":"Threats"|"Tips"|"News"|"Tutorials","excerpt":"1-2 sentence summary","tags":["3-5 short tags"],"readTime":"X min read","sections":[{"heading":"...","text":"90-130 words"}]}
-Use exactly 4 sections. Practical Indian context (UPI, 1930 helpline, cybercrime.gov.in, RBI). Do NOT invent statistics.`;
+{"title":"specific compelling title (must reference the exact scam, not a generic 'trending scams' headline)","category":"${angle.cat}","excerpt":"1-2 sentence summary","tags":["3-5 short tags"],"readTime":"X min read","sections":[{"heading":"...","text":"90-130 words"}]}
+Use exactly 4 sections. Practical Indian context (UPI, 1930 helpline, cybercrime.gov.in, RBI). Do NOT invent statistics. The title must be unique and specific to ${topic}.`;
   const r = await callGemini(prompt, { temperature: 0.5, maxOutputTokens: 2600, json: true });
   if (!r.ok) return { ok: false, error: r.detail || "ai" };
   const p = tryParseJson(r.text) || {};
@@ -2568,6 +2593,23 @@ async function handleBlogGenerate(req, res) {
   const fs = getAdminFirestore();
   const out = await _genBlogPost(fs);
   return res.status(out.ok ? 200 : 500).json(out);
+}
+
+// Admin prune: delete a blog post by slug (CRON_SECRET gated). Used to clear
+// duplicate / low-quality auto-posts. Accepts ?slug= or ?slugs=a,b,c.
+async function handleBlogDelete(req, res) {
+  const key = req.query.key || req.body?.key;
+  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+  const raw = String(req.query.slug || req.query.slugs || req.body?.slug || req.body?.slugs || "");
+  const slugs = raw.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 50);
+  if (!slugs.length) return res.status(400).json({ error: "slug required" });
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "no-db" });
+  const deleted = [];
+  for (const slug of slugs) {
+    try { await fs.collection("blog_posts").doc(slug).delete(); deleted.push(slug); } catch { /* skip */ }
+  }
+  return res.status(200).json({ ok: true, deleted });
 }
 
 async function handleBlogList(req, res) {
@@ -3616,6 +3658,7 @@ const HANDLERS = {
   "blog-list": handleBlogList,
   "blog-get": handleBlogGet,
   "blog-generate": handleBlogGenerate,
+  "blog-delete": handleBlogDelete,
   "daily-alert": handleDailyAlert,
   "wa-broadcast": handleWaBroadcast,
   "cert-register": handleCertRegister,
@@ -3664,7 +3707,7 @@ const HANDLERS = {
 };
 
 // Some tools accept GET (ip lookup, cron pings); others require POST.
-const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "blog-generate", "daily-alert", "wa-broadcast", "cert-verify"]);
+const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "blog-generate", "blog-delete", "daily-alert", "wa-broadcast", "cert-verify"]);
 // Tools that bypass shared rate-limit (cron uses its own auth)
 const RL_EXEMPT = new Set(["weekly-digest", "daily-alert", "wa-broadcast"]);
 
