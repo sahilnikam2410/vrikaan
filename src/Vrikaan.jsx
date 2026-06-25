@@ -2827,6 +2827,7 @@ const Footer = () => (
             { s: "GH", href: "https://github.com/sahilnikam2410/vrikaan" },
             { s: "LI", href: "https://www.linkedin.com/company/vrikaan-ai-cybersecurity" },
             { s: "Ig", href: "https://www.instagram.com/vrikaan_official/" },
+            { s: "Tg", href: "https://t.me/VrikaanBot" },
           ].map((o, i) => (
             <a key={i} href={o.href} target="_blank" rel="noopener noreferrer" style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(148,163,184,0.04)", border: `1px solid ${T.border}`, display: "flex", alignItems: "center", justifyContent: "center", color: T.mutedDark, fontSize: 11, fontFamily: "var(--font-mono)", fontWeight: 600, cursor: "pointer", transition: "all 0.3s", textDecoration: "none" }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = "rgba(99,102,241,0.2)"; e.currentTarget.style.color = T.white; }}

@@ -134,6 +134,12 @@ const Footer = () => {
             <FooterTool to="/threats">Threat Directory</FooterTool>
             <FooterTool to="/blog">Blog</FooterTool>
             <FooterTool to="/badge">🛡 Trust Badge</FooterTool>
+            <li style={{ marginBottom: 10 }}>
+              <a href="https://t.me/VrikaanBot" target="_blank" rel="noopener noreferrer" style={{ color: T.mutedDark, textDecoration: "none", fontSize: 14, fontFamily: "var(--font-body)", transition: "color 0.2s" }}
+                onMouseEnter={e => e.currentTarget.style.color = T.white}
+                onMouseLeave={e => e.currentTarget.style.color = T.mutedDark}
+              >💬 Telegram Bot</a>
+            </li>
           </ul>
         </div>
         )}
