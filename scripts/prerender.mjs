@@ -176,6 +176,43 @@ function extractArticles() {
     .filter((a) => a.title);
 }
 
+// ---------- auto-blog posts from Firestore (build-time) ----------
+//
+// Weekly cron writes AI posts into the `blog_posts` collection. Those are
+// rendered client-side, so without baking static shells here they'd never
+// reach crawlers (no sitemap entry, no per-page meta). This pulls published
+// posts at build and emits dist/blog/<slug>/index.html — which the sitemap
+// scanner + IndexNow ping below then include automatically.
+//
+// Graceful: FIREBASE_SERVICE_ACCOUNT is a Sensitive Vercel var (empty on
+// local `vercel env pull`), so local builds simply skip this. Vercel's build
+// has the real value and fetches for real.
+async function fetchAutoPosts() {
+  const raw = process.env.FIREBASE_SERVICE_ACCOUNT;
+  if (!raw) {
+    console.log("[prerender] no FIREBASE_SERVICE_ACCOUNT — skipping auto-blog shells");
+    return [];
+  }
+  try {
+    const { initializeApp, getApps, cert } = await import("firebase-admin/app");
+    const { getFirestore } = await import("firebase-admin/firestore");
+    if (!getApps().length) {
+      const text = raw.trim().startsWith("{") ? raw : Buffer.from(raw, "base64").toString("utf8");
+      const creds = JSON.parse(text);
+      if (creds.private_key?.includes("\\n")) creds.private_key = creds.private_key.replace(/\\n/g, "\n");
+      initializeApp({ credential: cert(creds) });
+    }
+    const db = getFirestore();
+    const snap = await db.collection("blog_posts").orderBy("createdAtMs", "desc").limit(200).get();
+    const posts = snap.docs.map((d) => d.data()).filter((x) => x && x.published && x.slug && x.title);
+    console.log(`[prerender] fetched ${posts.length} auto-blog posts from Firestore`);
+    return posts;
+  } catch (e) {
+    console.warn(`[prerender] auto-blog fetch skipped: ${e.message}`);
+    return [];
+  }
+}
+
 // ---------- primary / tool pages ----------
 //
 // Keep this list narrow — only pages we actively want perfect social
@@ -666,6 +703,7 @@ async function main() {
 
   // Blog posts (extracted from Blog.jsx)
   const articles = extractArticles();
+  const staticSlugs = new Set(articles.map((a) => slugify(a.title)));
   for (const a of articles) {
     const slug = slugify(a.title);
     const canonical = `${SITE}/blog/${slug}`;
@@ -711,6 +749,58 @@ async function main() {
             name: a.title,
             item: canonical,
           },
+        ],
+      },
+    ];
+    const html = rewriteMeta(baseHtml, {
+      title: pageTitle,
+      description,
+      canonical,
+      ogImage,
+      ogType: "article",
+      jsonLd,
+    });
+    writeRoute(`/blog/${slug}`, html);
+    count++;
+  }
+
+  // Auto-blog posts (Firestore) — skip slugs already covered by Blog.jsx.
+  const autoPosts = await fetchAutoPosts();
+  for (const a of autoPosts) {
+    const slug = slugify(a.slug || a.title);
+    if (!slug || staticSlugs.has(slug)) continue;
+    const canonical = `${SITE}/blog/${slug}`;
+    const pageTitle = `${a.title} | ${SITE_NAME}`;
+    const description = a.excerpt || (a.sections?.[0]?.text || "").slice(0, 200);
+    const ogImage = ogUrl({
+      title: a.title,
+      subtitle: description?.slice(0, 80),
+      category: a.category || "Threats",
+    });
+    const jsonLd = [
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: a.title,
+        description,
+        author: { "@type": "Organization", name: a.author || SITE_NAME },
+        publisher: {
+          "@type": "Organization",
+          name: SITE_NAME,
+          logo: { "@type": "ImageObject", url: `${SITE}/favicon.svg` },
+        },
+        mainEntityOfPage: canonical,
+        articleSection: a.category || "Threats",
+        keywords: Array.isArray(a.tags) ? a.tags.join(", ") : "",
+        image: ogImage,
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: `${SITE}/` },
+          { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE}/blog` },
+          { "@type": "ListItem", position: 3, name: a.title, item: canonical },
         ],
       },
     ];
