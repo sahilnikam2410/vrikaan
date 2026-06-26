@@ -1761,23 +1761,6 @@ const ThreatMapSection = () => {
         </div>
       </Reveal>
 
-      {/* 3D Globe */}
-      <Reveal delay={0.3}>
-        <div style={{ marginTop: 32, display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
-          <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, transparent, ${T.border})` }} />
-          <Badge color={T.mutedDark}>Live Threat Visualization</Badge>
-          <div style={{ height: 1, flex: 1, background: `linear-gradient(90deg, ${T.border}, transparent)` }} />
-        </div>
-        <div style={{ position: "relative", height: 500, borderRadius: 20, overflow: "hidden", border: `1px solid ${T.border}`, background: "radial-gradient(ellipse at 50% 50%, rgba(20, 184, 166,0.02) 0%, #060a14 70%)" }}>
-          <Suspense fallback={<div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}><GlobePlaceholder size={400} /></div>}>
-            <CyberGlobe size={500} flat />
-          </Suspense>
-          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, textAlign: "center", padding: "36px 0 20px", background: "linear-gradient(transparent, rgba(3,7,18,0.9))", pointerEvents: "none" }}>
-            <div style={{ fontFamily: "var(--font-body)", fontSize: 12, color: T.mutedDark, marginBottom: 6 }}>Global operations detected</div>
-            <div style={{ fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 800, color: T.accent, letterSpacing: "-0.02em" }}>{attackCount.toLocaleString()}</div>
-          </div>
-        </div>
-      </Reveal>
     </Section>
   );
 };
