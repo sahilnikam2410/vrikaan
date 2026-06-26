@@ -192,6 +192,7 @@ const DnsLeakTest = lazy(() => import("./assets/pages/DnsLeakTest.jsx"));
 const TwoFactorGuide = lazy(() => import("./assets/pages/TwoFactorGuide.jsx"));
 const Referral = lazy(() => import("./assets/pages/Referral.jsx"));
 const Badge = lazy(() => import("./assets/pages/Badge.jsx"));
+const Trust = lazy(() => import("./assets/pages/Trust.jsx"));
 const SecurityAudit = lazy(() => import("./assets/pages/SecurityAudit.jsx"));
 const ThreatDirectory = lazy(() => import("./assets/pages/ThreatDirectory.jsx"));
 const ThreatDetail = lazy(() => import("./assets/pages/ThreatDetail.jsx"));
@@ -257,6 +258,7 @@ function AppRoutes() {
             <Route path="/parent-dashboard" element={<ProtectedRoute><FamilyDashboard /></ProtectedRoute>} />
             <Route path="/scam-check" element={<ScamCheck />} />
             <Route path="/badge" element={<Badge />} />
+            <Route path="/trust" element={<Trust />} />
             <Route path="/deepfake-audio" element={<DeepfakeAudio />} />
             <Route path="/vulnerability-scan" element={<VulnerabilityScan />} />
             <Route path="/admin/soc" element={<ProtectedRoute adminOnly><SocDashboard /></ProtectedRoute>} />

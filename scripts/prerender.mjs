@@ -703,6 +703,14 @@ const PRIMARY_PAGES = [
     ogSubtitle: "Free trust badge for your website",
     ogCategory: "Partners",
   },
+  {
+    path: "/trust",
+    title: "Trust & Security Center",
+    description:
+      "How VRIKAAN protects your data: AES-256 encryption, India data residency (AWS Mumbai), DPDP Act 2023 alignment, responsible disclosure, sub-processors & security practices. Built for banks, fintech & enterprises.",
+    ogSubtitle: "Security, compliance & data protection",
+    ogCategory: "Trust",
+  },
 ];
 
 // ---------- main ----------

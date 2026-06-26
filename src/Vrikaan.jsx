@@ -2839,7 +2839,7 @@ const Footer = () => (
         { t: "Platform", l: [{ label: "Features", to: "/features" }, { label: "Pricing", to: "/pricing" }, { label: "Dashboard", to: "/dashboard" }, { label: "Analyzer", to: "/fraud-analyzer" }, { label: "🛍 Store", to: "/store", accent: "#f97316" }] },
         { t: "Company", l: [{ label: "About", to: "/about" }, { label: "Founder", to: "/founder" }, { label: "Careers", to: "/careers" }, { label: "Threat Map", to: "/threat-map" }, { label: "Contact", to: "/contact" }] },
         { t: "Resources", l: [{ label: "Learn", to: "/learn" }, { label: "Scam Database", to: "/scam-database" }, { label: "Blog", to: "/blog" }, { label: "Security Score", to: "/security-score" }, { label: "🪔 Kumbh 2027", to: "/kumbh-kavach", accent: "#f97316" }] },
-        { t: "Legal", l: [{ label: "Privacy Policy", to: "/privacy" }, { label: "Terms of Service", to: "/terms" }, { label: "Refund Policy", to: "/refund-policy" }, { label: "Login", to: "/login" }, { label: "Sign Up", to: "/signup" }] },
+        { t: "Legal", l: [{ label: "Privacy Policy", to: "/privacy" }, { label: "Terms of Service", to: "/terms" }, { label: "🛡 Trust & Security", to: "/trust", accent: "#14b8a6" }, { label: "Refund Policy", to: "/refund-policy" }, { label: "Sign Up", to: "/signup" }] },
       ].map((c, i) => (
         <div key={i}>
           <div style={{ fontFamily: "var(--font-body)", fontSize: 13, color: T.white, marginBottom: 18, fontWeight: 600 }}>{c.t}</div>

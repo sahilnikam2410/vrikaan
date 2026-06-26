@@ -154,6 +154,7 @@ const Footer = () => {
             <FooterLink to="/contact">Contact</FooterLink>
             <FooterLink to="/features">Features</FooterLink>
             <FooterLink to="/careers">Careers · We are hiring</FooterLink>
+            <FooterLink to="/trust">Trust & Security</FooterLink>
             <FooterLink to="/press">Press</FooterLink>
           </ul>
         </div>
