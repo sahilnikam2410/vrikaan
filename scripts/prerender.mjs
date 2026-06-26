@@ -146,10 +146,9 @@ function writeRoute(route, html) {
 // ---------- extract blog article metadata from Blog.jsx ----------
 
 function extractArticles() {
-  const src = fs.readFileSync(
-    path.join(ROOT, "src/assets/pages/Blog.jsx"),
-    "utf8"
-  );
+  const src = fs
+    .readFileSync(path.join(ROOT, "src/assets/pages/Blog.jsx"), "utf8")
+    .replace(/\r\n/g, "\n"); // normalize CRLF (Windows working copies) → LF
   const m = src.match(/export const articles = \[([\s\S]*?)\n\];/);
   if (!m) throw new Error("[prerender] articles array not found in Blog.jsx");
   const body = m[1];
@@ -967,6 +966,40 @@ async function main() {
   }
 
   console.log(`[prerender] wrote ${count} static HTML shells into dist/`);
+
+  // ── RSS feed (/feed.xml) from blog posts — syndication + feed readers ──
+  const WWW = "https://www.vrikaan.com";
+  const feedItems = [
+    ...articles.map((a) => ({ title: a.title, slug: slugify(a.title), desc: a.excerpt || "", cat: a.category || "", date: a.date ? new Date(a.date) : new Date() })),
+    ...autoPosts
+      .filter((a) => !staticSlugs.has(slugify(a.slug || a.title)))
+      .map((a) => ({ title: a.title, slug: slugify(a.slug || a.title), desc: a.excerpt || "", cat: a.category || "", date: a.createdAtMs ? new Date(a.createdAtMs) : new Date() })),
+  ]
+    .filter((it) => it.title && it.slug)
+    .sort((x, y) => y.date - x.date)
+    .slice(0, 40);
+  const rssXml = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>VRIKAAN Blog — Scam &amp; Cyber-Safety, India</title>
+<link>${WWW}/blog</link>
+<description>AI scam-awareness, fraud alerts and cyber-safety guides for India, by VRIKAAN.</description>
+<language>en-in</language>
+<lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+<atom:link href="${WWW}/feed.xml" rel="self" type="application/rss+xml"/>
+${feedItems.map((it) => `<item>
+<title>${htmlEscape(it.title)}</title>
+<link>${WWW}/blog/${it.slug}</link>
+<guid isPermaLink="true">${WWW}/blog/${it.slug}</guid>
+${it.cat ? `<category>${htmlEscape(it.cat)}</category>` : ""}
+<pubDate>${(isNaN(it.date) ? new Date() : it.date).toUTCString()}</pubDate>
+<description>${htmlEscape(it.desc)}</description>
+</item>`).join("\n")}
+</channel>
+</rss>
+`;
+  fs.writeFileSync(path.join(DIST, "feed.xml"), rssXml);
+  console.log(`[prerender] feed.xml: ${feedItems.length} items`);
 
   // ── Auto-generate sitemap.xml from every prerendered route (never stale) ──
   const NOINDEX = new Set([
