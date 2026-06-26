@@ -1032,7 +1032,7 @@ ${it.cat ? `<category>${htmlEscape(it.cat)}</category>` : ""}
   // Key file is served at https://www.vrikaan.com/<KEY>.txt (public/<KEY>.txt).
   // Build-time ping is fine — bots fetch the URLs minutes later, by which point
   // the new deploy is live. Non-fatal: a failed ping never breaks the build.
-  const INDEXNOW_KEY = "48dd394b7a0b9fbd012c1c5b77bf1ad2";
+  const INDEXNOW_KEY = "5c85e6fe592581035abc4b28a57706fc";
   try {
     const host = "www.vrikaan.com";
     const urlList = [...uniq.map((u) => `${base}${u === "/" ? "/" : u}`), `${base}/feed.xml`];
