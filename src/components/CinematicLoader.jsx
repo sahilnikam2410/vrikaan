@@ -457,7 +457,6 @@ export default function CinematicLoader({ onComplete }) {
       }} />
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Rajdhani:wght@300;400;600&display=swap');
 
         @keyframes loaderRotateCW  { to { transform: rotate(360deg); } }
         @keyframes loaderRotateCCW { to { transform: rotate(-360deg); } }
