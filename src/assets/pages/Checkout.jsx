@@ -242,6 +242,7 @@ export default function Checkout() {
 
   const handlePaymentSuccess = useCallback((verifiedPlan, amount, txnId) => {
     updatePlan(verifiedPlan || planKey);
+    try { window.DD_RUM?.addAction?.("purchase", { plan: verifiedPlan || planKey, amount: amount || price, billing }); } catch { /* */ }
     const creditData = JSON.parse(localStorage.getItem("vrikaan_ai_credits") || "{}");
     creditData.plan = verifiedPlan === "pro" ? "pro" : verifiedPlan === "enterprise" ? "unlimited" : verifiedPlan === "family" ? "family" : "starter";
     creditData.used = 0;

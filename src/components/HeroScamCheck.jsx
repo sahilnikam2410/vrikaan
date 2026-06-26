@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LuShieldAlert, LuShieldCheck, LuTriangleAlert, LuCircleAlert, LuArrowRight, LuShare2 } from "react-icons/lu";
 import { shareScamCard } from "../lib/scamCard";
+import { track } from "../lib/track";
 
 // Inline hero scam-checker — the "serious product" moment. Paste a message,
 // get an instant verdict + live community count, feeds the Scam DNA network.
@@ -23,6 +24,7 @@ export default function HeroScamCheck() {
   async function warnFamily() {
     if (!res) return;
     setSharing(true);
+    track("warn_family_share", { verdict: res.verdict, source: "hero" });
     try { await shareScamCard({ verdict: res.verdict, riskScore: res.riskScore, snippet: text }); }
     catch { /* ignore */ }
     setSharing(false);
@@ -39,6 +41,7 @@ export default function HeroScamCheck() {
       const d = await r.json();
       if (!r.ok) throw new Error(d.error || "Try again");
       setRes(d);
+      track("scam_check", { verdict: d.verdict, risk: d.riskScore, source: "hero" });
     } catch (e) { setErr(e.message); }
     setLoading(false);
   }

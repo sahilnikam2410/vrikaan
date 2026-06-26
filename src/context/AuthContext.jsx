@@ -299,6 +299,7 @@ export function AuthProvider({ children }) {
 
       sendWelcomeEmail(fullName, data.email);
       recordReferral();
+      try { window.DD_RUM?.addAction?.("signup", { method: "email" }); } catch { /* */ }
 
       return { success: true, user: merged };
     } catch (error) {
