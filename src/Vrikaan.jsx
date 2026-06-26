@@ -2836,7 +2836,7 @@ const Footer = () => (
         </div>
       </div>
       {[
-        { t: "Platform", l: [{ label: "Features", to: "/features" }, { label: "Pricing", to: "/pricing" }, { label: "Dashboard", to: "/dashboard" }, { label: "Analyzer", to: "/fraud-analyzer" }, { label: "🛍 Store", to: "/store", accent: "#f97316" }] },
+        { t: "Platform", l: [{ label: "Solutions", to: "/solutions" }, { label: "Features", to: "/features" }, { label: "Pricing", to: "/pricing" }, { label: "Dashboard", to: "/dashboard" }, { label: "🛍 Store", to: "/store", accent: "#f97316" }] },
         { t: "Company", l: [{ label: "About", to: "/about" }, { label: "Founder", to: "/founder" }, { label: "Careers", to: "/careers" }, { label: "Threat Map", to: "/threat-map" }, { label: "Contact", to: "/contact" }] },
         { t: "Resources", l: [{ label: "Learn", to: "/learn" }, { label: "Scam Database", to: "/scam-database" }, { label: "Blog", to: "/blog" }, { label: "Security Score", to: "/security-score" }, { label: "🪔 Kumbh 2027", to: "/kumbh-kavach", accent: "#f97316" }] },
         { t: "Legal", l: [{ label: "Privacy Policy", to: "/privacy" }, { label: "Terms of Service", to: "/terms" }, { label: "🛡 Trust & Security", to: "/trust", accent: "#14b8a6" }, { label: "Refund Policy", to: "/refund-policy" }, { label: "Sign Up", to: "/signup" }] },
@@ -3078,6 +3078,14 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
               onMouseEnter={e => e.target.style.color = T.white}
               onMouseLeave={e => e.target.style.color = T.mutedDark}>{l.label}</span>
           ))}
+          <Link to="/solutions" className="nav-link-animated" style={{
+            fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 500,
+            color: T.mutedDark, textDecoration: "none",
+            transition: "color 0.3s", position: "relative", padding: "4px 0",
+          }}
+            onMouseEnter={e => e.currentTarget.style.color = T.white}
+            onMouseLeave={e => e.currentTarget.style.color = T.mutedDark}
+          >Solutions</Link>
           <Link to="/careers" className="nav-link-animated" style={{
             fontFamily: "var(--font-body)", fontSize: 14, fontWeight: 500,
             color: T.mutedDark, textDecoration: "none",
@@ -3146,6 +3154,10 @@ input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important; }
               border: "1px solid rgba(20, 184, 166,0.4)",
               textTransform: "uppercase",
             }}>Hiring</span>
+          </Link>
+          <Link to="/solutions" onClick={() => setMenuOpen(false)}
+            style={{ padding: "22px 0", borderBottom: `1px solid ${T.border}`, fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 600, color: T.white, textDecoration: "none", letterSpacing: "-0.03em", opacity: 0, animation: `card-enter 0.5s ease forwards ${(navLinks.length + 0.4) * 0.08}s` }}>
+            Solutions
           </Link>
           <Link to="/store" onClick={() => setMenuOpen(false)}
             style={{ padding: "22px 0", borderBottom: `1px solid ${T.border}`, fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 600, color: "#f97316", textDecoration: "none", letterSpacing: "-0.03em", opacity: 0, animation: `card-enter 0.5s ease forwards ${(navLinks.length + 0.5) * 0.08}s`, display: "flex", alignItems: "center", gap: 12 }}>

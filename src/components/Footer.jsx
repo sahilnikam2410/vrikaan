@@ -149,6 +149,7 @@ const Footer = () => {
           <h4 style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: T.white, letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 20 }}>Company</h4>
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             <FooterLink to="/about">About</FooterLink>
+            <FooterLink to="/solutions">Solutions</FooterLink>
             <FooterLink to="/founder">Founder</FooterLink>
             <FooterLink to="/pricing">Pricing</FooterLink>
             <FooterLink to="/contact">Contact</FooterLink>

@@ -711,6 +711,14 @@ const PRIMARY_PAGES = [
     ogSubtitle: "Security, compliance & data protection",
     ogCategory: "Trust",
   },
+  {
+    path: "/solutions",
+    title: "Solutions by Industry",
+    description:
+      "AI-powered cyber-defense built for Indian banks, fintech, government, enterprises and families. 24×7 SOC, Scam DNA threat intelligence, UPI fraud protection and more.",
+    ogSubtitle: "Cyber defense for every sector in India",
+    ogCategory: "Solutions",
+  },
 ];
 
 // ---------- main ----------
@@ -970,6 +978,29 @@ async function main() {
       jsonLd,
     });
     writeRoute(`/threat/${t.slug}`, html);
+    count++;
+  }
+
+  // Industry/Solutions vertical pages (from src/data/solutions.js)
+  const solMod = await import(pathToFileURL(path.join(ROOT, "src/data/solutions.js")).href);
+  for (const s of (solMod.SOLUTIONS || [])) {
+    const canonical = `${SITE}/solutions/${s.slug}`;
+    const description = `${s.tagline} ${s.intro}`.slice(0, 280);
+    const ogImage = ogUrl({ title: s.name, subtitle: s.tagline?.slice(0, 80), category: "Solutions" });
+    const jsonLd = [{
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: `${s.name} — VRIKAAN`,
+      description,
+      provider: { "@type": "Organization", name: SITE_NAME, url: SITE },
+      areaServed: "IN",
+      url: canonical,
+    }];
+    const html = rewriteMeta(baseHtml, {
+      title: `${s.name} — Cyber Defense Solutions | ${SITE_NAME}`,
+      description, canonical, ogImage, ogType: "website", jsonLd,
+    });
+    writeRoute(`/solutions/${s.slug}`, html);
     count++;
   }
 
