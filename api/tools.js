@@ -23,6 +23,7 @@ const ACTION_TIERS = {
   "blog-generate": "free", // gated internally by CRON_SECRET
   "blog-delete": "free",   // gated internally by CRON_SECRET
   "referral-record": "free", // attributes a signup to a referrer (auth required)
+  "scamsig-delete": "free",  // admin purge of scamSignatures docs (CRON_SECRET)
   "daily-alert": "free",   // cron, gated by CRON_SECRET
   "wa-broadcast": "free",  // cron/admin, gated by CRON_SECRET
   "cert-register": "free",
@@ -2614,6 +2615,26 @@ async function handleBlogDelete(req, res) {
   return res.status(200).json({ ok: true, deleted });
 }
 
+// Admin purge of scamSignatures docs (CRON_SECRET gated). Used to remove test
+// / junk entries so they stop generating indexed /lookup pages. Accepts
+// ?ids=identifier1,identifier2 (raw identifiers; doc id = id_<identifier>) or
+// full doc ids beginning with id_/sig_.
+async function handleScamSigDelete(req, res) {
+  const key = req.query.key || req.body?.key;
+  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+  const raw = String(req.query.ids || req.query.id || req.body?.ids || req.body?.id || "");
+  const items = raw.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 50);
+  if (!items.length) return res.status(400).json({ error: "ids required" });
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "no-db" });
+  const deleted = [];
+  for (const it of items) {
+    const docId = /^(id_|sig_)/.test(it) ? it : `id_${it}`;
+    try { await fs.collection("scamSignatures").doc(docId.slice(0, 200)).delete(); deleted.push(docId); } catch { /* skip */ }
+  }
+  return res.status(200).json({ ok: true, deleted });
+}
+
 // ─── REFERRAL ATTRIBUTION ─────────────────────────────────────────────
 // Called once right after a referred user signs up (Authorization: Bearer
 // <Firebase ID token>, body { code }). Resolves the referrer by their public
@@ -3759,6 +3780,7 @@ const HANDLERS = {
   "blog-generate": handleBlogGenerate,
   "blog-delete": handleBlogDelete,
   "referral-record": handleReferralRecord,
+  "scamsig-delete": handleScamSigDelete,
   "daily-alert": handleDailyAlert,
   "wa-broadcast": handleWaBroadcast,
   "cert-register": handleCertRegister,
@@ -3808,7 +3830,7 @@ const HANDLERS = {
 };
 
 // Some tools accept GET (ip lookup, cron pings); others require POST.
-const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "blog-generate", "blog-delete", "daily-alert", "wa-broadcast", "cert-verify"]);
+const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "blog-generate", "blog-delete", "scamsig-delete", "daily-alert", "wa-broadcast", "cert-verify"]);
 // Tools that bypass shared rate-limit (cron uses its own auth)
 const RL_EXEMPT = new Set(["weekly-digest", "daily-alert", "wa-broadcast"]);
 
