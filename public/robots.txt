@@ -3,4 +3,6 @@ Allow: /
 Disallow: /dashboard
 Disallow: /admin
 
-Sitemap: https://vrikaan.com/sitemap.xml
+Sitemap: https://www.vrikaan.com/sitemap.xml
+
+# RSS feed: https://www.vrikaan.com/feed.xml

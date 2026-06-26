@@ -1035,7 +1035,7 @@ ${it.cat ? `<category>${htmlEscape(it.cat)}</category>` : ""}
   const INDEXNOW_KEY = "48dd394b7a0b9fbd012c1c5b77bf1ad2";
   try {
     const host = "www.vrikaan.com";
-    const urlList = uniq.map((u) => `${base}${u === "/" ? "/" : u}`);
+    const urlList = [...uniq.map((u) => `${base}${u === "/" ? "/" : u}`), `${base}/feed.xml`];
     const res = await fetch("https://api.indexnow.org/indexnow", {
       method: "POST",
       headers: { "Content-Type": "application/json; charset=utf-8" },
