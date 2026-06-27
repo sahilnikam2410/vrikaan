@@ -28,8 +28,10 @@ jobs:
         run: node scripts/backup-firestore.js
 
       - name: Upload backup artifact
+        if: success() # skip when the backup step failed (avoids a misleading "no files" error)
         uses: actions/upload-artifact@v4
         with:
           name: firestore-backup-${{ github.run_id }}
           path: backups/
           retention-days: 30
+          if-no-files-found: error

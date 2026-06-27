@@ -35,11 +35,20 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(__dirname, "..");
 
 async function loadServiceAccount() {
+  // `::error::` makes this surface as a GitHub Actions annotation, not just a log line.
   if (process.env.FIREBASE_ADMIN_KEY) {
+    const raw = process.env.FIREBASE_ADMIN_KEY.trim();
+    // Allow either raw JSON or base64-encoded JSON (matches the Vercel SA handling).
+    const text = raw.startsWith("{") ? raw : Buffer.from(raw, "base64").toString("utf8");
     try {
-      return JSON.parse(process.env.FIREBASE_ADMIN_KEY);
+      const sa = JSON.parse(text);
+      if (!sa.private_key || !sa.client_email) {
+        console.error("::error::FIREBASE_ADMIN_KEY parsed but is missing private_key/client_email — paste the FULL service-account JSON.");
+        process.exit(1);
+      }
+      return sa;
     } catch (e) {
-      console.error("FIREBASE_ADMIN_KEY is not valid JSON:", e.message);
+      console.error(`::error::FIREBASE_ADMIN_KEY is not valid JSON (${e.message}). Paste the full service-account JSON as the secret value (one line).`);
       process.exit(1);
     }
   }
@@ -48,8 +57,7 @@ async function loadServiceAccount() {
     const raw = await fs.readFile(localPath, "utf-8");
     return JSON.parse(raw);
   } catch {
-    console.error(`No FIREBASE_ADMIN_KEY env var, and ${localPath} not found.`);
-    console.error("Supply one of these before running.");
+    console.error("::error::FIREBASE_ADMIN_KEY secret is not set (and no local serviceAccount.json). Add it in GitHub → Settings → Secrets and variables → Actions → New repository secret, name FIREBASE_ADMIN_KEY, value = full service-account JSON.");
     process.exit(1);
   }
 }
