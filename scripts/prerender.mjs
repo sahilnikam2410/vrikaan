@@ -743,6 +743,30 @@ const PRIMARY_PAGES = [
     ogSubtitle: "Resell, embed or co-brand VRIKAAN",
     ogCategory: "Partners",
   },
+  {
+    path: "/scam-registry",
+    title: "Scam Number & UPI Registry — Check Any Scam",
+    description:
+      "Search India's crowdsourced scam registry. Check if a phone number, UPI ID or link is a known scam — powered by VRIKAAN's Scam DNA network. UPI fraud, phishing, loan-app & vishing.",
+    ogSubtitle: "Check any number, UPI or link · free",
+    ogCategory: "Scam DNA",
+  },
+  {
+    path: "/scam-dna",
+    title: "Scam DNA — India's Live Scam-Immune Network",
+    description:
+      "Paste any suspicious SMS, WhatsApp or UPI request — VRIKAAN's AI fingerprints it and warns your whole family. Free scam check powered by a crowdsourced threat network. India-first.",
+    ogSubtitle: "AI scam fingerprinting · crowdsourced",
+    ogCategory: "Scam DNA",
+  },
+  {
+    path: "/scambait",
+    title: "AI Scambaiter — Waste a Scammer's Time",
+    description:
+      "Let VRIKAAN's AI scambaiter reply to scammers and waste their time while quietly extracting their UPI IDs, numbers and links into the Scam DNA network. Fight back, safely.",
+    ogSubtitle: "AI wastes scammers' time · India-first",
+    ogCategory: "Scam DNA",
+  },
 ];
 
 // ---------- main ----------
