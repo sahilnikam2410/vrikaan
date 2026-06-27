@@ -8,13 +8,13 @@ import { getToolTier, userMeetsTier, tierLabel, tierColor } from "../lib/toolTie
 import UpgradeModal from "./UpgradeModal";
 import ToolIcon from "../lib/toolIcons.jsx";
 import { toolsMenu, stripEmoji } from "../lib/toolsCatalog";
+import { SOLUTIONS } from "../data/solutions";
 
 const TD = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", accent: "#6366f1", cyan: "#14b8a6", border: "rgba(148,163,184,0.08)" };
 const TL = { bg: "#f8fafc", white: "#0f172a", muted: "#475569", accent: "#6366f1", cyan: "#0d9488", border: "rgba(15,23,42,0.08)" };
 
 
 const mainLinks = [
-  { to: "/solutions", label: "Solutions" },
   { to: "/learn", label: "Learn" },
   { to: "/kumbh-kavach", label: "Kumbh 2027", badge: "New" },
   { to: "/blog", label: "Blog" },
@@ -69,6 +69,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const [solOpen, setSolOpen] = useState(false);
   const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -89,6 +90,7 @@ const Navbar = () => {
   const markAllRead = () => user?.uid && notifMarkAll(user.uid);
   const dismissNotif = (id) => user?.uid && dismissNotification(user.uid, id);
   const dropRef = useRef(null);
+  const solRef = useRef(null);
   const notifRef = useRef(null);
   const searchRef = useRef(null);
   const searchInputRef = useRef(null);
@@ -105,12 +107,13 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  useEffect(() => { setOpen(false); setToolsOpen(false); setMobileToolsOpen(false); setNotifOpen(false); setSearchOpen(false); setSearchQuery(""); }, [location.pathname]);
+  useEffect(() => { setOpen(false); setToolsOpen(false); setSolOpen(false); setMobileToolsOpen(false); setNotifOpen(false); setSearchOpen(false); setSearchQuery(""); }, [location.pathname]);
 
   // Close dropdown on outside click
   useEffect(() => {
     const fn = (e) => {
       if (dropRef.current && !dropRef.current.contains(e.target)) setToolsOpen(false);
+      if (solRef.current && !solRef.current.contains(e.target)) setSolOpen(false);
       if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false);
       if (searchRef.current && !searchRef.current.contains(e.target)) { setSearchOpen(false); setSearchQuery(""); }
     };
@@ -274,6 +277,48 @@ const Navbar = () => {
 
             </>
           )}
+
+          {/* Solutions mega-menu — industries dropdown */}
+          <div ref={solRef} style={{ position: "relative" }}>
+            <button
+              onClick={() => setSolOpen(!solOpen)}
+              style={{
+                color: location.pathname.startsWith("/solutions") ? T.accent : T.muted,
+                background: solOpen ? "rgba(99,102,241,0.08)" : "transparent",
+                border: "none", cursor: "pointer", fontSize: 14, fontWeight: 500,
+                padding: "8px 14px", borderRadius: 8, display: "flex", alignItems: "center", gap: 5,
+                transition: "all 0.2s", fontFamily: "inherit",
+              }}
+            >
+              Solutions
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style={{ transition: "transform 0.2s", transform: solOpen ? "rotate(180deg)" : "none" }}>
+                <path d="M2 4L5 7L8 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+            {solOpen && (
+              <div style={{
+                position: "absolute", top: "calc(100% + 8px)", left: "50%", transform: "translateX(-50%)",
+                background: mode === "dark" ? "rgba(10,15,30,0.98)" : "rgba(241,245,249,0.98)", backdropFilter: "blur(20px)",
+                border: "1px solid rgba(99,102,241,0.15)", borderRadius: 14, padding: 10,
+                minWidth: 300, boxShadow: "0 20px 60px rgba(0,0,0,0.5)", animation: "dropIn 0.2s ease",
+              }}>
+                {SOLUTIONS.map((s) => (
+                  <Link key={s.slug} to={`/solutions/${s.slug}`} onClick={() => setSolOpen(false)}
+                    style={{ display: "flex", alignItems: "center", gap: 11, padding: "9px 11px", borderRadius: 8, textDecoration: "none", transition: "background 0.15s" }}
+                    onMouseEnter={e => e.currentTarget.style.background = "rgba(99,102,241,0.08)"}
+                    onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                  >
+                    <span style={{ fontSize: 20, width: 26, textAlign: "center", flexShrink: 0 }}>{s.icon}</span>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ fontSize: 13.5, fontWeight: 600, color: T.white }}>{s.name}</div>
+                      <div style={{ fontSize: 11.5, color: T.muted, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 230 }}>{s.tagline}</div>
+                    </div>
+                  </Link>
+                ))}
+                <Link to="/solutions" onClick={() => setSolOpen(false)} style={{ display: "block", textAlign: "center", marginTop: 6, padding: "9px", borderRadius: 8, color: T.cyan, fontWeight: 700, fontSize: 12.5, textDecoration: "none", background: `${T.cyan}12`, border: `1px solid ${T.cyan}33` }}>All solutions →</Link>
+              </div>
+            )}
+          </div>
 
           {/* Core marketing links — visible to EVERYONE (logged-in + out).
               Previously these sat inside the {user && ...} block, so logged-out

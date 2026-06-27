@@ -132,6 +132,24 @@ export default function Press() {
           </Link>
         </section>
 
+        {/* In the news */}
+        <section style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 48px" }}>
+          <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 16, fontFamily: "'Vrikaan Sans', sans-serif" }}>In the News</h2>
+          <a href="https://www.indianstartuptimes.com/news/the-cyber-50-indias-elite-founders-list/" target="_blank" rel="noopener noreferrer"
+            style={{ display: "flex", alignItems: "center", gap: 16, padding: "18px 20px", borderRadius: 14, background: "rgba(251,191,36,0.06)", border: "1px solid rgba(251,191,36,0.25)", textDecoration: "none", transition: "border-color 0.2s" }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(251,191,36,0.5)"}
+            onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(251,191,36,0.25)"}
+          >
+            <span style={{ fontSize: 28, flexShrink: 0 }}>★</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 12, color: "#fbbf24", fontWeight: 700, letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 4 }}>Indian Startup Times</div>
+              <div style={{ fontSize: 15.5, fontWeight: 600, color: T.white, lineHeight: 1.4 }}>VRIKAAN featured in <strong>The Cyber 50 — India's Elite Founders List</strong></div>
+            </div>
+            <span style={{ color: T.muted, fontSize: 18, flexShrink: 0 }}>↗</span>
+          </a>
+          <p style={{ fontSize: 12.5, color: T.mutedDark, marginTop: 12 }}>Covering VRIKAAN? Email <a href="mailto:press@vrikaan.com" style={{ color: T.cyan }}>press@vrikaan.com</a> — we respond same-day.</p>
+        </section>
+
         {/* Quotable stats — pre-written for journalists */}
         <section style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 48px" }}>
           <h2 style={{ fontSize: 22, fontWeight: 700, color: T.white, marginBottom: 8, fontFamily: "'Vrikaan Sans', sans-serif" }}>Quotable Stats</h2>
