@@ -1198,6 +1198,16 @@ const TrustedBy = () => (
             </div>
           ))}
         </div>
+
+        {/* Credibility row — honest signals only (real feature + trust badges) */}
+        <div style={{ marginTop: 34, paddingTop: 26, borderTop: `1px solid ${T.border}`, display: "flex", justifyContent: "center", alignItems: "center", gap: "clamp(14px, 3vw, 30px)", flexWrap: "wrap" }}>
+          <a href="https://www.indianstartuptimes.com/news/the-cyber-50-indias-elite-founders-list/" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "7px 13px", borderRadius: 100, background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.25)", textDecoration: "none", fontSize: 12.5, color: T.muted, fontWeight: 600 }}>
+            <span style={{ color: "#fbbf24" }}>★</span> Featured in <strong style={{ color: T.white }}>Cyber 50</strong>
+          </a>
+          {["🇮🇳 Made in India", "AWS Mumbai · India data residency", "DPDP-ready", "1930-aligned", "Razorpay / Cashfree secure"].map((b) => (
+            <span key={b} style={{ fontSize: 12.5, color: T.mutedDark, fontWeight: 500 }}>{b}</span>
+          ))}
+        </div>
       </div>
     </Reveal>
   </div>

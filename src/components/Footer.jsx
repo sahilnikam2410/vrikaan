@@ -150,6 +150,9 @@ const Footer = () => {
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             <FooterLink to="/about">About</FooterLink>
             <FooterLink to="/solutions">Solutions</FooterLink>
+            <FooterLink to="/leadership">Leadership</FooterLink>
+            <FooterLink to="/case-studies">Success Stories</FooterLink>
+            <FooterLink to="/partners">Partners</FooterLink>
             <FooterLink to="/founder">Founder</FooterLink>
             <FooterLink to="/pricing">Pricing</FooterLink>
             <FooterLink to="/contact">Contact</FooterLink>

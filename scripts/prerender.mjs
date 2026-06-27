@@ -719,6 +719,30 @@ const PRIMARY_PAGES = [
     ogSubtitle: "Cyber defense for every sector in India",
     ogCategory: "Solutions",
   },
+  {
+    path: "/case-studies",
+    title: "Success Stories — Real Scams Stopped",
+    description:
+      "Real outcomes from VRIKAAN users across India: a ₹50,000 voice-clone scam stopped by a safe-word, a festival SMS fraud caught, loan-app harassment ended with a filed FIR. Names changed for privacy.",
+    ogSubtitle: "Real scams stopped · verified user stories",
+    ogCategory: "Case Studies",
+  },
+  {
+    path: "/leadership",
+    title: "Leadership & Company",
+    description:
+      "Meet the founders behind VRIKAAN — SOC analysts and cybersecurity researchers in Maharashtra, with a 24×7 SOC on AWS Mumbai and India data residency. Built for everyone.",
+    ogSubtitle: "Founders, mission & India presence",
+    ogCategory: "Company",
+  },
+  {
+    path: "/partners",
+    title: "Partner Program",
+    description:
+      "Partner with VRIKAAN: MSPs, resellers, government, NGOs, banks & fintech. Revenue share, co-marketing, API access and an 'Official Safety Partner' badge. Build India's scam defense together.",
+    ogSubtitle: "Resell, embed or co-brand VRIKAAN",
+    ogCategory: "Partners",
+  },
 ];
 
 // ---------- main ----------

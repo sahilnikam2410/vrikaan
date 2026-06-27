@@ -194,6 +194,9 @@ const Referral = lazy(() => import("./assets/pages/Referral.jsx"));
 const Badge = lazy(() => import("./assets/pages/Badge.jsx"));
 const Trust = lazy(() => import("./assets/pages/Trust.jsx"));
 const Solutions = lazy(() => import("./assets/pages/Solutions.jsx"));
+const CaseStudies = lazy(() => import("./assets/pages/CaseStudies.jsx"));
+const Leadership = lazy(() => import("./assets/pages/Leadership.jsx"));
+const Partners = lazy(() => import("./assets/pages/Partners.jsx"));
 const SecurityAudit = lazy(() => import("./assets/pages/SecurityAudit.jsx"));
 const ThreatDirectory = lazy(() => import("./assets/pages/ThreatDirectory.jsx"));
 const ThreatDetail = lazy(() => import("./assets/pages/ThreatDetail.jsx"));
@@ -262,6 +265,9 @@ function AppRoutes() {
             <Route path="/trust" element={<Trust />} />
             <Route path="/solutions" element={<Solutions />} />
             <Route path="/solutions/:slug" element={<Solutions />} />
+            <Route path="/case-studies" element={<CaseStudies />} />
+            <Route path="/leadership" element={<Leadership />} />
+            <Route path="/partners" element={<Partners />} />
             <Route path="/deepfake-audio" element={<DeepfakeAudio />} />
             <Route path="/vulnerability-scan" element={<VulnerabilityScan />} />
             <Route path="/admin/soc" element={<ProtectedRoute adminOnly><SocDashboard /></ProtectedRoute>} />
