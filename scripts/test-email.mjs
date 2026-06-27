@@ -26,22 +26,13 @@ if (!API_KEY || !NS) {
   process.exit(1);
 }
 
-const query = `{
-  inbox(namespace: "${NS}", tag: "${tag}", limit: 5) {
-    count
-    emails { subject from timestamp text }
-  }
-}`;
+// JSON API with livequery — waits up to ~10s for a matching email to land
+// (more reliable than the GraphQL endpoint, which can return cached/empty).
+const url = `https://api.testmail.app/api/json?apikey=${API_KEY}&namespace=${NS}&tag=${encodeURIComponent(tag)}&livequery=true`;
 
-const url = `https://api.testmail.app/api/graphql?apikey=${API_KEY}`;
-
-const r = await fetch(url, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ query }),
-});
+const r = await fetch(url);
 const data = await r.json().catch(() => ({}));
-const inbox = data?.data?.inbox;
+const inbox = data?.result === "success" ? { count: data.count, emails: data.emails || [] } : null;
 
 if (!inbox || !inbox.count) {
   console.error(`✗ No emails for tag "${tag}" in namespace "${NS}".`);
