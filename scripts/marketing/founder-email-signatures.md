@@ -47,7 +47,7 @@ Both render correctly in:
 Sahil Anil Nikam
 Founder & CEO · SOC Analyst & Cybersecurity Researcher
 
-📧 sahilnikam133@gmail.com  ·  🌐 vrikaan.com  ·  📞 +91 8329935878
+📧 sahilnikam133@gmail.com  ·  🌐 vrikaan.com  ·  📞 +91 9607742410
 📍 Nashik, Maharashtra, India
 
 🛡️ VRIKAAN — AI-powered cyber defense for India
@@ -84,7 +84,7 @@ Save this as `sahil-signature.html`, open it in Chrome, select all, copy, paste 
 
       <div style="font-size:12px;color:#475569;line-height:1.7;">
         <span>📧 <a href="mailto:sahilnikam133@gmail.com" style="color:#6366F1;text-decoration:none;">sahilnikam133@gmail.com</a></span><br>
-        <span>📞 <a href="tel:+918329935878" style="color:#6366F1;text-decoration:none;">+91 83299 35878</a>  ·  🌐 <a href="https://vrikaan.com" style="color:#6366F1;text-decoration:none;">vrikaan.com</a></span><br>
+        <span>📞 <a href="tel:+919607742410" style="color:#6366F1;text-decoration:none;">+91 96077 42410</a>  ·  🌐 <a href="https://vrikaan.com" style="color:#6366F1;text-decoration:none;">vrikaan.com</a></span><br>
         <span>📍 Nashik, Maharashtra, India</span>
       </div>
 

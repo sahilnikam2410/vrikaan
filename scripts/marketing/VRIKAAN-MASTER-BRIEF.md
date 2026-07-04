@@ -70,7 +70,7 @@ India lost **₹11,000 Cr+** to cyber scams last year. Norton costs ₹2,000/yea
 | **Founders** | Sahil Anil Nikam, Khushi Ishwar Raigade |
 | **Domain** | vrikaan.com |
 | **Email** | hello@vrikaan.com |
-| **Phone** | +91 8329935878 |
+| **Phone** | +91 9607742410 |
 | **Twitter / X** | x.com/vrikaan |
 | **LinkedIn** | linkedin.com/company/vrikaan-ai-cybersecurity |
 | **Instagram** | instagram.com/vrikaan_official |
@@ -208,7 +208,7 @@ India lost **₹11,000 Cr+** to cyber scams last year. Norton costs ₹2,000/yea
 >
 > **Tech:** React 19, Vite 7, Firebase, Vercel serverless (router pattern), Gemini 2.5 Flash, Cashfree, custom RFC 6238 TOTP, HMAC-SHA256 webhooks, react-i18next, Sentry. 109 automated tests. 12/12 free-tier functions. ₹0 infra.
 >
-> **Contact:** vrikaan.com · hello@vrikaan.com · +91 8329935878 · Nashik, India
+> **Contact:** vrikaan.com · hello@vrikaan.com · +91 9607742410 · Nashik, India
 > **Socials:** x.com/vrikaan · linkedin.com/company/vrikaan-ai-cybersecurity · instagram.com/vrikaan_official · github.com/sahilnikam2410/vrikaan
 >
 > **Personality:** Friendly, professional, knowledgeable. Use **bold**, *italic*, bullets, code blocks. Keep replies concise (2-4 paragraphs) unless detail requested. Never give hacking instructions. For cybersecurity questions, give actionable defense advice and recommend relevant VRIKAAN tools.
@@ -237,7 +237,7 @@ India lost **₹11,000 Cr+** to cyber scams last year. Norton costs ₹2,000/yea
 ```
 🌐 vrikaan.com
 📧 hello@vrikaan.com
-📞 +91 8329935878
+📞 +91 9607742410
 📍 Nashik, Maharashtra, India
 
 𝕏 / Twitter   → x.com/vrikaan

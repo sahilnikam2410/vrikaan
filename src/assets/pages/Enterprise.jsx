@@ -491,7 +491,7 @@ export default function Enterprise() {
           color: T.muted, fontSize: 13,
         }}>
           <a href="mailto:hello@vrikaan.com" style={{ color: T.cyan, textDecoration: "none" }}><LuMail size={13} style={{ verticalAlign: "-2px" }} /> hello@vrikaan.com</a>
-          <a href="tel:+918329935878" style={{ color: T.cyan, textDecoration: "none" }}><LuPhone size={13} style={{ verticalAlign: "-2px" }} /> +91 8329935878</a>
+          <a href="tel:+919607742410" style={{ color: T.cyan, textDecoration: "none" }}><LuPhone size={13} style={{ verticalAlign: "-2px" }} /> +91 9607742410</a>
           <Link to="/admin/soc" style={{ color: T.cyan, textDecoration: "none" }}><LuSatellite size={13} style={{ verticalAlign: "-2px" }} /> Preview SOC dashboard</Link>
           <a href="https://github.com/sahilnikam2410/vrikaan" target="_blank" rel="noopener noreferrer" style={{ color: T.cyan, textDecoration: "none" }}><LuFolderOpen size={13} style={{ verticalAlign: "-2px" }} /> Source on GitHub</a>
           <Link to="/responsible-disclosure" style={{ color: T.cyan, textDecoration: "none" }}><LuShield size={13} style={{ verticalAlign: "-2px" }} /> Bug bounty</Link>

@@ -66,7 +66,7 @@ Contact inboxes — route the user to the RIGHT email by intent:
 - **ai@vrikaan.com** → AI / ML feedback, bug reports, feature requests, API integration questions, dev partnership pitches, anything about the Gemini integration, model behaviour, or scam-detection accuracy.
 - **hello@vrikaan.com** → General support, press & media, brand partnerships outside AI/dev, billing, refunds, account help, anything that does not fit the two above.
 
-Phone: +91 8329935878 · HQ: Nashik, Maharashtra, India
+Phone: +91 9607742410 · HQ: Nashik, Maharashtra, India
 Socials: x.com/vrikaan · linkedin.com/company/vrikaan-ai-cybersecurity · instagram.com/vrikaan_official · github.com/sahilnikam2410/vrikaan
 Careers page: vrikaan.com/careers (short link: vrikaan.com/apply)
 

@@ -11,7 +11,7 @@ const SUBJECTS = ["General Inquiry", "Technical Support", "Partnership", "Bug Re
 
 const CONTACT_INFO = [
   { icon: "\u2709\uFE0F", label: "Email", value: "hello@vrikaan.com", sub: "We typically respond within 24 hours" },
-  { icon: "\uD83D\uDCDE", label: "Phone", value: "+91 8329935878", sub: "Available 24/7" },
+  { icon: "\uD83D\uDCDE", label: "Phone", value: "+91 9607742410", sub: "Available 24/7" },
   { icon: "\uD83D\uDCCD", label: "Location", value: "Nashik, Maharashtra, India", sub: "Serving clients globally" },
   { icon: "\uD83D\uDD52", label: "Hours", value: "24/7", sub: "Always available for support" },
 ];
