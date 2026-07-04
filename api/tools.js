@@ -3326,6 +3326,56 @@ async function handleScamDna(req, res) {
     }
   }
 
+  // ── RADAR: live aggregate of the Scam DNA network for the public Scam Radar
+  // page — category breakdown, 24h activity, top tactics, live feed. Read-only.
+  if (action === "radar") {
+    try {
+      const snap = await col.orderBy("lastSeen", "desc").limit(300).get();
+      const now = Date.now();
+      const DAY = 86400000;
+      const CAT_LABEL = {
+        "upi-fraud": "UPI fraud", phishing: "Phishing", vishing: "Vishing calls",
+        "loan-app": "Loan-app scams", "job-scam": "Job / task scams", investment: "Investment fraud",
+        "lottery-prize": "Lottery / prize", "fake-bank": "Fake bank", "fake-courier": "Parcel / courier",
+        "fake-police": "Digital arrest", kyc: "KYC update",
+        romance: "Romance scam", "romance-scam": "Romance scam", other: "Other",
+      };
+      let totalReports = 0, active24h = 0;
+      const byCat = {};
+      const items = [];
+      for (const d of snap.docs) {
+        const x = d.data();
+        const cat = x.category || "other";
+        const c = x.count || 1;
+        totalReports += c;
+        const last = x.lastSeen?.toMillis?.() || (typeof x.lastSeen === "number" ? x.lastSeen : null);
+        if (last && now - last < DAY) active24h += 1;
+        if (!byCat[cat]) byCat[cat] = { category: cat, label: CAT_LABEL[cat] || cat, signals: 0, reports: 0 };
+        byCat[cat].signals += 1;
+        byCat[cat].reports += c;
+        if (items.length < 24) {
+          const ident = String(d.id).startsWith("id_") ? d.id.slice(3) : null;
+          items.push({
+            category: cat, label: CAT_LABEL[cat] || cat, tactic: x.tactic || "",
+            reports: c, verified: !!x.verified, lastSeen: last,
+            sample: (x.sampleText || "").slice(0, 120), ident,
+          });
+        }
+      }
+      const categories = Object.values(byCat).sort((a, b) => b.reports - a.reports);
+      return res.status(200).json({
+        totalSignals: snap.size,
+        totalReports,
+        active24h,
+        categories,
+        items,
+        generatedAt: now,
+      });
+    } catch (e) {
+      return res.status(200).json({ totalSignals: 0, totalReports: 0, active24h: 0, categories: [], items: [] });
+    }
+  }
+
   // ── CHECK: free, read-only lookup of one identifier (phone/UPI/URL).
   // Powers the browser extension + lightweight client checks. No AI, no write.
   if (action === "check") {
