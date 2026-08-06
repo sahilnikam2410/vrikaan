@@ -12,7 +12,7 @@ const T = {
 };
 
 // Researchers credited for responsible disclosure.
-// To add an entry after paying bounty: append to RESEARCHERS array, ship.
+// To credit a researcher: append to RESEARCHERS array, ship.
 const RESEARCHERS = [
   // Placeholder — first real report will populate this
   // {
@@ -69,8 +69,8 @@ export default function HallOfFame() {
               margin: "0 0 10px",
             }}>Be the first.</h2>
             <p style={{ color: T.muted, fontSize: 14, margin: "0 0 18px", lineHeight: 1.7, maxWidth: 460, marginLeft: "auto", marginRight: "auto" }}>
-              No researchers credited yet — VRIKAAN's bug-bounty program just opened.
-              First valid report gets recognition here + bounty + 1-year Pro plan.
+              No researchers credited yet — VRIKAAN's disclosure program just opened.
+              First valid report gets recognition here, plus up to a year of Pro.
             </p>
             <Link to="/responsible-disclosure" style={{
               display: "inline-block", padding: "12px 26px", borderRadius: 10,
@@ -128,7 +128,7 @@ export default function HallOfFame() {
         }}>
           {[
             { v: RESEARCHERS.length, l: "Researchers credited" },
-            { v: RESEARCHERS.length === 0 ? "—" : "₹0", l: "Total bounties paid" },
+            { v: "Pro", l: "Reward — up to 1 year" },
             { v: "48h", l: "Triage SLA" },
             { v: "90d", l: "Coordinated disclosure window" },
           ].map(s => (
