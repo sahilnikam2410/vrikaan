@@ -11,11 +11,14 @@ const T = {
   border: "rgba(148,163,184,0.12)",
 };
 
+// Rewards are VRIKAAN Pro subscription time, not cash. We are bootstrapped and
+// pre-revenue; quoting INR figures we can't pay costs researchers real time on
+// the strength of a promise, which is worse than offering nothing.
 const SEVERITIES = [
-  { level: "CRITICAL", bounty: "₹15,000 – ₹25,000", color: "#EF4444", examples: ["RCE on api.vrikaan.com / serverless functions", "Auth bypass — read another user's data", "Cashfree webhook signature bypass", "Firestore security-rule bypass leaking PII", "Stored XSS w/ user-takeover proof"] },
-  { level: "HIGH",     bounty: "₹5,000 – ₹15,000",  color: "#F97316", examples: ["IDOR exposing other users' files / scans", "Privilege escalation user → admin", "Mass-data scrape via unauthenticated endpoint", "TOTP 2FA bypass"] },
-  { level: "MEDIUM",   bounty: "₹2,000 – ₹5,000",   color: "#F59E0B", examples: ["Reflected XSS w/o cookie / session theft", "Open redirect on official domain", "CSRF on state-changing endpoint", "Rate-limit bypass via header spoofing"] },
-  { level: "LOW",      bounty: "1-year Pro plan + Hall of Fame credit", color: "#22C55E", examples: ["Subdomain takeover (orphan record)", "Information disclosure (low-impact)", "Missing security header w/ demonstrable risk", "Verbose error message leaking stack info"] },
+  { level: "CRITICAL", bounty: "1 year of Pro", color: "#EF4444", examples: ["RCE on api.vrikaan.com / serverless functions", "Auth bypass — read another user's data", "Cashfree webhook signature bypass", "Firestore security-rule bypass leaking PII", "Stored XSS w/ user-takeover proof"] },
+  { level: "HIGH",     bounty: "6 months of Pro",  color: "#F97316", examples: ["IDOR exposing other users' files / scans", "Privilege escalation user → admin", "Mass-data scrape via unauthenticated endpoint", "TOTP 2FA bypass"] },
+  { level: "MEDIUM",   bounty: "1 month of Pro",   color: "#F59E0B", examples: ["Reflected XSS w/o cookie / session theft", "Open redirect on official domain", "CSRF on state-changing endpoint", "Rate-limit bypass via header spoofing"] },
+  { level: "LOW",      bounty: "Hall of Fame credit", color: "#22C55E", examples: ["Subdomain takeover (orphan record)", "Information disclosure (low-impact)", "Missing security header w/ demonstrable risk", "Verbose error message leaking stack info"] },
 ];
 
 const OUT_OF_SCOPE = [
@@ -37,7 +40,7 @@ const RULES = [
   "Don't access or modify other users' data — use your own test account",
   "Don't run automated scanners against our production — use a copy on localhost if needed",
   "Don't deliberately degrade service (DoS / mass-bot traffic / spam our signup)",
-  "Don't request payment / threaten public disclosure to extort a bounty",
+  "Don't threaten public disclosure to extract a reward",
   "Don't sell or share the vulnerability with anyone before we patch",
   "Provide enough detail to reproduce — vague reports get vague responses",
 ];
@@ -46,10 +49,10 @@ export default function ResponsibleDisclosure() {
   return (
     <div style={{ minHeight: "100vh", background: T.bg, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
-        title="Responsible Disclosure · Bug Bounty"
-        description="Found a vulnerability in VRIKAAN? Report it via responsible disclosure. ₹2k-25k bounties + Hall of Fame credit + 1-year Pro plan. 48h acknowledgement."
+        title="Responsible Disclosure · Security Reports"
+        description="Found a vulnerability in VRIKAAN? Report it via responsible disclosure. Up to 1 year of Pro + Hall of Fame credit. 48h acknowledgement. No cash bounties — we're bootstrapped and say so up front."
         path="/responsible-disclosure"
-        keywords="vrikaan bug bounty, responsible disclosure india, vrikaan security researcher, indian bug bounty program"
+        keywords="vrikaan responsible disclosure, vrikaan security researcher, report vulnerability india, coordinated disclosure"
       />
       <Navbar />
 
@@ -60,17 +63,23 @@ export default function ResponsibleDisclosure() {
             background: "rgba(20, 184, 166,0.10)", border: `1px solid ${T.cyan}40`,
             fontSize: 11, fontWeight: 800, letterSpacing: 2, textTransform: "uppercase",
             color: T.cyan, marginBottom: 14,
-          }}>🛡 Bug Bounty · India-First</span>
+          }}>🛡 Responsible Disclosure · India-First</span>
           <h1 style={{
             fontFamily: "'Vrikaan Sans', sans-serif", fontSize: "clamp(34px, 5vw, 54px)",
             fontWeight: 800, color: T.white, margin: "0 0 12px", lineHeight: 1.1,
           }}>
             Find a vulnerability?<br />
-            <span style={{ color: T.cyan }}>We pay + credit you.</span>
+            <span style={{ color: T.cyan }}>We fix it fast + credit you.</span>
           </h1>
           <p style={{ color: T.muted, fontSize: 16, maxWidth: 620, margin: "0 auto", lineHeight: 1.7 }}>
             VRIKAAN runs a coordinated-disclosure program. Report responsibly →
-            we acknowledge within 48 hours → patch in days → reward you w/ INR cash + Hall of Fame credit + free Pro plan.
+            we acknowledge within 48 hours → patch in days → credit you in the Hall of Fame
+            and put you on Pro, up to a full year depending on severity.
+          </p>
+          <p style={{ color: T.mutedDark, fontSize: 13.5, maxWidth: 620, margin: "14px auto 0", lineHeight: 1.7 }}>
+            Straight up: we don't pay cash bounties. VRIKAAN is bootstrapped and pre-revenue,
+            and we'd rather tell you that before you spend your evening on us than quote a
+            figure we can't honour.
           </p>
         </header>
 
@@ -87,7 +96,7 @@ export default function ResponsibleDisclosure() {
             Subject prefix: <code style={{ background: "rgba(2,6,23,0.6)", padding: "2px 8px", borderRadius: 6, color: T.cyan, fontFamily: "ui-monospace, Menlo, monospace" }}>[SECURITY]</code>
             <br />Include: vuln type, impact, reproduction steps, affected URL, your name/handle (for Hall of Fame credit).
           </p>
-          <a href="mailto:hello@vrikaan.com?subject=%5BSECURITY%5D%20Vulnerability%20Report&body=Vuln%20type%3A%0AAffected%20URL%3A%0AImpact%3A%0AReproduction%20steps%3A%0A%0AMy%20name%2Fhandle%3A%0APreferred%20bounty%20payment%20method%3A%20(UPI%20%2F%20IMPS%20%2F%20PayPal)"
+          <a href="mailto:hello@vrikaan.com?subject=%5BSECURITY%5D%20Vulnerability%20Report&body=Vuln%20type%3A%0AAffected%20URL%3A%0AImpact%3A%0AReproduction%20steps%3A%0A%0AMy%20name%2Fhandle%20(for%20Hall%20of%20Fame)%3A%0AEmail%20my%20VRIKAAN%20account%20is%20under%3A"
              style={{
                display: "inline-block",
                padding: "12px 28px", borderRadius: 10,
@@ -108,17 +117,19 @@ export default function ResponsibleDisclosure() {
             <li><strong style={{ color: T.cyan }}>Within 48 hours</strong> — acknowledgement + initial triage</li>
             <li><strong style={{ color: T.cyan }}>Within 7 days</strong> — severity rating + remediation timeline</li>
             <li><strong style={{ color: T.cyan }}>Within 14 days</strong> — fix deployed (Critical/High) · Within 30 days (Medium/Low)</li>
-            <li><strong style={{ color: T.cyan }}>Within 60 days</strong> — bounty paid via UPI / IMPS / PayPal + Hall of Fame credit live (if you opted in)</li>
+            <li><strong style={{ color: T.cyan }}>Within 14 days</strong> — Pro plan applied to your account + Hall of Fame credit live (if you opted in)</li>
             <li><strong style={{ color: T.cyan }}>Within 90 days</strong> — public disclosure (coordinated w/ you) if vuln is interesting</li>
           </ul>
         </div>
 
-        {/* Bounty table */}
+        {/* Reward tiers */}
         <h2 style={{ fontFamily: "'Vrikaan Sans', sans-serif", fontSize: 22, color: T.white, margin: "32px 0 14px" }}>
-          💰 Bounty tiers (INR)
+          🎁 Reward tiers
         </h2>
         <p style={{ color: T.muted, fontSize: 13, margin: "0 0 18px", lineHeight: 1.6 }}>
-          We're bootstrapped, so bounties are lower than FAANG — but we pay in INR (no foreign-transfer hassle), credit publicly, and act fast.
+          Rewards are VRIKAAN Pro subscription time, applied to your account — not cash. We also credit
+          you publicly, write up the fix with your name on it if you want, and act fast. If that isn't
+          worth your time, we understand — please still tell us what you found.
         </p>
         <div style={{ display: "grid", gap: 12, marginBottom: 28 }}>
           {SEVERITIES.map(s => (
