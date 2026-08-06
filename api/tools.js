@@ -3080,7 +3080,41 @@ async function handleDailyAlert(req, res) {
     await new Promise((r) => setTimeout(r, 250));
   }
   console.log(`daily-alert: tip=${tip[0]} ok=${ok} fail=${fail}`);
-  return res.status(200).json({ tip: tip[0], sent: ok, failed: fail });
+  const swept = await _sweepExpired(fs);
+  return res.status(200).json({ tip: tip[0], sent: ok, failed: fail, swept });
+}
+
+// Collections whose documents carry an `expiresAt` and are safe to reap once
+// it passes. Firestore's native TTL policies would do this for us, but they
+// require the Blaze plan and this project is on Spark — so the daily cron
+// sweeps them instead. Same effect, no billing change.
+const TTL_COLLECTIONS = ["quotas", "quizAttempts"];
+const SWEEP_LIMIT = 400;   // per collection, per run — bounds the cron's runtime
+
+async function _sweepExpired(fs) {
+  const out = {};
+  for (const name of TTL_COLLECTIONS) {
+    try {
+      const snap = await fs.collection(name)
+        .where("expiresAt", "<=", new Date())
+        .limit(SWEEP_LIMIT).get();
+      if (snap.empty) { out[name] = 0; continue; }
+      // Chunked commits — a Firestore batch tops out at 500 writes.
+      let done = 0;
+      for (let i = 0; i < snap.docs.length; i += 400) {
+        const batch = fs.batch();
+        for (const d of snap.docs.slice(i, i + 400)) batch.delete(d.ref);
+        await batch.commit();
+        done += Math.min(400, snap.docs.length - i);
+      }
+      out[name] = done;
+    } catch (e) {
+      console.error(`sweep ${name}:`, e.message);
+      out[name] = -1;
+    }
+  }
+  console.log("sweep-expired:", JSON.stringify(out));
+  return out;
 }
 
 // ─── #10 WHATSAPP BROADCAST ───────────────────────────────────────────
