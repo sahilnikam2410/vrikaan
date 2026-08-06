@@ -16,11 +16,15 @@ Acknowledgments: https://www.vrikaan.com/security/hall-of-fame
 # We acknowledge every report within 48 hours. Coordinated disclosure
 # preferred — please give us 90 days to fix before public disclosure.
 #
-# Bounties: VRIKAAN is bootstrapped, so we cannot pay USD-scale bounties
-# yet. We currently offer:
+# Bounties: VRIKAAN is bootstrapped and pre-revenue. We do NOT currently
+# pay cash bounties — we would rather say that plainly up front than quote
+# a figure we can't honour. What we do offer, for every valid report:
 #  - Public credit (vrikaan.com/security/hall-of-fame)
 #  - 1-year free Pro plan
-#  - For critical findings: ₹5,000-25,000 INR depending on severity
+#  - A named write-up of the fix, and a reference on request
+#
+# If that isn't worth your time, we completely understand — please still
+# tell us what you found, and we'll fix it and credit you.
 #
 # Out of scope:
 #  - Denial-of-service or rate-limit-exhaustion reports
