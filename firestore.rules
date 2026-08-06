@@ -248,6 +248,18 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    // ─── scamSignatures ──────────────────────────────────────────
+    // Community scam-intel network, written server-side via the Admin SDK and
+    // read through the scam-dna API. The `watchers` subcollection stores the
+    // phone numbers / chat IDs of people who checked a message and are owed a
+    // herd-immunity alert — never client-readable.
+    match /scamSignatures/{sigId} {
+      allow read, write: if false;
+      match /watchers/{watcherId} {
+        allow read, write: if false;
+      }
+    }
+
     // ─── quotas ──────────────────────────────────────────────────
     // Daily usage counters (see api/_quota.js). Server-only — a client that
     // could write these could reset its own free-tier ceiling.
