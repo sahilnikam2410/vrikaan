@@ -1,4 +1,30 @@
 import { checkRateLimit } from './_rateLimit.js';
+import { getAdminFirestore, getAdminAuth } from './_firebaseAdmin.js';
+import { consumeQuota, quotaScope } from './_quota.js';
+
+// Daily message allowance by resolved plan. The assistant calls a paid LLM on
+// every request, so the ceiling has to be enforced here — it used to live
+// entirely in the browser (a localStorage credit ledger), which meant an
+// unauthenticated caller had no ceiling at all.
+const CHAT_DAILY_LIMIT = { guest: 10, free: 25, starter: 25, pro: 500, family: 500, enterprise: 2000 };
+
+/** Resolve the caller from a Firebase ID token. Never trust a plan sent by the client. */
+async function resolveChatCaller(req) {
+  const header = req.headers.authorization || "";
+  const m = /^Bearer\s+(eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+)\s*$/i.exec(header);
+  if (!m) return { uid: null, plan: "guest" };
+  const auth = getAdminAuth();
+  const fs = getAdminFirestore();
+  if (!auth || !fs) return { uid: null, plan: "guest" };
+  try {
+    const decoded = await auth.verifyIdToken(m[1]);
+    const snap = await fs.collection("users").doc(decoded.uid).get();
+    const plan = snap.exists ? (snap.data().plan || "free") : "free";
+    return { uid: decoded.uid, plan };
+  } catch {
+    return { uid: null, plan: "guest" };
+  }
+}
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -16,12 +42,34 @@ export default async function handler(req, res) {
   if (!message || typeof message !== "string" || message.length > 1000) {
     return res.status(400).json({ error: "Invalid message" });
   }
-  // Sanitize context
+
+  // Identity and plan come from the verified token. They used to be read
+  // straight out of `context` in the request body, so any caller could claim
+  // "enterprise" — or skip signing in entirely — and still be served.
+  const caller = await resolveChatCaller(req);
+  const ctxUserPlan = caller.plan;
+  const ctxLoggedIn = !!caller.uid;
+
+  const limit = CHAT_DAILY_LIMIT[ctxUserPlan] ?? CHAT_DAILY_LIMIT.guest;
+  const q = await consumeQuota(getAdminFirestore(), quotaScope(req, caller.uid), "chat", limit);
+  res.setHeader("X-Quota-Limit", String(q.limit));
+  res.setHeader("X-Quota-Remaining", String(q.remaining));
+  if (!q.allowed) {
+    return res.status(402).json({
+      error: ctxLoggedIn
+        ? "Daily AI message limit reached. Upgrade for a higher allowance."
+        : "Daily AI message limit reached. Sign in for more.",
+      code: "CHAT_QUOTA_EXHAUSTED",
+      used: q.used,
+      limit: q.limit,
+      upgradeUrl: ctxLoggedIn ? "/pricing" : "/login",
+    });
+  }
+
+  // Sanitize the remaining, presentation-only context
   const ctxPath = String(context.path || "/").slice(0, 100);
   const ctxToolName = String(context.toolName || "").slice(0, 60);
   const ctxToolTier = ["free", "pro", "enterprise"].includes(context.toolTier) ? context.toolTier : "free";
-  const ctxUserPlan = ["guest", "free", "pro", "enterprise"].includes(context.userPlan) ? context.userPlan : "guest";
-  const ctxLoggedIn = !!context.loggedIn;
 
   const pageContextLine = ctxToolName
     ? `User is currently on "${ctxToolName}" page (${ctxPath}, ${ctxToolTier.toUpperCase()} tier).`
@@ -66,7 +114,7 @@ Contact inboxes — route the user to the RIGHT email by intent:
 - **ai@vrikaan.com** → AI / ML feedback, bug reports, feature requests, API integration questions, dev partnership pitches, anything about the Gemini integration, model behaviour, or scam-detection accuracy.
 - **hello@vrikaan.com** → General support, press & media, brand partnerships outside AI/dev, billing, refunds, account help, anything that does not fit the two above.
 
-Phone: +91 8329935878 · HQ: Nashik, Maharashtra, India
+Phone: +91 9607742410 · HQ: Nashik, Maharashtra, India
 Socials: x.com/vrikaan · linkedin.com/company/vrikaan-ai-cybersecurity · instagram.com/vrikaan_official · github.com/sahilnikam2410/vrikaan
 Careers page: vrikaan.com/careers (short link: vrikaan.com/apply)
 

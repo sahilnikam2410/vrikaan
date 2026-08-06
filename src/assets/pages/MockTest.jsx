@@ -1,17 +1,17 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   LuShield, LuBanknote, LuFish, LuLock, LuClock, LuTrophy, LuCircleCheck,
   LuCircleX, LuArrowRight, LuArrowLeft, LuRotateCcw, LuChevronRight,
   LuBriefcase, LuShoppingCart, LuScanFace, LuUsers, LuAward, LuDownload,
 } from "react-icons/lu";
-import { downloadCertificate, makeCertId } from "../../services/certificateService";
+import { downloadCertificate, issueCert } from "../../services/certificateService";
 import { Card, Button, Aurora } from "../../components/ui";
 import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
 import { useAuth } from "../../context/AuthContext";
 import {
-  TESTS, buildTest, attemptXp, getMockResults, saveMockResult, totalMockXp,
+  TESTS, startAttempt, submitAttempt, getMockResults, saveMockResult, totalMockXp,
 } from "../../lib/mockTests";
 import { submitScore } from "../../services/leaderboardService";
 
@@ -116,39 +116,46 @@ function TestList({ results, onStart }) {
 
 /* ───────────────────────── Test runner ───────────────────────── */
 function TestRunner({ testId, user, onExit }) {
-  const test = useMemo(() => buildTest(testId), [testId]);
+  // The question set comes from the server without its answers, and the score
+  // comes back from the server too — neither is derivable in the browser.
+  const [test, setTest] = useState(null);          // { attemptId, title, pass, timeSec, total, questions }
+  const [loadError, setLoadError] = useState("");
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState({});      // qIndex -> chosen option index
-  const [left, setLeft] = useState(test?.timeSec || 300);
-  const [done, setDone] = useState(false);
+  const [left, setLeft] = useState(null);
+  const [result, setResult] = useState(null);      // server grade
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const tickRef = useRef(null);
+  const finishRef = useRef(() => {});
 
-  // countdown
   useEffect(() => {
-    if (done) return;
-    tickRef.current = setInterval(() => {
-      setLeft((s) => {
-        if (s <= 1) { clearInterval(tickRef.current); finish(); return 0; }
-        return s - 1;
-      });
-    }, 1000);
-    return () => clearInterval(tickRef.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [done]);
+    let cancelled = false;
+    (async () => {
+      const a = await startAttempt(testId);
+      if (cancelled) return;
+      if (!a) { setLoadError("Could not start this test. Sign in and try again."); return; }
+      setTest(a);
+      setLeft(a.timeSec);
+    })();
+    return () => { cancelled = true; };
+  }, [testId]);
 
-  const score = useMemo(() => {
-    if (!test) return { correct: 0, total: 0, pct: 0, passed: false };
-    let correct = 0;
-    test.questions.forEach((q, i) => { if (answers[i] === q.ans) correct++; });
-    const pct = Math.round((correct / test.total) * 100);
-    return { correct, total: test.total, pct, passed: pct >= test.pass };
-  }, [answers, test]);
-
-  function finish() {
-    if (done) return;
+  const finish = async () => {
+    if (!test || submitting || result) return;
+    setSubmitting(true);
+    setSubmitError("");
     clearInterval(tickRef.current);
-    const xp = attemptXp(score.correct, score.total, score.passed);
-    saveMockResult(testId, score.pct, xp);
+    const ordered = Array.from({ length: test.total }, (_, i) =>
+      answers[i] == null ? null : answers[i]);
+    const graded = await submitAttempt(test.attemptId, ordered);
+    if (!graded) {
+      // Keep the answers on screen so the attempt isn't lost to a flaky network.
+      setSubmitting(false);
+      setSubmitError("Could not submit your answers. Check your connection and press Submit again.");
+      return;
+    }
+    saveMockResult(testId, graded.pct, graded.xp);
     // sync to leaderboard (best-effort, non-blocking)
     if (user?.uid) {
       const xpTotal = combinedXp();
@@ -159,11 +166,29 @@ function TestRunner({ testId, user, onExit }) {
         xp: xpTotal, level: levelFromXp(xpTotal), bestMock,
       });
     }
-    setDone(true);
-  }
+    setResult(graded);
+    setSubmitting(false);
+  };
 
-  if (!test) return <p style={{ color: T.muted }}>Test not found. <button onClick={onExit} style={linkBtn}>Back</button></p>;
-  if (done) return <Result test={test} score={score} answers={answers} onExit={onExit} />;
+  // Keep the timer's callback pointing at the latest `finish` without making
+  // the interval depend on it (which would restart the countdown every tick).
+  useEffect(() => { finishRef.current = finish; });
+
+  // countdown — starts once the attempt has loaded
+  useEffect(() => {
+    if (!test || result) return;
+    tickRef.current = setInterval(() => {
+      setLeft((s) => {
+        if (s <= 1) { clearInterval(tickRef.current); finishRef.current(); return 0; }
+        return s - 1;
+      });
+    }, 1000);
+    return () => clearInterval(tickRef.current);
+  }, [test, result]);
+
+  if (loadError) return <p style={{ color: T.muted }}>{loadError} <button onClick={onExit} style={linkBtn}>Back</button></p>;
+  if (!test) return <p style={{ color: T.muted }}>Loading test…</p>;
+  if (result) return <Result test={test} result={result} attemptId={test.attemptId} onExit={onExit} />;
 
   const q = test.questions[idx];
   const mm = String(Math.floor(left / 60)).padStart(2, "0");
@@ -214,54 +239,59 @@ function TestRunner({ testId, user, onExit }) {
         {idx < test.total - 1 ? (
           <button onClick={() => setIdx((i) => i + 1)} style={btn(T.accent)}>Next <LuArrowRight size={16} /></button>
         ) : (
-          <button onClick={finish} style={btn(T.green)}>Submit test <LuCircleCheck size={17} /></button>
+          <button onClick={finish} disabled={submitting} style={btn(T.green)}>
+            {submitting ? "Grading…" : "Submit test"} <LuCircleCheck size={17} />
+          </button>
         )}
       </div>
+      {submitError && (
+        <div style={{ marginTop: 14, fontSize: 13.5, color: T.red }}>{submitError}</div>
+      )}
       <button onClick={onExit} style={{ ...linkBtn, marginTop: 18 }}>Exit (no save)</button>
     </div>
   );
 }
 
 /* ───────────────────────── Result ───────────────────────── */
-function Result({ test, score, answers, onExit }) {
-  const xp = attemptXp(score.correct, score.total, score.passed);
-  const { user } = useAuth();
-  const getCert = () => {
-    const name = user?.displayName || user?.email?.split("@")[0] || "Cyber Defender";
-    const certId = makeCertId();
-    // register for public /verify/:id
-    try {
-      fetch("/api/tools?tool=cert-register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ certId, name, title: test.title, kind: "mock-test", score: score.pct, date: new Date().toISOString() }) }).catch(() => {});
-    } catch { /* ignore */ }
+function Result({ test, result, attemptId, onExit }) {
+  const getCert = async () => {
+    // The certificate cites the graded attempt: the server reads the score off
+    // that record rather than taking a percentage from this page, and prints
+    // the holder from the token. Both match what /verify/:id reports.
+    const issued = await issueCert({ title: test.title, kind: "mock-test", attemptId });
+    if (!issued) {
+      alert("Could not issue your certificate. Make sure you're signed in and try again.");
+      return;
+    }
     downloadCertificate({
-      name, testTitle: test.title, scorePct: score.pct,
+      name: issued.name, testTitle: test.title, scorePct: result.pct,
       date: new Date().toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }),
-      certId,
+      certId: issued.certId,
     });
   };
   return (
     <div>
-      <div style={{ textAlign: "center", background: T.card, border: `1px solid ${score.passed ? `${T.green}55` : `${T.gold}55`}`, borderRadius: 20, padding: "40px 24px", marginBottom: 28 }}>
-        <span style={{ width: 72, height: 72, borderRadius: 20, margin: "0 auto 18px", display: "flex", alignItems: "center", justifyContent: "center", background: score.passed ? `${T.green}1f` : `${T.gold}1f`, color: score.passed ? T.green : T.gold }}>
-          {score.passed ? <LuTrophy size={36} /> : <LuRotateCcw size={34} />}
+      <div style={{ textAlign: "center", background: T.card, border: `1px solid ${result.passed ? `${T.green}55` : `${T.gold}55`}`, borderRadius: 20, padding: "40px 24px", marginBottom: 28 }}>
+        <span style={{ width: 72, height: 72, borderRadius: 20, margin: "0 auto 18px", display: "flex", alignItems: "center", justifyContent: "center", background: result.passed ? `${T.green}1f` : `${T.gold}1f`, color: result.passed ? T.green : T.gold }}>
+          {result.passed ? <LuTrophy size={36} /> : <LuRotateCcw size={34} />}
         </span>
-        <h1 style={{ fontSize: 30, fontWeight: 800, margin: "0 0 6px" }}>{score.passed ? "Passed!" : "Keep going"}</h1>
-        <div style={{ fontSize: 52, fontWeight: 900, color: score.passed ? T.green : T.gold, lineHeight: 1, margin: "10px 0" }}>{score.pct}%</div>
+        <h1 style={{ fontSize: 30, fontWeight: 800, margin: "0 0 6px" }}>{result.passed ? "Passed!" : "Keep going"}</h1>
+        <div style={{ fontSize: 52, fontWeight: 900, color: result.passed ? T.green : T.gold, lineHeight: 1, margin: "10px 0" }}>{result.pct}%</div>
         <p style={{ color: T.muted, fontSize: 15, margin: "8px 0 0" }}>
-          {score.correct}/{score.total} correct · <strong style={{ color: T.cyan }}>+{xp} XP</strong> earned
-          {!score.passed && ` · need ${test.pass}% to pass`}
+          {result.correct}/{result.total} correct · <strong style={{ color: T.cyan }}>+{result.xp} XP</strong> earned
+          {!result.passed && ` · need ${test.pass}% to pass`}
         </p>
         <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginTop: 22 }}>
           <button onClick={onExit} style={btn(T.cyan)}><LuRotateCcw size={16} /> Back to tests</button>
-          {score.passed && <button onClick={getCert} style={btn(T.green)}><LuDownload size={16} /> Download certificate</button>}
+          {result.passed && <button onClick={getCert} style={btn(T.green)}><LuDownload size={16} /> Download certificate</button>}
           <Link to="/leaderboard" style={{ ...btn(T.gold), textDecoration: "none" }}><LuTrophy size={16} /> Leaderboard</Link>
         </div>
       </div>
 
       <h3 style={{ fontSize: 16, fontWeight: 700, color: T.muted, margin: "0 0 14px" }}>Review answers</h3>
       <div style={{ display: "grid", gap: 12 }}>
-        {test.questions.map((q, i) => {
-          const ok = answers[i] === q.ans;
+        {result.review.map((q, i) => {
+          const ok = q.chosen === q.ans;
           return (
             <div key={i} style={{ background: T.card, border: `1px solid ${ok ? `${T.green}33` : `${T.red}33`}`, borderRadius: 12, padding: "16px 18px" }}>
               <div style={{ display: "flex", gap: 9, alignItems: "flex-start", marginBottom: 8 }}>
@@ -269,8 +299,8 @@ function Result({ test, score, answers, onExit }) {
                 <strong style={{ fontSize: 15, lineHeight: 1.4 }}>{q.q}</strong>
               </div>
               <div style={{ fontSize: 13.5, color: T.muted, paddingLeft: 27, lineHeight: 1.6 }}>
-                {!ok && answers[i] != null && (
-                  <div style={{ color: T.red }}>Your answer: {q.opts[answers[i]]}</div>
+                {!ok && q.chosen != null && (
+                  <div style={{ color: T.red }}>Your answer: {q.opts[q.chosen]}</div>
                 )}
                 <div style={{ color: T.green }}>Correct: {q.opts[q.ans]}</div>
                 <div style={{ color: T.dim, marginTop: 4 }}>{q.why}</div>

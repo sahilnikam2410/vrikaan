@@ -767,6 +767,14 @@ const PRIMARY_PAGES = [
     ogSubtitle: "AI wastes scammers' time · India-first",
     ogCategory: "Scam DNA",
   },
+  {
+    path: "/scam-radar",
+    title: "Scam Radar — Live Scam Activity Across India",
+    description:
+      "Live map of scams active across India right now — UPI fraud, phishing, digital-arrest, loan-app & vishing. Real-time crowd intelligence from VRIKAAN's Scam DNA network. See what's trending before it reaches you.",
+    ogSubtitle: "Live scam intelligence · India-first",
+    ogCategory: "Scam DNA",
+  },
 ];
 
 // ---------- main ----------

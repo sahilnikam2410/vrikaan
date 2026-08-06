@@ -50,7 +50,7 @@ VRIKAAN is an AI-powered cyber defense platform headquartered in Nashik, India. 
 
 ### MEDIA CONTACT
 **Email:** hello@vrikaan.com
-**Phone:** +91 8329935878
+**Phone:** +91 9607742410
 **Press kit + downloadable assets:** [vrikaan.com/press](https://vrikaan.com/press)
 **Founders bio + quotes:** [vrikaan.com/founder](https://vrikaan.com/founder)
 **Web:** vrikaan.com  ·  **X / Twitter:** [@vrikaan](https://x.com/vrikaan)  ·  **LinkedIn:** [/company/vrikaan-ai-cybersecurity](https://linkedin.com/company/vrikaan-ai-cybersecurity)  ·  **Instagram:** [@vrikaan_official](https://instagram.com/vrikaan_official)  ·  **GitHub:** [/sahilnikam2410/vrikaan](https://github.com/sahilnikam2410/vrikaan)
@@ -127,7 +127,7 @@ Would [day] work for a 20-min call?
 
 Best,
 [Your name]
-hello@vrikaan.com  ·  +91 8329935878
+hello@vrikaan.com  ·  +91 9607742410
 vrikaan.com
 ```
 

@@ -93,7 +93,7 @@ function slideNumber(s, n, total = 25) {
     x: 0.6, y: 6.2, w: 12, h: 0.4,
     fontSize: 14, color: C.ink, bold: true, fontFace: FONT_BODY,
   });
-  s.addText("hello@vrikaan.com · +91 8329935878 · Nashik, India", {
+  s.addText("hello@vrikaan.com · +91 9607742410 · Nashik, India", {
     x: 0.6, y: 6.6, w: 12, h: 0.4,
     fontSize: 12, color: C.muted, fontFace: FONT_MONO,
   });
@@ -1050,7 +1050,7 @@ industries.forEach((ind, idx) => {
     x: 0.6, y: 5.5, w: 12, h: 0.4,
     fontSize: 16, bold: true, color: C.ink, fontFace: FONT_BODY,
   });
-  s.addText("hello@vrikaan.com · +91 8329935878 · vrikaan.com/enterprise", {
+  s.addText("hello@vrikaan.com · +91 9607742410 · vrikaan.com/enterprise", {
     x: 0.6, y: 5.95, w: 12, h: 0.4,
     fontSize: 14, color: C.inkSoft, fontFace: FONT_MONO,
   });

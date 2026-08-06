@@ -126,6 +126,7 @@ const Footer = () => {
           <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
             <FooterTool to="/learn">Learn Academy</FooterTool>
             <FooterTool to="/scam-feed">🔴 Live Scam Feed</FooterTool>
+            <FooterTool to="/scam-radar">📡 Scam Radar</FooterTool>
             <FooterTool to="/scam-registry">🔎 Scam Registry</FooterTool>
             <FooterTool to="/file-complaint">File a Complaint · 1930</FooterTool>
             <FooterTool to="/developers">For Developers · API</FooterTool>

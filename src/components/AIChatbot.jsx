@@ -66,6 +66,10 @@ function getCredits() {
   return data;
 }
 
+// Display-only ledger. The real allowance is enforced by /api/chat against a
+// Firestore counter keyed to the caller's uid (or IP for guests) — this used
+// to be the only thing standing between the internet and the LLM budget, and
+// it lives in localStorage, so it stood between nothing and nothing.
 function useCredit() {
   const data = getCredits();
   const max = PLANS[data.plan]?.credits ?? PLANS.guest.credits;
@@ -96,9 +100,18 @@ function upgradePlan(planKey) {
 // Includes sticky context: current page, user plan, tool tier.
 async function askAI(message, history, ctx = {}) {
   try {
+    // Send the ID token when signed in — the server resolves the plan and the
+    // message allowance from it. Plan sent in `context` is display-only.
+    const headers = { "Content-Type": "application/json" };
+    try {
+      const { auth } = await import("../firebase/config");
+      const idToken = await auth.currentUser?.getIdToken();
+      if (idToken) headers.Authorization = `Bearer ${idToken}`;
+    } catch { /* signed out — guest allowance applies */ }
+
     const res = await fetch("/api/chat", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify({
         message,
         history: history.slice(-10),
@@ -106,14 +119,12 @@ async function askAI(message, history, ctx = {}) {
           path: ctx.path || "/",
           toolName: ctx.toolName || "",
           toolTier: ctx.toolTier || "free",
-          userPlan: ctx.userPlan || "guest",
-          loggedIn: !!ctx.loggedIn,
         },
       }),
     });
 
     if (!res.ok) {
-      if (res.status === 429) return "ERROR_QUOTA";
+      if (res.status === 429 || res.status === 402) return "ERROR_QUOTA";
       console.error("VRIKAAN AI Error:", res.status);
       return "I'm experiencing a temporary issue. Please try again in a moment.";
     }
@@ -174,7 +185,7 @@ const KB = [
   { k: ["sql injection", "sqli", "database attack", "injection attack"], a: "**SQL Injection** is a code injection technique that exploits vulnerabilities in web applications' database queries.\n\n**How it works:** Attackers insert malicious SQL code into input fields to manipulate the database.\n\n**Prevention:**\n- Use **parameterized queries** / prepared statements\n- Implement **input validation** and sanitization\n- Use **ORM** frameworks\n- Apply **least privilege** to database accounts\n- Enable **WAF** (Web Application Firewall)\n- Use VRIKAAN's **Vulnerability Scanner** to detect SQL injection flaws" },
   { k: ["ddos", "dos", "denial of service", "botnet"], a: "**DDoS (Distributed Denial of Service)** floods a target with traffic to overwhelm and take it offline.\n\n**Types:**\n- **Volumetric** — bandwidth flooding (UDP flood, DNS amplification)\n- **Protocol** — exploits network layer (SYN flood, Ping of Death)\n- **Application** — targets web apps (HTTP flood, Slowloris)\n\n**Protection:**\n- Use **CDN** services (Cloudflare, AWS Shield)\n- Implement **rate limiting**\n- Deploy **traffic analysis** and anomaly detection\n- Have a **DDoS response plan**\n- Use VRIKAAN's monitoring tools" },
   { k: ["incident response", "breach", "hacked", "compromised", "data breach"], a: "**If you've been hacked, act fast:**\n\n**Immediate Steps:**\n1. **Change all passwords** — start with email and banking\n2. **Enable 2FA** on all accounts\n3. **Check for unauthorized** transactions or logins\n4. **Scan devices** for malware\n5. **Notify** your bank and relevant services\n\n**Long-term:**\n- Monitor your credit reports\n- Use VRIKAAN's **Dark Web Monitor** to check for leaked data\n- Review connected apps and revoke suspicious access\n- Consider a credit freeze\n- Report to authorities (IC3, local law enforcement)" },
-  { k: ["contact", "email", "reach you", "reach out", "get in touch", "support", "help me", "talk to", "speak to", "phone", "whatsapp"], a: "**Reach the right VRIKAAN inbox** (we reply within 7 days):\n\n- 💼 **hr@vrikaan.com** → Careers, internships, job applications, take-home submissions, interview logistics. Apply at **vrikaan.com/apply**\n- 🤖 **ai@vrikaan.com** → AI/ML feedback, bug reports, feature requests, API integration, partnership pitches around our AI stack\n- ✉️ **hello@vrikaan.com** → General support, press & media, billing, refunds, account help, anything else\n\n**Phone:** +91 8329935878  ·  **HQ:** Nashik, Maharashtra, India\n\nNot sure which inbox? Tell me what you're trying to do and I'll route you." },
+  { k: ["contact", "email", "reach you", "reach out", "get in touch", "support", "help me", "talk to", "speak to", "phone", "whatsapp"], a: "**Reach the right VRIKAAN inbox** (we reply within 7 days):\n\n- 💼 **hr@vrikaan.com** → Careers, internships, job applications, take-home submissions, interview logistics. Apply at **vrikaan.com/apply**\n- 🤖 **ai@vrikaan.com** → AI/ML feedback, bug reports, feature requests, API integration, partnership pitches around our AI stack\n- ✉️ **hello@vrikaan.com** → General support, press & media, billing, refunds, account help, anything else\n\n**Phone:** +91 9607742410  ·  **HQ:** Nashik, Maharashtra, India\n\nNot sure which inbox? Tell me what you're trying to do and I'll route you." },
   { k: ["career", "careers", "job", "jobs", "internship", "internships", "intern", "hiring", "apply", "vacancy", "vacancies", "opening", "openings", "hire me"], a: "**VRIKAAN is hiring!** Open roles + internships are listed at **vrikaan.com/careers** (short link: **vrikaan.com/apply**).\n\n**Current openings:**\n- 🔴 SOC Analyst Intern\n- Full-Stack Engineering Intern\n- AI / ML Intern\n- Content & Social Marketing Intern\n- Junior SOC Engineer (full-time)\n\n**To apply:** fill the Google Form on the careers page OR email **hr@vrikaan.com** (auto-CCs hello@vrikaan.com for tracking).\n\nWe respond to every application within 7 days, even with a no. Stipends, ESOPs, remote-by-default. Built and run by founders Sahil + Khushi." },
 ];
 

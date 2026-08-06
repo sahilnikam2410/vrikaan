@@ -29,7 +29,7 @@ export default function RefundPolicy() {
           { title: "7. Free Plan", content: "The Free plan does not involve any payment and therefore no refund policy applies. You can upgrade from or return to the free plan at any time without any financial obligation." },
           { title: "8. Service Interruptions", content: "In the unlikely event of extended service outages (exceeding 24 consecutive hours) that are within our control, we will provide proportional credit to affected subscribers. This does not apply to scheduled maintenance periods that are communicated in advance." },
           { title: "9. Changes to This Policy", content: "We reserve the right to modify this Cancellation and Refund Policy at any time. Changes will be effective immediately upon posting on our website. We will notify active subscribers of any material changes via email." },
-          { title: "10. Contact Us", content: "For any questions regarding cancellations or refunds, please reach out to us at hello@vrikaan.com or call +91 8329935878. Our support team is available 24/7 to assist you." },
+          { title: "10. Contact Us", content: "For any questions regarding cancellations or refunds, please reach out to us at hello@vrikaan.com or call +91 9607742410. Our support team is available 24/7 to assist you." },
         ].map((s, i) => (
           <div key={i} style={{ marginBottom: 36 }}>
             <h2 style={{ fontSize: 20, fontWeight: 700, marginBottom: 10, fontFamily: "'Vrikaan Sans', sans-serif" }}>{s.title}</h2>

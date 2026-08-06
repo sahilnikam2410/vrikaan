@@ -6,6 +6,7 @@ import { RecaptchaVerifier } from "firebase/auth";
 import { auth } from "../../firebase/config";
 import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
+import { markMfaVerified, isMfaVerified, mfaPending } from "../../lib/mfaSession";
 
 const COUNTRY_CODES = [
   { code: "+91", country: "IN", label: "India (+91)" },
@@ -308,10 +309,18 @@ export default function Login() {
   const [totpVerifying, setTotpVerifying] = useState(false);
   const [totpError, setTotpError] = useState("");
 
+  // A session that already cleared TOTP shouldn't be asked again.
+  useEffect(() => {
+    if (user && isMfaVerified(user.authTime)) setMfaPassed(true);
+  }, [user]);
+
+  // True while this sign-in still owes a TOTP code.
+  const showTotpGate = mfaPending(user) && !mfaPassed;
+
   // Redirect if already logged in — but pause for the TOTP step when MFA is on.
   useEffect(() => {
     if (!user) return;
-    if (user.mfaEnabled && !mfaPassed) return; // wait for TOTP gate below
+    if (mfaPending(user) && !mfaPassed) return; // wait for TOTP gate below
     navigate("/home", { replace: true });
   }, [user, mfaPassed, navigate]);
   const verifyTotpAtLogin = async () => {
@@ -328,6 +337,9 @@ export default function Login() {
       });
       const data = await r.json();
       if (!r.ok) { setTotpError(data.error || "Invalid code"); return; }
+      // The server has recorded this sign-in as verified; mirror it locally so
+      // the rest of the app stops showing the gate for this session.
+      markMfaVerified(user?.authTime);
       setMfaPassed(true);
     } catch (e) { setTotpError(e.message); }
     finally { setTotpVerifying(false); }
@@ -618,10 +630,10 @@ export default function Login() {
         {/* Header */}
         <div style={{ textAlign: "center" }}>
           <img src="/wolf-mark.png?v=2" alt="VRIKAAN" style={{ width: 72, height: 72, margin: "0 auto 12px", display: "block" }} />
-          <div style={S.title}>{user?.mfaEnabled && !mfaPassed ? "Two-Factor Auth" : isSwitchAccount ? "Switch Account" : t("login.title")}</div>
+          <div style={S.title}>{showTotpGate ? "Two-Factor Auth" : isSwitchAccount ? "Switch Account" : t("login.title")}</div>
         </div>
         <p style={S.subtitle}>
-          {user?.mfaEnabled && !mfaPassed
+          {showTotpGate
             ? "Enter the 6-digit code from your authenticator app (or a backup code)"
             : isSwitchAccount ? "Sign in with a different account" : t("login.subtitle")}
         </p>
@@ -631,7 +643,7 @@ export default function Login() {
         {successMsg && <div style={S.success}><SuccessIcon />{successMsg}</div>}
 
         {/* TOTP gate — replaces the rest of the form when MFA is required */}
-        {user?.mfaEnabled && !mfaPassed && (
+        {showTotpGate && (
           <div style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 8 }}>
             {totpError && <div style={S.error}><ErrorIcon />{totpError}</div>}
             <input
@@ -659,7 +671,7 @@ export default function Login() {
         )}
 
         {/* ═══════ EMAIL FORM ═══════ */}
-        {!(user?.mfaEnabled && !mfaPassed) && (
+        {!(showTotpGate) && (
           <form onSubmit={handleEmailLogin} autoComplete="on">
             <label style={S.label}>Email Address</label>
             <input
@@ -732,7 +744,7 @@ export default function Login() {
         )}
 
         {/* ═══════ SOCIAL DIVIDER ═══════ */}
-        {!(user?.mfaEnabled && !mfaPassed) && (
+        {!(showTotpGate) && (
         <div style={S.divider}>
           <div style={S.dividerLine} />
           <span>or continue with</span>
@@ -741,7 +753,7 @@ export default function Login() {
         )}
 
         {/* ═══════ SOCIAL BUTTONS ═══════ */}
-        {!(user?.mfaEnabled && !mfaPassed) && (
+        {!(showTotpGate) && (
         <>
         <div style={S.socialGrid}>
           <button
@@ -784,7 +796,7 @@ export default function Login() {
         )}
 
         {/* ═══════ FOOTER ═══════ */}
-        {!(user?.mfaEnabled && !mfaPassed) && (
+        {!(showTotpGate) && (
         <div style={S.footer}>
           Don't have an account?{" "}
           <Link to="/signup" style={S.link}>Sign Up</Link>

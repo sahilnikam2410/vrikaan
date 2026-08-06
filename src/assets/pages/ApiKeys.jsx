@@ -43,7 +43,9 @@ export default function ApiKeys() {
       const token = genToken();
       const batch = writeBatch(db);
       // server-validated mirror (doc id = the secret token)
-      batch.set(doc(db, "api_tokens", token), { uid: user.uid, plan, active: true, createdAt: serverTimestamp() });
+      // No `plan` here — the tier is resolved server-side from /users/{uid} on
+      // every API call. Writing it would be rejected by firestore.rules.
+      batch.set(doc(db, "api_tokens", token), { uid: user.uid, active: true, createdAt: serverTimestamp() });
       // owner-listable metadata (stores full token so the user can re-copy)
       const metaRef = doc(collection(db, "users", user.uid, "apikeys"));
       batch.set(metaRef, { label: label.trim() || "API key", token, preview: token.slice(0, 12) + "…" + token.slice(-4), active: true, createdAtMs: Date.now() });

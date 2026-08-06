@@ -100,6 +100,20 @@ export async function grantPlanFromOrder(cfData) {
       grantedAt: new Date(now).toISOString(), expiresAt,
     });
 
+    // Billing-history row, written here rather than by the browser so the
+    // collection only ever contains payments Cashfree actually confirmed.
+    // Doc id is the order id, so replays land on the same row.
+    tx.set(userRef.collection("payments").doc(orderId), {
+      amount: cfData.order_amount || 0,
+      currency: cfData.order_currency || "INR",
+      plan, billing,
+      method: "cashfree",
+      transactionId: orderId,
+      cfOrderId: String(cfData.cf_order_id || ""),
+      status: "completed",
+      createdAt: new Date(now),
+    });
+
     return { granted: true, plan, billing, expiresAt, durationDays };
   });
 }

@@ -197,6 +197,7 @@ const Solutions = lazy(() => import("./assets/pages/Solutions.jsx"));
 const CaseStudies = lazy(() => import("./assets/pages/CaseStudies.jsx"));
 const Leadership = lazy(() => import("./assets/pages/Leadership.jsx"));
 const Partners = lazy(() => import("./assets/pages/Partners.jsx"));
+const ScamRadar = lazy(() => import("./assets/pages/ScamRadar.jsx"));
 const SecurityAudit = lazy(() => import("./assets/pages/SecurityAudit.jsx"));
 const ThreatDirectory = lazy(() => import("./assets/pages/ThreatDirectory.jsx"));
 const ThreatDetail = lazy(() => import("./assets/pages/ThreatDetail.jsx"));
@@ -268,6 +269,7 @@ function AppRoutes() {
             <Route path="/case-studies" element={<CaseStudies />} />
             <Route path="/leadership" element={<Leadership />} />
             <Route path="/partners" element={<Partners />} />
+            <Route path="/scam-radar" element={<ScamRadar />} />
             <Route path="/deepfake-audio" element={<DeepfakeAudio />} />
             <Route path="/vulnerability-scan" element={<VulnerabilityScan />} />
             <Route path="/admin/soc" element={<ProtectedRoute adminOnly><SocDashboard /></ProtectedRoute>} />

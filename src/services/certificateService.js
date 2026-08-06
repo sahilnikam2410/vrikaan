@@ -78,8 +78,37 @@ export function downloadCertificate(data) {
   doc.save(`VRIKAAN-Certificate-${(data.testTitle || "test").replace(/\s+/g, "-")}.pdf`);
 }
 
-export function makeCertId() {
-  const t = Date.now().toString(36).toUpperCase().slice(-6);
-  const r = Math.random().toString(36).toUpperCase().slice(2, 6);
-  return `VRK-${t}${r}`;
+/**
+ * Ask the server to issue a certificate and return its id.
+ *
+ * Both the id and the holder's name are decided server-side from the caller's
+ * Firebase ID token — the client used to generate the id and post the name it
+ * wanted, with no authentication at all, which let anyone mint or overwrite a
+ * certificate in any name.
+ *
+ * Returns the recorded holder name alongside the id so the rendered
+ * certificate shows exactly what /verify/:id will report — a printed name that
+ * differs from the verified one is its own small forgery.
+ *
+ * @returns {Promise<{certId: string, name: string}|null>} null if issuance failed.
+ */
+export async function issueCert({ title, kind = "course", score = null }) {
+  try {
+    const { auth } = await import("../firebase/config");
+    const user = auth.currentUser;
+    const idToken = await user?.getIdToken();
+    if (!idToken) return null;
+    const r = await fetch("/api/tools?tool=cert-register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${idToken}` },
+      body: JSON.stringify({ title, kind, ...(score == null ? {} : { score }) }),
+    });
+    if (!r.ok) return null;
+    const data = await r.json();
+    if (!data.certId) return null;
+    // The server derives the holder from the token the same way; mirroring it
+    // here keeps the PNG/PDF consistent with the verification page.
+    const name = user.displayName || user.email?.split("@")[0] || "VRIKAAN Learner";
+    return { certId: data.certId, name };
+  } catch { return null; }
 }

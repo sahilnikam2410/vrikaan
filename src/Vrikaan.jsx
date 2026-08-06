@@ -2187,9 +2187,18 @@ const AssistantSection = () => {
     setLoading(true);
 
     try {
+      // Attach the ID token when signed in so the server can apply this
+      // account's message allowance instead of the guest one.
+      const headers = { "Content-Type": "application/json" };
+      try {
+        const { auth } = await import("./firebase/config");
+        const idToken = await auth.currentUser?.getIdToken();
+        if (idToken) headers.Authorization = `Bearer ${idToken}`;
+      } catch { /* signed out — guest allowance applies */ }
+
       const res = await fetch("/api/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({ message: q, history: msgs }),
       });
       const data = await res.json();
