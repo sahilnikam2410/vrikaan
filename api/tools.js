@@ -3779,7 +3779,7 @@ async function handleScamDna(req, res) {
       if (!snap.exists) return res.status(200).json({ known: false, riskScore: 0, identifier: id });
       const x = snap.data();
       const reports = x.count || 0;
-      const risk = x.verified ? 95 : Math.min(90, 40 + reports * 8 + (x.lossCount || 0) * 5);
+      const risk = _sigRiskScore(x);
       return res.status(200).json({
         known: true, riskScore: risk, identifier: id,
         category: x.category || "other", tactic: x.tactic || "",
@@ -3800,6 +3800,11 @@ async function handleScamDna(req, res) {
       sample: String(req.body?.sample || "").slice(0, 200),
       keyPhrases: [],
     });
+    // This report may be the one that tips the signature over the line — warn
+    // everyone who checked the same message earlier. Deliberately not awaited
+    // on the response path: alerting can take seconds across many watchers.
+    const alerted = _herdAlert(fs, sigId).catch(() => 0);
+    waitUntil ? waitUntil(alerted) : await alerted;
     return res.status(200).json({ ok: true, sigId, identifier: id });
   }
 
@@ -3955,6 +3960,8 @@ async function handleScamDnaApi(req, res) {
       sample: String(sample || "").slice(0, 200),
       keyPhrases: Array.isArray(keyPhrases) ? keyPhrases : [],
     });
+    const alerted = _herdAlert(fs, sigId).catch(() => 0);
+    waitUntil ? waitUntil(alerted) : await alerted;
     return res.status(200).json({ success: true, sigId });
   }
 
@@ -4079,6 +4086,16 @@ function _herdDangerous(x) {
   const reports = x?.count || 0;
   return !!x?.verified || (x?.lossCount || 0) >= 1 || reports >= 3 ||
     (reports >= 2 && (x?.lastRisk || 0) >= 80);
+}
+
+// Risk score for a stored signature. Shared by `check` and the extension so a
+// signature the herd considers dangerous never reads as low-risk on lookup —
+// the two used to be computed independently and could disagree.
+function _sigRiskScore(x) {
+  const reports = x?.count || 0;
+  if (x?.verified) return 95;
+  const base = Math.min(90, 40 + reports * 8 + (x?.lossCount || 0) * 5);
+  return _herdDangerous(x) ? Math.max(base, 80) : base;
 }
 
 // If the signature has become dangerous, warn every watcher (one-shot: watcher
@@ -4268,12 +4285,25 @@ Message:"""${msg.slice(0, 3000)}"""`;
     const advice = (Array.isArray(p.advice) ? p.advice : []).slice(0, 2).map((a) => `• ${a}`).join("\n");
     const ids = [...(p.paymentHandles || []), ...(p.phones || []), ...(p.urls || [])].slice(0, 4);
 
-    // feed Scam DNA
+    // Feed Scam DNA, and enrol this sender for herd immunity: if the same
+    // fingerprint is later confirmed by other reports, they get warned even
+    // though their own check came back inconclusive today.
+    let sigId = null;
     try {
       const adminMod = await import("./_firebaseAdmin.js");
       const fs = adminMod.getAdminFirestore();
-      if (fs) await _recordScamSignal(fs, { idents: ids, category: p.category, tactic: p.tactic, sample: msg });
-    } catch { /* ignore */ }
+      if (fs) {
+        sigId = await _recordScamSignal(fs, { idents: ids, category: p.category, tactic: p.tactic, sample: msg });
+        if (sigId) {
+          await _herdWatch(fs, sigId, { channel: "wa", to: from }, Number(p.riskScore) || 0);
+          // Sweep any earlier watchers this check may have tipped over the
+          // line. excludeTo skips this sender — they're already reading the
+          // verdict in the reply below, and a duplicate alert reads as a bug.
+          const alerted = _herdAlert(fs, sigId, { excludeTo: from }).catch(() => 0);
+          waitUntil ? waitUntil(alerted) : await alerted;
+        }
+      }
+    } catch (e) { console.error("wa herd:", e.message); }
 
     let reply = `${emoji} *${label}* — risk ${p.riskScore ?? "?"}/100\n${p.tactic ? `Type: ${p.tactic}\n` : ""}`;
     if (ids.length) reply += `\nScammer details: ${ids.join(", ")}`;
