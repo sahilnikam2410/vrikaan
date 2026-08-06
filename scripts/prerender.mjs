@@ -423,10 +423,10 @@ const PRIMARY_PAGES = [
   },
   {
     path: "/responsible-disclosure",
-    title: "Responsible Disclosure · Bug Bounty",
+    title: "Responsible Disclosure · Security Reports",
     description:
-      "Found a vulnerability in VRIKAAN? Report responsibly — ₹2k-25k INR bounties + Hall of Fame credit + 1-year Pro plan. 48h acknowledgement SLA.",
-    ogSubtitle: "Bug bounty program · India-first · INR payouts",
+      "Found a vulnerability in VRIKAAN? Report responsibly — up to 1 year of Pro + Hall of Fame credit, 48h acknowledgement SLA. No cash bounties; we're bootstrapped and say so up front.",
+    ogSubtitle: "Responsible disclosure · India-first · Up to 1 year of Pro",
     ogCategory: "Security",
   },
   {
@@ -434,7 +434,7 @@ const PRIMARY_PAGES = [
     title: "Security Hall of Fame",
     description:
       "Researchers who helped make VRIKAAN safer through responsible disclosure. Thank you for keeping Indian users protected.",
-    ogSubtitle: "Researchers credited · Bug bounty",
+    ogSubtitle: "Researchers credited · Responsible disclosure",
     ogCategory: "Security",
   },
   {
