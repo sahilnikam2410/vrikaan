@@ -34,6 +34,7 @@ const ACTION_TIERS = {
   "quiz-submit": "free",    // sign-in required inside the handler
   "cert-delete": "free",    // admin purge of certificates (CRON_SECRET)
   "payment-delete": "free", // admin purge of payment rows (CRON_SECRET)
+  "plan-grant": "free",     // admin comp of a plan by email (CRON_SECRET)
   "coupon-validate": "free",
   "whatsapp-inbound": "free",  // Twilio webhook — no user auth, rate-limited by phone
   "telegram": "free",          // Telegram bot webhook — no user auth
@@ -2775,6 +2776,59 @@ async function handlePaymentDelete(req, res) {
   return res.status(200).json({ ok: true, uid, deleted, missing });
 }
 
+// Comp a plan to an account by email (CRON_SECRET gated). Built for bug-bounty
+// thank-yous and support goodwill — the only other ways to move someone onto a
+// paid plan are a real Cashfree order or editing Firestore by hand.
+//
+// Writes the same entitlement fields as the Cashfree grant path, via the Admin
+// SDK, since `plan` and friends are locked to clients by firestore.rules.
+// Time stacks onto any remaining plan rather than truncating it.
+//
+// POST ?tool=plan-grant  { key, email, plan?="pro", days?=30, reason? }
+async function handlePlanGrant(req, res) {
+  const key = req.query.key || req.body?.key;
+  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+
+  const email = String(req.body?.email || req.query.email || "").trim().toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return res.status(400).json({ error: "valid email required" });
+
+  const plan = String(req.body?.plan || req.query.plan || "pro").toLowerCase();
+  if (!Object.prototype.hasOwnProperty.call(TIER_LEVEL, plan)) {
+    return res.status(400).json({ error: `unknown plan (use: ${Object.keys(TIER_LEVEL).join(", ")})` });
+  }
+  const days = Math.min(3650, Math.max(1, Number(req.body?.days ?? req.query.days ?? 30)));
+  const reason = String(req.body?.reason || req.query.reason || "manual grant").slice(0, 200);
+
+  const auth = getAdminAuth();
+  const fs = getAdminFirestore();
+  if (!auth || !fs) return res.status(500).json({ error: "Admin SDK not configured" });
+
+  let user;
+  try {
+    user = await auth.getUserByEmail(email);
+  } catch {
+    return res.status(404).json({ error: "no account with that email", code: "NO_ACCOUNT", email });
+  }
+
+  const now = Date.now();
+  const ref = fs.collection("users").doc(user.uid);
+  try {
+    const snap = await ref.get();
+    const prevExp = snap.exists ? (Date.parse(snap.data().planExpiresAt || "") || 0) : 0;
+    const base = Math.max(now, prevExp);           // stack, don't truncate
+    const expiresAt = new Date(base + days * 86400000).toISOString();
+    await ref.set({
+      plan,
+      planBilling: "comp",
+      planActivatedAt: new Date(now).toISOString(),
+      planExpiresAt: expiresAt,
+      planGrantReason: reason,
+    }, { merge: true });
+    console.log(`plan-grant: ${email} → ${plan} for ${days}d (${reason})`);
+    return res.status(200).json({ ok: true, uid: user.uid, email, plan, days, expiresAt, reason });
+  } catch (e) { return res.status(500).json({ error: e.message }); }
+}
+
 // ─── REFERRAL ATTRIBUTION ─────────────────────────────────────────────
 // Called once right after a referred user signs up (Authorization: Bearer
 // <Firebase ID token>, body { code }). Resolves the referrer by their public
@@ -4252,6 +4306,7 @@ const HANDLERS = {
   "quiz-submit": handleQuizSubmit,
   "cert-delete": handleCertDelete,
   "payment-delete": handlePaymentDelete,
+  "plan-grant": handlePlanGrant,
   "coupon-validate": handleCouponValidate,
   "whatsapp-inbound": handleWhatsappInbound,
   "telegram": handleTelegram,
