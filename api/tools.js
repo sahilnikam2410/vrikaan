@@ -3147,6 +3147,27 @@ const SWEEP_LIMIT = 400;   // per collection, per run — bounds the cron's runt
 
 async function _sweepExpired(fs) {
   const out = {};
+
+  // Herd watchers live in a subcollection, so they need a collection-group
+  // query — see the fieldOverrides entry in firestore.indexes.json. These hold
+  // phone numbers, so reaping them is a privacy obligation, not housekeeping.
+  try {
+    const snap = await fs.collectionGroup("watchers")
+      .where("expiresAt", "<=", new Date())
+      .limit(SWEEP_LIMIT).get();
+    let done = 0;
+    for (let i = 0; i < snap.docs.length; i += 400) {
+      const batch = fs.batch();
+      for (const d of snap.docs.slice(i, i + 400)) batch.delete(d.ref);
+      await batch.commit();
+      done += Math.min(400, snap.docs.length - i);
+    }
+    out.watchers = done;
+  } catch (e) {
+    console.error("sweep watchers:", e.message);
+    out.watchers = -1;
+  }
+
   for (const name of TTL_COLLECTIONS) {
     try {
       const snap = await fs.collection(name)
@@ -3511,7 +3532,17 @@ async function handleWhatsappInbound(req, res) {
   try {
     const { intent, payload } = _waParseIntent(messageBody);
     const origin = `https://${req.headers.host}`;
-    const reply = intent === "help" ? WA_HELP : _waFormat(intent, await _waCallTool(intent, payload, origin));
+    let reply;
+    if (intent === "help") {
+      reply = WA_HELP;
+    } else if (intent === "scam-check") {
+      // Shared path — enrols this sender for herd immunity like the Cloud API
+      // bot does. Twilio numbers arrive as "whatsapp:+91...", so strip the
+      // scheme to match the id _herdWatch/_waSend expect.
+      reply = await _botScamCheck(payload, { channel: "wa", to: String(from).replace(/^whatsapp:/i, "") });
+    } else {
+      reply = _waFormat(intent, await _waCallTool(intent, payload, origin));
+    }
     await _waSendReply(from, reply);
   } catch (e) {
     console.error("whatsapp-inbound error:", e.message);
@@ -3573,7 +3604,17 @@ async function handleTelegram(req, res) {
   try {
     const { intent, payload } = _waParseIntent(text);
     const origin = `https://${req.headers.host}`;
-    const reply = intent === "help" ? TG_HELP : _waFormat(intent, await _waCallTool(intent, payload, origin));
+    let reply;
+    if (intent === "help") {
+      reply = TG_HELP;
+    } else if (intent === "scam-check") {
+      // Same path as the WhatsApp bot, so Telegram users are enrolled for herd
+      // immunity too. The `scam-check` tool never returns a signature id, so
+      // routing through it left Telegram unable to warn anyone later.
+      reply = await _botScamCheck(payload, { channel: "tg", to: String(chatId) });
+    } else {
+      reply = _waFormat(intent, await _waCallTool(intent, payload, origin));
+    }
     await _tgSend(chatId, reply);
   } catch (e) {
     console.error("telegram error:", e.message);
@@ -4069,6 +4110,13 @@ async function _recordScamSignal(fs, { idents, category, tactic, sample, keyPhra
 // Telegram alerts are free-form; WhatsApp tries free-form (24h session) and
 // falls back to the approved scam_alert template.
 
+// How long we hold someone's phone number / chat ID waiting for a signature to
+// turn dangerous. A watcher doc is deleted as soon as it's alerted, but a
+// signature that never crosses the line would otherwise keep the number
+// forever — so it expires regardless. 90 days is long enough for the delayed
+// warning to be worth something and short enough to be defensible.
+const HERD_WATCH_TTL_DAYS = 90;
+
 // Register a watcher on a signature (idempotent — doc id = channel_to).
 async function _herdWatch(fs, sigId, watcher, riskAtCheck) {
   try {
@@ -4076,6 +4124,7 @@ async function _herdWatch(fs, sigId, watcher, riskAtCheck) {
     await fs.collection("scamSignatures").doc(sigId).collection("watchers").doc(wid).set({
       channel: watcher.channel, to: String(watcher.to).slice(0, 32),
       riskAtCheck: riskAtCheck || 0, at: Date.now(),
+      expiresAt: new Date(Date.now() + HERD_WATCH_TTL_DAYS * 86400000),
     }, { merge: true });
     return true;
   } catch (e) { console.error("herd-watch:", e.message); return false; }
@@ -4274,47 +4323,72 @@ async function _processWhatsapp(from, msg) {
   }
 
   try {
-    const prompt = `India scam analyst. Analyze this forwarded message. STRICT JSON, no markdown:
-{"verdict":"scam"|"likely-scam"|"suspicious"|"probably-safe","riskScore":0-100,"category":"upi-fraud|phishing|vishing|loan-app|job-scam|lottery-prize|fake-bank|fake-courier|kyc|other","tactic":"short","paymentHandles":[],"phones":[],"urls":[],"advice":["1-2 short actions"]}
-Message:"""${msg.slice(0, 3000)}"""`;
-    const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 700, json: true });
-    if (!r.ok) { await _waSend(from, "⚠ Our AI is briefly busy. Please resend the message in a few seconds."); return; }
-    const p = tryParseJson(r.text) || {};
-    const emoji = { "scam": "🚨", "likely-scam": "🚨", "suspicious": "⚠", "probably-safe": "✅" }[p.verdict] || "⚠";
-    const label = { "scam": "SCAM", "likely-scam": "LIKELY SCAM", "suspicious": "SUSPICIOUS", "probably-safe": "PROBABLY SAFE" }[p.verdict] || "SUSPICIOUS";
-    const advice = (Array.isArray(p.advice) ? p.advice : []).slice(0, 2).map((a) => `• ${a}`).join("\n");
-    const ids = [...(p.paymentHandles || []), ...(p.phones || []), ...(p.urls || [])].slice(0, 4);
-
-    // Feed Scam DNA, and enrol this sender for herd immunity: if the same
-    // fingerprint is later confirmed by other reports, they get warned even
-    // though their own check came back inconclusive today.
-    let sigId = null;
-    try {
-      const adminMod = await import("./_firebaseAdmin.js");
-      const fs = adminMod.getAdminFirestore();
-      if (fs) {
-        sigId = await _recordScamSignal(fs, { idents: ids, category: p.category, tactic: p.tactic, sample: msg });
-        if (sigId) {
-          await _herdWatch(fs, sigId, { channel: "wa", to: from }, Number(p.riskScore) || 0);
-          // Sweep any earlier watchers this check may have tipped over the
-          // line. excludeTo skips this sender — they're already reading the
-          // verdict in the reply below, and a duplicate alert reads as a bug.
-          const alerted = _herdAlert(fs, sigId, { excludeTo: from }).catch(() => 0);
-          waitUntil ? waitUntil(alerted) : await alerted;
-        }
-      }
-    } catch (e) { console.error("wa herd:", e.message); }
-
-    let reply = `${emoji} *${label}* — risk ${p.riskScore ?? "?"}/100\n${p.tactic ? `Type: ${p.tactic}\n` : ""}`;
-    if (ids.length) reply += `\nScammer details: ${ids.join(", ")}`;
-    if (advice) reply += `\n\nWhat to do:\n${advice}`;
-    reply += `\n\nNever share OTP/UPI PIN. Verify on official numbers only.\n— VRIKAAN`;
+    const reply = await _botScamCheck(msg, { channel: "wa", to: from });
     await _waSend(from, reply);
   } catch (e) {
     console.error("whatsapp handler:", e.message);
     try { await _waSend(from, "Sorry, something went wrong. Please try again."); } catch { /* ignore */ }
   }
   return;
+}
+
+/**
+ * Shared bot scam-check: analyse a forwarded message, feed Scam DNA, enrol the
+ * sender for herd immunity, and return the reply text.
+ *
+ * Both bots go through here so Telegram gets the same herd protection as
+ * WhatsApp. Telegram previously routed through the `scam-check` tool, which
+ * never produces a signature id, so its users could never be enrolled.
+ *
+ * @param {string} msg               the forwarded message
+ * @param {{channel: "wa"|"tg", to: string}} watcher  who to warn later
+ * @returns {Promise<string>} reply text for the bot to send
+ */
+async function _botScamCheck(msg, watcher) {
+  const prompt = `India scam analyst. Analyze this forwarded message. STRICT JSON, no markdown:
+{"verdict":"scam"|"likely-scam"|"suspicious"|"probably-safe","riskScore":0-100,"category":"upi-fraud|phishing|vishing|loan-app|job-scam|lottery-prize|fake-bank|fake-courier|kyc|other","tactic":"short","paymentHandles":[],"phones":[],"urls":[],"advice":["1-2 short actions"]}
+Message:"""${msg.slice(0, 3000)}"""`;
+  const r = await callGemini(prompt, { temperature: 0.2, maxOutputTokens: 700, json: true });
+  if (!r.ok) return "⚠ Our AI is briefly busy. Please resend the message in a few seconds.";
+
+  const p = tryParseJson(r.text) || {};
+  const emoji = { "scam": "🚨", "likely-scam": "🚨", "suspicious": "⚠", "probably-safe": "✅" }[p.verdict] || "⚠";
+  const label = { "scam": "SCAM", "likely-scam": "LIKELY SCAM", "suspicious": "SUSPICIOUS", "probably-safe": "PROBABLY SAFE" }[p.verdict] || "SUSPICIOUS";
+  const advice = (Array.isArray(p.advice) ? p.advice : []).slice(0, 2).map((a) => `• ${a}`).join("\n");
+  const ids = [...(p.paymentHandles || []), ...(p.phones || []), ...(p.urls || [])].slice(0, 4);
+
+  // Feed Scam DNA, and enrol this sender for herd immunity: if the same
+  // fingerprint is later confirmed by other reports, they get warned even
+  // though their own check came back inconclusive today.
+  try {
+    const adminMod = await import("./_firebaseAdmin.js");
+    const fs = adminMod.getAdminFirestore();
+    if (fs) {
+      const sigId = await _recordScamSignal(fs, { idents: ids, category: p.category, tactic: p.tactic, sample: msg });
+      // "alert off" opts out of herd warnings too, not just broadcasts — the
+      // privacy policy says so, so the code has to mean it.
+      let optedOut = false;
+      try {
+        const sub = await fs.collection("wa_subscribers").doc(String(watcher.to)).get();
+        optedOut = sub.exists && sub.data().optedIn === false;
+      } catch { /* default to enrolling */ }
+
+      if (sigId && !optedOut) {
+        await _herdWatch(fs, sigId, watcher, Number(p.riskScore) || 0);
+        // Sweep any earlier watchers this check may have tipped over the line.
+        // excludeTo skips this sender — they're already reading the verdict in
+        // the reply below, and a duplicate alert reads as a bug.
+        const alerted = _herdAlert(fs, sigId, { excludeTo: watcher.to }).catch(() => 0);
+        waitUntil ? waitUntil(alerted) : await alerted;
+      }
+    }
+  } catch (e) { console.error("bot herd:", e.message); }
+
+  let reply = `${emoji} *${label}* — risk ${p.riskScore ?? "?"}/100\n${p.tactic ? `Type: ${p.tactic}\n` : ""}`;
+  if (ids.length) reply += `\nScammer details: ${ids.join(", ")}`;
+  if (advice) reply += `\n\nWhat to do:\n${advice}`;
+  reply += `\n\nNever share OTP/UPI PIN. Verify on official numbers only.\n— VRIKAAN`;
+  return reply;
 }
 
 const HANDLERS = {
