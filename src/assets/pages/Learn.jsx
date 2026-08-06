@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
+import { issueCert } from "../../services/certificateService";
 
 const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", ember: "#f97316", red: "#ef4444", gold: "#eab308", purple: "#a78bfa", blue: "#38bdf8", green: "#22c55e", pink: "#ec4899", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
@@ -493,18 +494,8 @@ function saveCertificate(cert) {
   }
 }
 
-function newCertId() {
-  return `SEC-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
-}
-// Register a cert server-side so /verify/:id can validate it publicly.
-function registerCert({ certId, name, course, kind = "course" }) {
-  try {
-    fetch("/api/tools?tool=cert-register", {
-      method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ certId, name, title: course, kind, date: new Date().toISOString() }),
-    }).catch(() => {});
-  } catch { /* ignore */ }
-}
+// Certificates are issued by the server (issueCert, imported below) — the id
+// and the recorded holder come from the signed-in account, not from this page.
 
 // ─── Gamification: XP, levels, streaks, badges ──────────────────────
 const today = () => new Date().toISOString().slice(0, 10);
@@ -927,6 +918,7 @@ export default function Learn() {
   const [certName, setCertName] = useState("");
   const [certImage, setCertImage] = useState(null);
   const [certId, setCertId] = useState("");
+  const [certError, setCertError] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [kbActive, setKbActive] = useState(null);
@@ -1450,33 +1442,41 @@ export default function Learn() {
         <div style={{ ...sty.card, textAlign: "center", marginBottom: 24 }}>
           <div style={{ fontSize: 48, marginBottom: 12 }}>🎓</div>
           <h1 style={{ fontSize: 28, fontWeight: 700, color: T.white, fontFamily: "'Vrikaan Sans'", marginBottom: 8 }}>Claim Your Certificate</h1>
-          <p style={{ fontSize: 14, color: T.muted }}>Enter your full name as it should appear on the certificate.</p>
+          <p style={{ fontSize: 14, color: T.muted }}>Your certificate is issued to the name on your VRIKAAN account.</p>
         </div>
         <div style={{ maxWidth: 500, margin: "0 auto" }}>
           <div style={{ ...sty.card, marginBottom: 24 }}>
-            <label style={{ display: "block", fontSize: 13, color: T.muted, marginBottom: 8 }}>Full Name</label>
-            <input
-              type="text"
-              value={certName}
-              onChange={e => setCertName(e.target.value)}
-              placeholder="e.g. Sahil Anil Nikam"
-              style={{ ...sty.input, fontSize: 16, padding: "14px 16px", marginBottom: 16 }}
-            />
+            {/* The holder is taken from the signed-in account, not typed here —
+                a free-text name meant anyone could print a certificate in
+                anyone's name and have it verify as genuine. Change it under
+                Account settings if it's wrong. */}
+            <p style={{ fontSize: 13, color: T.muted, marginBottom: 16 }}>
+              Certificates are issued to your account name and can be checked by
+              anyone at <span style={{ color: T.white }}>vrikaan.com/verify</span>.
+            </p>
             <button
               onClick={async () => {
-                if (!certName.trim()) return;
-                const cid = newCertId();
-                setCertId(cid);
-                const img = await generateCertificate(activeCourse.title, certName.trim(), cid);
+                setCertError("");
+                const issued = await issueCert({ title: activeCourse.title });
+                if (!issued) {
+                  setCertError("Could not issue your certificate. Make sure you're signed in and try again.");
+                  return;
+                }
+                // Render the name the server recorded, so the certificate says
+                // the same thing /verify/:id does.
+                setCertName(issued.name);
+                setCertId(issued.certId);
+                const img = await generateCertificate(activeCourse.title, issued.name, issued.certId);
                 setCertImage(img);
-                saveCertificate({ courseId: activeCourse.id, name: certName.trim(), date: new Date().toISOString(), course: activeCourse.title, certId: cid });
-                registerCert({ certId: cid, name: certName.trim(), course: activeCourse.title });
+                saveCertificate({ courseId: activeCourse.id, name: issued.name, date: new Date().toISOString(), course: activeCourse.title, certId: issued.certId });
               }}
-              disabled={!certName.trim()}
-              style={{ ...sty.btn(certName.trim() ? T.accent : "rgba(99,102,241,0.3)"), width: "100%", justifyContent: "center", padding: "14px" }}
+              style={{ ...sty.btn(T.accent), width: "100%", justifyContent: "center", padding: "14px" }}
             >
               Generate Certificate
             </button>
+            {certError && (
+              <div style={{ marginTop: 12, fontSize: 13, color: "#f87171" }}>{certError}</div>
+            )}
           </div>
         </div>
 

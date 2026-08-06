@@ -386,7 +386,10 @@ export default function UserDashboard() {
       const [devSnap, actSnap, paySnap, repSnap] = await Promise.all([
         getDocs(fsCol("devices")),
         getDocs(query(fsCol("activity"), orderBy("timestamp", "desc"), limit(50))),
-        getDocs(query(fsCol("payments"), orderBy("date", "desc"), limit(20))),
+        // Ordered by createdAt — the field payment records actually carry.
+        // Firestore drops documents missing the ordered field, so ordering by
+        // "date" returned an empty billing history for everyone.
+        getDocs(query(fsCol("payments"), orderBy("createdAt", "desc"), limit(20))),
         getDocs(query(fsCol("reports"), orderBy("createdAt", "desc"), limit(10))),
       ]);
       setDevices(devSnap.docs.map((d) => ({ id: d.id, ...d.data() })));

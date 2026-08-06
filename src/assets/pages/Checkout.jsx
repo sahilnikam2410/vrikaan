@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
-import { doc, getDoc, updateDoc, collection, addDoc, getDocs, query, where, serverTimestamp, Timestamp } from "firebase/firestore";
+import { doc, getDoc, updateDoc, serverTimestamp, Timestamp } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { sendPaymentConfirmation } from "../../services/emailService";
 import { downloadInvoice, makeInvoiceNumber } from "../../services/invoiceService";
@@ -298,17 +298,7 @@ export default function Checkout() {
           return;
         }
 
-        // 2. Check if this payment was already processed
-        const paymentsRef = collection(db, "users", user.uid, "payments");
-        const dupCheck = query(paymentsRef, where("transactionId", "==", orderId));
-        const dupSnap = await getDocs(dupCheck);
-        if (!dupSnap.empty) {
-          // Already processed — just go to success
-          handlePaymentSuccess(data.plan);
-          return;
-        }
-
-        // 3. Mirror non-entitlement subscription metadata on the user doc.
+        // 2. Mirror non-entitlement subscription metadata on the user doc.
         // NOTE: `plan` / `planExpiresAt` are server-owned and LOCKED by
         // firestore.rules — verify-payment already granted them via Admin SDK.
         // Writing `plan` here would be permission-denied and abort the whole
@@ -328,19 +318,12 @@ export default function Checkout() {
           console.warn("Checkout: subscription metadata write skipped:", e.message);
         }
 
-        // 4. Save payment record
-        await addDoc(paymentsRef, {
-          amount: data.amount || 0,
-          plan: data.plan,
-          billing: data.billing,
-          method: "cashfree",
-          transactionId: orderId,
-          cfOrderId: data.cfOrderId || "",
-          status: "completed",
-          createdAt: serverTimestamp(),
-        });
+        // 3. The billing-history row is written by verify-payment's grant
+        // transaction via the Admin SDK (keyed on the order id, so replays are
+        // idempotent). The client no longer writes it — `users/{uid}/payments`
+        // is read-only to clients so the history can't be authored by hand.
 
-        // 5. Activate
+        // 4. Activate
         handlePaymentSuccess(data.plan, data.amount);
       } catch (err) {
         console.error("Payment verification error:", err);

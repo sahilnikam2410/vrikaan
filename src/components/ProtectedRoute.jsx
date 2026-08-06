@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getToolTier, userMeetsTier, tierLabel, tierColor, isKidBlocked } from "../lib/toolTiers";
+import { mfaPending } from "../lib/mfaSession";
 
 /**
  * ProtectedRoute — requires login. Optional `adminOnly` for admin gating.
@@ -34,6 +35,14 @@ export function ProtectedRoute({ children, adminOnly = false, tier: tierOverride
   if (!user) {
     return <Navigate to={`/login?next=${encodeURIComponent(location.pathname)}`} replace />;
   }
+
+  // 2FA gate. Being signed in is not enough once TOTP is enrolled — this
+  // sign-in session must also have cleared the code. Previously the prompt
+  // lived only inside the Login page's own state, so typing any protected URL
+  // walked straight past it. The API enforces the same rule independently.
+  if (mfaPending(user)) {
+    return <Navigate to={`/login?next=${encodeURIComponent(location.pathname)}`} replace />;
+  }
   // Admin routes gate by role ONLY — admins bypass plan-tier + kid gates.
   // (Previously fell through to the tier check below, so an admin on a non-
   // enterprise plan got the Enterprise paywall on their own /admin dashboard.)
@@ -65,6 +74,7 @@ export function DashboardRedirect() {
 
   if (loading) return null;
   if (!user) return <Navigate to="/login" replace />;
+  if (mfaPending(user)) return <Navigate to="/login" replace />;
   if (user.role === "admin") return <Navigate to="/admin" replace />;
   return <Navigate to="/user-dashboard" replace />;
 }

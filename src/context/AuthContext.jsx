@@ -24,6 +24,7 @@ import {
 } from "../services/userService";
 import { sendWelcomeEmail, sendExpiryWarning, sendPromoEmail } from "../services/emailService";
 import { setUser as setReporterUser } from "../services/errorReporter";
+import { clearMfaVerified } from "../lib/mfaSession";
 
 const AuthContext = createContext(null);
 
@@ -41,9 +42,24 @@ const DEMO_USERS = import.meta.env.DEV ? [
 const ADMIN_EMAILS = ["sahilnikam133@gmail.com", "sahilnikam1212@gmail.com", "khushiraygade76666@gmail.com", "founder.vrikaan@gmail.com", "cofounder.vrikaan@gmail.com"];
 
 /**
+ * Read `auth_time` (seconds since epoch) from the current ID token. It marks
+ * when this sign-in happened and is what the TOTP gate is keyed to, on both
+ * the client and the server.
+ */
+async function readAuthTime(firebaseUser) {
+  try {
+    const res = await firebaseUser.getIdTokenResult();
+    const t = Number(res?.claims?.auth_time);
+    return Number.isFinite(t) ? t : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Merge Firebase Auth user object with Firestore profile data.
  */
-function mergeUserData(firebaseUser, profile) {
+function mergeUserData(firebaseUser, profile, authTime = null) {
   // Trial → expired? auto-downgrade local view (Firestore reconciles on next write)
   let plan = profile?.plan || "free";
   const trialExpires = profile?.trialExpiresAt?.toDate ? profile.trialExpiresAt.toDate() : (profile?.trialExpiresAt ? new Date(profile.trialExpiresAt) : null);
@@ -70,6 +86,9 @@ function mergeUserData(firebaseUser, profile) {
     emailVerified: !!firebaseUser.emailVerified,
     providerData: firebaseUser.providerData || [],
     mfaEnabled: !!profile?.mfa?.enabled,
+    // Sign-in timestamp from the ID token. The TOTP gate is keyed to it so
+    // "verified" belongs to one session, not to the device.
+    authTime,
   };
 }
 
@@ -131,7 +150,7 @@ export function AuthProvider({ children }) {
             } catch {}
           }
 
-          const merged = mergeUserData(firebaseUser, profile);
+          const merged = mergeUserData(firebaseUser, profile, await readAuthTime(firebaseUser));
           setUser(merged);
           setReporterUser(merged);
 
@@ -166,7 +185,7 @@ export function AuthProvider({ children }) {
           }
         } catch (error) {
           console.error("Error loading user profile:", error);
-          const fallback = mergeUserData(firebaseUser, null);
+          const fallback = mergeUserData(firebaseUser, null, await readAuthTime(firebaseUser));
           setUser(fallback);
         }
       } else {
@@ -294,7 +313,7 @@ export function AuthProvider({ children }) {
       });
 
       const profile = await getUserProfile(firebaseUser.uid);
-      const merged = mergeUserData(firebaseUser, profile);
+      const merged = mergeUserData(firebaseUser, profile, await readAuthTime(firebaseUser));
       setUser(merged);
 
       sendWelcomeEmail(fullName, data.email);
@@ -310,9 +329,11 @@ export function AuthProvider({ children }) {
   const logout = useCallback(async () => {
     try {
       await signOut(auth);
+      clearMfaVerified();
       setUser(null);
     } catch (error) {
       console.error("Logout error:", error);
+      clearMfaVerified();
       setUser(null);
     }
   }, []);

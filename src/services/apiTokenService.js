@@ -29,7 +29,7 @@ export async function listTokens(uid) {
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 
-export async function createToken(uid, plan, label = "API Key") {
+export async function createToken(uid, label = "API Key") {
   if (!uid) throw new Error("Not signed in");
   const token = generateToken();
   // 1. Owner-only record with metadata
@@ -44,9 +44,12 @@ export async function createToken(uid, plan, label = "API Key") {
   // 2. Public-by-id-only mirror so server endpoints can validate without
   //    admin SDK. Doc ID == the secret token; rules block listing the
   //    collection but allow get on exact ID.
+  //
+  //    Deliberately carries no `plan` — the API resolves the caller's tier
+  //    from /users/{uid} on every request, and firestore.rules rejects the
+  //    field outright so a client can't re-introduce a self-granted tier.
   await setDoc(doc(db, "api_tokens", token), {
     uid,
-    plan: plan || "starter",
     active: true,
     createdAt: serverTimestamp(),
   });

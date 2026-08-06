@@ -37,12 +37,14 @@ service cloud.firestore {
              .hasAny(['plan','role','familyRole','planExpiresAt',
                       'planActivatedAt','planBilling','lastOrderId']));
 
-      // Payments subcollection — owner can create after server verification.
-      // Updates/deletes restricted to admin only (no history tampering).
+      // Payments subcollection — READ-ONLY for the owner. The record is written
+      // by the Cashfree grant path via the Admin SDK (which bypasses rules), so
+      // a client never needs create access. It used to have it, which let any
+      // user author arbitrary permanent rows in their own billing history —
+      // rows that feed invoice generation and revenue analytics.
       match /payments/{payId} {
         allow read: if isOwner(uid) || isAdmin();
-        allow create: if isOwner(uid);
-        allow update, delete: if isAdmin();
+        allow create, update, delete: if isAdmin();
       }
 
       // Tool usage history — owner only.
@@ -120,11 +122,24 @@ service cloud.firestore {
     // serverless functions can validate Bearer tokens by GETting the
     // exact doc id (the token itself). Listing is blocked because the
     // doc ID *is* the secret. Only the owner uid can write.
+    // This mirror carries NO tier information. It used to store a `plan` field
+    // that the API trusted, which let a free account mint itself an
+    // "enterprise" key simply by writing the field it wanted — the same
+    // self-grant that `users/{uid}.plan` already blocks. The API now resolves
+    // the tier from the owner's user record on every call; the rule below
+    // makes sure the stale field can't come back.
     match /api_tokens/{token} {
       allow get: if true;        // single-doc read by exact token id
       allow list: if false;      // never list — would leak all tokens
-      allow create: if isSignedIn() && request.resource.data.uid == request.auth.uid;
-      allow update: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow create: if isSignedIn()
+        && request.resource.data.uid == request.auth.uid
+        && !request.resource.data.keys().hasAny(['plan']);
+      // Update forbids CHANGING plan rather than its presence: tokens minted
+      // before this rule still carry a stale `plan`, and a presence check
+      // would reject their revocation (active:false) and strand them.
+      allow update: if isSignedIn() && resource.data.uid == request.auth.uid
+        && request.resource.data.uid == resource.data.uid
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['plan']);
       allow delete: if isSignedIn() && resource.data.uid == request.auth.uid;
     }
 
@@ -214,6 +229,29 @@ service cloud.firestore {
     // which bypasses rules). No client access — the orders/{orderId} guard is
     // what makes plan grants single-shot, so it must never be client-writable.
     match /orders/{orderId} {
+      allow read, write: if false;
+    }
+
+    // ─── certificates ────────────────────────────────────────────
+    // Academy certificates, written ONLY by cert-register via the Admin SDK
+    // and read back through the public cert-verify endpoint. No client access:
+    // a client write here is exactly the forged-certificate case.
+    match /certificates/{certId} {
+      allow read, write: if false;
+    }
+
+    // ─── quizAttempts ────────────────────────────────────────────
+    // Server-graded mock-test attempts. Holds the served question refs and the
+    // authoritative score a certificate cites. Client-readable would leak the
+    // answer key; client-writable would put scoring back in the browser.
+    match /quizAttempts/{attemptId} {
+      allow read, write: if false;
+    }
+
+    // ─── quotas ──────────────────────────────────────────────────
+    // Daily usage counters (see api/_quota.js). Server-only — a client that
+    // could write these could reset its own free-tier ceiling.
+    match /quotas/{quotaId} {
       allow read, write: if false;
     }
 

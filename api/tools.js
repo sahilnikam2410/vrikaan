@@ -1,5 +1,7 @@
+import crypto from "node:crypto";
 import { applyRateLimit } from "./_rateLimit.js";
 import { getAdminFirestore, getAdminAuth } from "./_firebaseAdmin.js";
+import { consumeQuota, quotaScope } from "./_quota.js";
 import { waitUntil } from "@vercel/functions";
 
 // ─── Tier gate (server-trusted) ─────────────────────────────────────
@@ -26,8 +28,12 @@ const ACTION_TIERS = {
   "scamsig-delete": "free",  // admin purge of scamSignatures docs (CRON_SECRET)
   "daily-alert": "free",   // cron, gated by CRON_SECRET
   "wa-broadcast": "free",  // cron/admin, gated by CRON_SECRET
-  "cert-register": "free",
+  "cert-register": "free",  // any plan — but sign-in required inside the handler
   "cert-verify": "free",
+  "quiz-start": "free",     // sign-in required inside the handler
+  "quiz-submit": "free",    // sign-in required inside the handler
+  "cert-delete": "free",    // admin purge of certificates (CRON_SECRET)
+  "payment-delete": "free", // admin purge of payment rows (CRON_SECRET)
   "coupon-validate": "free",
   "whatsapp-inbound": "free",  // Twilio webhook — no user auth, rate-limited by phone
   "telegram": "free",          // Telegram bot webhook — no user auth
@@ -79,55 +85,109 @@ function planMeetsTier(plan, required) {
 }
 
 // Daily free-quota for Pro tools — per-uid for authed users, per-IP fallback.
-// 3 free uses per tool per day. In-memory; resets on cold start (acceptable).
+// 3 free uses per tool per day. Counters live in Firestore (see _quota.js) so
+// they survive cold starts and are shared across lambda instances; the old
+// in-memory Map made this ceiling meaningless in practice.
 const PRO_FREE_QUOTA_PER_DAY = 3;
-const _quotaCounter = new Map(); // key: `${uid|ip}|${tool}|${YYYY-MM-DD}` → count
-function _quotaKey(scope, tool) {
-  const day = new Date().toISOString().slice(0, 10);
-  return `${scope}|${tool}|${day}`;
-}
-function getFreeQuota(scope, tool) {
-  const k = _quotaKey(scope, tool);
-  const used = _quotaCounter.get(k) || 0;
-  return { used, limit: PRO_FREE_QUOTA_PER_DAY, remaining: Math.max(0, PRO_FREE_QUOTA_PER_DAY - used) };
-}
-function bumpFreeQuota(scope, tool) {
-  const k = _quotaKey(scope, tool);
-  _quotaCounter.set(k, (_quotaCounter.get(k) || 0) + 1);
+
+/**
+ * Read the authoritative plan for a uid from /users/{uid} via the Admin SDK.
+ * Never trust a plan carried on the request or denormalised onto a
+ * client-writable document.
+ */
+async function planForUid(fs, uid) {
+  if (!fs || !uid) return "free";
+  try {
+    const snap = await fs.collection("users").doc(uid).get();
+    return snap.exists ? (snap.data().plan || "free") : "free";
+  } catch {
+    return "free";
+  }
 }
 
 /**
  * Resolve caller plan from request — try Firebase ID token first
  * (browser users) then API token (external clients). Returns:
- *   { plan, uid, source } where source = "id-token" | "api-token" | "anon"
+ *   { plan, uid, source, authTime, mfaRequired }
+ * where source = "id-token" | "api-token" | "anon".
+ *
+ * `mfaRequired` is true when the account has TOTP enrolled but this sign-in
+ * session has not completed the second factor — see mfaSatisfied().
  */
 async function resolveCaller(req) {
   const header = req.headers["authorization"] || "";
+  const fs = getAdminFirestore();
   // 1) Firebase ID token (Authorization: Bearer <jwt> from browser)
   const jwtMatch = /^Bearer\s+(eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+)\s*$/i.exec(header);
   if (jwtMatch) {
     const auth = getAdminAuth();
-    const fs = getAdminFirestore();
     if (auth && fs) {
       try {
         const decoded = await auth.verifyIdToken(jwtMatch[1]);
         const uid = decoded.uid;
         let plan = "free";
+        let mfaRequired = false;
         try {
           const snap = await fs.collection("users").doc(uid).get();
-          plan = snap.exists ? (snap.data().plan || "free") : "free";
+          const data = snap.exists ? snap.data() : {};
+          plan = data.plan || "free";
+          mfaRequired = !mfaSatisfied(data.mfa, decoded.auth_time);
         } catch {}
-        return { plan, uid, source: "id-token" };
+        return { plan, uid, source: "id-token", authTime: decoded.auth_time, mfaRequired };
       } catch {
         // Invalid/expired ID token → fall through to API token then anon
       }
     }
   }
-  // 2) Long-lived API token (existing flow)
+  // 2) Long-lived API token. The token document is client-writable (a user can
+  //    create their own key), so its `plan` field is NOT authoritative — a free
+  //    account could otherwise mint itself an "enterprise" key. Resolve the
+  //    tier from the owner's user record instead.
   const apiTok = await validateApiToken(header);
-  if (apiTok.valid) return { plan: apiTok.plan || "free", uid: apiTok.uid, source: "api-token" };
+  if (apiTok.valid) {
+    const plan = await planForUid(fs, apiTok.uid);
+    return { plan, uid: apiTok.uid, source: "api-token", authTime: null, mfaRequired: false };
+  }
   // 3) Anonymous
-  return { plan: "free", uid: null, source: "anon" };
+  return { plan: "free", uid: null, source: "anon", authTime: null, mfaRequired: false };
+}
+
+/**
+ * Has the second factor been cleared for THIS sign-in session?
+ *
+ * `auth_time` is the moment the user actually signed in. It stays constant
+ * while an ID token is silently refreshed but changes on every fresh sign-in —
+ * so recording the auth_times that passed TOTP binds the check to the session
+ * rather than to a client-side flag. A new browser, an incognito window or a
+ * re-login all produce a new auth_time and must verify again.
+ */
+function mfaSatisfied(mfa, authTime) {
+  if (!mfa?.enabled) return true;            // 2FA not enrolled → nothing to satisfy
+  if (!authTime) return false;               // no session stamp → can't have verified
+  const passed = Array.isArray(mfa.verifiedAuthTimes) ? mfa.verifiedAuthTimes : [];
+  return passed.includes(Number(authTime));
+}
+
+// Actions reachable while the second factor is still outstanding. Only the
+// steps needed to CLEAR it — enrolment (totp-setup/confirm) is not among them,
+// because enrolling a fresh secret would satisfy the gate with a factor the
+// caller just chose; those two check mfaOutstanding() themselves.
+const MFA_EXEMPT = new Set(["totp-verify", "totp-setup", "totp-confirm"]);
+
+/**
+ * True when this caller's account has TOTP enrolled and the current sign-in
+ * hasn't cleared it. Used by the enrolment endpoints, which the dispatcher
+ * lets through so a first-time enrolment can happen.
+ */
+async function mfaOutstanding(me) {
+  const fs = getAdminFirestore();
+  if (!fs || !me?.uid) return false;
+  try {
+    const snap = await fs.collection("users").doc(me.uid).get();
+    return !mfaSatisfied(snap.data()?.mfa, me.authTime);
+  } catch {
+    return false;
+  }
 }
 
 // ─── WHOIS ──────────────────────────────────────────────────────────
@@ -1715,8 +1775,7 @@ async function handleFamilyInfo(req, res) {
 }
 
 // ─── OUTBOUND WEBHOOKS ──────────────────────────────────────────────
-
-import crypto from "node:crypto";
+// (crypto is imported at the top of the file.)
 
 // Persist a webhook URL + auto-generated HMAC secret on the user doc.
 async function handleWebhookSet(req, res) {
@@ -1800,7 +1859,7 @@ async function verifyIdTokenFromHeader(req) {
     const auth = adminMod.getAdminAuth();
     if (!auth) return null;
     const decoded = await auth.verifyIdToken(idToken);
-    return { uid: decoded.uid, email: decoded.email };
+    return { uid: decoded.uid, email: decoded.email, name: decoded.name, authTime: decoded.auth_time };
   } catch {
     return null;
   }
@@ -1812,6 +1871,9 @@ async function verifyIdTokenFromHeader(req) {
 async function handleTotpSetup(req, res) {
   const me = await verifyIdTokenFromHeader(req);
   if (!me) return res.status(401).json({ error: "Sign-in required" });
+  if (await mfaOutstanding(me)) {
+    return res.status(401).json({ error: "Two-factor verification required", code: "MFA_REQUIRED" });
+  }
   const otpauth = await import("otpauth");
   const QR = (await import("qrcode")).default;
   const secret = new otpauth.Secret({ size: 20 }); // 160-bit
@@ -1835,6 +1897,12 @@ async function handleTotpSetup(req, res) {
 async function handleTotpConfirm(req, res) {
   const me = await verifyIdTokenFromHeader(req);
   if (!me) return res.status(401).json({ error: "Sign-in required" });
+  // Re-enrolment is itself a way past the second factor: someone holding only
+  // the password could enrol a secret of their own and satisfy the gate with
+  // it. Enrolling over an existing secret requires clearing the current one.
+  if (await mfaOutstanding(me)) {
+    return res.status(401).json({ error: "Two-factor verification required", code: "MFA_REQUIRED" });
+  }
   const { secret, code } = req.body || {};
   if (!secret || !code) return res.status(400).json({ error: "secret and code required" });
   const otpauth = await import("otpauth");
@@ -1859,6 +1927,10 @@ async function handleTotpConfirm(req, res) {
         secret, // base32; server-side only, never sent to client after this
         backupCodes,
         enrolledAt: new Date(),
+        // The user just entered a valid code, so the session they enrolled
+        // from counts as verified — otherwise enabling 2FA would immediately
+        // lock them out of the page they enabled it on.
+        verifiedAuthTimes: nextVerifiedAuthTimes(null, me.authTime),
       },
     }, { merge: true });
     return res.status(200).json({ success: true, backupCodes });
@@ -1885,7 +1957,10 @@ async function handleTotpVerify(req, res) {
   // Backup code path
   if (mfa.backupCodes && mfa.backupCodes.includes(trimmed)) {
     const remaining = mfa.backupCodes.filter((c) => c !== trimmed);
-    await fs.collection("users").doc(me.uid).update({ "mfa.backupCodes": remaining });
+    await fs.collection("users").doc(me.uid).update({
+      "mfa.backupCodes": remaining,
+      "mfa.verifiedAuthTimes": nextVerifiedAuthTimes(mfa, me.authTime),
+    });
     return res.status(200).json({ ok: true, used: "backup", remaining: remaining.length });
   }
 
@@ -1893,7 +1968,24 @@ async function handleTotpVerify(req, res) {
   const totp = new otpauth.TOTP({ issuer: "VRIKAAN", secret: otpauth.Secret.fromBase32(mfa.secret), digits: 6, period: 30 });
   const delta = totp.validate({ token: trimmed, window: 1 });
   if (delta === null) return res.status(400).json({ error: "Invalid code" });
+
+  // Record that THIS sign-in session cleared the second factor. Without this
+  // the gate was a React state flag, so any other browser — or the same one
+  // navigating past the login page — reached the account with credentials only.
+  await fs.collection("users").doc(me.uid).update({
+    "mfa.verifiedAuthTimes": nextVerifiedAuthTimes(mfa, me.authTime),
+    "mfa.lastVerifiedAt": new Date().toISOString(),
+  });
   return res.status(200).json({ ok: true, used: "totp" });
+}
+
+// Keep the most recent few verified sessions so a user signed in on phone and
+// laptop doesn't get bounced off one by verifying on the other.
+function nextVerifiedAuthTimes(mfa, authTime) {
+  const prev = Array.isArray(mfa?.verifiedAuthTimes) ? mfa.verifiedAuthTimes : [];
+  const t = Number(authTime);
+  if (!Number.isFinite(t)) return prev;
+  return [...prev.filter((x) => x !== t), t].slice(-5);
 }
 
 // Disable MFA. Requires fresh sign-in (verified by ID token age check).
@@ -2635,6 +2727,54 @@ async function handleScamSigDelete(req, res) {
   return res.status(200).json({ ok: true, deleted });
 }
 
+// Admin purge of forged/test certificates (CRON_SECRET gated), mirroring
+// scamsig-delete. Needed because certificates minted through the old
+// unauthenticated cert-register still verify as genuine, and there was no way
+// to remove one without an Admin SDK script.
+// Accepts ?ids=SEC-XXXX-YYYY,… (max 50).
+async function handleCertDelete(req, res) {
+  const key = req.query.key || req.body?.key;
+  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+  const raw = String(req.query.ids || req.query.id || req.body?.ids || req.body?.id || "");
+  const items = raw.split(",").map((s) => s.trim().toUpperCase()).filter(Boolean).slice(0, 50);
+  if (!items.length) return res.status(400).json({ error: "ids required" });
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "no-db" });
+  const deleted = [], missing = [];
+  for (const id of items) {
+    const ref = fs.collection("certificates").doc(id.slice(0, 60));
+    try {
+      if ((await ref.get()).exists) { await ref.delete(); deleted.push(id); }
+      else missing.push(id);
+    } catch { missing.push(id); }
+  }
+  return res.status(200).json({ ok: true, deleted, missing });
+}
+
+// Admin purge of a payment row (CRON_SECRET gated). `users/{uid}/payments` is
+// now server-written, but records created while it was client-writable are
+// still there and can't be removed from the client (rules allow admin only).
+// Accepts ?uid=<uid>&ids=<payId1,payId2>.
+async function handlePaymentDelete(req, res) {
+  const key = req.query.key || req.body?.key;
+  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+  const uid = String(req.query.uid || req.body?.uid || "").trim().slice(0, 128);
+  const raw = String(req.query.ids || req.query.id || req.body?.ids || req.body?.id || "");
+  const items = raw.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 50);
+  if (!uid || !items.length) return res.status(400).json({ error: "uid and ids required" });
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "no-db" });
+  const deleted = [], missing = [];
+  for (const id of items) {
+    const ref = fs.collection("users").doc(uid).collection("payments").doc(id.slice(0, 200));
+    try {
+      if ((await ref.get()).exists) { await ref.delete(); deleted.push(id); }
+      else missing.push(id);
+    } catch { missing.push(id); }
+  }
+  return res.status(200).json({ ok: true, uid, deleted, missing });
+}
+
 // ─── REFERRAL ATTRIBUTION ─────────────────────────────────────────────
 // Called once right after a referred user signs up (Authorization: Bearer
 // <Firebase ID token>, body { code }). Resolves the referrer by their public
@@ -2698,24 +2838,189 @@ async function handleBlogGet(req, res) {
 // ─── CERTIFICATE REGISTER / VERIFY ────────────────────────────────────
 // Academy certs print "verify at vrikaan.com/verify/<id>". Register on issue
 // so /verify/:id can validate them publicly (server-only writes via Admin SDK).
-async function handleCertRegister(req, res) {
-  const b = req.body || {};
-  const certId = String(b.certId || "").trim().toUpperCase().slice(0, 40);
-  if (!/^[A-Z0-9-]{6,40}$/.test(certId)) return res.status(400).json({ error: "bad certId" });
+// ─── MOCK TESTS — server-side grading ────────────────────────────────
+// The question bank (with answers) lives in _quizBank.js and never reaches the
+// browser. Start an attempt, answer it, submit it; the score on the record is
+// the server's, which is what a certificate is then allowed to cite.
+const ATTEMPT_GRACE_SEC = 60;   // network/render slack on top of the timer
+
+async function handleQuizStart(req, res) {
+  const me = await verifyIdTokenFromHeader(req);
+  if (!me) return res.status(401).json({ error: "Sign-in required" });
+  const bank = await import("./_quizBank.js");
+  const test = bank.findTest(String(req.body?.testId || ""));
+  if (!test) return res.status(400).json({ error: "unknown test" });
   const fs = getAdminFirestore();
   if (!fs) return res.status(500).json({ error: "no-db" });
+
+  const refs = bank.pickQuestionRefs(test);
+  const questions = bank.publicQuestions(refs);
   try {
-    await fs.collection("certificates").doc(certId).set({
-      certId,
-      name: String(b.name || "").slice(0, 80),
-      title: String(b.title || b.course || "").slice(0, 120),
-      kind: String(b.kind || "course").slice(0, 24),
-      score: b.score != null ? Number(b.score) : null,
-      issuedAt: b.date || new Date().toISOString(),
-      createdAtMs: Date.now(),
-    }, { merge: true });
-    return res.status(200).json({ ok: true, certId });
+    const ref = await fs.collection("quizAttempts").add({
+      uid: me.uid,
+      testId: test.id,
+      title: test.title,
+      pass: test.pass,
+      timeSec: test.timeSec,
+      refs,                       // which questions were served, in order
+      total: questions.length,
+      startedAtMs: Date.now(),
+      graded: false,
+      // Ungraded attempts are scratch data — let a TTL policy reap them.
+      expiresAt: new Date(Date.now() + 7 * 86400000),
+    });
+    return res.status(200).json({
+      attemptId: ref.id,
+      testId: test.id,
+      title: test.title,
+      pass: test.pass,
+      timeSec: test.timeSec,
+      total: questions.length,
+      questions,                  // no `ans`, no `why`
+    });
   } catch (e) { return res.status(500).json({ error: e.message }); }
+}
+
+async function handleQuizSubmit(req, res) {
+  const me = await verifyIdTokenFromHeader(req);
+  if (!me) return res.status(401).json({ error: "Sign-in required" });
+  const attemptId = String(req.body?.attemptId || "").slice(0, 64);
+  if (!attemptId) return res.status(400).json({ error: "attemptId required" });
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "no-db" });
+
+  const bank = await import("./_quizBank.js");
+  const ref = fs.collection("quizAttempts").doc(attemptId);
+  const sent = Array.isArray(req.body?.answers) ? req.body.answers : [];
+
+  let outcome;
+  try {
+    // Transactional so two concurrent submits can't both pass the `graded`
+    // check and score the same attempt twice.
+    outcome = await fs.runTransaction(async (tx) => {
+      const snap = await tx.get(ref);
+      if (!snap.exists) return { err: 404, body: { error: "attempt not found" } };
+      const a = snap.data();
+      if (a.uid !== me.uid) return { err: 403, body: { error: "not your attempt" } };
+      if (a.graded) return { err: 409, body: { error: "attempt already submitted" } };
+
+      const elapsedSec = (Date.now() - (a.startedAtMs || 0)) / 1000;
+      if (elapsedSec > (a.timeSec || 300) + ATTEMPT_GRACE_SEC) {
+        tx.update(ref, { graded: true, expired: true, gradedAtMs: Date.now() });
+        return { err: 400, body: { error: "attempt expired", code: "ATTEMPT_EXPIRED" } };
+      }
+
+      const qs = bank.fullQuestions(a.refs || []);
+      const chosen = qs.map((_, i) => {
+        const v = Number(sent[i]);
+        return Number.isInteger(v) && v >= 0 && v < 8 ? v : null;
+      });
+
+      let correct = 0;
+      qs.forEach((q, i) => { if (chosen[i] === q.ans) correct++; });
+      const total = qs.length || 1;
+      const pct = Math.round((correct / total) * 100);
+      const passed = pct >= (a.pass || 100);
+      const xp = bank.attemptXp(correct, total, passed);
+
+      tx.update(ref, { graded: true, correct, pct, passed, xp, chosen, gradedAtMs: Date.now() });
+      return { qs, chosen, correct, total, pct, passed, xp };
+    });
+  } catch (e) { return res.status(500).json({ error: e.message }); }
+
+  if (outcome.err) return res.status(outcome.err).json(outcome.body);
+
+  // Answers and explanations are only revealed once the attempt is graded —
+  // before that, handing them over would defeat the point of grading here.
+  const { qs, chosen, correct, total, pct, passed, xp } = outcome;
+  return res.status(200).json({
+    attemptId, correct, total, pct, passed, xp,
+    review: qs.map((q, i) => ({ q: q.q, opts: q.opts, ans: q.ans, why: q.why, chosen: chosen[i] })),
+  });
+}
+
+// Issue a certificate. Every field that decides WHO the certificate is for
+// comes from the verified ID token, never from the request body, and the id is
+// generated here — so a caller can neither mint a certificate in someone
+// else's name nor overwrite an existing one by guessing its id.
+async function handleCertRegister(req, res) {
+  const me = await verifyIdTokenFromHeader(req);
+  if (!me) return res.status(401).json({ error: "Sign-in required" });
+
+  const b = req.body || {};
+  const fs = getAdminFirestore();
+  if (!fs) return res.status(500).json({ error: "no-db" });
+
+  const kind = b.kind === "mock-test" ? "mock-test" : "course";
+  let title = String(b.title || b.course || "").trim().slice(0, 120);
+  let score = null;
+  let scoreAttested = null;
+
+  if (kind === "mock-test") {
+    // A scored certificate must cite a score the server produced. The client
+    // used to post the percentage it wanted printed on it.
+    const attemptId = String(b.attemptId || "").slice(0, 64);
+    if (!attemptId) return res.status(400).json({ error: "attemptId required", code: "ATTEMPT_REQUIRED" });
+    const aSnap = await fs.collection("quizAttempts").doc(attemptId).get();
+    if (!aSnap.exists) return res.status(404).json({ error: "attempt not found" });
+    const a = aSnap.data();
+    if (a.uid !== me.uid) return res.status(403).json({ error: "not your attempt" });
+    if (!a.graded || a.expired) return res.status(400).json({ error: "attempt not graded" });
+    if (!a.passed) return res.status(400).json({ error: "attempt did not pass", code: "ATTEMPT_NOT_PASSED" });
+    title = String(a.title || "").slice(0, 120);
+    score = Math.round(Number(a.pct) || 0);
+    scoreAttested = "server-graded";
+  }
+
+  if (title.length < 2) return res.status(400).json({ error: "title required" });
+
+  // Holder identity is whoever holds the token. Body `name` is ignored.
+  const name = String(me.name || me.email?.split("@")[0] || "VRIKAAN Learner").slice(0, 80);
+
+  const certId = certIdFor(me.uid, kind, title);
+  try {
+    // create() (not set()) — issuance can never overwrite an existing record.
+    await fs.collection("certificates").doc(certId).create({
+      certId,
+      uid: me.uid,
+      email: me.email || null,
+      name,
+      title,
+      kind,
+      score,
+      scoreAttested,
+      issuedAt: new Date().toISOString(),
+      createdAtMs: Date.now(),
+    });
+    return res.status(200).json({ ok: true, certId });
+  } catch (e) {
+    // Same learner, same course → same id, so a re-download is idempotent
+    // rather than an error or a duplicate record.
+    if (e.code === 6 || /already exists/i.test(e.message || "")) {
+      return res.status(200).json({ ok: true, certId, existing: true });
+    }
+    return res.status(500).json({ error: e.message });
+  }
+}
+
+/**
+ * Certificate id: an HMAC over (uid, kind, title) with a server-only key.
+ *
+ * Deterministic, so re-issuing the same course for the same learner lands on
+ * the same record — but unguessable without the key, so no caller can aim a
+ * write at somebody else's certificate. The client used to choose this id.
+ */
+function certIdFor(uid, kind, title) {
+  const key = process.env.CERT_ID_SECRET || process.env.CRON_SECRET;
+  if (!key) {
+    // No server key configured — fall back to a random id. Still unguessable;
+    // only the re-issue-is-idempotent property is lost.
+    return `SEC-${crypto.randomBytes(6).toString("hex").toUpperCase()}`;
+  }
+  const mac = crypto.createHmac("sha256", key)
+    .update(`${uid} ${kind} ${title.toLowerCase()}`)
+    .digest("hex").toUpperCase();
+  return `SEC-${mac.slice(0, 8)}-${mac.slice(8, 12)}`;
 }
 async function handleCertVerify(req, res) {
   const id = String(req.query.id || req.body?.id || "").trim().toUpperCase().slice(0, 40);
@@ -2726,7 +3031,7 @@ async function handleCertVerify(req, res) {
     const d = await fs.collection("certificates").doc(id).get();
     if (!d.exists) return res.status(200).json({ valid: false });
     const x = d.data();
-    return res.status(200).json({ valid: true, certId: x.certId, name: x.name, title: x.title, kind: x.kind, score: x.score, issuedAt: x.issuedAt });
+    return res.status(200).json({ valid: true, certId: x.certId, name: x.name, title: x.title, kind: x.kind, score: x.score, scoreAttested: x.scoreAttested || null, issuedAt: x.issuedAt });
   } catch { return res.status(200).json({ valid: false }); }
 }
 
@@ -3657,6 +3962,80 @@ async function _recordScamSignal(fs, { idents, category, tactic, sample, keyPhra
   return docId;
 }
 
+// ─── HERD IMMUNITY ─────────────────────────────────────────────────────
+// The network's killer feature: check a message once and you're "vaccinated" —
+// if the SAME fingerprint is later confirmed as a scam by other reports, every
+// earlier checker gets warned automatically, even weeks later. One person's
+// report becomes an antibody for everyone who received that message.
+//
+// Watchers live in scamSignatures/{sigId}/watchers/{channel_to} and are only
+// registered by our own server-side bots (watchKey === CRON_SECRET), so the
+// public analyze endpoint can't be abused to spam arbitrary phones/chats.
+// Telegram alerts are free-form; WhatsApp tries free-form (24h session) and
+// falls back to the approved scam_alert template.
+
+// Register a watcher on a signature (idempotent — doc id = channel_to).
+async function _herdWatch(fs, sigId, watcher, riskAtCheck) {
+  try {
+    const wid = `${watcher.channel}_${String(watcher.to).replace(/[^a-zA-Z0-9+]/g, "")}`.slice(0, 120);
+    await fs.collection("scamSignatures").doc(sigId).collection("watchers").doc(wid).set({
+      channel: watcher.channel, to: String(watcher.to).slice(0, 32),
+      riskAtCheck: riskAtCheck || 0, at: Date.now(),
+    }, { merge: true });
+    return true;
+  } catch (e) { console.error("herd-watch:", e.message); return false; }
+}
+
+// Dangerousness threshold — one place so analyze/report/alert agree.
+function _herdDangerous(x) {
+  const reports = x?.count || 0;
+  return !!x?.verified || (x?.lossCount || 0) >= 1 || reports >= 3 ||
+    (reports >= 2 && (x?.lastRisk || 0) >= 80);
+}
+
+// If the signature has become dangerous, warn every watcher (one-shot: watcher
+// docs are deleted after the attempt so nobody is alerted twice or spammed).
+async function _herdAlert(fs, sigId, { excludeTo } = {}) {
+  try {
+    const ref = fs.collection("scamSignatures").doc(sigId);
+    const snap = await ref.get();
+    if (!snap.exists) return 0;
+    const x = snap.data();
+    if (!_herdDangerous(x)) return 0;
+    const ws = await ref.collection("watchers").limit(200).get();
+    if (ws.empty) return 0;
+    const reports = x.count || 0;
+    const lossLine = (x.lossCount || 0) >= 1 ? ` Money has already been lost to it.` : "";
+    const text = `🚨 *VRIKAAN Herd Alert*
+
+A message you checked earlier has now been CONFIRMED as a scam by the community network (${reports} report${reports === 1 ? "" : "s"}).${lossLine}
+
+Type: ${x.tactic || x.category || "scam"}
+
+❌ Do NOT click, pay or reply to that message.
+📞 Already acted on it? Call 1930 (cyber-fraud helpline) NOW — the first hour matters.
+
+🧬 Community immunity protected you — someone else's report triggered this warning. Keep forwarding suspicious messages.`;
+    let sent = 0;
+    for (const d of ws.docs) {
+      const w = d.data();
+      try {
+        if (excludeTo && String(w.to) === String(excludeTo)) { await d.ref.delete(); continue; }
+        let ok = false;
+        if (w.channel === "tg") ok = await _tgSend(w.to, text);
+        else if (w.channel === "wa") {
+          ok = await _waSend(w.to, text.replace(/\*/g, "*"));
+          if (!ok && process.env.WA_ALERT_TEMPLATE) ok = await _waSendTemplate(w.to, process.env.WA_ALERT_TEMPLATE);
+        }
+        if (ok) sent++;
+      } catch { /* per-watcher — keep going */ }
+      await d.ref.delete(); // one-shot: alerted or dead channel, either way done
+    }
+    console.log(`herd-alert: sig=${sigId} watchers=${ws.size} sent=${sent}`);
+    return sent;
+  } catch (e) { console.error("herd-alert:", e.message); return 0; }
+}
+
 // ─── AI SCAMBAITER — waste scammers' time, harvest their playbook ──────
 // Paste the scammer's message → an AI honeypot persona replies to keep them
 // talking and quietly extract their reusable identifiers + script, which feed
@@ -3835,6 +4214,10 @@ const HANDLERS = {
   "wa-broadcast": handleWaBroadcast,
   "cert-register": handleCertRegister,
   "cert-verify": handleCertVerify,
+  "quiz-start": handleQuizStart,
+  "quiz-submit": handleQuizSubmit,
+  "cert-delete": handleCertDelete,
+  "payment-delete": handlePaymentDelete,
   "coupon-validate": handleCouponValidate,
   "whatsapp-inbound": handleWhatsappInbound,
   "telegram": handleTelegram,
@@ -3880,13 +4263,19 @@ const HANDLERS = {
 };
 
 // Some tools accept GET (ip lookup, cron pings); others require POST.
+// cert-delete / payment-delete are deliberately POST-only: they take the
+// CRON_SECRET, and a secret in a query string ends up in access logs.
 const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "blog-generate", "blog-delete", "scamsig-delete", "daily-alert", "wa-broadcast", "cert-verify"]);
 // Tools that bypass shared rate-limit (cron uses its own auth)
 const RL_EXEMPT = new Set(["weekly-digest", "daily-alert", "wa-broadcast"]);
 
 /**
  * Validate an incoming Bearer token against /api_tokens/{token} in
- * Firestore using the public REST API. Returns { valid, uid, plan }.
+ * Firestore using the public REST API. Returns { valid, uid }.
+ *
+ * Deliberately returns no tier: this document is client-writable, so anything
+ * on it is a claim, not a fact. resolveCaller() derives the plan from the
+ * owner's /users/{uid} record instead.
  */
 async function validateApiToken(authHeader) {
   if (!authHeader) return { valid: false };
@@ -3903,7 +4292,7 @@ async function validateApiToken(authHeader) {
     const doc = await r.json();
     const f = doc.fields || {};
     if (f.active?.booleanValue !== true) return { valid: false };
-    return { valid: true, uid: f.uid?.stringValue, plan: f.plan?.stringValue || "starter" };
+    return { valid: true, uid: f.uid?.stringValue };
   } catch {
     return { valid: false };
   }
@@ -3935,6 +4324,15 @@ export default async function handler(req, res) {
   const caller = await resolveCaller(req);
   req.apiClient = { valid: caller.source !== "anon", uid: caller.uid, plan: caller.plan, source: caller.source };
 
+  // Second-factor gate. A valid ID token alone is NOT enough once the account
+  // has TOTP enrolled — the sign-in session must also have cleared the code.
+  if (caller.mfaRequired && !MFA_EXEMPT.has(tool)) {
+    return res.status(401).json({
+      error: "Two-factor verification required",
+      code: "MFA_REQUIRED",
+    });
+  }
+
   // Tier gate — refuse Pro/Enterprise actions for under-tier callers.
   // Free callers get a daily 3-use quota on Pro actions (scoped by uid or IP).
   const required = ACTION_TIERS[tool] || "free";
@@ -3959,10 +4357,11 @@ export default async function handler(req, res) {
         hint: caller.source === "anon" ? "Server could not verify your sign-in. Check that FIREBASE_SERVICE_ACCOUNT env var is set in Vercel." : undefined,
       });
     }
-    // required === "pro" → check daily free quota
-    const scope = caller.uid || (req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "ip-unknown").split(",")[0].trim();
-    const q = getFreeQuota(scope, tool);
-    if (q.remaining <= 0) {
+    // required === "pro" → check daily free quota (Firestore-backed, shared
+    // across instances — see _quota.js)
+    const scope = quotaScope(req, caller.uid);
+    const q = await consumeQuota(getAdminFirestore(), scope, tool, PRO_FREE_QUOTA_PER_DAY);
+    if (!q.allowed) {
       res.setHeader("X-Quota-Used", String(q.used));
       res.setHeader("X-Quota-Limit", String(q.limit));
       return res.status(402).json({
@@ -3975,10 +4374,9 @@ export default async function handler(req, res) {
         upgradeUrl: "/pricing",
       });
     }
-    bumpFreeQuota(scope, tool);
-    res.setHeader("X-Quota-Used", String(q.used + 1));
+    res.setHeader("X-Quota-Used", String(q.used));
     res.setHeader("X-Quota-Limit", String(q.limit));
-    res.setHeader("X-Quota-Remaining", String(q.remaining - 1));
+    res.setHeader("X-Quota-Remaining", String(q.remaining));
   }
 
   if (!RL_EXEMPT.has(tool)) {

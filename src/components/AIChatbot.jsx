@@ -66,6 +66,10 @@ function getCredits() {
   return data;
 }
 
+// Display-only ledger. The real allowance is enforced by /api/chat against a
+// Firestore counter keyed to the caller's uid (or IP for guests) — this used
+// to be the only thing standing between the internet and the LLM budget, and
+// it lives in localStorage, so it stood between nothing and nothing.
 function useCredit() {
   const data = getCredits();
   const max = PLANS[data.plan]?.credits ?? PLANS.guest.credits;
@@ -96,9 +100,18 @@ function upgradePlan(planKey) {
 // Includes sticky context: current page, user plan, tool tier.
 async function askAI(message, history, ctx = {}) {
   try {
+    // Send the ID token when signed in — the server resolves the plan and the
+    // message allowance from it. Plan sent in `context` is display-only.
+    const headers = { "Content-Type": "application/json" };
+    try {
+      const { auth } = await import("../firebase/config");
+      const idToken = await auth.currentUser?.getIdToken();
+      if (idToken) headers.Authorization = `Bearer ${idToken}`;
+    } catch { /* signed out — guest allowance applies */ }
+
     const res = await fetch("/api/chat", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify({
         message,
         history: history.slice(-10),
@@ -106,14 +119,12 @@ async function askAI(message, history, ctx = {}) {
           path: ctx.path || "/",
           toolName: ctx.toolName || "",
           toolTier: ctx.toolTier || "free",
-          userPlan: ctx.userPlan || "guest",
-          loggedIn: !!ctx.loggedIn,
         },
       }),
     });
 
     if (!res.ok) {
-      if (res.status === 429) return "ERROR_QUOTA";
+      if (res.status === 429 || res.status === 402) return "ERROR_QUOTA";
       console.error("VRIKAAN AI Error:", res.status);
       return "I'm experiencing a temporary issue. Please try again in a moment.";
     }

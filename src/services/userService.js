@@ -5,7 +5,6 @@ import {
   getDoc,
   updateDoc,
   collection,
-  addDoc,
   getDocs,
   query,
   orderBy,
@@ -72,22 +71,10 @@ export async function updateUserPlan(uid, plan) {
   });
 }
 
-/**
- * Save a payment record to the user's `payments` subcollection.
- * @param {string} uid - Firebase Auth user ID
- * @param {object} payment - Payment details (amount, plan, method, transactionId, etc.)
- */
-export async function savePaymentRecord(uid, payment) {
-  const paymentsRef = collection(db, "users", uid, "payments");
-  await addDoc(paymentsRef, {
-    amount: payment.amount || 0,
-    plan: payment.plan || "",
-    method: payment.method || "",
-    transactionId: payment.transactionId || "",
-    status: payment.status || "completed",
-    createdAt: serverTimestamp(),
-  });
-}
+// savePaymentRecord was removed: `users/{uid}/payments` is written server-side
+// by the Cashfree grant transaction and is read-only to clients, so a
+// client-side writer can only fail (and previously allowed hand-authored
+// billing history).
 
 /**
  * Retrieve all payment records for a user, ordered by creation date descending.
