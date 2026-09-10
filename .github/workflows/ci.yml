@@ -66,13 +66,21 @@ jobs:
       - name: Install
         run: npm ci
 
-      # Fails the job on high or critical advisories. Moderates are
-      # reported but tolerated: the current 9 are transitive under the
-      # latest majors of @vercel/og and firebase-admin, with no upstream
-      # fix available — gating on them would mean a permanently red build.
+      # Fails the job on high or critical advisories.
+      #
+      # --omit=optional excludes `sharp`, which carries a high advisory and
+      # reaches us only as an OPTIONAL dependency of @vercel/og. api/og.js
+      # runs on the edge runtime, which renders through @resvg/resvg-wasm and
+      # never installs or loads sharp — so the advisory is not reachable in
+      # this deployment. (@vercel/og 1.x would clear it, but 1.x is Node-only
+      # and breaks the edge function outright.)
+      #
+      # Moderates are reported but tolerated: the current 9 are transitive
+      # under the latest majors of firebase-admin and firebase-tools with no
+      # upstream fix, so gating on them would mean a permanently red build.
       - name: Audit (high and above)
-        run: npm audit --audit-level=high
+        run: npm audit --omit=optional --audit-level=high
 
-      - name: Audit report (informational)
+      - name: Audit report (informational, includes optional deps)
         if: always()
         run: npm audit || true
