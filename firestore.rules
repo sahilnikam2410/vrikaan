@@ -110,11 +110,25 @@ service cloud.firestore {
     }
 
     // ─── usage ───────────────────────────────────────────────────
-    // Document ID format: `{uid}_{YYYY-MM-DD}`.
-    // Only the owner (uid prefix) may read/write their own usage doc.
+    // Daily quota counters. Document ID format: `{uid}_{YYYY-MM-DD}`.
+    //
+    // Was owner-writable, which made the daily limit advisory: a user could
+    // reset their own counter, or skip the write entirely and call /api/tools
+    // directly. Counting now happens server-side (tools.js usage-consume →
+    // consumeQuota) through the Admin SDK, which bypasses these rules. The
+    // owner keeps READ access so the dashboard can still show "3 of 5 left".
     match /usage/{docId} {
-      allow read, write: if isSignedIn()
+      allow read: if isSignedIn()
         && docId.split('_')[0] == request.auth.uid;
+      allow write: if false;
+    }
+
+    // ─── quotas ──────────────────────────────────────────────────
+    // Shared counters behind api/_quota.js, keyed by a hash of the uid or IP.
+    // Written only by the Admin SDK; nothing here is user-facing, and the doc
+    // ids must not be probeable.
+    match /quotas/{docId} {
+      allow read, write: if false;
     }
 
     // ─── api_tokens ──────────────────────────────────────────────

@@ -62,7 +62,7 @@ export default async function handler(req, res) {
   // ── 2. Domain Security (DNS TXT records for SPF/DMARC) ──
   try {
     // Check SPF
-    const spfRes = await fetch(`https://dns.google/resolve?name=${domain}&type=TXT`);
+    const spfRes = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=TXT`);
     if (spfRes.ok) {
       const spfData = await spfRes.json();
       const txtRecords = (spfData.Answer || []).map((a) => a.data || "");
@@ -70,7 +70,7 @@ export default async function handler(req, res) {
     }
 
     // Check DMARC
-    const dmarcRes = await fetch(`https://dns.google/resolve?name=_dmarc.${domain}&type=TXT`);
+    const dmarcRes = await fetch(`https://dns.google/resolve?name=_dmarc.${encodeURIComponent(domain)}&type=TXT`);
     if (dmarcRes.ok) {
       const dmarcData = await dmarcRes.json();
       const dmarcRecords = (dmarcData.Answer || []).map((a) => a.data || "");
@@ -78,7 +78,7 @@ export default async function handler(req, res) {
     }
 
     // Check MX
-    const mxRes = await fetch(`https://dns.google/resolve?name=${domain}&type=MX`);
+    const mxRes = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=MX`);
     if (mxRes.ok) {
       const mxData = await mxRes.json();
       report.domainSecurity.mx = (mxData.Answer || []).map((a) => a.data || "").slice(0, 5);

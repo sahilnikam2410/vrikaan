@@ -1,4 +1,6 @@
-import emailjs from "emailjs-com";
+// @emailjs/browser is the maintained client. emailjs-com is the deprecated
+// predecessor; both were installed and both were in use.
+import emailjs from "@emailjs/browser";
 
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || "YOUR_SERVICE_ID";
 const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || "YOUR_PUBLIC_KEY";
@@ -12,7 +14,7 @@ function safeSend(templateId, params) {
     console.warn("EmailJS not configured — skipping email send");
     return Promise.resolve();
   }
-  return emailjs.send(SERVICE_ID, templateId, { from_name: "VRIKAAN", ...params }, PUBLIC_KEY);
+  return emailjs.send(SERVICE_ID, templateId, { from_name: "VRIKAAN", ...params }, { publicKey: PUBLIC_KEY });
 }
 
 /**

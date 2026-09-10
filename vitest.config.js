@@ -10,6 +10,9 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./src/test-setup.js"],
     css: false,
-    include: ["src/**/*.{test,spec}.{js,jsx}"],
+    // api/ tests cover the serverless trust boundary — the cron gate, the
+    // SSRF guard and the payment webhook. They declare `@vitest-environment
+    // node` in a docblock so they don't run under jsdom.
+    include: ["src/**/*.{test,spec}.{js,jsx}", "api/**/*.{test,spec}.js"],
   },
 });

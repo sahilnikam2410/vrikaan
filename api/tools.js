@@ -1,7 +1,8 @@
 import crypto from "node:crypto";
 import { applyRateLimit } from "./_rateLimit.js";
 import { getAdminFirestore, getAdminAuth } from "./_firebaseAdmin.js";
-import { consumeQuota, quotaScope } from "./_quota.js";
+import { consumeQuota, peekQuota, quotaScope } from "./_quota.js";
+import { requireCronSecret } from "./_cronAuth.js";
 import { waitUntil } from "@vercel/functions";
 
 // ─── Tier gate (server-trusted) ─────────────────────────────────────
@@ -76,6 +77,9 @@ const ACTION_TIERS = {
   "totp-confirm":        "free",
   "totp-verify":         "free",
   "totp-disable":        "free",
+  // Daily usage counters — no tier gate; the handlers require a signed-in user.
+  "usage-consume":       "free",
+  "usage-read":          "free",
 };
 
 // family = same Pro-tool access + family-specific features. Mirror of
@@ -1157,9 +1161,7 @@ async function runActivityCleanup({ retentionDays = 90, batchLimit = 500 } = {})
 
 async function handleWeeklyDigest(req, res) {
   // Cron auth
-  const expected = process.env.CRON_SECRET;
-  const got = (req.headers["authorization"] || "").replace(/^Bearer\s+/i, "");
-  if (!expected || got !== expected) return res.status(401).json({ error: "Unauthorized" });
+  if (!requireCronSecret(req, res)) return;
 
   // Always run activity-log cleanup (cheap; piggy-backs on the weekly slot)
   const cleanup = await runActivityCleanup();
@@ -2151,32 +2153,9 @@ async function checkSslLabs(host) {
 }
 
 // ─── Check 2: HTTP security headers ─────────────────────────────────
-// Reuses the existing internal handleSecurityHeaders by issuing a self-call.
-async function checkHeaders(fullUrl) {
-  const r = await fetchWithTimeout(fullUrl, { redirect: "follow" }, 8000);
-  if (!r) return { name: "headers", ok: false, severity: "info", note: "Site unreachable" };
-  const expected = {
-    "content-security-policy": "high",
-    "strict-transport-security": "high",
-    "x-frame-options": "medium",
-    "x-content-type-options": "low",
-    "referrer-policy": "low",
-    "permissions-policy": "low",
-  };
-  const findings = [];
-  let worstSev = "info";
-  for (const [h, sev] of Object.entries(expected)) {
-    if (!r.headers.get(h)) {
-      findings.push(`Missing ${h}`);
-      if (severityRank(sev) > severityRank(worstSev)) worstSev = sev;
-    }
-  }
-  return {
-    name: "headers", ok: !findings.length, severity: findings.length ? worstSev : "info",
-    findings,
-    note: findings.length ? `${findings.length} security headers missing` : "All key headers present",
-  };
-}
+// Removed: checkHeaders() had no caller, and it fetched a caller-supplied URL
+// with redirect:"follow" — the same SSRF shape fixed in api/ssl.js. If this
+// check comes back, route it through api/_safeHost.js.
 
 function severityRank(s) {
   return { info: 0, low: 1, medium: 2, high: 3, critical: 4 }[s] || 0;
@@ -2684,8 +2663,7 @@ Use exactly 4 sections. Practical Indian context (UPI, 1930 helpline, cybercrime
 
 async function handleBlogGenerate(req, res) {
   // Gate with CRON_SECRET so it can be triggered manually to seed posts.
-  const key = req.query.key || req.body?.key;
-  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+  if (!requireCronSecret(req, res)) return;
   const fs = getAdminFirestore();
   const out = await _genBlogPost(fs);
   return res.status(out.ok ? 200 : 500).json(out);
@@ -2694,8 +2672,7 @@ async function handleBlogGenerate(req, res) {
 // Admin prune: delete a blog post by slug (CRON_SECRET gated). Used to clear
 // duplicate / low-quality auto-posts. Accepts ?slug= or ?slugs=a,b,c.
 async function handleBlogDelete(req, res) {
-  const key = req.query.key || req.body?.key;
-  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+  if (!requireCronSecret(req, res)) return;
   const raw = String(req.query.slug || req.query.slugs || req.body?.slug || req.body?.slugs || "");
   const slugs = raw.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 50);
   if (!slugs.length) return res.status(400).json({ error: "slug required" });
@@ -2713,8 +2690,7 @@ async function handleBlogDelete(req, res) {
 // ?ids=identifier1,identifier2 (raw identifiers; doc id = id_<identifier>) or
 // full doc ids beginning with id_/sig_.
 async function handleScamSigDelete(req, res) {
-  const key = req.query.key || req.body?.key;
-  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+  if (!requireCronSecret(req, res)) return;
   const raw = String(req.query.ids || req.query.id || req.body?.ids || req.body?.id || "");
   const items = raw.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 50);
   if (!items.length) return res.status(400).json({ error: "ids required" });
@@ -2734,8 +2710,7 @@ async function handleScamSigDelete(req, res) {
 // to remove one without an Admin SDK script.
 // Accepts ?ids=SEC-XXXX-YYYY,… (max 50).
 async function handleCertDelete(req, res) {
-  const key = req.query.key || req.body?.key;
-  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+  if (!requireCronSecret(req, res)) return;
   const raw = String(req.query.ids || req.query.id || req.body?.ids || req.body?.id || "");
   const items = raw.split(",").map((s) => s.trim().toUpperCase()).filter(Boolean).slice(0, 50);
   if (!items.length) return res.status(400).json({ error: "ids required" });
@@ -2757,8 +2732,7 @@ async function handleCertDelete(req, res) {
 // still there and can't be removed from the client (rules allow admin only).
 // Accepts ?uid=<uid>&ids=<payId1,payId2>.
 async function handlePaymentDelete(req, res) {
-  const key = req.query.key || req.body?.key;
-  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+  if (!requireCronSecret(req, res)) return;
   const uid = String(req.query.uid || req.body?.uid || "").trim().slice(0, 128);
   const raw = String(req.query.ids || req.query.id || req.body?.ids || req.body?.id || "");
   const items = raw.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 50);
@@ -2786,8 +2760,7 @@ async function handlePaymentDelete(req, res) {
 //
 // POST ?tool=plan-grant  { key, email, plan?="pro", days?=30, reason? }
 async function handlePlanGrant(req, res) {
-  const key = req.query.key || req.body?.key;
-  if (!process.env.CRON_SECRET || key !== process.env.CRON_SECRET) return res.status(403).json({ error: "forbidden" });
+  if (!requireCronSecret(req, res)) return;
 
   const email = String(req.body?.email || req.query.email || "").trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return res.status(400).json({ error: "valid email required" });
@@ -3105,9 +3078,7 @@ const DAILY_TIPS = [
   ["Sextortion threat", "Don't pay — it never stops. Cut contact, keep evidence, report to 1930."],
 ];
 async function handleDailyAlert(req, res) {
-  const expected = process.env.CRON_SECRET;
-  const got = (req.headers["authorization"] || "").replace(/^Bearer\s+/i, "");
-  if (!expected || got !== expected) return res.status(401).json({ error: "Unauthorized" });
+  if (!requireCronSecret(req, res)) return;
   const dayIdx = Math.floor(Date.now() / 86400000) % DAILY_TIPS.length;
   const tip = DAILY_TIPS[dayIdx];
   const sid = process.env.VITE_EMAILJS_SERVICE_ID, tpl = process.env.VITE_EMAILJS_NOTIFY_TEMPLATE, pub = process.env.VITE_EMAILJS_PUBLIC_KEY, priv = process.env.EMAILJS_PRIVATE_KEY;
@@ -3186,9 +3157,7 @@ async function _waSendTemplate(to, templateName, lang = "en") {
   } catch { return false; }
 }
 async function handleWaBroadcast(req, res) {
-  const expected = process.env.CRON_SECRET;
-  const got = (req.headers["authorization"] || "").replace(/^Bearer\s+/i, "") || req.query.key;
-  if (!expected || got !== expected) return res.status(401).json({ error: "Unauthorized" });
+  if (!requireCronSecret(req, res)) return;
   const template = process.env.WA_ALERT_TEMPLATE;
   if (!template) return res.status(400).json({ error: "WA_ALERT_TEMPLATE not set (create + approve a template in Meta first)" });
   const adminMod = await import("./_firebaseAdmin.js");
@@ -4317,8 +4286,76 @@ Message:"""${msg.slice(0, 3000)}"""`;
   return;
 }
 
+// ─── Daily usage counters (server-authoritative) ────────────────────
+// usage/{uid}_{date} used to be counted AND enforced in the browser, against
+// a document firestore.rules let the owner write. Resetting your own counter,
+// or simply not calling the tracker, removed the limit entirely. Counting now
+// happens here through consumeQuota()'s Firestore transaction, and the rule is
+// read-only to clients so the dashboard can still render "3 of 5 left".
+
+// Mirror of PLAN_LIMITS in src/services/usageLimiter.js — that copy only
+// renders the remaining count; this one decides.
+const USAGE_PLAN_LIMITS = {
+  free:       { scan: 5,   lookup: 10,  ai: 3,  export: 2  },
+  starter:    { scan: 25,  lookup: 50,  ai: 20, export: 10 },
+  standard:   { scan: 25,  lookup: 50,  ai: 20, export: 10 },
+  pro:        { scan: 100, lookup: 200, ai: 50, export: 50 },
+  advanced:   { scan: 100, lookup: 200, ai: 50, export: 50 },
+  family:     { scan: 100, lookup: 200, ai: 50, export: 50 },
+  enterprise: { scan: -1,  lookup: -1,  ai: -1, export: -1 },
+};
+
+const USAGE_TOOL_CATEGORY = {
+  "breach": "scan", "security-headers": "scan", "ssl": "scan",
+  "security-audit": "scan", "vulnerability": "scan", "file-hash": "scan",
+  "dark-web": "scan",
+  "whois": "lookup", "ip-lookup": "lookup", "dns-leak": "lookup",
+  "email-analyzer": "lookup", "phishing-trainer": "lookup",
+  "browser-fingerprint": "lookup", "qr-scanner": "lookup",
+  "password-checker": "lookup",
+  "fraud-analyzer": "ai", "ai-chat": "ai",
+  "export-pdf": "export",
+};
+
+function usageLimitsFor(plan) {
+  return USAGE_PLAN_LIMITS[plan] || USAGE_PLAN_LIMITS.free;
+}
+
+async function handleUsageConsume(req, res) {
+  const uid = req.apiClient?.uid;
+  if (!uid) return res.status(401).json({ error: "Sign in to use this tool", allowed: false });
+
+  const toolId = String(req.body?.toolId || "");
+  const category = USAGE_TOOL_CATEGORY[toolId] || "lookup";
+  const limit = usageLimitsFor(req.apiClient.plan)[category];
+  if (limit === -1) return res.status(200).json({ allowed: true, remaining: -1, limit: -1, category });
+
+  const fs2 = getAdminFirestore();
+  const out = await consumeQuota(fs2, `uid:${uid}`, `usage-${category}`, limit);
+  return res.status(out.allowed ? 200 : 402).json({
+    allowed: out.allowed, remaining: out.remaining, limit: out.limit, category,
+  });
+}
+
+async function handleUsageRead(req, res) {
+  const uid = req.apiClient?.uid;
+  if (!uid) return res.status(401).json({ error: "Sign in first" });
+  const limits = usageLimitsFor(req.apiClient.plan);
+  const fs2 = getAdminFirestore();
+  const out = {};
+  for (const category of ["scan", "lookup", "ai", "export"]) {
+    const limit = limits[category];
+    if (limit === -1) { out[category] = { used: 0, limit: -1 }; continue; }
+    const q = await peekQuota(fs2, `uid:${uid}`, `usage-${category}`, limit);
+    out[category] = { used: q.used, limit: q.limit };
+  }
+  return res.status(200).json(out);
+}
+
 const HANDLERS = {
   whois: handleWhois,
+  "usage-consume": handleUsageConsume,
+  "usage-read": handleUsageRead,
   "newsletter-subscribe": handleNewsletterSubscribe,
   "enterprise-lead": handleEnterpriseLead,
   "yt-lesson": handleYtLesson,
@@ -4384,7 +4421,11 @@ const HANDLERS = {
 // Some tools accept GET (ip lookup, cron pings); others require POST.
 // cert-delete / payment-delete are deliberately POST-only: they take the
 // CRON_SECRET, and a secret in a query string ends up in access logs.
-const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "blog-generate", "blog-delete", "scamsig-delete", "daily-alert", "wa-broadcast", "cert-verify"]);
+// GET is for reads and for the two Vercel cron paths (Vercel issues a GET).
+// blog-generate / blog-delete / scamsig-delete / wa-broadcast are destructive
+// or fan-out actions and now require POST — a GET is reachable from a bare URL
+// with no preflight, which is exactly how a leaked secret gets replayed.
+const GET_ALLOWED = new Set(["ip", "weekly-digest", "leak-check", "yt-lesson", "blog-list", "blog-get", "daily-alert", "cert-verify", "usage-read"]);
 // Tools that bypass shared rate-limit (cron uses its own auth)
 const RL_EXEMPT = new Set(["weekly-digest", "daily-alert", "wa-broadcast"]);
 
@@ -4502,7 +4543,9 @@ export default async function handler(req, res) {
     const rateLimits = (caller.plan === "pro" || caller.plan === "enterprise")
       ? { ipLimit: 200, userLimit: 600, windowMs: 60000 }   // Pro+
       : { ipLimit: 20, userLimit: 60, windowMs: 60000 };    // Free / anon
-    const rl = applyRateLimit(req, rateLimits);
+    // Pass the VERIFIED uid. Reading it from an x-user-id header let a caller
+    // rotate buckets at will, or burn another user's allowance.
+    const rl = applyRateLimit(req, { ...rateLimits, uid: caller.uid });
     if (!rl.allowed) {
       res.setHeader("Retry-After", rl.retryAfter);
       return res.status(429).json({ error: "Too many requests", retryAfter: rl.retryAfter });
