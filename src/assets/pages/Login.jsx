@@ -1,9 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../context/AuthContext";
-import { RecaptchaVerifier } from "firebase/auth";
-import { auth } from "../../firebase/config";
 import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
 import { markMfaVerified, isMfaVerified, mfaPending } from "../../lib/mfaSession";
@@ -293,8 +291,6 @@ export default function Login() {
     loginWithGoogle,
     loginWithGithub,
     loginWithFacebook,
-    loginWithPhone,
-    verifyPhoneCode,
     sendMagicLink,
     completeMagicLink,
   } = useAuth();
@@ -364,8 +360,6 @@ export default function Login() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* ── State ── */
-  const [activeTab, setActiveTab] = useState("email");
 
   // Email
   const [email, setEmail] = useState("");
@@ -373,15 +367,6 @@ export default function Login() {
   const [showPass, setShowPass] = useState(false);
   const [remember, setRemember] = useState(false);
 
-  // Phone
-  const [countryCode, setCountryCode] = useState("+91");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpValues, setOtpValues] = useState(["", "", "", "", "", ""]);
-  const [confirmationResult, setConfirmationResult] = useState(null);
-  const otpRefs = useRef([]);
-  const recaptchaRef = useRef(null);
-  const recaptchaVerifierRef = useRef(null);
 
   // Shared
   const [error, setError] = useState("");
@@ -391,12 +376,6 @@ export default function Login() {
 
   useEffect(() => {
     injectKeyframes();
-    return () => {
-      if (recaptchaVerifierRef.current) {
-        try { recaptchaVerifierRef.current.clear(); } catch {}
-        recaptchaVerifierRef.current = null;
-      }
-    };
   }, []);
 
   const clearMessages = () => { setError(""); setSuccessMsg(""); };
@@ -457,109 +436,7 @@ export default function Login() {
     }
   };
 
-  /* ── Phone: Send OTP ── */
-  const handleSendOTP = async () => {
-    clearMessages();
-    const digits = phoneNumber.replace(/\D/g, "");
-    if (digits.length < 6) { setError("Please enter a valid phone number."); return; }
 
-    setLoading(true);
-    try {
-      if (recaptchaVerifierRef.current) {
-        try { recaptchaVerifierRef.current.clear(); } catch {}
-      }
-
-      recaptchaVerifierRef.current = new RecaptchaVerifier(auth, recaptchaRef.current, {
-        size: "invisible",
-        callback: () => {},
-        "expired-callback": () => setError("reCAPTCHA expired. Please try again."),
-      });
-
-      const fullPhone = `${countryCode}${digits}`;
-      const result = await loginWithPhone(fullPhone, recaptchaVerifierRef.current);
-
-      if (result.success === false) {
-        setError(result.error || "Failed to send OTP.");
-      } else {
-        // result may have { success: true, confirmationResult } or just be the confirmationResult
-        const cr = result.confirmationResult || result;
-        setConfirmationResult(cr);
-        setOtpSent(true);
-        setSuccessMsg("OTP sent successfully! Check your phone.");
-        setOtpValues(["", "", "", "", "", ""]);
-        setTimeout(() => { if (otpRefs.current[0]) otpRefs.current[0].focus(); }, 100);
-      }
-    } catch (err) {
-      const msg =
-        err.code === "auth/too-many-requests"
-          ? "Too many attempts. Please try again later."
-          : err.code === "auth/invalid-phone-number"
-          ? "Invalid phone number format."
-          : err.message || "Failed to send OTP.";
-      setError(msg);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  /* ── Phone: Verify OTP ── */
-  const handleVerifyOTP = async () => {
-    clearMessages();
-    const code = otpValues.join("");
-    if (code.length !== 6) { setError("Please enter the complete 6-digit code."); return; }
-
-    setLoading(true);
-    try {
-      const result = await verifyPhoneCode(confirmationResult, code);
-      if (result && result.success === false) {
-        setError(result.error || "Verification failed.");
-        setLoading(false);
-      } else {
-        navigate("/home", { replace: true });
-      }
-    } catch (err) {
-      const msg =
-        err.code === "auth/invalid-verification-code"
-          ? "Invalid OTP. Please check and try again."
-          : err.message || "Verification failed.";
-      setError(msg);
-      setLoading(false);
-    }
-  };
-
-  /* ── OTP Input Handling ── */
-  const handleOtpChange = (index, value) => {
-    // Handle paste of multiple digits
-    if (value.length > 1) {
-      const chars = value.replace(/\D/g, "").slice(0, 6).split("");
-      const next = [...otpValues];
-      chars.forEach((ch, i) => { if (index + i < 6) next[index + i] = ch; });
-      setOtpValues(next);
-      const focusIdx = Math.min(index + chars.length, 5);
-      if (otpRefs.current[focusIdx]) otpRefs.current[focusIdx].focus();
-      return;
-    }
-    if (value && !/^\d$/.test(value)) return;
-
-    const next = [...otpValues];
-    next[index] = value;
-    setOtpValues(next);
-    if (value && index < 5 && otpRefs.current[index + 1]) {
-      otpRefs.current[index + 1].focus();
-    }
-  };
-
-  const handleOtpKeyDown = (index, e) => {
-    if (e.key === "Backspace" && !otpValues[index] && index > 0) {
-      const next = [...otpValues];
-      next[index - 1] = "";
-      setOtpValues(next);
-      if (otpRefs.current[index - 1]) otpRefs.current[index - 1].focus();
-    }
-    if (e.key === "Enter" && otpValues.join("").length === 6) {
-      handleVerifyOTP();
-    }
-  };
 
   const disabledStyle = loading ? { opacity: 0.6, cursor: "not-allowed" } : {};
 
@@ -603,9 +480,6 @@ export default function Login() {
           {item.icon}
         </div>
       ))}
-
-      {/* Invisible reCAPTCHA */}
-      <div ref={recaptchaRef} id="recaptcha-container" />
 
       {/* ── Card ── */}
       <div style={{ ...S.card, animation: "loginFadeIn 0.4s ease-out, loginBorderGlow 6s ease-in-out infinite" }}>

@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
 import ToolShell from "../../components/ToolShell";
-import { useAuth } from "../../context/AuthContext";
 
 const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", red: "#ef4444", orange: "#f97316", yellow: "#eab308", green: "#22c55e", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)", surface: "#111827" };
 
@@ -148,7 +147,6 @@ const Modal = ({ open, onClose, children }) => {
 // ── Main Page ──
 
 export default function PasswordVault() {
-  const { user } = useAuth();
   const [entries, setEntries] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");

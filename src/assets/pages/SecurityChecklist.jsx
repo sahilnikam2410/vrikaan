@@ -169,7 +169,7 @@ function CategoryProgress({ category, checked, onToggle, expanded, onExpand }) {
 
       {expanded && (
         <div style={{ padding: "0 24px 20px" }}>
-          {category.items.map((item, i) => (
+          {category.items.map((item, _i) => (
             <div key={item.id}
               style={{
                 display: "flex", gap: 14, alignItems: "flex-start", padding: "14px 0",
@@ -249,7 +249,7 @@ export default function SecurityChecklist() {
 
   const checkedCount = Object.keys(checked).length;
   const overallPct = totalItems > 0 ? Math.round((checkedCount / totalItems) * 100) : 0;
-  const { grade: overallGrade, color: overallColor } = getGrade(overallPct);
+  const { color: overallColor } = getGrade(overallPct);
 
   const uncheckedItems = allItems.filter(i => !checked[i.id]);
   const recommendations = uncheckedItems.slice(0, 5);

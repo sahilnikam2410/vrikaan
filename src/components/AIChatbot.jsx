@@ -88,14 +88,6 @@ function getRemainingCredits() {
   return Math.max(0, max - data.used);
 }
 
-function upgradePlan(planKey) {
-  const data = getCredits();
-  data.plan = planKey;
-  data.used = 0;
-  data.resetDate = new Date().toDateString();
-  localStorage.setItem("vrikaan_ai_credits", JSON.stringify(data));
-}
-
 // ─── AI Engine — calls server-side /api/chat (key stays server-side) ───
 // Includes sticky context: current page, user plan, tool tier.
 async function askAI(message, history, ctx = {}) {

@@ -381,7 +381,7 @@ const Blog = () => {
     let on = true;
     fetch("/api/tools?tool=blog-list").then((r) => r.json()).then((d) => {
       if (!on || !Array.isArray(d.posts)) return;
-      const mapped = d.posts.map((x, i) => ({
+      const mapped = d.posts.map((x, _i) => ({
         id: "auto_" + x.slug, title: x.title, slug: x.slug,
         category: x.category || "Threats", readTime: x.readTime || "5 min read",
         date: x.createdAtMs ? new Date(x.createdAtMs).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "",

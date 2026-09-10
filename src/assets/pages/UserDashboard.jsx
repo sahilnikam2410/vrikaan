@@ -23,7 +23,7 @@ import {
 } from "react-icons/hi";
 import { useTheme } from "../../context/ThemeContext";
 import { getAllBadgesWithState, getStreak } from "../../services/gamificationService";
-import { getPermissionState, requestPermission, isEnabled as isPushEnabled, setEnabled as setPushEnabled } from "../../services/pushService";
+import { requestPermission, isEnabled as isPushEnabled, setEnabled as setPushEnabled } from "../../services/pushService";
 import { AreaChart, Area, PieChart, Pie, Cell, BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 
 const T = {

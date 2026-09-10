@@ -130,7 +130,7 @@ export default function Trust() {
                   </tr>
                 </thead>
                 <tbody>
-                  {SUBPROCESSORS.map((s, i) => (
+                  {SUBPROCESSORS.map((s, _i) => (
                     <tr key={s.name} style={{ borderTop: `1px solid ${T.border}` }}>
                       <td style={{ padding: "12px 18px", color: T.text, fontWeight: 600, fontSize: 14 }}>{s.name}</td>
                       <td style={{ padding: "12px 18px", color: T.muted, fontSize: 13.5 }}>{s.use}</td>

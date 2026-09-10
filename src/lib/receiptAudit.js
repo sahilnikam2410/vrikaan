@@ -99,7 +99,6 @@ export function auditReceipt({ text = "", gstin, subtotal, cgst, sgst, igst, ser
   foundGstins = [...new Set(foundGstins)];
 
   const gstinResults = foundGstins.map(g => ({ gstin: g, ...validateGSTIN(g) }));
-  const validGstins = gstinResults.filter(r => r.valid);
   const invalidGstins = gstinResults.filter(r => !r.valid);
 
   if (foundGstins.length === 0) {

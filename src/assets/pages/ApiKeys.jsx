@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { collection, getDocs, doc, setDoc, updateDoc, writeBatch, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc, writeBatch, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useAuth } from "../../context/AuthContext";
 import { LuKey, LuPlus, LuCopy, LuTrash2, LuCheck, LuTriangleAlert } from "react-icons/lu";

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
-import { doc, getDoc, updateDoc, serverTimestamp, Timestamp } from "firebase/firestore";
+import { doc, updateDoc, serverTimestamp, Timestamp } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { sendPaymentConfirmation } from "../../services/emailService";
 import { downloadInvoice, makeInvoiceNumber } from "../../services/invoiceService";

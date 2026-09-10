@@ -43,7 +43,7 @@ export default function Leaderboard() {
     setRows(await getTopScores(50));
     setLoading(false);
   }
-  useEffect(() => { load(); /* eslint-disable-next-line */ }, [user?.uid]);
+  useEffect(() => { load();   }, [user?.uid]);
 
   const myRank = rows && user?.uid ? rows.findIndex((r) => r.uid === user.uid) + 1 : 0;
 
