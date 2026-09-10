@@ -1,0 +1,78 @@
+name: CI
+
+# Nothing mechanical used to check this repo: the three existing
+# workflows cover backup, desktop build and promote, so a dependency
+# advisory or a broken test could reach production unnoticed.
+
+on:
+  pull_request:
+  push:
+    branches: [master, main]
+  workflow_dispatch: {}
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # Blocking, and honest about scope. api/, desktop/, extension/ and
+      # scripts/ had no working lint coverage until the flat config was
+      # given their real globals; they are clean now and must stay clean.
+      - name: Lint (server, desktop, extension, scripts)
+        run: npx eslint api desktop extension scripts
+
+      # src/ carries a pre-existing backlog (133 errors, 23 warnings —
+      # mostly no-unused-vars and the React Compiler hook rules). Reported
+      # every run so it stays visible; promote to blocking once it is zero.
+      - name: Lint (src — reporting only)
+        continue-on-error: true
+        run: npx eslint src
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # Fails the job on high or critical advisories. Moderates are
+      # reported but tolerated: the current 9 are transitive under the
+      # latest majors of @vercel/og and firebase-admin, with no upstream
+      # fix available — gating on them would mean a permanently red build.
+      - name: Audit (high and above)
+        run: npm audit --audit-level=high
+
+      - name: Audit report (informational)
+        if: always()
+        run: npm audit || true

@@ -36,7 +36,7 @@ export default defineConfig({
           'vendor-icons': ['react-icons'],
           'vendor-pdf': ['jspdf'],
           'vendor-qr': ['html5-qrcode'],
-          'vendor-email': ['@emailjs/browser', 'emailjs-com'],
+          'vendor-email': ['@emailjs/browser'],
           'vendor-helmet': ['react-helmet-async'],
         },
       },

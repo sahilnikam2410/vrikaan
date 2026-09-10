@@ -71,13 +71,18 @@ export function checkUserRateLimit(uid, limit = 60, windowMs = 60000) {
  */
 export function applyRateLimit(
   req,
-  { ipLimit = 30, userLimit = 60, windowMs = 60000 } = {}
+  { ipLimit = 30, userLimit = 60, windowMs = 60000, uid: verifiedUid = null } = {}
 ) {
   const ip =
     req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
     req.headers["x-real-ip"] ||
     "unknown";
-  const uid = req.headers["x-user-id"] || req.body?.uid || null;
+
+  // The uid MUST come from the caller the dispatcher already verified, never
+  // from the request itself. An `x-user-id` header is attacker-chosen:
+  // rotating it handed out a fresh bucket every call, and setting it to
+  // someone else's uid burned that user's allowance for them.
+  const uid = verifiedUid || null;
 
   const ipResult = checkRateLimit(ip, ipLimit, windowMs);
   const userResult = checkUserRateLimit(uid, userLimit, windowMs);

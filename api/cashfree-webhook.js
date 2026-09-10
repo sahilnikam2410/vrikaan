@@ -37,7 +37,9 @@ async function readRawBody(req) {
   });
 }
 
-function verifySignature(rawBody, timestamp, signatureHeader, secret) {
+// Exported for api/cashfree-webhook.test.js — this is the one function
+// standing between a forged POST and a granted plan.
+export function verifySignature(rawBody, timestamp, signatureHeader, secret) {
   if (!timestamp || !signatureHeader || !secret) return false;
   const signed = `${timestamp}${rawBody}`;
   const expected = crypto
