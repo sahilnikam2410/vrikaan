@@ -1,0 +1,9 @@
+# Vercel turns every non-underscore file in api/ into a serverless function.
+# Test files import vitest, which is a devDependency and absent from the
+# production install, so a stray api/*.test.js fails the build.
+api/**/*.test.js
+api/**/*.spec.js
+
+# Local-only build and audit artifacts
+coverage
+dist/bundle-stats.html
