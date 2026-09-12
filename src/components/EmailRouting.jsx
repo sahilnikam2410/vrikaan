@@ -9,7 +9,7 @@
  *
  * Founders' direct mail (shown on /founder, /about only — not public contact):
  *  • founder@vrikaan.com    → Sahil Nikam
- *  • cofounder@vrikaan.com  → Khushi Raygade
+ *  • cofounder@vrikaan.com  → Khushi Ishwar Raigade
  *
  * Props:
  *   variant   — "full" (default, 4 cards) | "compact" (single row, footer-friendly)

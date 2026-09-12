@@ -49,5 +49,5 @@ export const INBOXES = [
 // Founder direct emails — surface on /founder, /about, internal pages only.
 export const FOUNDERS = [
   { name: "Sahil Anil Nikam", role: "Founder & CEO", email: "founder@vrikaan.com" },
-  { name: "Khushi Raygade",   role: "Co-founder & CTO", email: "cofounder@vrikaan.com" },
+  { name: "Khushi Ishwar Raigade", role: "Co-Founder & COO/CISO", email: "cofounder@vrikaan.com" },
 ];

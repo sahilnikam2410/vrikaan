@@ -15,7 +15,7 @@ const FACTS = [
   { label: "Founded", value: "2024" },
   { label: "Headquarters", value: "India" },
   { label: "Founder & CEO", value: "Sahil Anil Nikam" },
-  { label: "Co-Founder (SOC & Research)", value: "Khushi Ishwar Raigade" },
+  { label: "Co-Founder & COO/CISO", value: "Khushi Ishwar Raigade" },
   { label: "Category", value: "Cybersecurity / SaaS" },
   { label: "Mission", value: "Empower defenders for a safer digital future" },
   { label: "Audience", value: "Individuals, students, SMBs, family offices" },
@@ -37,7 +37,7 @@ const QUOTES = [
   },
   {
     name: "Khushi Ishwar Raigade",
-    role: "Co-Founder · SOC Analyst & Cybersecurity Researcher",
+    role: "Co-Founder & COO/CISO",
     quote: "Detection beats reaction. Real defenders find the attacker before they find the data — that's the philosophy we build VRIKAAN's SOC, MITRE ATT&CK mapping, and threat-intelligence pipeline around.",
   },
 ];

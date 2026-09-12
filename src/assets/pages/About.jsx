@@ -466,7 +466,7 @@ export default function About() {
             <h2 style={{ ...heading("clamp(28px, 3.5vw, 38px)") }}>Meet the Founders</h2>
           </div>
 
-          {/* Founder cards — Sahil (CEO) + Khushi (Co-Founder / SOC) */}
+          {/* Founder cards — Sahil (Founder & CEO) + Khushi (Co-Founder & COO/CISO) */}
           <div className="about-founders-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, maxWidth: 1100, margin: "0 auto" }}>
 
             {/* ── Sahil ── */}
@@ -523,7 +523,7 @@ export default function About() {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <span style={badge(T.cyan)}>Co-Founder</span>
                   <h3 style={{ ...heading(22), marginTop: 8, marginBottom: 4 }}>Khushi Ishwar Raigade</h3>
-                  <p style={{ color: T.cyan, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>SOC Analyst &amp; Cybersecurity Researcher</p>
+                  <p style={{ color: T.cyan, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>Co-Founder & COO/CISO</p>
                 </div>
               </div>
               <blockquote style={{

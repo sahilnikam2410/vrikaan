@@ -25,7 +25,7 @@ export const organizationSchema = {
   ],
   founder: [
     { "@type": "Person", name: "Sahil Anil Nikam", jobTitle: "Founder & CEO · SOC Analyst & Cybersecurity Researcher" },
-    { "@type": "Person", name: "Khushi Ishwar Raigade", jobTitle: "Co-Founder, SOC Analyst & Cybersecurity Researcher" },
+    { "@type": "Person", name: "Khushi Ishwar Raigade", jobTitle: "Co-Founder & COO/CISO" },
   ],
   contactPoint: {
     "@type": "ContactPoint",

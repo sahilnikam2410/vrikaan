@@ -41,7 +41,7 @@ const TOOL_RECS = {
 
 const QUOTES = [
   { who: "Sahil Anil Nikam · Founder & CEO",       text: "Cybersecurity shouldn't be a luxury — it should be a right available to every person on Earth." },
-  { who: "Khushi Ishwar Raigade · Co-Founder",     text: "Detection beats reaction. A defender's job is to find the attacker before they find the data." },
+  { who: "Khushi Ishwar Raigade · Co-Founder & COO/CISO",     text: "Detection beats reaction. A defender's job is to find the attacker before they find the data." },
 ];
 
 // ─────────────────────────────────────────────────────────────────────

@@ -2605,7 +2605,7 @@ const FounderSection = () => (
               <div style={{ flex: 1, minWidth: 0 }}>
                 <Badge color={T.cyan}>Co-Founder</Badge>
                 <h3 style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: T.white, margin: "10px 0 4px", letterSpacing: "-0.02em" }}>Khushi Ishwar Raigade</h3>
-                <p style={{ color: T.cyan, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>SOC Analyst · Cybersecurity Researcher</p>
+                <p style={{ color: T.cyan, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>Co-Founder & COO/CISO</p>
               </div>
             </div>
             <blockquote style={{ fontFamily: "var(--font-body)", fontSize: 14, color: T.white, lineHeight: 1.7, fontStyle: "italic", margin: "0 0 14px", opacity: 0.85, borderLeft: `3px solid ${T.cyan}`, paddingLeft: 16 }}>

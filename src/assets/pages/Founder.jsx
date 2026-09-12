@@ -9,7 +9,7 @@ const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#6474
 export default function Founder() {
   return (
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
-      <SEO title="Founders" description="Meet the founders of VRIKAAN — Sahil Anil Nikam (CEO) and Khushi Ishwar Raigade (Co-Founder, SOC Analyst & Cybersecurity Researcher)." path="/founder" />
+      <SEO title="Founders" description="Meet the founders of VRIKAAN — Sahil Anil Nikam (CEO) and Khushi Ishwar Raigade (Co-Founder & COO/CISO)." path="/founder" />
       <Navbar />
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "120px 24px 80px" }}>
         <div style={{ marginBottom: 48 }}>

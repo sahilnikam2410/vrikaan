@@ -16,7 +16,7 @@ const FOUNDERS = [
   },
   {
     name: "Khushi Ishwar Raigade",
-    role: "Co-founder · Cybersecurity Researcher",
+    role: "Co-Founder & COO/CISO",
     bio: "Cybersecurity researcher focused on threat intelligence and user safety. Drives VRIKAAN's Scam DNA network and India-language awareness so protection reaches every household.",
     linkedin: "https://www.linkedin.com/company/vrikaan-ai-cybersecurity",
     initials: "KR",

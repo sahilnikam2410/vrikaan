@@ -40,7 +40,7 @@ export const tags = ["Encryption", "Phishing", "Malware", "Privacy", "AI", "Clou
 
 export const authors = [
   { name: "Sahil Anil Nikam", initials: "SN", color: T.accent, bio: "Co-founder & CEO of VRIKAAN. SOC analyst and cybersecurity researcher based in Pune. Builds AI-powered threat detection and incident response systems for Indian families and businesses." },
-  { name: "Khushi Raygade", initials: "KR", color: T.pink, bio: "Co-founder & CTO of VRIKAAN. SOC analyst leading threat intelligence, MITRE ATT&CK rule engineering, SIEM tuning and incident-response playbooks." },
+  { name: "Khushi Ishwar Raigade", initials: "KR", color: T.pink, bio: "Co-Founder & COO/CISO of VRIKAAN. SOC analyst leading threat intelligence, MITRE ATT&CK rule engineering, SIEM tuning and incident-response playbooks." },
   { name: "Sarah Chen", initials: "SC", color: T.cyan, bio: "Senior cybersecurity analyst with 10+ years of experience in threat intelligence and incident response. Former SOC lead at a Fortune 500 company." },
   { name: "Marcus Webb", initials: "MW", color: T.accent, bio: "Ethical hacker and penetration tester. OSCP and CEH certified. Passionate about making security accessible to everyone." },
   { name: "Aisha Patel", initials: "AP", color: T.pink, bio: "Privacy advocate and compliance specialist. Helps startups navigate GDPR, CCPA, and emerging data protection regulations worldwide." },
