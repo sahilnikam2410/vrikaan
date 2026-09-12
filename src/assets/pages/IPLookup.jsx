@@ -204,7 +204,12 @@ export default function IPLookup() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState("");
-  const [history, setHistory] = useState([]);
+  // Read once, at first render. Loading it in an effect showed an empty
+  // history for a frame on every visit.
+  const [history, setHistory] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("vrikaan_ip_history") || "[]"); }
+    catch { return []; }
+  });
   const [myIpLoading, setMyIpLoading] = useState(false);
   const [dotCount, setDotCount] = useState(0);
 
@@ -215,13 +220,6 @@ export default function IPLookup() {
     return () => clearInterval(interval);
   }, [loading, myIpLoading]);
 
-  // Load history from localStorage
-  useEffect(() => {
-    try {
-      const saved = JSON.parse(localStorage.getItem("vrikaan_ip_history") || "[]");
-      setHistory(saved);
-    } catch { /* ignore */ }
-  }, []);
 
   const saveHistory = (entry) => {
     const updated = [entry, ...history.filter(h => h.query !== entry.query)].slice(0, 10);

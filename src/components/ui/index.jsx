@@ -21,11 +21,13 @@ export function Aurora() {
 /* ── Reveal ── scroll-into-view fade+rise (IntersectionObserver, once). ── */
 export function Reveal({ children, delay = 0, y = 14, as: Tag = "div", style, ...rest }) {
   const ref = useRef(null);
-  const [shown, setShown] = useState(false);
+  // No IntersectionObserver means nothing to reveal on — show immediately.
+  const hasIO = typeof IntersectionObserver !== "undefined";
+  const [shown, setShown] = useState(!hasIO);
   useEffect(() => {
     const el = ref.current;
     if (!el || shown) return;
-    if (typeof IntersectionObserver === "undefined") { setShown(true); return; }
+    if (!hasIO) return;
     const io = new IntersectionObserver(([e]) => {
       if (e.isIntersecting) { setShown(true); io.disconnect(); }
     }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
@@ -45,7 +47,10 @@ export function Reveal({ children, delay = 0, y = 14, as: Tag = "div", style, ..
 /* ── CountUp ── animates 0→end when scrolled into view. ── */
 export function CountUp({ end = 0, duration = 1400, prefix = "", suffix = "", decimals = 0, style }) {
   const ref = useRef(null);
-  const [val, setVal] = useState(0);
+  // Nothing to animate on without IntersectionObserver — land on the final
+  // value straight away instead of setting it from an effect.
+  const hasIO = typeof IntersectionObserver !== "undefined";
+  const [val, setVal] = useState(() => (hasIO ? 0 : end));
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -60,7 +65,7 @@ export function CountUp({ end = 0, duration = 1400, prefix = "", suffix = "", de
       };
       raf = requestAnimationFrame(tick);
     };
-    if (typeof IntersectionObserver === "undefined") { setVal(end); return; }
+    if (!hasIO) return;
     const io = new IntersectionObserver(([e]) => {
       if (e.isIntersecting && !started) { started = true; run(); io.disconnect(); }
     }, { threshold: 0.4 });

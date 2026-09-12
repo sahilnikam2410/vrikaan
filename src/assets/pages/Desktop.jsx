@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import {
   LuMonitor, LuLaptop, LuShield, LuScanLine, LuDownload, LuHardDrive,
@@ -121,12 +121,13 @@ const FAQS = [
 ];
 
 export default function Desktop() {
-  const [os, setOS] = useState("unknown");
+  // Detected before first paint, so the download button never flashes the
+  // wrong platform.
+  const [os] = useState(detectOS);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
 
-  useEffect(() => { setOS(detectOS()); }, []);
 
   // Highlighted download based on detected OS
   const primary = useMemo(() => {

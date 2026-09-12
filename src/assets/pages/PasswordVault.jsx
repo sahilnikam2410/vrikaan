@@ -147,7 +147,11 @@ const Modal = ({ open, onClose, children }) => {
 // ── Main Page ──
 
 export default function PasswordVault() {
-  const [entries, setEntries] = useState([]);
+  const [entries, setEntries] = useState(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) return DEFAULT_ENTRIES;
+    try { return JSON.parse(stored); } catch { return DEFAULT_ENTRIES; }
+  });
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [sortBy, setSortBy] = useState("Name");
@@ -162,15 +166,12 @@ export default function PasswordVault() {
   const [genOpts, setGenOpts] = useState({ upper: true, lower: true, numbers: true, symbols: true });
   const [genPw, setGenPw] = useState("");
 
-  // Load from localStorage
+  // Seed the vault on first paint, and persist the defaults once if this is a
+  // first visit. Reading storage in an effect rendered an empty vault for a
+  // frame before replacing it.
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      try { setEntries(JSON.parse(stored)); } catch { setEntries(DEFAULT_ENTRIES); }
-    } else {
-      setEntries(DEFAULT_ENTRIES);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ENTRIES));
-    }
+    if (localStorage.getItem(STORAGE_KEY)) return;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_ENTRIES));
   }, []);
 
   // Save
