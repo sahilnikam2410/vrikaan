@@ -20,15 +20,17 @@ export default function OtpDecay() {
   const [startTs, setStartTs] = useState(null);
   const [bankQ, setBankQ] = useState("");
   const [selectedBanks, setSelectedBanks] = useState([]);
-  const [checks, setChecks] = useState({});
+  // The countdown's clock. Reading Date.now() during render made the value
+  // depend on when React happened to re-render rather than on the interval.
+  const [now, setNow] = useState(() => Date.now());
 
-  const elapsed = useMemo(() => active ? Math.floor((Date.now() - startTs) / 1000) : 0, [active, startTs, checks]);
+  const elapsed = active && startTs ? Math.floor((now - startTs) / 1000) : 0;
   const remaining = Math.max(0, URGENCY_WINDOW - elapsed);
 
   // Force re-render every second while active
   useEffect(() => {
     if (!active) return;
-    const id = setInterval(() => setChecks(c => ({ ...c, _tick: Date.now() })), 1000);
+    const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, [active]);
 
@@ -37,7 +39,7 @@ export default function OtpDecay() {
     setActive(true);
   };
   const reset = () => {
-    setActive(false); setStartTs(null); setChecks({}); setSelectedBanks([]); setBankQ("");
+    setActive(false); setStartTs(null); setSelectedBanks([]); setBankQ("");
   };
 
   const matchedBanks = useMemo(() => searchBanks(bankQ), [bankQ]);

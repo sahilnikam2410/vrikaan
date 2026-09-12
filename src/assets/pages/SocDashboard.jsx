@@ -58,15 +58,20 @@ function Donut({ data, size = 130 }) {
   const total = data.reduce((a, d) => a + d.value, 0) || 1;
   const r = size / 2 - 8;
   const cx = size / 2, cy = size / 2;
-  let acc = 0;
+  // Each arc starts where everything before it ended. Accumulating into a
+  // counter during render gave different arcs depending on how many times
+  // React rendered the component.
+  const arcs = data.map((d, i) => {
+    const startValue = data.slice(0, i).reduce((sum, x) => sum + x.value, 0);
+    return { ...d, startValue, endValue: startValue + d.value };
+  });
   return (
     <svg width={size} height={size}>
       <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(148,163,184,0.1)" strokeWidth="14" />
-      {data.map((d, i) => {
+      {arcs.map((d, i) => {
         if (!d.value) return null;
-        const start = (acc / total) * 2 * Math.PI;
-        acc += d.value;
-        const end = (acc / total) * 2 * Math.PI;
+        const start = (d.startValue / total) * 2 * Math.PI;
+        const end = (d.endValue / total) * 2 * Math.PI;
         const x1 = cx + r * Math.sin(start), y1 = cy - r * Math.cos(start);
         const x2 = cx + r * Math.sin(end),   y2 = cy - r * Math.cos(end);
         const large = end - start > Math.PI ? 1 : 0;
@@ -459,7 +464,7 @@ function ComplianceTab({ state }) {
 // Tab — Agents (devices)
 // ────────────────────────────────────────────────────────────────────
 
-function AgentsTab({ agents, events }) {
+function AgentsTab({ agents, events, now }) {
   return (
     <div style={panelStyle()}>
       <div style={{ padding: "12px 16px", borderBottom: `1px solid ${T.cardBorder}` }}>
@@ -483,7 +488,7 @@ function AgentsTab({ agents, events }) {
           ) : agents.map((id) => {
             const own = events.filter((e) => e.agent === id);
             const last = own[0]?.timestamp;
-            const ago = last ? Math.max(0, Math.floor((Date.now() - last.getTime()) / 60000)) : null;
+            const ago = last ? Math.max(0, Math.floor((now - last.getTime()) / 60000)) : null;
             const status = ago === null ? "unknown" : ago < 5 ? "active" : ago < 60 ? "idle" : ago < 1440 ? "disconnected" : "offline";
             const statusColor = { active: T.green, idle: T.yellow, disconnected: T.orange, offline: T.red, unknown: T.muted }[status];
             const topSev = own.reduce((acc, e) => severityBand(e.rule.level).color === acc ? acc : (severityBand(e.rule.level).color === T.red ? T.red : acc), T.muted);
@@ -551,6 +556,15 @@ export default function SocDashboard() {
   const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
   const [tab, setTab] = useState("overview");
+  // Shared clock for the event window and the agent "last seen" column.
+  // Both read Date.now() during render before, so "3 minutes ago" only moved
+  // when something unrelated re-rendered the dashboard.
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 30000);
+    return () => clearInterval(id);
+  }, []);
+
   const [range, setRange] = useState("24h");
   const [sevFilter, setSevFilter] = useState(null);
   const [agentFilter, setAgentFilter] = useState("all");
@@ -633,14 +647,14 @@ export default function SocDashboard() {
   // Derive filtered events
   const events = useMemo(() => {
     const windowMs = TIME_RANGES.find((r) => r.id === range)?.ms || 24 * 3600000;
-    const cutoff = Date.now() - windowMs;
+    const cutoff = now - windowMs;
     let mapped = mapEvents(rawRows);
     mapped = mapped.filter((e) => e.timestamp.getTime() >= cutoff);
     if (sevFilter) mapped = mapped.filter((e) => e.severity === sevFilter);
     if (agentFilter !== "all") mapped = mapped.filter((e) => e.agent === agentFilter);
     mapped.sort((a, b) => b.timestamp - a.timestamp);
     return mapped;
-  }, [rawRows, range, sevFilter, agentFilter]);
+  }, [rawRows, range, sevFilter, agentFilter, now]);
 
   const summary = useMemo(() => summarizeEvents(events), [events]);
   const sparkline = useMemo(() => bucketByTime(events, 24, TIME_RANGES.find((r) => r.id === range)?.ms || 86400000), [events, range]);
@@ -698,7 +712,7 @@ export default function SocDashboard() {
         {tab === "vulns"      && <VulnsTab events={events} />}
         {tab === "mitre"      && <MitreTab events={events} />}
         {tab === "compliance" && <ComplianceTab state={complianceState} />}
-        {tab === "agents"     && <AgentsTab agents={agentList} events={events} />}
+        {tab === "agents"     && <AgentsTab agents={agentList} events={events} now={now} />}
 
         <p style={{ color: T.subtle, fontSize: 11, textAlign: "center", margin: "30px 0 0", fontStyle: "italic" }}>
           Wazuh-style SOC powered by VRIKAAN telemetry · Free-tier deployment · Severity scale 0-15 · MITRE ATT&CK Enterprise mapping

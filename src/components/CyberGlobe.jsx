@@ -123,11 +123,14 @@ export default memo(function CyberGlobe({ size = 520, flat = false }) {
   // the heavy Three.js chunk only loads once the globe is near the viewport.
   const wrapRef = useRef(null);
   const pausedRef = useRef(true);     // true = off-screen → skip render work
-  const [inView, setInView] = useState(false);
+  // Without IntersectionObserver there is nothing to wait for, so start
+  // visible rather than flipping the flag in an effect.
+  const hasIO = typeof IntersectionObserver !== "undefined";
+  const [inView, setInView] = useState(!hasIO);
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
-    if (typeof IntersectionObserver === "undefined") { pausedRef.current = false; setInView(true); return; }
+    if (!hasIO) { pausedRef.current = false; return; }
     const io = new IntersectionObserver(
       ([e]) => { pausedRef.current = !e.isIntersecting; setInView(e.isIntersecting); },
       { rootMargin: "200px" } // start loading/animating slightly before visible

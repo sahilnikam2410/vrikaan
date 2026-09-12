@@ -50,7 +50,9 @@ export default function LiveSocTicker() {
   }, []);
 
   // Aggregate counter — fake but plausible
-  const total = useMemo(() => 2_841_029 + tick * 7 + Math.floor(Math.random() * 5), [tick]);
+  // Derived from the tick rather than Math.random() — a useMemo body is still
+  // render-phase, so randomness in there re-rolls whenever the memo is dropped.
+  const total = useMemo(() => 2_841_029 + tick * 7 + (tick * 2654435761 % 5), [tick]);
 
   return (
     <>

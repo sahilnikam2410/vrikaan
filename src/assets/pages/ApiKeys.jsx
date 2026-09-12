@@ -26,16 +26,17 @@ export default function ApiKeys() {
   const [fresh, setFresh] = useState(null); // newly created full token (shown once)
   const [copied, setCopied] = useState("");
 
-  const load = useCallback(async () => {
+  // showSpinner is false on mount — loading already starts true.
+  const load = useCallback(async (showSpinner = true) => {
     if (!user) return;
-    setLoading(true);
+    if (showSpinner) setLoading(true);
     try {
       const snap = await getDocs(collection(db, "users", user.uid, "apikeys"));
       setKeys(snap.docs.map((d) => ({ id: d.id, ...d.data() })).sort((a, b) => (b.createdAtMs || 0) - (a.createdAtMs || 0)));
     } catch { setKeys([]); }
     setLoading(false);
   }, [user]);
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => { load(false); }, [load]);
 
   const create = async () => {
     if (!user || creating) return;

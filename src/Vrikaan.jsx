@@ -1784,6 +1784,15 @@ const ProgressRing = ({ percent, color, size = 80, stroke = 4 }) => {
 };
 
 /* ── INDIA THREAT PULSE — live-feel city ticker ── */
+/**
+ * Small stable wobble for the live-looking city counters. Seeded from the row
+ * and the tick so the numbers move when the ticker moves and hold still
+ * otherwise — Math.random() here re-rolled on every unrelated re-render.
+ */
+function jitter(index, tick) {
+  return ((index * 2654435761 + tick * 40503) >>> 0) % 4;
+}
+
 const INDIA_CITIES = [
   { name: "Mumbai",     base: 4820, color: "#EF4444" },
   { name: "Delhi NCR",  base: 5310, color: "#F97316" },
@@ -1874,8 +1883,8 @@ const IndiaThreatPulse = () => {
             </div>
 
             <div style={{ display: "grid", gap: 8 }}>
-              {INDIA_CITIES.map(c => {
-                const count = c.base + tick * 3 + Math.floor(Math.random() * 4);
+              {INDIA_CITIES.map((c, i) => {
+                const count = c.base + tick * 3 + jitter(i, tick);
                 const pct = (count / (INDIA_CITIES[1].base + tick * 3)) * 100;
                 return (
                   <div key={c.name} style={{

@@ -10,6 +10,28 @@ const T = {
 };
 
 // ── Time-of-day greeting (EN + Hindi) ──────────────────────────────────
+const CONFETTI_COLORS = ["#14b8a6", "#6366f1", "#22c55e", "#eab308", "#ec4899", "#f97316", "#ef4444"];
+
+/** One burst of confetti. Called from event handlers and lazy state init. */
+function makeConfetti(count) {
+  return Array.from({ length: count }, (_, i) => ({
+    left: `${Math.random() * 100}%`,
+    background: CONFETTI_COLORS[i % 7],
+    animationDelay: `${Math.random() * 2}s`,
+    animationDuration: `${2 + Math.random() * 3}s`,
+    width: 4 + Math.random() * 10,
+    height: 4 + Math.random() * 10,
+    borderRadius: Math.random() > 0.5 ? "50%" : "2px",
+  }));
+}
+
+/** Display-only membership id. Generated once, never derived from it. */
+function makeMemberId(userId) {
+  const base = (userId || Date.now()).toString(36).toUpperCase();
+  const suffix = Math.random().toString(36).substring(2, 6).toUpperCase();
+  return `SEC-${base}-${suffix}`;
+}
+
 function getGreeting() {
   const h = new Date().getHours();
   if (h < 5)  return { en: "Working late?",       hi: "देर रात तक काम?" };
@@ -204,14 +226,18 @@ export default function Welcome() {
   const [interests, setInterests] = useState([]);
   const [checkProgress, setCheckProgress] = useState(0);
   const [konami, setKonami] = useState(0);
-  const [extraConfetti, setExtraConfetti] = useState(false);
   const [quoteIdx, setQuoteIdx] = useState(0);
 
-  const greeting = useMemo(getGreeting, []);
+  const greeting = useMemo(() => getGreeting(), []);
   const usersToday = useLiveCounter(247);
   const firstName = user?.name?.split(" ")[0] || "there";
 
-  const memberId = `SEC-${(user?.id || Date.now()).toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+  // Both generated once, in a lazy initialiser, and then only replaced by an
+  // event. Previously they were computed during render, so the certificate's
+  // member id changed while the user looked at it and every confetti piece
+  // teleported on any unrelated state change.
+  const [memberId] = useState(() => makeMemberId(user?.id));
+  const [confetti, setConfetti] = useState(() => makeConfetti(40));
 
   useEffect(() => {
     if (!user) { navigate("/login"); return; }
@@ -233,9 +259,9 @@ export default function Welcome() {
       if (idx === konami) {
         const next = konami + 1;
         if (next === SEQ.length) {
-          setExtraConfetti(true);
+          setConfetti(makeConfetti(120));
           setShowConfetti(true);
-          setTimeout(() => { setExtraConfetti(false); setShowConfetti(false); }, 6000);
+          setTimeout(() => setShowConfetti(false), 6000);
           setKonami(0);
         } else setKonami(next);
       } else setKonami(0);
@@ -361,16 +387,8 @@ export default function Welcome() {
       `}</style>
 
       {/* Confetti */}
-      {showConfetti && Array.from({ length: extraConfetti ? 120 : 40 }).map((_, i) => (
-        <div key={i} className="confetti-particle" style={{
-          left: `${Math.random() * 100}%`,
-          background: ["#14b8a6","#6366f1","#22c55e","#eab308","#ec4899","#f97316","#ef4444"][i % 7],
-          animationDelay: `${Math.random() * 2}s`,
-          animationDuration: `${2 + Math.random() * 3}s`,
-          width: 4 + Math.random() * 10,
-          height: 4 + Math.random() * 10,
-          borderRadius: Math.random() > 0.5 ? "50%" : "2px",
-        }} />
+      {showConfetti && confetti.map((p, i) => (
+        <div key={i} className="confetti-particle" style={p} />
       ))}
 
       {/* Background glows */}

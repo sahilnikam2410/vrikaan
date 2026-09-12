@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
-import { useEffect, useState, Suspense, lazy } from "react";
+import { useEffect, useState, useRef, Suspense, lazy } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
@@ -64,11 +64,13 @@ const PageTransition = ({ children }) => {
 const RouteLoader = () => {
   const location = useLocation();
   const [show, setShow] = useState(false);
-  const [firstMount, setFirstMount] = useState(true);
+  // A ref, not state: nothing renders from it, and flipping state here cost
+  // an extra render on every route change.
+  const firstMount = useRef(true);
 
   useEffect(() => {
     // Skip on the very first render — the index.html splash already covers it
-    if (firstMount) { setFirstMount(false); return; }
+    if (firstMount.current) { firstMount.current = false; return; }
     setShow(true);
     const t = setTimeout(() => setShow(false), 500);
     return () => clearTimeout(t);
