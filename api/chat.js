@@ -160,8 +160,25 @@ When a user asks "how do I contact", "support", "email", "reach you", or shows i
 
     if (!response.ok) {
       const err = await response.text();
-      console.error("Groq API error:", err);
-      return res.status(502).json({ error: "AI service unavailable" });
+      console.error("Groq API error:", response.status, err);
+
+      // Surface enough to tell the failures apart without reading the
+      // function logs: the upstream status, and the machine-readable type and
+      // code from the provider's error envelope. The human-readable message
+      // is deliberately left out — it can quote the prompt back.
+      let type, code;
+      try {
+        const parsed = JSON.parse(err);
+        type = parsed?.error?.type;
+        code = parsed?.error?.code;
+      } catch { /* provider returned non-JSON */ }
+
+      return res.status(502).json({
+        error: "AI service unavailable",
+        upstream: response.status,
+        ...(type ? { type } : {}),
+        ...(code ? { code } : {}),
+      });
     }
 
     const data = await response.json();
