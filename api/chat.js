@@ -85,6 +85,11 @@ export default async function handler(req, res) {
     ? "IMPORTANT: User may be in active distress (fraud/scam victim). Be calm, direct, action-oriented. Lead with the 1930 helpline. Skip pleasantries."
     : "";
 
+  // Groq retires models on its own schedule — llama-3.3-70b-versatile went
+  // away and every chat turned into a 502. Settable without a code change so
+  // the next retirement is an env var edit, not a deploy.
+  const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.1-8b-instant";
+
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: "AI service not configured" });
@@ -150,7 +155,7 @@ When a user asks "how do I contact", "support", "email", "reach you", or shows i
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
+          model: GROQ_MODEL,
           messages,
           max_tokens: 300,
           temperature: 0.7,
