@@ -8,6 +8,40 @@ import { consumeQuota, quotaScope } from './_quota.js';
 // unauthenticated caller had no ceiling at all.
 const CHAT_DAILY_LIMIT = { guest: 10, free: 25, starter: 25, pro: 500, family: 500, enterprise: 2000 };
 
+// Model actually in use, once discovery has had to correct the configured
+// one. Module scope, so the lookup happens at most once per warm instance.
+let _resolvedModel = null;
+
+// Preferred in descending order of capability. The first one Groq still
+// serves wins; anything unlisted is ignored so a new embedding or guard model
+// never gets picked as the chat model.
+const MODEL_PREFERENCE = [
+  "llama-3.3-70b-versatile",
+  "meta-llama/llama-4-maverick-17b-128e-instruct",
+  "meta-llama/llama-4-scout-17b-16e-instruct",
+  "openai/gpt-oss-120b",
+  "qwen/qwen3-32b",
+  "openai/gpt-oss-20b",
+  "llama-3.1-8b-instant",
+];
+
+/** Ask Groq what it serves and return the best id we recognise, or null. */
+async function discoverModel(apiKey) {
+  try {
+    const r = await fetch("https://api.groq.com/openai/v1/models", {
+      headers: { Authorization: `Bearer ${apiKey}` },
+    });
+    if (!r.ok) return null;
+    const ids = new Set(((await r.json()).data || []).map((m) => m.id));
+    const preferred = MODEL_PREFERENCE.find((m) => ids.has(m));
+    if (preferred) return preferred;
+    // Nothing recognised — take any chat-shaped id rather than stay down.
+    return [...ids].find((id) => /instruct|chat|llama|gpt|qwen|gemma|mixtral/i.test(id)) || null;
+  } catch {
+    return null;
+  }
+}
+
 /** Resolve the caller from a Firebase ID token. Never trust a plan sent by the client. */
 async function resolveChatCaller(req) {
   const header = req.headers.authorization || "";
@@ -146,7 +180,7 @@ When a user asks "how do I contact", "support", "email", "reach you", or shows i
   ];
 
   try {
-    const response = await fetch(
+    const ask = (model) => fetch(
       "https://api.groq.com/openai/v1/chat/completions",
       {
         method: "POST",
@@ -155,13 +189,27 @@ When a user asks "how do I contact", "support", "email", "reach you", or shows i
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: GROQ_MODEL,
+          model,
           messages,
           max_tokens: 300,
           temperature: 0.7,
         }),
       }
     );
+
+    let response = await ask(_resolvedModel || GROQ_MODEL);
+
+    // Groq retires models without notice, and a retired id turns every chat
+    // into a 502. Rather than wait for someone to notice and edit an env var,
+    // ask the provider what it currently serves and pick the best match.
+    if (response.status === 404 && !_resolvedModel) {
+      const picked = await discoverModel(apiKey);
+      if (picked) {
+        console.warn(`Groq: ${GROQ_MODEL} unavailable, falling back to ${picked}`);
+        _resolvedModel = picked;
+        response = await ask(picked);
+      }
+    }
 
     if (!response.ok) {
       const err = await response.text();
