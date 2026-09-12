@@ -143,14 +143,14 @@ function writeRoute(route, html) {
   fs.writeFileSync(path.join(outDir, "index.html"), html);
 }
 
-// ---------- extract blog article metadata from Blog.jsx ----------
+// ---------- extract blog article metadata from blogData.js ----------
 
 function extractArticles() {
   const src = fs
-    .readFileSync(path.join(ROOT, "src/assets/pages/Blog.jsx"), "utf8")
+    .readFileSync(path.join(ROOT, "src/assets/pages/blogData.js"), "utf8")
     .replace(/\r\n/g, "\n"); // normalize CRLF (Windows working copies) → LF
   const m = src.match(/export const articles = \[([\s\S]*?)\n\];/);
-  if (!m) throw new Error("[prerender] articles array not found in Blog.jsx");
+  if (!m) throw new Error("[prerender] articles array not found in blogData.js");
   const body = m[1];
 
   // Each article starts with `\n  {\n    id: N,`
@@ -821,7 +821,7 @@ async function main() {
     count++;
   }
 
-  // Blog posts (extracted from Blog.jsx)
+  // Blog posts (extracted from blogData.js)
   const articles = extractArticles();
   const staticSlugs = new Set(articles.map((a) => slugify(a.title)));
   for (const a of articles) {
@@ -884,7 +884,7 @@ async function main() {
     count++;
   }
 
-  // Auto-blog posts (Firestore) — skip slugs already covered by Blog.jsx.
+  // Auto-blog posts (Firestore) — skip slugs already covered by blogData.js.
   const autoPosts = await fetchAutoPosts();
   for (const a of autoPosts) {
     const slug = slugify(a.slug || a.title);
