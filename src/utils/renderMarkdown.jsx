@@ -8,7 +8,6 @@
 function renderInline(text) {
   // Split on bold (**text**) and italics (*text* or _text_), keeping delimiters.
   const parts = [];
-  let remaining = text;
   let key = 0;
   const rx = /(\*\*[^*]+\*\*|\*[^*\n]+\*|_[^_\n]+_|`[^`\n]+`)/g;
   let lastIdx = 0;

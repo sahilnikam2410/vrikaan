@@ -3,7 +3,8 @@ import { LuMapPin, LuServer, LuClock, LuLanguages, LuLinkedin } from "react-icon
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
-import { Section, Aurora, Card, T, alpha } from "../../components/ui";
+import { Section, Aurora, Card } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 const FOUNDERS = [
   {
@@ -15,7 +16,7 @@ const FOUNDERS = [
   },
   {
     name: "Khushi Ishwar Raigade",
-    role: "Co-founder · Cybersecurity Researcher",
+    role: "Co-Founder & COO/CISO",
     bio: "Cybersecurity researcher focused on threat intelligence and user safety. Drives VRIKAAN's Scam DNA network and India-language awareness so protection reaches every household.",
     linkedin: "https://www.linkedin.com/company/vrikaan-ai-cybersecurity",
     initials: "KR",

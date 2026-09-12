@@ -3,7 +3,8 @@ import { LuShieldCheck, LuLock, LuServer, LuFileCheck, LuScale, LuBug, LuClock, 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
-import { Section, Aurora, Card, T, alpha } from "../../components/ui";
+import { Section, Aurora, Card } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 const PILLARS = [
   { icon: LuLock, color: T.cyan, title: "Data Protection", body: "AES-256 encryption at rest, TLS 1.3 in transit. Zero-knowledge vaults where applicable — your master secrets never leave your device." },
@@ -130,7 +131,7 @@ export default function Trust() {
                   </tr>
                 </thead>
                 <tbody>
-                  {SUBPROCESSORS.map((s, i) => (
+                  {SUBPROCESSORS.map((s, _i) => (
                     <tr key={s.name} style={{ borderTop: `1px solid ${T.border}` }}>
                       <td style={{ padding: "12px 18px", color: T.text, fontWeight: 600, fontSize: 14 }}>{s.name}</td>
                       <td style={{ padding: "12px 18px", color: T.muted, fontSize: 13.5 }}>{s.use}</td>

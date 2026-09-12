@@ -41,14 +41,10 @@ export function useToolQuota({ path: overridePath } = {}) {
     if (state.remaining <= 0) {
       return null;
     }
-    try {
-      const out = await fn?.();
-      recordUse(path);
-      setTick(t => t + 1);
-      return out;
-    } catch (err) {
-      throw err;
-    }
+    const out = await fn?.();
+    recordUse(path);
+    setTick(t => t + 1);
+    return out;
   }, [state.unlimited, state.remaining, path]);
 
   return {

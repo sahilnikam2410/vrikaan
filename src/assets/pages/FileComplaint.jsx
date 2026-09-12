@@ -4,7 +4,8 @@ import { LuCopy, LuCheck, LuDownload, LuPhone, LuExternalLink, LuShieldAlert } f
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
-import { Section, Aurora, Card, Input, T, alpha } from "../../components/ui";
+import { Section, Aurora, Card, Input } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 const TYPES = [
   "UPI / bank fraud", "Phishing link / fake website", "Loan-app harassment",

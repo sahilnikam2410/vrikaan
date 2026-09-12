@@ -432,7 +432,7 @@ const CyberNews = () => {
       <style>{`
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
         @media (max-width: 900px) {
-          div[style*="gridTemplateColumns: \"1fr 320px\""] { grid-template-columns: 1fr !important; }
+          div[style*="grid-template-columns: 1fr 320px"] { grid-template-columns: 1fr !important; }
         }
       `}</style>
 

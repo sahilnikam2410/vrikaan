@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import ToolShell from "../../components/ToolShell";
 import SeniorModeBanner from "../../components/SeniorModeBanner";
 import { LuTriangleAlert, LuCircleCheck, LuLock } from "react-icons/lu";

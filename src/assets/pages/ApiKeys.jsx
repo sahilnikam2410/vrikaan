@@ -1,13 +1,14 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { collection, getDocs, doc, setDoc, updateDoc, writeBatch, serverTimestamp } from "firebase/firestore";
+import { collection, getDocs, doc, updateDoc, writeBatch, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { useAuth } from "../../context/AuthContext";
 import { LuKey, LuPlus, LuCopy, LuTrash2, LuCheck, LuTriangleAlert } from "react-icons/lu";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
-import { Section, Aurora, Card, Button, T, alpha } from "../../components/ui";
+import { Section, Aurora, Card, Button } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 function genToken() {
   const b = new Uint8Array(24);

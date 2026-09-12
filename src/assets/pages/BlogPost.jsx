@@ -4,14 +4,13 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import {
-  articles,
   getArticleBySlug,
   getRelatedArticles,
   slugify,
   categoryColors,
   categoryGradients,
   T,
-} from "./Blog";
+} from "./blogData";
 
 export default function BlogPost() {
   const { slug } = useParams();

@@ -116,7 +116,7 @@ async function pingOne(ep) {
 }
 
 // ── Sub-components ────────────────────────────────────────────────────
-function UptimeBars({ history, color = T.green }) {
+function UptimeBars({ history }) {
   const bars = dailyBars(history);
   return (
     <div style={{

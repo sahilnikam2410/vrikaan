@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import SEO, { faqSchema, productSchema } from "../../components/SEO";
+import SEO from "../../components/SEO";
+import { faqSchema, productSchema } from "../../lib/schema";
 
 /**
  * /family-plan — public SEO landing page for the Family plan.

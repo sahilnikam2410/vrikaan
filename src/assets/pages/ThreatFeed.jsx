@@ -4,7 +4,8 @@ import { LuActivity, LuRefreshCw, LuShieldAlert, LuArrowRight } from "react-icon
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
-import { Section, Aurora, Card, T, alpha } from "../../components/ui";
+import { Section, Aurora, Card } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 const CAT_COLOR = {
   "upi-fraud": "#14b8a6", phishing: "#6366f1", vishing: "#f59e0b", "loan-app": "#ef4444",

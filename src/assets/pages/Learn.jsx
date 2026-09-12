@@ -576,7 +576,6 @@ async function generateCertificate(courseName, userName, certIdArg) {
   const canvas = document.createElement("canvas");
   canvas.width = W; canvas.height = H;
   const ctx = canvas.getContext("2d");
-  const cx = W / 2;
   const dark = "#1F1F1F";
   const gray = "#636363";
   const light = "#9E9E9E";

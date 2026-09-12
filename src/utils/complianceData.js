@@ -59,7 +59,7 @@ export const CONTROLS = [
   { id: "DPDP-10",  framework: "dpdp", weight: 3, title: "Personal data breach intimation",
     evaluate: (s) => s.breachNotifyMechanism === true },
   { id: "DPDP-12",  framework: "dpdp", weight: 1, title: "Children's data protection (age gate)",
-    evaluate: (s) => true /* assumed: 18+ ToS */ },
+    evaluate: (_s) => true /* assumed: 18+ ToS */ },
 
   // ─── SOC 2 ───
   { id: "CC-1.1",   framework: "soc2", weight: 1, title: "Code of conduct + values published",

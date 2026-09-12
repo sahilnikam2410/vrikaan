@@ -2,7 +2,8 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SEO from "./SEO";
 import ToolIcon from "../lib/toolIcons.jsx";
-import { Section, Aurora, T, alpha } from "./ui";
+import { Section, Aurora } from "./ui";
+import { T, alpha } from "./ui/tokens";
 
 /**
  * ToolShell — standard chrome for every tool page: background, Navbar, SEO,

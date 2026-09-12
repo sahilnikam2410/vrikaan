@@ -1,7 +1,8 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import SEO, { faqSchema, breadcrumbSchema } from "../../components/SEO";
+import SEO from "../../components/SEO";
+import { faqSchema, breadcrumbSchema } from "../../lib/schema";
 import THREATS, { getThreatBySlug, getRelatedThreats } from "../../data/threats";
 
 const T = {

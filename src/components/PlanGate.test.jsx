@@ -1,7 +1,8 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import PlanGate, { isPlanAllowed } from "./PlanGate.jsx";
+import PlanGate from "./PlanGate.jsx";
+import { isPlanAllowed } from "../lib/plans.js";
 
 // Mock the AuthContext so we can drive user.plan from each test
 vi.mock("../context/AuthContext", () => ({

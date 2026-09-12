@@ -4,7 +4,8 @@ import { LuShieldCheck, LuQrCode, LuMapPin, LuSiren, LuBadgeCheck, LuUsers, LuHe
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
-import { Section, Aurora, Card, T, alpha } from "../../components/ui";
+import { Section, Aurora, Card } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 const SAFFRON = "#f97316";
 const KUMBH_DATE = new Date("2027-07-01T00:00:00+05:30");

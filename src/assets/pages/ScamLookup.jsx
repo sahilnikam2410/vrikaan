@@ -4,7 +4,8 @@ import { LuShieldAlert, LuShieldCheck, LuSearch, LuArrowRight, LuFlag } from "re
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
-import { Section, Aurora, Card, T, alpha } from "../../components/ui";
+import { Section, Aurora, Card } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 // Public, indexable "is X a scam?" page. Reads the free Scam DNA check
 // (/api/tools?tool=scam-dna action=check) for any phone / UPI ID / URL.

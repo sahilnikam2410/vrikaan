@@ -1,5 +1,6 @@
 import js from '@eslint/js'
 import globals from 'globals'
+import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
@@ -20,6 +21,7 @@ export default defineConfig([
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
     ],
+    plugins: { react },
     languageOptions: {
       ecmaVersion: 2022,
       globals: globals.browser,
@@ -30,11 +32,22 @@ export default defineConfig([
       },
     },
     rules: {
+      // Without this, `no-unused-vars` cannot see a binding that is only
+      // referenced from JSX — so a component passed as a prop and rendered
+      // as <Icon /> reads as dead. It was reporting several of those.
+      // (jsx-uses-react is not needed: the automatic JSX runtime is in use.)
+      'react/jsx-uses-vars': 'error',
       'no-unused-vars': ['error', {
         varsIgnorePattern: '^[A-Z_]',
         argsIgnorePattern: '^_',
         caughtErrors: 'none',
       }],
+      // `catch {}` is this codebase's deliberate best-effort idiom: clipboard
+      // writes, localStorage in a private window, SpeechRecognition, optional
+      // Firestore reads. A failure there must not break the flow, and there is
+      // nothing useful to log. Empty if/for/while blocks stay errors, because
+      // those are bugs rather than intent.
+      'no-empty': ['error', { allowEmptyCatch: true }],
     },
   },
 
@@ -48,9 +61,6 @@ export default defineConfig([
     rules: {
       // These are servers, not components.
       'react-refresh/only-export-components': 'off',
-      // `catch {}` is a deliberate pattern in the API handlers: a failing
-      // third-party lookup degrades the report, it doesn't fail the request.
-      'no-empty': ['error', { allowEmptyCatch: true }],
     },
   },
 
@@ -64,7 +74,6 @@ export default defineConfig([
     },
     rules: {
       'react-refresh/only-export-components': 'off',
-      'no-empty': ['error', { allowEmptyCatch: true }],
     },
   },
 
@@ -76,7 +85,20 @@ export default defineConfig([
     },
     rules: {
       'react-refresh/only-export-components': 'off',
-      'no-empty': ['error', { allowEmptyCatch: true }],
+    },
+  },
+
+  // Context modules — the provider component and its consumer hook belong
+  // together. Splitting useAuth out of AuthContext.jsx would touch 34 files to
+  // satisfy a Fast Refresh hint, so the hook names are allowed instead. This
+  // is the rule's own escape hatch: editing the provider still triggers a full
+  // reload, editing anything else does not.
+  {
+    files: ['src/context/*.jsx'],
+    rules: {
+      'react-refresh/only-export-components': ['error', {
+        allowExportNames: ['useAuth', 'useTheme', 'useToast'],
+      }],
     },
   },
 

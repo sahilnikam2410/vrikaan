@@ -184,9 +184,7 @@ const ParticleField = () => {
     };
     const resize = () => { c.width = window.innerWidth; c.height = window.innerHeight; initColumns(); };
     resize(); window.addEventListener("resize", resize);
-    let time = 0;
     const draw = () => {
-      time++;
       const w = c.width, h = c.height;
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, w, h);
@@ -420,7 +418,6 @@ const useParallax = (speed = 0.3) => {
 };
 
 const Hero = () => {
-  const [threats, setThreats] = useState(2841029);
   const [parallaxRef, parallaxOffset] = useParallax(0.15);
   const typed = useTypewriter([
     "Fraud Detection",
@@ -429,11 +426,6 @@ const Hero = () => {
     "Identity Shield",
     "Threat Intelligence",
   ], 70, 2000);
-
-  useEffect(() => {
-    const t = setInterval(() => setThreats(c => c + Math.floor(Math.random() * 30) + 5), 800);
-    return () => clearInterval(t);
-  }, []);
 
   return (
     <section ref={parallaxRef} style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", padding: "120px clamp(16px, 5vw, 80px) 80px", maxWidth: "100vw", boxSizing: "border-box" }}>
@@ -2420,16 +2412,6 @@ const FAQ = () => {
 
 /* ── NEWSLETTER ── */
 const Newsletter = () => {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = () => {
-    if (!email.includes("@")) return;
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
-    setEmail("");
-  };
-
   return (
     <Section>
       <Reveal>
@@ -2623,7 +2605,7 @@ const FounderSection = () => (
               <div style={{ flex: 1, minWidth: 0 }}>
                 <Badge color={T.cyan}>Co-Founder</Badge>
                 <h3 style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: T.white, margin: "10px 0 4px", letterSpacing: "-0.02em" }}>Khushi Ishwar Raigade</h3>
-                <p style={{ color: T.cyan, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>SOC Analyst · Cybersecurity Researcher</p>
+                <p style={{ color: T.cyan, fontSize: 12, margin: 0, letterSpacing: 0.3 }}>Co-Founder & COO/CISO</p>
               </div>
             </div>
             <blockquote style={{ fontFamily: "var(--font-body)", fontSize: 14, color: T.white, lineHeight: 1.7, fontStyle: "italic", margin: "0 0 14px", opacity: 0.85, borderLeft: `3px solid ${T.cyan}`, paddingLeft: 16 }}>

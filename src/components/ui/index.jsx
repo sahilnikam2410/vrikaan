@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { tokens, T, alpha } from "./tokens";
 import "./ui.css";
 
-export { tokens, T, alpha };
 
 /* ── Aurora ── fixed low-opacity gradient orbs behind content so the frosted
    glass cards actually read (blur needs colour behind it). Render once per page. */
@@ -81,9 +80,6 @@ export function Button({
 }) {
   const pad = size === "sm" ? "8px 14px" : size === "lg" ? "15px 26px" : "12px 20px";
   const fs = size === "sm" ? 13 : size === "lg" ? 16 : 14.5;
-  const bg = {
-    primary: T.cyan, danger: T.red, secondary: "transparent", ghost: "transparent",
-  }[variant];
   const color = variant === "primary" || variant === "danger" ? T.onAccent : T.text;
   const border = variant === "secondary" ? `1px solid ${T.border}` : "1px solid transparent";
   const s = {

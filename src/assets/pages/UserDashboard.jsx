@@ -3,7 +3,8 @@ import { useAuth } from "../../context/AuthContext";
 import { useToast } from "../../context/ToastContext";
 import { useNavigate } from "react-router-dom";
 import SEO from "../../components/SEO";
-import PlanGate, { isPlanAllowed } from "../../components/PlanGate";
+import PlanGate from "../../components/PlanGate";
+import { isPlanAllowed } from "../../lib/plans";
 import OnboardingTour from "../../components/OnboardingTour";
 import { db } from "../../firebase/config";
 import { auth as firebaseAuth } from "../../firebase/config";
@@ -23,7 +24,7 @@ import {
 } from "react-icons/hi";
 import { useTheme } from "../../context/ThemeContext";
 import { getAllBadgesWithState, getStreak } from "../../services/gamificationService";
-import { getPermissionState, requestPermission, isEnabled as isPushEnabled, setEnabled as setPushEnabled } from "../../services/pushService";
+import { requestPermission, isEnabled as isPushEnabled, setEnabled as setPushEnabled } from "../../services/pushService";
 import { AreaChart, Area, PieChart, Pie, Cell, BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
 
 const T = {

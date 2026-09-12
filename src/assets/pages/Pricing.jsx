@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import SEO, { faqSchema, productSchema } from "../../components/SEO";
+import SEO from "../../components/SEO";
+import { faqSchema, productSchema } from "../../lib/schema";
 import { useAuth } from "../../context/AuthContext";
 import { getVariant, trackConversion } from "../../services/abTestService";
 
