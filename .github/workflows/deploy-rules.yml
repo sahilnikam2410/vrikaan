@@ -1,0 +1,73 @@
+name: Deploy Firestore rules
+
+# Manual only. Rules are an access-control change — nobody should be able to
+# ship one by merging, and a schedule would redeploy whatever happens to be on
+# master at the time.
+#
+# This exists because `firebase login` is an interactive browser flow, which
+# makes deploying from a laptop the one step in the release that cannot be
+# automated or handed over. The FIREBASE_ADMIN_KEY secret the nightly backup
+# already uses is a full service-account JSON, which the CLI accepts through
+# GOOGLE_APPLICATION_CREDENTIALS — so this runs headless.
+#
+# The service account needs firebaserules.releases.create. If it was created
+# for backups only it will have Datastore read and nothing else, and the
+# deploy step will fail with a permission error naming the missing role.
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "deploy" to confirm — this changes production access control'
+        required: true
+        default: ''
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check the confirmation
+        if: inputs.confirm != 'deploy'
+        run: |
+          echo "::error::Type 'deploy' in the confirm box to run this."
+          exit 1
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Write the service-account key
+        env:
+          FIREBASE_ADMIN_KEY: ${{ secrets.FIREBASE_ADMIN_KEY }}
+        run: |
+          if [ -z "$FIREBASE_ADMIN_KEY" ]; then
+            echo "::error::FIREBASE_ADMIN_KEY is not set in this repository's secrets."
+            exit 1
+          fi
+          printf '%s' "$FIREBASE_ADMIN_KEY" > "$RUNNER_TEMP/sa.json"
+          node -e "const k=require(process.env.RUNNER_TEMP+'/sa.json'); if(!k.private_key||!k.client_email){console.error('::error::FIREBASE_ADMIN_KEY is not a full service-account JSON.');process.exit(1)} console.log('key ok for '+k.client_email)"
+
+      # Print what is about to ship. A rules diff is short and worth having in
+      # the log next to the deploy that applied it.
+      - name: Show the rules being deployed
+        run: |
+          echo "--- firestore.rules @ $(git rev-parse --short HEAD) ---"
+          cat firestore.rules
+
+      - name: Deploy
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/sa.json
+        run: npx firebase deploy --only firestore:rules --project secuvion --non-interactive
+
+      - name: Remove the key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/sa.json"
