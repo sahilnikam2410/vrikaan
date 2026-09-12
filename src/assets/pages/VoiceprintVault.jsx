@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { LuTriangleAlert, LuMic, LuActivity, LuDownload, LuX, LuCircleAlert, LuFile, LuList, LuLock, LuCircleCheck } from "react-icons/lu";
 import ToolShell from "../../components/ToolShell";
@@ -37,7 +37,7 @@ export default function VoiceprintVault() {
   const startTimeRef = useRef(0);
   const durationIntervalRef = useRef(null);
 
-  const startRecord = async () => {
+  const startRecord = useCallback(async () => {
     setError("");
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -60,10 +60,11 @@ export default function VoiceprintVault() {
         setRecordedDuration(d);
         if (d >= 30) stopRecord(); // hard cap 30s
       }, 250);
-    } catch (e) {
+    } catch {
       setError("Microphone access denied or unavailable. Allow mic permission in browser settings.");
     }
-  };
+  }, []);
+
   const stopRecord = () => {
     if (mediaRecRef.current?.state === "recording") mediaRecRef.current.stop();
     setRecording(false);

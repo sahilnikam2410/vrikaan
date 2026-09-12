@@ -13,7 +13,14 @@ export default function CinematicLoader({ onComplete }) {
   const [phase, setPhase] = useState(0); // 0-6 phases
   const [done, setDone] = useState(false);
   const canvasRef = useRef(null);
-  const startRef = useRef(Date.now());
+  // useRef's argument is evaluated on every render even though only the first
+  // result is kept, so Date.now() there is a render-phase clock read. Stamped
+  // once on mount instead.
+  const startRef = useRef(0);
+
+  useEffect(() => {
+    startRef.current = Date.now();
+  }, []);
 
   // Phase timeline
   useEffect(() => {

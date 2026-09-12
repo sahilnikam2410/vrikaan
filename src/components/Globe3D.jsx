@@ -73,10 +73,19 @@ function createArcCurve(start, end) {
 
 const Globe3D = memo(function Globe3D({ size, threatsRef, onContextLost, onArc, pausedRef }) {
   const containerRef = useRef(null);
+  // Latest-value refs so the long-lived WebGL loop below reads current props
+  // without re-subscribing. Synced in an effect rather than during render —
+  // a render-phase write is not guaranteed to happen exactly once.
   const onContextLostRef = useRef(onContextLost);
-  onContextLostRef.current = onContextLost;
   const pausedReadRef = useRef(pausedRef);
-  pausedReadRef.current = pausedRef;
+
+  useEffect(() => {
+    onContextLostRef.current = onContextLost;
+  }, [onContextLost]);
+
+  useEffect(() => {
+    pausedReadRef.current = pausedRef;
+  }, [pausedRef]);
 
   useEffect(() => {
     const container = containerRef.current;

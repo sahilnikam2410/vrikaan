@@ -70,7 +70,10 @@ function getCredits() {
 // Firestore counter keyed to the caller's uid (or IP for guests) — this used
 // to be the only thing standing between the internet and the LLM budget, and
 // it lives in localStorage, so it stood between nothing and nothing.
-function useCredit() {
+// Spends one credit. NOT a hook — the "use" prefix made the linter treat
+// it as one, which then flagged the call inside handleSend as a hook in a
+// callback. It only reads and writes localStorage.
+function spendCredit() {
   const data = getCredits();
   const max = PLANS[data.plan]?.credits ?? PLANS.guest.credits;
   const remaining = data.plan === "unlimited" ? Infinity : max - data.used;
@@ -358,7 +361,7 @@ export default function AIChatbot() {
     setInput("");
 
     // Check credits
-    if (!useCredit()) {
+    if (!spendCredit()) {
       const loggedIn = isUserLoggedIn();
       const plan = getUserPlan();
       const planCredits = PLANS[plan]?.credits || 25;
