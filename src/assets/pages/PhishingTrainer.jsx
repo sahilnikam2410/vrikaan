@@ -55,13 +55,6 @@ export default function PhishingTrainer() {
     setScreen("game"); setTimeLeft(15);
   };
 
-  useEffect(() => {
-    if (screen !== "game" || feedback) return;
-    setTimeLeft(15);
-    timerRef.current = setInterval(() => setTimeLeft(t => { if (t <= 1) { clearInterval(timerRef.current); answer(null); return 0; } return t - 1; }), 1000);
-    return () => clearInterval(timerRef.current);
-  }, [round, screen, feedback]);
-
   const answer = useCallback((userSaysPhishing) => {
     clearInterval(timerRef.current);
     const q = questions[round];
@@ -72,6 +65,14 @@ export default function PhishingTrainer() {
     setAnswers(a => [...a, { ...q, userAnswer: userSaysPhishing, correct, timedOut: userSaysPhishing === null }]);
     setFeedback({ correct, q });
   }, [questions, round, streak]);
+
+  // Declared after answer(), which the timeout calls when the clock runs out.
+  useEffect(() => {
+    if (screen !== "game" || feedback) return;
+    setTimeLeft(15);
+    timerRef.current = setInterval(() => setTimeLeft(t => { if (t <= 1) { clearInterval(timerRef.current); answer(null); return 0; } return t - 1; }), 1000);
+    return () => clearInterval(timerRef.current);
+  }, [round, screen, feedback, answer]);
 
   const nextRound = () => {
     setFeedback(null);

@@ -27,8 +27,9 @@ export default function Leaderboard() {
   const [rows, setRows] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  async function load() {
-    setLoading(true);
+  // showSpinner is false on mount — loading already starts true.
+  async function load(showSpinner = true) {
+    if (showSpinner) setLoading(true);
     // Push our own latest score first so we appear/refresh, then fetch.
     if (user?.uid) {
       const academy = Number(localStorage.getItem("vrikaan_academy_xp")) || 0;
@@ -43,7 +44,7 @@ export default function Leaderboard() {
     setRows(await getTopScores(50));
     setLoading(false);
   }
-  useEffect(() => { load();   }, [user?.uid]);
+  useEffect(() => { load(false); }, [user?.uid]);
 
   const myRank = rows && user?.uid ? rows.findIndex((r) => r.uid === user.uid) + 1 : 0;
 

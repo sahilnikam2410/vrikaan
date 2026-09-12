@@ -29,8 +29,11 @@ export default function ThreatFeed() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
-  const load = useCallback(async () => {
-    setLoading(true); setErr("");
+  // showSpinner is false on mount — loading already starts true, so setting it
+  // again just costs a render before the fetch begins.
+  const load = useCallback(async (showSpinner = true) => {
+    if (showSpinner) setLoading(true);
+    setErr("");
     try {
       const r = await fetch("/api/tools?tool=scam-dna", {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -42,7 +45,7 @@ export default function ThreatFeed() {
     setLoading(false);
   }, []);
 
-  useEffect(() => { load(); const t = setInterval(load, 60000); return () => clearInterval(t); }, [load]);
+  useEffect(() => { load(false); const t = setInterval(load, 60000); return () => clearInterval(t); }, [load]);
 
   return (
     <div style={{ background: T.bg, minHeight: "100vh" }}>

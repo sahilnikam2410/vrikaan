@@ -14,8 +14,10 @@ export default function ScamRegistry() {
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  // showSpinner is false on mount — loading already starts true, so setting it
+  // again just costs a render before the fetch begins.
+  const load = useCallback(async (showSpinner = true) => {
+    if (showSpinner) setLoading(true);
     try {
       const r = await fetch("/api/tools?tool=scam-dna", {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -26,7 +28,7 @@ export default function ScamRegistry() {
     } catch { setItems([]); }
     setLoading(false);
   }, []);
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => { load(false); }, [load]);
 
   // feed doc ids look like "id_<identifier>" or "sig_<hash>". Only id_ ones map to a lookup.
   const rows = items.map((it) => {

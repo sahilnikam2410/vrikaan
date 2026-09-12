@@ -58,14 +58,12 @@ function Donut({ data, size = 130 }) {
   const total = data.reduce((a, d) => a + d.value, 0) || 1;
   const r = size / 2 - 8;
   const cx = size / 2, cy = size / 2;
-  // Running offsets computed up front. Mutating a counter inside .map()
-  // during render produces different arcs depending on how many times React
-  // renders the component.
-  let running = 0;
-  const arcs = data.map((d) => {
-    const startValue = running;
-    running += d.value;
-    return { ...d, startValue, endValue: running };
+  // Each arc starts where everything before it ended. Accumulating into a
+  // counter during render gave different arcs depending on how many times
+  // React rendered the component.
+  const arcs = data.map((d, i) => {
+    const startValue = data.slice(0, i).reduce((sum, x) => sum + x.value, 0);
+    return { ...d, startValue, endValue: startValue + d.value };
   });
   return (
     <svg width={size} height={size}>

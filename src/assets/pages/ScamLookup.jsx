@@ -23,8 +23,10 @@ export default function ScamLookup() {
   const [v, setV] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const load = useCallback(async () => {
-    setLoading(true);
+  // showSpinner is false on mount — loading already starts true, so setting it
+  // again just costs a render before the fetch begins.
+  const load = useCallback(async (showSpinner = true) => {
+    if (showSpinner) setLoading(true);
     try {
       const r = await fetch("/api/tools?tool=scam-dna", {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -34,7 +36,7 @@ export default function ScamLookup() {
     } catch { setV({ known: false, riskScore: 0 }); }
     setLoading(false);
   }, [ider]);
-  useEffect(() => { if (ider) load(); }, [ider, load]);
+  useEffect(() => { if (ider) load(false); }, [ider, load]);
 
   const c = classify(v);
   const kind = ider.includes("@") ? "UPI ID" : /^[+0-9 -]{6,}$/.test(ider) ? "phone number" : "link";

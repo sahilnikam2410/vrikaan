@@ -37,6 +37,12 @@ export default function VoiceprintVault() {
   const startTimeRef = useRef(0);
   const durationIntervalRef = useRef(null);
 
+  // Declared before startRecord, whose 30-second cap calls it.
+  const stopRecord = useCallback(() => {
+    if (mediaRecRef.current?.state === "recording") mediaRecRef.current.stop();
+    setRecording(false);
+  }, []);
+
   const startRecord = useCallback(async () => {
     setError("");
     try {
@@ -63,12 +69,7 @@ export default function VoiceprintVault() {
     } catch {
       setError("Microphone access denied or unavailable. Allow mic permission in browser settings.");
     }
-  }, []);
-
-  const stopRecord = () => {
-    if (mediaRecRef.current?.state === "recording") mediaRecRef.current.stop();
-    setRecording(false);
-  };
+  }, [stopRecord]);
 
   const saveMember = async () => {
     if (!name.trim() || !recordedBlob) return;
