@@ -68,7 +68,7 @@ const TECH = [
 ];
 
 const MILESTONES = [
-  { year: "2024", title: "Founded", desc: "VRIKAAN was born in Pune, India when founder Sahil Anil Nikam identified a critical gap in accessible cybersecurity tools for everyday users. Khushi Ishwar Raigade later joined as co-founder, leading SOC, threat detection and security research.", color: T.accent },
+  { year: "2024", title: "Founded", desc: "VRIKAAN was born in Nashik, India when founder Sahil Anil Nikam identified a critical gap in accessible cybersecurity tools for everyday users. Khushi Ishwar Raigade later joined as co-founder, leading SOC, threat detection and security research.", color: T.accent },
   { year: "2025", title: "Platform Launch", desc: "Public launch of the VRIKAAN platform featuring dark web monitoring, password vault, vulnerability scanner, and an integrated learning hub.", color: T.cyan },
   { year: "2026", title: "AI Integration", desc: "Deployed Google Gemini-powered AI chatbot and intelligent threat analysis engine, bringing conversational cybersecurity assistance to every user.", color: T.green },
   { year: "2027", title: "Global Expansion", desc: "Planned rollout across Southeast Asia, Europe, and Africa with localized threat intelligence and multilingual support for 20+ languages.", color: "#f97316" },
@@ -160,7 +160,7 @@ export default function About() {
     <div style={{ background: T.bg, minHeight: "100vh", color: T.white, fontFamily: "'Vrikaan Sans', sans-serif" }}>
       <SEO
         title="About VRIKAAN"
-        description="Learn about VRIKAAN's mission to democratize AI-powered cybersecurity for everyone. Founded by Sahil Anil Nikam in Pune, India."
+        description="Learn about VRIKAAN's mission to democratize AI-powered cybersecurity for everyone. Founded by Sahil Anil Nikam in Nashik, India."
         path="/about"
       />
       <Navbar />
@@ -346,7 +346,7 @@ export default function About() {
           <div style={{ ...cardBase, borderRadius: 20, padding: "clamp(32px, 4vw, 56px)", maxWidth: 860, margin: "0 auto" }}>
             <p style={{ color: T.muted, fontSize: 15, lineHeight: 1.9, margin: "0 0 20px" }}>
               VRIKAAN was founded by <strong style={{ color: T.white }}>Sahil Anil Nikam</strong>, a
-              cybersecurity enthusiast from <strong style={{ color: T.white }}>Pune, India</strong>,
+              cybersecurity enthusiast from <strong style={{ color: T.white }}>Nashik, India</strong>,
               who witnessed firsthand how vulnerable everyday internet users are to digital threats.
               While studying cybersecurity and building personal projects, Sahil noticed a troubling
               pattern: the best security tools were locked behind expensive enterprise contracts,
@@ -489,7 +489,7 @@ export default function About() {
                 "Cybersecurity should not be a luxury — it should be a right available to every person on Earth."
               </blockquote>
               <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.8, margin: "0 0 16px" }}>
-                SOC analyst, cybersecurity researcher, and full-stack developer from Pune. Drives product
+                SOC analyst, cybersecurity researcher, and full-stack developer from Nashik. Drives product
                 architecture, AI integration, payments and the engineering pipeline behind every VRIKAAN release.
               </p>
               <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>

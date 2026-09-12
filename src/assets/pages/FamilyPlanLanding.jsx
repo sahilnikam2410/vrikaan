@@ -163,7 +163,7 @@ export default function FamilyPlanLanding() {
             <div style={{ display: "flex", gap: 18, flexWrap: "wrap", fontSize: 12, color: T.mutedDark }}>
               <span>✓ 30-day refund</span>
               <span>✓ Cancel anytime</span>
-              <span>✓ India-built · Made in Pune</span>
+              <span>✓ India-built · Made in Nashik</span>
             </div>
           </div>
 

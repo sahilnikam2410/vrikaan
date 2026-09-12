@@ -68,7 +68,7 @@ export function buildCertificate({ name, testTitle, scorePct, date, certId }) {
   doc.text("Issued by", W - 155, fy + 30, { align: "center" });
 
   doc.setFont("helvetica", "normal").setFontSize(8).setTextColor(...C.mut);
-  doc.text(`Verify ID: ${certId || "VRK-CERT"}  ·  Built by SOC analysts, Pune, India`, cx, H - 40, { align: "center" });
+  doc.text(`Verify ID: ${certId || "VRK-CERT"}  ·  Built by SOC analysts, Nashik, India`, cx, H - 40, { align: "center" });
 
   return doc;
 }

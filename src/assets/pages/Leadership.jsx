@@ -24,7 +24,7 @@ const FOUNDERS = [
 ];
 
 const PRESENCE = [
-  { icon: LuMapPin, label: "Headquarters", value: "Nashik & Pune, Maharashtra, India" },
+  { icon: LuMapPin, label: "Headquarters", value: "Nashik, Maharashtra, India" },
   { icon: LuServer, label: "Data & SOC", value: "AWS Mumbai (ap-south-1) · India data residency" },
   { icon: LuClock, label: "Coverage", value: "24×7 SOC monitoring · Hindi-fluent on-call" },
   { icon: LuLanguages, label: "Languages", value: "English + हिन्दी, मराठी, தமிழ், తెలుగు, বাংলা" },

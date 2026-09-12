@@ -1390,7 +1390,7 @@ const JustShipped = () => {
 const IndiaFirst = () => {
   const rows = [
     { feat: "Price",                vrk: "₹0 free · ₹990/yr Pro",                norton: "₹2,000+/yr",        mc: "$40+/yr (~₹3,300)" },
-    { feat: "Made in",              vrk: "🇮🇳 Pune, India",                     norton: "🇺🇸 USA",            mc: "🇺🇸 USA" },
+    { feat: "Made in",              vrk: "🇮🇳 Nashik, India",                     norton: "🇺🇸 USA",            mc: "🇺🇸 USA" },
     { feat: "Hindi UI",             vrk: "✓ EN + हिन्दी",                          norton: "❌ English only",   mc: "❌ English only" },
     { feat: "Scam SMS / WhatsApp AI",vrk:"✓ India-tuned",                          norton: "❌",                mc: "❌" },
     { feat: "Aadhaar / PAN mask",   vrk: "✓ Free + offline",                       norton: "❌",                mc: "❌" },
@@ -2463,7 +2463,7 @@ const Newsletter = () => {
 /* ── INDIA TRUST STRIP — credentials wall ── */
 const IndiaTrust = () => {
   const badges = [
-    { icon: "🇮🇳",  label: "Made in India",        sub: "Pune, Maharashtra · 2024" },
+    { icon: "🇮🇳",  label: "Made in India",        sub: "Nashik, Maharashtra · 2024" },
     { icon: "📜",  label: "DPDP Act 2023",        sub: "Indian data law compliant" },
     { icon: "🔒",  label: "NIST AAL2 2FA",        sub: "RFC 6238 TOTP" },
     { icon: "🛰️",  label: "MITRE ATT&CK",         sub: "12 tactics · 40+ techniques" },

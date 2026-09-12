@@ -44,7 +44,7 @@ export default function Founder() {
               "Cybersecurity shouldn't be a luxury — it should be a right available to every person on Earth."
             </blockquote>
             <p style={{ color: T.muted, fontSize: 14, lineHeight: 1.85, margin: 0 }}>
-              SOC analyst, cybersecurity researcher, and full-stack developer from Pune. Drives product
+              SOC analyst, cybersecurity researcher, and full-stack developer from Nashik. Drives product
               architecture, AI integration, payments and the engineering pipeline behind every VRIKAAN release.
             </p>
           </div>
