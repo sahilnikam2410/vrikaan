@@ -1,7 +1,8 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import SEO, { faqSchema } from "../../components/SEO";
+import SEO from "../../components/SEO";
+import { faqSchema } from "../../lib/schema";
 
 const T = {
   bg: "#060a14", surface: "#111827", card: "rgba(17,24,39,0.7)",

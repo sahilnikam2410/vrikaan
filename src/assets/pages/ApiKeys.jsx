@@ -7,7 +7,8 @@ import { LuKey, LuPlus, LuCopy, LuTrash2, LuCheck, LuTriangleAlert } from "react
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
-import { Section, Aurora, Card, Button, T, alpha } from "../../components/ui";
+import { Section, Aurora, Card, Button } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 function genToken() {
   const b = new Uint8Array(24);

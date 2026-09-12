@@ -14,7 +14,7 @@ import {
 } from "react-icons/lu";
 
 // route → icon component
-export const TOOL_ICONS = {
+const TOOL_ICONS = {
   // Security Tools
   "/scam-dna": LuDna,
   "/scambait": LuVenetianMask,
@@ -82,7 +82,7 @@ export const TOOL_ICONS = {
 // Fallback for any unmapped route.
 const FALLBACK = LuShield;
 
-export function getToolIcon(to) {
+function getToolIcon(to) {
   return TOOL_ICONS[to] || FALLBACK;
 }
 

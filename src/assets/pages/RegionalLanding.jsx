@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
-import { Section, Aurora, Card, T, alpha } from "../../components/ui";
+import { Section, Aurora, Card } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 // Lightweight translated marketing landings for major Indian languages.
 // Machine-assisted translations — native review recommended before heavy promo.

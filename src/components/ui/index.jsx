@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { tokens, T, alpha } from "./tokens";
 import "./ui.css";
 
-export { tokens, T, alpha };
 
 /* ── Aurora ── fixed low-opacity gradient orbs behind content so the frosted
    glass cards actually read (blur needs colour behind it). Render once per page. */

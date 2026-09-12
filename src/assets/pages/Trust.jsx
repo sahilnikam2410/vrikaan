@@ -3,7 +3,8 @@ import { LuShieldCheck, LuLock, LuServer, LuFileCheck, LuScale, LuBug, LuClock, 
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
-import { Section, Aurora, Card, T, alpha } from "../../components/ui";
+import { Section, Aurora, Card } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 const PILLARS = [
   { icon: LuLock, color: T.cyan, title: "Data Protection", body: "AES-256 encryption at rest, TLS 1.3 in transit. Zero-knowledge vaults where applicable — your master secrets never leave your device." },

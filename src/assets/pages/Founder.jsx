@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
-import { FOUNDERS } from "../../components/EmailRouting";
+import { FOUNDERS } from "../../lib/contactRouting";
 
 const T = { bg: "#060a14", white: "#f1f5f9", muted: "#94a3b8", mutedDark: "#64748b", accent: "#6366f1", cyan: "#14b8a6", border: "rgba(148,163,184,0.08)", card: "rgba(17,24,39,0.6)" };
 

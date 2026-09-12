@@ -3,7 +3,8 @@ import { LuCode, LuShieldCheck, LuZap, LuDatabase, LuArrowRight } from "react-ic
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
-import { Section, Aurora, Card, T, alpha } from "../../components/ui";
+import { Section, Aurora, Card } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 const ENDPOINTS = [
   { m: "check", d: "Look up one phone / UPI ID / URL against the network", color: "#14b8a6" },

@@ -48,5 +48,12 @@ export const toolsMenu = [
 ];
 
 // Strip a leading emoji (+ optional variation selector + space) from a label.
-export const stripEmoji = (s) =>
-  s.replace(/^(?:[\u{1F000}-\u{1FAFF}\u{2190}-\u{21FF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}️⃣]+\s*)/u, "");
+//
+// The variation selector (U+FE0F) and combining enclosing keycap (U+20E3) sit
+// in their own alternatives rather than inside the character class. Adjacent
+// inside a class they read as a single combined character, which is ambiguous
+// about whether the pair or each mark alone is meant to match.
+const LEADING_EMOJI =
+  /^(?:(?:[\u{1F000}-\u{1FAFF}\u{2190}-\u{21FF}\u{2300}-\u{27BF}\u{2B00}-\u{2BFF}]|\u{FE0F}|\u{20E3})+\s*)/u;
+
+export const stripEmoji = (s) => s.replace(LEADING_EMOJI, "");

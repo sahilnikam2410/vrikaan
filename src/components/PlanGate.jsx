@@ -1,11 +1,7 @@
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import { isPlanAllowed } from "../lib/plans";
 
-const PLAN_LEVELS = { free: 0, starter: 1, pro: 2, enterprise: 3, unlimited: 3 };
-
-export function isPlanAllowed(userPlan, requiredPlan) {
-  return (PLAN_LEVELS[userPlan] || 0) >= (PLAN_LEVELS[requiredPlan] || 0);
-}
 
 export default function PlanGate({ required = "pro", feature = "This feature", children }) {
   const { user } = useAuth();

@@ -10,7 +10,7 @@ import {
   categoryColors,
   categoryGradients,
   T,
-} from "./Blog";
+} from "./blogData";
 
 export default function BlogPost() {
   const { slug } = useParams();

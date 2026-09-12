@@ -7,7 +7,8 @@ import Navbar from "../../components/Navbar";
 import SEO from "../../components/SEO";
 import { useAuth } from "../../context/AuthContext";
 import { apiFetch } from "../../lib/apiFetch";
-import { Section, PageHero, Card, Button, Textarea, Badge, Aurora, T, alpha } from "../../components/ui";
+import { Section, PageHero, Card, Button, Textarea, Badge, Aurora } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 const VERDICT = {
   "scam": { c: T.red, Icon: LuShieldAlert, label: "Scam" },

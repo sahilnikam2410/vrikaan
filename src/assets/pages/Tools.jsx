@@ -6,7 +6,8 @@ import Footer from "../../components/Footer";
 import SEO from "../../components/SEO";
 import ToolIcon from "../../lib/toolIcons.jsx";
 import { toolsMenu, stripEmoji } from "../../lib/toolsCatalog";
-import { Section, PageHero, Card, Input, Aurora, T, alpha } from "../../components/ui";
+import { Section, PageHero, Card, Input, Aurora } from "../../components/ui";
+import { T, alpha } from "../../components/ui/tokens";
 
 export default function Tools() {
   const [q, setQ] = useState("");
