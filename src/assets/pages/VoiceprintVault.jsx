@@ -288,7 +288,7 @@ export default function VoiceprintVault() {
         }}>
           <LuLock size={13} style={{ verticalAlign: "-2px" }} /> All recordings encoded as base64 in your browser's localStorage. Never uploaded. Clear browser data → samples gone.
           Recommendation: download local backup ZIP every 6 months.<br/>
-          🇮🇳 Built in Pune · Free forever
+          🇮🇳 Built in Nashik · Free forever
         </p>
       </main>
 

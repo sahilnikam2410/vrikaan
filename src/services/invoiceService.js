@@ -13,7 +13,7 @@ const SUPPLIER = {
   name: "VRIKAAN",
   tagline: "AI Cyber Defense — Made in India",
   legal: "Vrikaan Cybersecurity",      // TODO: Pvt Ltd legal name on incorporation
-  address: ["Pune, Maharashtra", "India"],
+  address: ["Nashik, Maharashtra", "India"],
   gstin: "",                            // TODO: real GSTIN → flips to TAX INVOICE
   state: "Maharashtra",
   stateCode: "27",
