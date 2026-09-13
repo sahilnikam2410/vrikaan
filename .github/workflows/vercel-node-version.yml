@@ -1,0 +1,68 @@
+name: Vercel Node version
+
+# Reads, and optionally sets, the Node.js version for the Vercel project's
+# builds and serverless functions.
+#
+# Exists because `engines.node` in package.json did not change the function
+# runtime: on 12 Sep a "22.x" pin was deployed and the Admin-SDK functions
+# kept crashing on the old runtime. The project setting is what actually
+# decides it, and it is otherwise only reachable through the dashboard.
+#
+# Manual only. With `apply` unchecked it only reports the current value.
+# A change takes effect on the NEXT deployment, not the running one.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Node version to set (e.g. 22.x)"
+        required: true
+        default: "22.x"
+      apply:
+        description: "Apply the change (unchecked = read only)"
+        type: boolean
+        default: false
+
+jobs:
+  node-version:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read and optionally set
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          WANT: ${{ inputs.version }}
+          APPLY: ${{ inputs.apply }}
+        run: |
+          set -euo pipefail
+          for v in VERCEL_TOKEN VERCEL_ORG_ID VERCEL_PROJECT_ID; do
+            if [ -z "${!v}" ]; then echo "::error::$v is not set"; exit 1; fi
+          done
+          case "$WANT" in 18.x|20.x|22.x|24.x) ;; *) echo "::error::Unsupported version '$WANT'"; exit 1;; esac
+
+          # teamId only applies to team-owned projects.
+          Q=""
+          case "$VERCEL_ORG_ID" in team_*) Q="?teamId=$VERCEL_ORG_ID";; esac
+          API="https://api.vercel.com/v9/projects/$VERCEL_PROJECT_ID$Q"
+
+          current=$(curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" "$API" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(JSON.parse(s).nodeVersion||'unset'))")
+          echo "current nodeVersion: $current"
+
+          if [ "$APPLY" != "true" ]; then
+            echo "Read only — re-run with 'apply' checked to set $WANT."
+            exit 0
+          fi
+          if [ "$current" = "$WANT" ]; then
+            echo "Already $WANT — nothing to change."
+            exit 0
+          fi
+
+          curl -fsS -X PATCH -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
+            -d "{\"nodeVersion\":\"$WANT\"}" "$API" >/dev/null
+
+          after=$(curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" "$API" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(JSON.parse(s).nodeVersion||'unset'))")
+          echo "nodeVersion now: $after  (was $current)"
+          if [ "$after" != "$WANT" ]; then echo "::error::Setting did not take — still $after"; exit 1; fi
+          echo "::notice::Node $current -> $after. Takes effect on the next deployment."

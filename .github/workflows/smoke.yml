@@ -1,0 +1,79 @@
+name: Smoke test deployment
+
+# Invokes real serverless functions after Vercel reports a deployment ready.
+#
+# The 12 Sep outage (firebase-admin 14 on a Node 20 runtime) passed lint,
+# tests, the build and the preview deployment, because none of those ever
+# calls a function — the crash only happened when one was invoked. This runs
+# scripts/smoke.mjs against the deployment the moment Vercel marks it ready.
+#
+# Production: tested through the public custom domain. The per-deployment
+# *.vercel.app URL sits behind Deployment Protection and returns 401.
+#
+# Preview: tested only when the VERCEL_AUTOMATION_BYPASS_SECRET repository
+# secret exists — enable "Protection Bypass for Automation" under the Vercel
+# project's Deployment Protection settings and store the generated value.
+# Without it, previews are skipped with a notice rather than failing.
+
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "Base URL to test"
+        required: true
+        default: "https://www.vrikaan.com"
+
+jobs:
+  smoke:
+    # Vercel posts a deployment_status for every deploy; Render posts its own
+    # under a different environment name. Only act on Vercel's success events.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.deployment_status.state == 'success' &&
+       (github.event.deployment.environment == 'Production' ||
+        github.event.deployment.environment == 'Preview'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Pick the target
+        id: target
+        env:
+          EVENT: ${{ github.event_name }}
+          ENVIRONMENT: ${{ github.event.deployment.environment }}
+          TARGET_URL: ${{ github.event.deployment_status.target_url || github.event.deployment_status.environment_url }}
+          INPUT_URL: ${{ inputs.url }}
+          HAS_BYPASS: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET != '' }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            echo "url=$INPUT_URL" >> "$GITHUB_OUTPUT"
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          elif [ "$ENVIRONMENT" = "Production" ]; then
+            # Give the custom domain a moment to alias the new build.
+            sleep 20
+            echo "url=https://www.vrikaan.com" >> "$GITHUB_OUTPUT"
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          elif [ "$HAS_BYPASS" = "true" ]; then
+            echo "url=$TARGET_URL" >> "$GITHUB_OUTPUT"
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Preview smoke test skipped — add VERCEL_AUTOMATION_BYPASS_SECRET to test previews before they reach production."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Smoke test
+        if: steps.target.outputs.run == 'true'
+        env:
+          SMOKE_BYPASS: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+          # Passed through the environment, not interpolated into the command:
+          # the manual input is free text.
+          SMOKE_URL: ${{ steps.target.outputs.url }}
+        run: node scripts/smoke.mjs
