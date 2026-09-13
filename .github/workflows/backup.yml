@@ -17,10 +17,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
-      - name: Install firebase-admin
-        run: npm install firebase-admin --no-save
+      - name: Install dependencies
+        # The repo's pinned dependencies, not a floating install. An unpinned
+        # `npm install firebase-admin` picked up v14 on its own and the backup
+        # failed silently on 11 and 12 Sep.
+        run: npm ci --omit=dev
 
       - name: Run backup
         env:
