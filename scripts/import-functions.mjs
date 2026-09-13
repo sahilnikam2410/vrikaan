@@ -13,9 +13,13 @@
  * resolves and evaluates, and a missing export or an engine-incompatible
  * package throws right here. Handlers are not called.
  *
- * Run it on the same Node major as production (Vercel project setting).
+ * Run it on the same Node major as production, with require(esm) switched
+ * off. Recent Node 22 can require() an ES module; Vercel's function runtime
+ * cannot. firebase-admin 14 depends on that — jwks-rsa require()s jose 6,
+ * which is ESM-only — so without the flag this check passes a build that
+ * crashes on every Admin-SDK route in production.
  *
- *   node scripts/import-functions.mjs
+ *   node --no-experimental-require-module scripts/import-functions.mjs
  */
 import fs from "node:fs";
 import path from "node:path";
