@@ -70,8 +70,13 @@ jobs:
       - name: Install production dependencies
         run: npm ci --omit=dev
 
+      # --no-experimental-require-module matches Vercel. Current Node 22 lets
+      # require() load an ES module, but Vercel's function runtime does not —
+      # which is exactly how firebase-admin 14 broke production: jwks-rsa
+      # require()s jose 6, which is ESM-only. Without this flag the job passed
+      # a build that crashed on every Admin-SDK route once deployed.
       - name: Import every function module
-        run: node scripts/import-functions.mjs
+        run: node --no-experimental-require-module scripts/import-functions.mjs
 
   audit:
     runs-on: ubuntu-latest
