@@ -1,0 +1,36 @@
+name: Auth token check
+
+# Proves the Admin SDK still verifies a real, Google-signed Firebase ID token —
+# the one thing the load-time and smoke checks never exercise. Run it before
+# merging any firebase-admin upgrade.
+#
+# Manual only: each run creates and deletes one throwaway Auth user in the
+# real project, which is not something every PR should do.
+#
+# Run against a branch:  Actions -> Auth token check -> Run workflow -> pick ref
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  auth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node (production runtime)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install production dependencies
+        run: npm ci --omit=dev
+
+      # Same flag as the functions job, so the SDK loads the way Vercel loads it.
+      - name: Verify a real ID token end to end
+        env:
+          FIREBASE_ADMIN_KEY: ${{ secrets.FIREBASE_ADMIN_KEY }}
+        run: node --no-experimental-require-module scripts/auth-token-check.mjs
