@@ -547,9 +547,11 @@ export default function UserDashboard() {
         }
       }
       await addDoc(fsCol("apikeys"), { key, label: "Primary", active: true, createdAt: serverTimestamp(), callCount: 0 });
-      // Public-by-id mirror for serverless validation
+      // Public-by-id mirror for serverless validation. No `plan`: the API
+      // resolves the tier from users/{uid} on every call, and firestore.rules
+      // rejects a token document that carries one.
       await setDoc(doc(db, "api_tokens", key), {
-        uid, plan: userPlan || "starter", active: true, createdAt: serverTimestamp(),
+        uid, active: true, createdAt: serverTimestamp(),
       });
       setApiKey(key);
       await logActivity("api_key_generated", "API key generated");
