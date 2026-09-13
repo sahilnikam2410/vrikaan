@@ -10,7 +10,7 @@
  *   1. Place your Firebase Admin service account JSON at the project root as
  *      `serviceAccount.json` (gitignored) OR set FIREBASE_ADMIN_KEY to the
  *      full JSON string in the environment.
- *   2. Install the Admin SDK once:   npm install firebase-admin --no-save
+ *   2. Install dependencies:         npm ci --omit=dev
  *   3. Run:                           node scripts/backup-firestore.js
  *
  * Scheduling examples (see PRODUCTION_RUNBOOK.md section 6 for details):
@@ -23,11 +23,18 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-let admin;
+// Modular Admin SDK entry points. The namespaced default export this script
+// used (admin.credential.cert, admin.firestore()) was removed in
+// firebase-admin 14 — and because the workflow installed the SDK unpinned, the
+// nightly backup picked up 14 on its own and failed on 11 and 12 Sep with
+// "Cannot read properties of undefined (reading 'cert')". These imports work
+// on 13 and 14 alike.
+let initializeApp, cert, getFirestore;
 try {
-  admin = (await import("firebase-admin")).default;
+  ({ initializeApp, cert } = await import("firebase-admin/app"));
+  ({ getFirestore } = await import("firebase-admin/firestore"));
 } catch {
-  console.error("firebase-admin is not installed. Run: npm install firebase-admin --no-save");
+  console.error("firebase-admin is not installed. Run: npm ci --omit=dev");
   process.exit(1);
 }
 
@@ -85,9 +92,9 @@ async function exportCollection(colRef, outDir) {
 
 async function main() {
   const serviceAccount = await loadServiceAccount();
-  admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
+  initializeApp({ credential: cert(serviceAccount) });
 
-  const db = admin.firestore();
+  const db = getFirestore();
   const date = new Date().toISOString().slice(0, 10);
   const backupDir = path.join(projectRoot, "backups", date);
   await fs.mkdir(backupDir, { recursive: true });

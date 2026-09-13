@@ -66,8 +66,13 @@ const app = initializeApp({ credential: cert(sa), projectId: sa.project_id });
 const auth = getAuth(app);
 
 console.log(`project  ${sa.project_id}`);
-const fav = await import("firebase-admin/package.json", { with: { type: "json" } }).catch(() => null);
-if (fav) console.log(`sdk      firebase-admin ${fav.default.version}`);
+// firebase-admin's exports map doesn't expose package.json, so read the file
+// directly — the point of printing it is to prove which SDK this run verified.
+try {
+  const { readFileSync } = await import("node:fs");
+  const v = JSON.parse(readFileSync("node_modules/firebase-admin/package.json", "utf8")).version;
+  console.log(`sdk      firebase-admin ${v}`);
+} catch { /* version line is informational only */ }
 
 let exitCode = 0;
 try {
