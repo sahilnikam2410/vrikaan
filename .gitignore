@@ -42,3 +42,8 @@ scripts/ppt/node_modules/
 scripts/marketing/node_modules/
 scripts/ppt/package-lock.json
 scripts/marketing/package-lock.json
+
+# Payment reconciliation exports — order ids and customer data, never commit
+orders.txt
+orders*.csv
+reconcile-*.txt
