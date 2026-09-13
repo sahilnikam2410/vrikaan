@@ -63,10 +63,14 @@ jobs:
           echo "--- firestore.rules @ $(git rev-parse --short HEAD) ---"
           cat firestore.rules
 
+      # Through the Admin SDK rather than the Firebase CLI. The CLI pre-checks
+      # that Firestore is enabled via the Service Usage API, which needs
+      # serviceusage.services.get — a permission the Admin SDK service account
+      # does not hold. Releasing a ruleset only needs firebaserules access.
       - name: Deploy
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/sa.json
-        run: npx firebase deploy --only firestore:rules --project secuvion --non-interactive
+          FIREBASE_ADMIN_KEY: ${{ secrets.FIREBASE_ADMIN_KEY }}
+        run: node scripts/deploy-rules.mjs
 
       - name: Remove the key
         if: always()
