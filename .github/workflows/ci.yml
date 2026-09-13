@@ -50,6 +50,29 @@ jobs:
       - name: Build
         run: npm run build
 
+  # Imports every serverless function on the Node major production runs.
+  # A load-time crash (the 12 Sep outage) never shows up in lint, tests or
+  # the build, because none of them execute a function module. Keep the
+  # version in step with the Vercel project setting (currently 22.x).
+  functions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node (production runtime)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install production dependencies
+        run: npm ci --omit=dev
+
+      - name: Import every function module
+        run: node scripts/import-functions.mjs
+
   audit:
     runs-on: ubuntu-latest
     timeout-minutes: 10
